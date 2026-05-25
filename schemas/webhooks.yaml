@@ -1,0 +1,188 @@
+components:
+  schemas:
+    WebhookNotification:
+      type: object
+      description: >
+        Webhook notification payload sent to your notification URL when a resource
+        changes. Validate the x-signature HMAC-SHA256 header before processing.
+        After receiving, GET the resource URL to fetch the full updated object.
+      required: [id, type, data]
+      properties:
+        id:
+          type: integer
+          description: Notification unique ID (use for deduplication).
+          example: 12345678
+        type:
+          type: string
+          description: Resource type that triggered the notification.
+          enum:
+            - payment
+            - merchant_order
+            - subscription_preapproval
+            - subscription_preapproval_plan
+            - subscription_authorized_payment
+            - point_integration_wh
+            - chargebacks
+            - delivery
+          example: payment
+        date_created:
+          type: string
+          format: date-time
+        user_id:
+          type: integer
+          description: MP user ID that owns the resource.
+        api_version:
+          type: string
+          example: "v1"
+        action:
+          type: string
+          enum: [payment.created, payment.updated, subscription.authorized, subscription.cancelled, order.created, order.updated, point_integration_wh]
+          example: payment.updated
+        data:
+          type: object
+          required: [id]
+          properties:
+            id:
+              type: string
+              description: >
+                Resource ID. Fetch this via GET at the resource URL to get full details.
+                Do not rely on the webhook payload alone — always GET the resource.
+              example: "1234567890"
+
+    WebhookSignatureHeader:
+      type: object
+      description: >
+        The x-signature header value format: ts=<timestamp>,v1=<hmac_sha256_signature>.
+        Validate using HMAC-SHA256 with your webhook secret key.
+      properties:
+        ts:
+          type: string
+          description: Unix timestamp of the notification.
+        v1:
+          type: string
+          description: "HMAC-SHA256 signature of \"id:[notif_id];request-id:[req_id];ts:[ts];\""
+
+    MerchantOrder:
+      type: object
+      description: >
+        A merchant order groups multiple payments for a single purchase.
+        Updated when any associated payment changes status.
+      properties:
+        id:
+          type: integer
+        status:
+          type: string
+          enum: [opened, closed, expired]
+        order_status:
+          type: string
+          description: Aggregated status of all payments in the order.
+          enum: [payment_required, payment_in_process, paid, partially_paid, partially_refunded, pending_cancel, cancelled, refunded]
+        external_reference:
+          type: string
+        preference_id:
+          type: string
+        marketplace:
+          type: string
+          description: Origin marketplace (NONE for direct MP, MELI for Mercado Libre).
+        application_id:
+          type: string
+        site_id:
+          type: string
+          description: Site where the order was created.
+          enum: [MLA, MLB, MLM, MLC, MCO, MPE, MLU]
+        notification_url:
+          type: string
+          format: uri
+          deprecated: true
+        sponsor_id:
+          type: integer
+        collector:
+          type: object
+          description: Seller information.
+          properties:
+            id:
+              type: integer
+            email:
+              type: string
+              format: email
+            nickname:
+              type: string
+        payer:
+          type: object
+          description: Buyer information.
+          properties:
+            id:
+              type: integer
+            email:
+              type: string
+              format: email
+            nickname:
+              type: string
+        payments:
+          type: array
+          items:
+            type: object
+            properties:
+              id:
+                type: integer
+              transaction_amount:
+                type: number
+                format: float
+              total_paid_amount:
+                type: number
+                format: float
+              shipping_cost:
+                type: number
+                format: float
+              currency_id:
+                $ref: "common.yaml#/components/schemas/CurrencyId"
+              status:
+                type: string
+              status_detail:
+                type: string
+              operation_type:
+                type: string
+              date_created:
+                type: string
+                format: date-time
+              date_approved:
+                type: string
+                format: date-time
+        shipments:
+          type: array
+          description: Shipping info associated with the order.
+          items:
+            type: object
+        payouts:
+          type: array
+          description: Payout information for marketplace payments.
+          items:
+            type: object
+        items:
+          type: array
+          items:
+            type: object
+        additional_info:
+          type: string
+        shipping_cost:
+          type: number
+          format: float
+          description: Total shipping cost.
+        total_amount:
+          type: number
+          format: float
+        paid_amount:
+          type: number
+          format: float
+        refunded_amount:
+          type: number
+          format: float
+        date_created:
+          type: string
+          format: date-time
+        last_updated:
+          type: string
+          format: date-time
+        canceled:
+          type: boolean
+          description: Whether this order has been canceled.

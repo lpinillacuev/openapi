@@ -1,0 +1,118 @@
+overlay: "1.0.0"
+info:
+  title: MercadoPago MLA (Argentina) Overlay
+  version: "1.0.0"
+  description: >
+    Country-specific additions for Argentina (site_id: MLA).
+    Currency: ARS. Key payment methods: Visa, Mastercard, Amex, Rapipago, Pago Fácil,
+    RedLink, Mercado Pago wallet. Identification types: DNI, CUIL, CUIT.
+
+actions:
+  - target: "$.info"
+    description: Add Argentina-specific server note
+    update:
+      x-mp-country-note: >
+        Argentina (MLA): Currency ARS. Installments available on credit cards.
+        Rapipago and Pago Fácil are popular cash payment methods.
+        DNI is the primary identification type.
+
+  - target: "$.paths['/v1/payments'].post.requestBody.content['application/json'].examples"
+    description: Add Argentina card and cash payment examples
+    update:
+      rapipago_argentina:
+        summary: Rapipago (cash) — Argentina
+        x-mp-sites: [MLA]
+        value:
+          transaction_amount: 5000.00
+          payment_method_id: rapipago
+          date_of_expiration: "2024-12-31T23:59:59.000-03:00"
+          payer:
+            email: "test@example.com"
+            identification:
+              type: DNI
+              number: "12345678"
+      pagofacil_argentina:
+        summary: Pago Fácil (cash) — Argentina
+        x-mp-sites: [MLA]
+        value:
+          transaction_amount: 5000.00
+          payment_method_id: pagofacil
+          date_of_expiration: "2024-12-31T23:59:59.000-03:00"
+          payer:
+            email: "test@example.com"
+            identification:
+              type: DNI
+              number: "12345678"
+      amex_argentina:
+        summary: American Express — Argentina
+        x-mp-sites: [MLA]
+        value:
+          transaction_amount: 15000.00
+          token: "TEST-ff8080814c11e237014c1ff593b57b4d"
+          description: "Purchase"
+          installments: 6
+          payment_method_id: amex
+          payer:
+            email: "test@example.com"
+            identification:
+              type: CUIL
+              number: "20-12345678-9"
+
+  - target: "$.paths['/v1/orders'].post.requestBody.content['application/json'].examples"
+    description: Add Argentina order examples
+    update:
+      rapipago_order_argentina:
+        summary: Order with Rapipago — Argentina
+        x-mp-sites: [MLA]
+        value:
+          type: online
+          processing_mode: automatic
+          total_amount: "5000.00"
+          payer:
+            email: "test@example.com"
+          transactions:
+            payments:
+              - amount: "5000.00"
+                payment_method:
+                  id: rapipago
+                  type: ticket
+      pagofacil_order_argentina:
+        summary: Order with Pago Fácil — Argentina
+        x-mp-sites: [MLA]
+        value:
+          type: online
+          processing_mode: automatic
+          total_amount: "5000.00"
+          payer:
+            email: "test@example.com"
+          transactions:
+            payments:
+              - amount: "5000.00"
+                payment_method:
+                  id: pagofacil
+                  type: ticket
+
+  - target: "$.components"
+    description: Argentina-specific schemas
+    update:
+      x-mp-mla-payment-methods:
+        credit_cards: [visa, master, amex, naranja, cabal, diners, argencard]
+        debit_cards: [debvisa, debmaster, maestro]
+        cash: [rapipago, pagofacil, redlink, cobroexpress]
+        digital_wallets: [account_money]
+      x-mp-mla-identification-types:
+        - id: DNI
+          name: Documento Nacional de Identidad
+          type: number
+          min_length: 7
+          max_length: 8
+        - id: CUIL
+          name: Clave Única de Identificación Laboral
+          type: number
+          min_length: 11
+          max_length: 11
+        - id: CUIT
+          name: Clave Única de Identificación Tributaria
+          type: number
+          min_length: 11
+          max_length: 11

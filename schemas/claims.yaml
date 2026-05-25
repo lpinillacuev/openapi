@@ -1,0 +1,181 @@
+components:
+  schemas:
+    Claim:
+      type: object
+      description: A post-sale claim (dispute) between buyer and seller
+      properties:
+        id:
+          type: integer
+          description: Claim unique identifier
+          example: 4567890123
+        type:
+          type: string
+          enum:
+          - mediations
+          - claims
+          description: mediations — buyer-initiated dispute requiring MP mediation; claims — seller-initiated claim
+        stage:
+          type: string
+          enum:
+          - claim
+          - dispute
+          - resolution
+          description: Current stage in the dispute lifecycle
+        status:
+          type: string
+          enum:
+          - opened
+          - closed
+          - cancelled
+        date_created:
+          type: string
+          format: date-time
+        last_updated:
+          type: string
+          format: date-time
+        resource:
+          type: string
+          enum:
+          - payment
+          - shipment
+          - order
+          description: Resource type the claim is about
+        reason_id:
+          type: string
+          description: Reason code for the claim
+        players:
+          type: array
+          description: Parties involved (buyer, seller)
+          items:
+            type: object
+            properties:
+              role:
+                type: string
+                enum:
+                - complainant
+                - respondent
+              user_id:
+                type: integer
+              available_actions:
+                type: array
+                items:
+                  type: string
+    ClaimMessage:
+      type: object
+      description: A message within a claim thread
+      properties:
+        id:
+          type: integer
+        date_created:
+          type: string
+          format: date-time
+        from:
+          type: object
+          properties:
+            user_id:
+              type: integer
+            role:
+              type: string
+              enum:
+              - complainant
+              - respondent
+              - mediator
+        message:
+          type: string
+          description: Text content of the message
+        attachments:
+          type: array
+          items:
+            type: object
+            properties:
+              file_name:
+                type: string
+              file_id:
+                type: string
+    ClaimReason:
+      type: object
+      description: A reason code for opening a claim
+      properties:
+        id:
+          type: string
+          example: PNR
+        description:
+          type: string
+          example: Product not received
+        type:
+          type: string
+          enum:
+          - mediations
+          - claims
+    ClaimSearchResult:
+      type: object
+      properties:
+        paging:
+          $ref: common.yaml#/components/schemas/Pagination
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/Claim'
+    ClaimHistoryEntry:
+      type: object
+      properties:
+        date:
+          type: string
+          format: date-time
+        status:
+          type: string
+        stage:
+          type: string
+        changed_by:
+          type: string
+          enum:
+          - buyer
+          - seller
+          - system
+          - mediator
+    ClaimEvidence:
+      type: object
+      properties:
+        id:
+          type: string
+        type:
+          type: string
+          enum:
+          - tracking_code
+          - photo
+          - invoice
+          - other
+        date_created:
+          type: string
+          format: date-time
+        file_name:
+          type: string
+    MediationResolution:
+      type: object
+      description: Expected resolution options at mediation stage
+      properties:
+        type:
+          type: string
+          enum:
+          - refund
+          - return
+          - partial_refund
+        amount:
+          type: number
+          format: float
+        reason:
+          type: string
+    SendMessageRequest:
+      type: object
+      required:
+      - message
+      properties:
+        message:
+          type: string
+          description: Text content of the message to send
+          example: I can provide the tracking code for the shipment.
+        attachments:
+          type: array
+          description: File IDs to attach (upload first via attachments endpoint)
+          items:
+            type: string

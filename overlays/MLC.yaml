@@ -1,0 +1,66 @@
+overlay: "1.0.0"
+info:
+  title: MercadoPago MLC (Chile) Overlay
+  version: "1.0.0"
+  description: >
+    Country-specific additions for Chile (site_id: MLC).
+    Currency: CLP (0 decimal places — integer amounts).
+    Key payment methods: Visa, Mastercard, Khipu, RedCompra, Webpay.
+    Identification type: RUT.
+
+actions:
+  - target: "$.info"
+    description: Add Chile-specific notes
+    update:
+      x-mp-country-note: >
+        Chile (MLC): Currency CLP — amounts are integers with NO decimal places
+        (e.g., 10000 for $10.000 CLP). Khipu is a popular bank transfer method.
+        RedCompra is the Chilean debit network. RUT is the national ID.
+
+  - target: "$.paths['/v1/payments'].post.requestBody.content['application/json'].examples"
+    description: Add Chile payment examples
+    update:
+      khipu_chile:
+        summary: Khipu bank transfer — Chile
+        x-mp-sites: [MLC]
+        value:
+          transaction_amount: 10000
+          payment_method_id: khipu
+          payer:
+            email: "test@example.com"
+            identification:
+              type: RUT
+              number: "12.345.678-9"
+      redcompra_chile:
+        summary: RedCompra debit — Chile
+        x-mp-sites: [MLC]
+        value:
+          transaction_amount: 10000
+          token: "TEST-ff8080814c11e237014c1ff593b57b4d"
+          payment_method_id: redcompra
+          installments: 1
+          payer:
+            email: "test@example.com"
+            identification:
+              type: RUT
+              number: "12.345.678-9"
+
+  - target: "$.components"
+    description: Chile-specific schemas
+    update:
+      x-mp-mlc-payment-methods:
+        credit_cards: [visa, master, amex, diners]
+        debit_cards: [redcompra, debvisa, maestro]
+        bank_transfer: [khipu, webpay]
+        digital_wallets: [account_money]
+      x-mp-mlc-identification-types:
+        - id: RUT
+          name: Rol Único Tributario
+          type: letter
+          min_length: 8
+          max_length: 9
+          description: Chilean national ID (format XX.XXX.XXX-X or XXXXXXXX-X)
+      x-mp-mlc-amounts-note: >
+        CLP uses 0 decimal places. Always send integer amounts
+        (e.g., 10000 not 10000.00). Sending decimal values will cause
+        a 400 validation error.

@@ -1,0 +1,151 @@
+components:
+  schemas:
+    ReportConfig:
+      type: object
+      description: Configuration for scheduled report generation
+      properties:
+        columns:
+          type: array
+          description: Columns to include in the report
+          items:
+            type: object
+            properties:
+              key:
+                type: string
+                example: DATE
+              alias:
+                type: string
+                example: transaction_date
+        file_name_prefix:
+          type: string
+          description: Prefix for generated report filenames
+          example: releases_report
+        frequency:
+          type: object
+          description: Schedule frequency for automatic generation
+          properties:
+            hour:
+              type: integer
+              minimum: 0
+              maximum: 23
+            type:
+              type: string
+              enum:
+              - daily
+              - weekly
+              - monthly
+        sftp_info:
+          type: object
+          description: SFTP destination for automatic delivery (optional)
+          properties:
+            server:
+              type: string
+            port:
+              type: integer
+            username:
+              type: string
+            remote_dir:
+              type: string
+        separator:
+          type: string
+          description: CSV column separator character
+          enum:
+          - ','
+          - ;
+          - ''
+          default: ','
+        display_timezone:
+          type: string
+          description: Timezone for date columns (IANA format)
+          example: America/Sao_Paulo
+        notification_email_list:
+          type: array
+          description: Email addresses to notify when report is ready
+          items:
+            type: string
+            format: email
+    ReportRequest:
+      type: object
+      required:
+      - begin_date
+      - end_date
+      description: Request body to generate a one-time report
+      properties:
+        begin_date:
+          type: string
+          format: date-time
+          description: Start of the reporting period (ISO 8601)
+          example: '2024-01-01T00:00:00Z'
+        end_date:
+          type: string
+          format: date-time
+          description: End of the reporting period (ISO 8601)
+          example: '2024-01-31T23:59:59Z'
+    ReportTask:
+      type: object
+      description: Status of a report generation task
+      properties:
+        id:
+          type: string
+          description: Task unique identifier
+          example: task_abc123
+        status:
+          type: string
+          enum:
+          - pending
+          - in_progress
+          - done
+          - failed
+          description: pending — queued; in_progress — generating; done — ready to download; failed — generation error
+        begin_date:
+          type: string
+          format: date-time
+        end_date:
+          type: string
+          format: date-time
+        created_at:
+          type: string
+          format: date-time
+        updated_at:
+          type: string
+          format: date-time
+        download_url:
+          type: string
+          format: uri
+          description: Download URL (present when status=done)
+          nullable: true
+    ReportEntry:
+      type: object
+      description: A generated report file entry
+      properties:
+        id:
+          type: string
+        status:
+          type: string
+          enum:
+          - available
+          - expired
+        date_created:
+          type: string
+          format: date-time
+        date_last_updated:
+          type: string
+          format: date-time
+        begin_date:
+          type: string
+          format: date-time
+        end_date:
+          type: string
+          format: date-time
+        file_name:
+          type: string
+          example: releases_report_2024-01-01_2024-01-31.csv
+    ReportListResult:
+      type: object
+      properties:
+        paging:
+          $ref: common.yaml#/components/schemas/Pagination
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/ReportEntry'

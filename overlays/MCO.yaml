@@ -1,0 +1,100 @@
+overlay: "1.0.0"
+info:
+  title: MercadoPago MCO (Colombia) Overlay
+  version: "1.0.0"
+  description: >
+    Country-specific additions for Colombia (site_id: MCO).
+    Currency: COP. Key payment methods: Visa, Mastercard, PSE (bank transfer),
+    Efecty (cash), Baloto. Identification types: CC (Cédula de Ciudadanía),
+    NIT, CE (Cédula de Extranjería).
+
+actions:
+  - target: "$.info"
+    description: Add Colombia-specific notes
+    update:
+      x-mp-country-note: >
+        Colombia (MCO): Currency COP. PSE is the primary online banking transfer
+        network — requires the payer to select their bank and authenticate.
+        Efecty is the main cash payment network.
+        CC (Cédula de Ciudadanía) is the primary ID type.
+
+  - target: "$.paths['/v1/payments'].post.requestBody.content['application/json'].examples"
+    description: Add Colombia payment examples
+    update:
+      pse_colombia:
+        summary: PSE bank transfer — Colombia
+        x-mp-sites: [MCO]
+        value:
+          transaction_amount: 100000.00
+          payment_method_id: pse
+          callback_url: "https://mystore.com/pse-return"
+          payer:
+            email: "test@example.com"
+            identification:
+              type: CC
+              number: "12345678"
+            entity_type: individual
+      efecty_colombia:
+        summary: Efecty cash — Colombia
+        x-mp-sites: [MCO]
+        value:
+          transaction_amount: 100000.00
+          payment_method_id: efecty
+          date_of_expiration: "2024-12-31T23:59:59.000-05:00"
+          payer:
+            email: "test@example.com"
+            identification:
+              type: CC
+              number: "12345678"
+
+  - target: "$.paths['/v1/orders'].post.requestBody.content['application/json'].examples"
+    description: Add Colombia order examples
+    update:
+      pse_order_colombia:
+        summary: Order with PSE — Colombia
+        x-mp-sites: [MCO]
+        value:
+          type: online
+          processing_mode: automatic
+          total_amount: "100000.00"
+          payer:
+            email: "test@example.com"
+            identification:
+              type: CC
+              number: "12345678"
+          transactions:
+            payments:
+              - amount: "100000.00"
+                payment_method:
+                  id: pse
+                  type: bank_transfer
+
+  - target: "$.components"
+    description: Colombia-specific schemas
+    update:
+      x-mp-mco-payment-methods:
+        credit_cards: [visa, master, amex, diners, codensa]
+        debit_cards: [debvisa, debmaster]
+        bank_transfer: [pse]
+        ticket: [efecty, baloto, davivienda]
+        digital_wallets: [account_money]
+      x-mp-mco-identification-types:
+        - id: CC
+          name: Cédula de Ciudadanía
+          type: number
+          min_length: 6
+          max_length: 10
+        - id: NIT
+          name: Número de Identificación Tributaria
+          type: number
+          min_length: 9
+          max_length: 10
+        - id: CE
+          name: Cédula de Extranjería
+          type: number
+          min_length: 6
+          max_length: 10
+      x-mp-mco-pse-note: >
+        PSE requires the payer to be redirected to their bank for authentication.
+        The callback_url is required for the bank to redirect back after authentication.
+        PSE payments may have a status of pending while the bank processes the transfer.

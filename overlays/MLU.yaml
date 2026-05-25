@@ -1,0 +1,62 @@
+overlay: "1.0.0"
+info:
+  title: MercadoPago MLU (Uruguay) Overlay
+  version: "1.0.0"
+  description: >
+    Country-specific additions for Uruguay (site_id: MLU).
+    Currency: UYU. Key payment methods: Visa, Mastercard, OCA, Redpagos,
+    Abitab (cash networks). Identification type: CI (Cédula de Identidad).
+
+actions:
+  - target: "$.info"
+    description: Add Uruguay-specific notes
+    update:
+      x-mp-country-note: >
+        Uruguay (MLU): Currency UYU. OCA is a local credit card brand.
+        Redpagos and Abitab are cash payment networks with hundreds of
+        collection points. CI (Cédula de Identidad) is the primary ID.
+
+  - target: "$.paths['/v1/payments'].post.requestBody.content['application/json'].examples"
+    description: Add Uruguay payment examples
+    update:
+      oca_uruguay:
+        summary: OCA credit card — Uruguay
+        x-mp-sites: [MLU]
+        value:
+          transaction_amount: 1500.00
+          token: "TEST-ff8080814c11e237014c1ff593b57b4d"
+          description: "Purchase"
+          installments: 3
+          payment_method_id: oca
+          payer:
+            email: "test@example.com"
+            identification:
+              type: CI
+              number: "12345678"
+      redpagos_uruguay:
+        summary: Redpagos cash — Uruguay
+        x-mp-sites: [MLU]
+        value:
+          transaction_amount: 1500.00
+          payment_method_id: redpagos
+          date_of_expiration: "2024-12-31T23:59:59.000-03:00"
+          payer:
+            email: "test@example.com"
+            identification:
+              type: CI
+              number: "12345678"
+
+  - target: "$.components"
+    description: Uruguay-specific schemas
+    update:
+      x-mp-mlu-payment-methods:
+        credit_cards: [visa, master, oca, diners]
+        debit_cards: [debvisa, debmaster]
+        ticket: [redpagos, abitab]
+        digital_wallets: [account_money]
+      x-mp-mlu-identification-types:
+        - id: CI
+          name: Cédula de Identidad
+          type: number
+          min_length: 7
+          max_length: 8

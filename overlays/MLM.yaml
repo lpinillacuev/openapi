@@ -1,0 +1,106 @@
+overlay: "1.0.0"
+info:
+  title: MercadoPago MLM (Mexico) Overlay
+  version: "1.0.0"
+  description: >
+    Country-specific additions for Mexico (site_id: MLM).
+    Currency: MXN. Key payment methods: Visa, Mastercard, OXXO, SPEI,
+    Citibanamex, Santander, BBVA, Mercado Pago wallet.
+    Identification types: RFC, CURP.
+
+actions:
+  - target: "$.info"
+    description: Add Mexico-specific server note
+    update:
+      x-mp-country-note: >
+        Mexico (MLM): Currency MXN. OXXO is Mexico's primary cash payment network
+        (100,000+ locations). SPEI is the interbank electronic transfer system.
+        RFC is the primary tax ID. Card installments (meses sin intereses) are common.
+
+  - target: "$.paths['/v1/payments'].post.requestBody.content['application/json'].examples"
+    description: Add Mexico payment examples
+    update:
+      spei_mexico:
+        summary: SPEI bank transfer — Mexico
+        x-mp-sites: [MLM]
+        value:
+          transaction_amount: 1000.00
+          payment_method_id: clabe
+          date_of_expiration: "2024-12-31T23:59:59.000-06:00"
+          payer:
+            email: "test@example.com"
+      banamex_mexico:
+        summary: Citibanamex — Mexico
+        x-mp-sites: [MLM]
+        value:
+          transaction_amount: 500.00
+          payment_method_id: banamex
+          date_of_expiration: "2024-12-31T23:59:59.000-06:00"
+          payer:
+            email: "test@example.com"
+      card_installments_mexico:
+        summary: Card with 12 MSI (sin intereses) — Mexico
+        x-mp-sites: [MLM]
+        value:
+          transaction_amount: 3600.00
+          token: "TEST-ff8080814c11e237014c1ff593b57b4d"
+          description: "Electronics purchase"
+          installments: 12
+          payment_method_id: visa
+          payer:
+            email: "test@example.com"
+            identification:
+              type: RFC
+              number: "XAXX010101000"
+
+  - target: "$.paths['/v1/orders'].post.requestBody.content['application/json'].examples"
+    description: Add Mexico order examples
+    update:
+      spei_order_mexico:
+        summary: Order with SPEI — Mexico
+        x-mp-sites: [MLM]
+        value:
+          type: online
+          processing_mode: automatic
+          total_amount: "1000.00"
+          payer:
+            email: "test@example.com"
+          transactions:
+            payments:
+              - amount: "1000.00"
+                payment_method:
+                  id: clabe
+                  type: bank_transfer
+
+  - target: "$.paths['/point/integration-api/devices/{deviceid}/payment-intents']"
+    description: Add Mexico Point note
+    update:
+      x-mp-sites: [MLA, MLB, MLM]
+      x-mp-mlm-point-note: >
+        Mexico Point devices support credit and debit card payments.
+        OXXO and cash methods are not available via Point integration.
+
+  - target: "$.components"
+    description: Mexico-specific schemas
+    update:
+      x-mp-mlm-payment-methods:
+        credit_cards: [visa, master, amex]
+        debit_cards: [debvisa, debmaster]
+        bank_transfer: [clabe]
+        ticket: [oxxo, banamex, serfin, bancomer]
+        digital_wallets: [account_money]
+      x-mp-mlm-identification-types:
+        - id: RFC
+          name: Registro Federal de Contribuyentes
+          type: letter
+          min_length: 12
+          max_length: 13
+        - id: CURP
+          name: Clave Única de Registro de Población
+          type: letter
+          min_length: 18
+          max_length: 18
+      x-mp-mlm-oxxo-note: >
+        OXXO payments expire after 3 days by default. The payer receives a barcode
+        or reference number to pay at any OXXO store. Accreditation takes up to
+        1 business day after payment at the store.

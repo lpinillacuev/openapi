@@ -1,0 +1,278 @@
+components:
+  schemas:
+    CustomerRequest:
+      type: object
+      description: Request body to create or update a customer.
+      properties:
+        email:
+          type: string
+          format: email
+          description: Customer email address (unique identifier).
+          example: "customer@example.com"
+        first_name:
+          type: string
+        last_name:
+          type: string
+        phone:
+          $ref: "#/components/schemas/Phone"
+        identification:
+          $ref: "#/components/schemas/Identification"
+        address:
+          $ref: "#/components/schemas/Address"
+        description:
+          type: string
+        date_registered:
+          type: string
+          format: date-time
+          description: Date the customer registered with your platform.
+        default_address:
+          type: string
+          description: ID of the customer's default address.
+        default_card:
+          type: string
+          description: ID of the customer's default saved card.
+
+    Customer:
+      type: object
+      description: A stored MercadoPago customer.
+      properties:
+        id:
+          type: string
+          description: Customer unique identifier.
+          example: "123456789-abcd"
+        email:
+          type: string
+          format: email
+        first_name:
+          type: string
+        last_name:
+          type: string
+        phone:
+          $ref: "#/components/schemas/Phone"
+        identification:
+          $ref: "#/components/schemas/Identification"
+        address:
+          $ref: "#/components/schemas/Address"
+        addresses:
+          type: array
+          description: All addresses associated with this customer.
+          items:
+            $ref: "#/components/schemas/Address"
+        date_registered:
+          type: string
+          format: date-time
+        date_created:
+          type: string
+          format: date-time
+        date_last_updated:
+          type: string
+          format: date-time
+        description:
+          type: string
+        default_address:
+          type: string
+          description: ID of the customer's default address.
+        default_card:
+          type: string
+          description: ID of the customer's default saved card.
+        cards:
+          type: array
+          items:
+            $ref: "#/components/schemas/Card"
+          description: Saved cards for this customer.
+
+    CustomerSearchResult:
+      type: object
+      properties:
+        paging:
+          $ref: "#/components/schemas/Pagination"
+        results:
+          type: array
+          items:
+            $ref: "#/components/schemas/Customer"
+
+    SaveCardRequest:
+      type: object
+      required: [token]
+      description: >
+        Request body to save a card to a customer. The card token must be created
+        client-side via MercadoPago.js before calling this endpoint.
+      properties:
+        token:
+          type: string
+          description: Single-use card token from MercadoPago.js.
+          example: "ff8080814c11e237014c1ff593b57b4d"
+
+    UpdateCardRequest:
+      type: object
+      description: Request body to update a saved card's expiry or cardholder data.
+      properties:
+        expiration_month:
+          type: integer
+          minimum: 1
+          maximum: 12
+        expiration_year:
+          type: integer
+        cardholder:
+          type: object
+          properties:
+            name:
+              type: string
+              description: Name as it appears on the card.
+            identification:
+              $ref: "#/components/schemas/Identification"
+
+    Card:
+      type: object
+      description: A tokenized card saved to a customer (never contains full PAN or CVV).
+      properties:
+        id:
+          type: string
+          description: Card unique identifier.
+          example: "1234567890"
+        customer_id:
+          type: string
+        user_id:
+          type: string
+          description: User ID who owns this card.
+        first_six_digits:
+          type: string
+          description: First 6 digits (BIN — identifies issuer and type).
+          example: "411111"
+        last_four_digits:
+          type: string
+          description: Last 4 digits.
+          example: "4321"
+        expiration_month:
+          type: integer
+          minimum: 1
+          maximum: 12
+          example: 12
+        expiration_year:
+          type: integer
+          example: 2028
+        date_created:
+          type: string
+          format: date-time
+        date_registered:
+          type: string
+          format: date-time
+          description: Date the card was registered.
+        date_last_updated:
+          type: string
+          format: date-time
+        cardholder:
+          type: object
+          properties:
+            name:
+              type: string
+              description: Name on card.
+            identification:
+              $ref: "#/components/schemas/Identification"
+        payment_method:
+          type: object
+          properties:
+            id:
+              type: string
+              example: visa
+            name:
+              type: string
+              example: Visa
+            payment_type_id:
+              type: string
+              example: credit_card
+            thumbnail:
+              type: string
+              format: uri
+        issuer:
+          type: object
+          properties:
+            id:
+              type: integer
+            name:
+              type: string
+        security_code:
+          type: object
+          properties:
+            mode:
+              type: string
+              enum: [mandatory, optional]
+            length:
+              type: integer
+              example: 3
+
+    CardTokenRequest:
+      type: object
+      required: [card_number, expiration_month, expiration_year, security_code, cardholder]
+      description: >
+        CLIENT-SIDE ONLY. Creates a single-use card token from raw card data via
+        MercadoPago.js using the PUBLIC_KEY. Never call server-side.
+      properties:
+        card_number:
+          type: string
+          description: Full card PAN — client-side only.
+          example: "4111111111111111"
+        expiration_month:
+          type: integer
+          minimum: 1
+          maximum: 12
+          example: 12
+        expiration_year:
+          type: integer
+          example: 2028
+        security_code:
+          type: string
+          description: CVV / CVC — client-side only.
+          example: "123"
+        cardholder:
+          type: object
+          required: [name]
+          properties:
+            name:
+              type: string
+              description: Name exactly as printed on card.
+              example: "JOHN DOE"
+            identification:
+              $ref: "#/components/schemas/Identification"
+
+    CardToken:
+      type: object
+      description: >
+        A single-use card token. Use as the `token` field in payment or order creation.
+      properties:
+        id:
+          type: string
+          description: Token unique identifier.
+          example: "ff8080814c11e237014c1ff593b57b4d"
+        first_six_digits:
+          type: string
+          example: "411111"
+        last_four_digits:
+          type: string
+          example: "4321"
+        expiration_month:
+          type: integer
+        expiration_year:
+          type: integer
+        date_created:
+          type: string
+          format: date-time
+        date_due:
+          type: string
+          format: date-time
+          description: Token expiry.
+        luhn_validation:
+          type: boolean
+        status:
+          type: string
+          enum: [active, used, expired]
+        card_id:
+          type: string
+          description: Linked saved card ID (if token was created from a saved card).
+        cardholder:
+          type: object
+          properties:
+            name:
+              type: string
+            identification:
+              $ref: "#/components/schemas/Identification"

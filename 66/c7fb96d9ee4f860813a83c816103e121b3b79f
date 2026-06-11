@@ -1,0 +1,160 @@
+verdi-flow.json
+  s_ed31a28a3813d3::t_bb952c33bfbbe8 1-22,24-26,29-93,95-97,100-104,106,110,112-116,118-134,137-159,164-173,175-177,180-214,216-221
+  s_ed31a28a3813d3::t_d293da0836604a 23,27-28,94,98-99,105,107-109,111,117,135-136,160-163,174,178-179,215
+by-product/stores/spec3.yaml
+  s_86a8f8af3d999e::t_b9fbe4f48ae1db 1-406
+.github/workflows/pr-on-push.yml
+  s_ed31a28a3813d3::t_3d26c97106fd49 13
+  s_ed31a28a3813d3::t_a16725fb1f8212 85-86
+  s_ed31a28a3813d3::t_a3b9a386ee68c8 1-12,14-84,87-151
+  s_ed31a28a3813d3::t_fbe3d75748ff19 152-162
+scripts/sync_spechub.py
+  s_ed31a28a3813d3::t_e131a7395ec76c 1-52,68-70,80,99-100,102-103,106,112,114-115,121,135-292,294-296,301-302,304,312,320-339,346,348-372,379-398,412-460,463,465,467-468,471-481,495-498
+  s_ed31a28a3813d3::t_c2a7e367423548 53-67,71-79,81-98,101,104-105,107-111,113,116-120,122-134
+  s_ed31a28a3813d3::t_5f3addf0dad7ce 373-378,399-411
+  s_ed31a28a3813d3::t_5866c084d0caef 461-462,464,466,469-470,482-494
+  s_ed31a28a3813d3::t_a7ffb2dc36a80d 293,297-300,303,305-311,313-319,340-345,347
+by-product/oauth/spec3.yaml
+  s_86a8f8af3d999e::t_b9fbe4f48ae1db 1-312
+by-product/chargebacks/spec3.yaml
+  s_86a8f8af3d999e::t_b9fbe4f48ae1db 1-299
+by-product/customers/spec3.yaml
+  s_86a8f8af3d999e::t_b9fbe4f48ae1db 1-896
+by-product/payments/spec3.yaml
+  s_86a8f8af3d999e::t_b9fbe4f48ae1db 1-1115
+apps.yaml
+  s_86a8f8af3d999e::t_f8feb7aaaed0c3 1,3-6,11,19,28,35,42,51,58,64,71,78
+  s_ed31a28a3813d3::t_1832e309463b37 2,7-10,12-18,20-27,29-34,36-41,43-50,52-57,59-63,65-70,72-77,79-81
+scripts/validate.sh
+  s_ed31a28a3813d3::t_29fe479d84aa96 1-87
+.pre-commit-config.yaml
+  s_0eeb6e38dd6fd2::t_cd624f0fbbb467 1
+verdi-flow-sdk.json
+  s_ed31a28a3813d3::t_7268b2431beaa5 1-195
+.github/workflows/sync-spechub.yml
+  s_ed31a28a3813d3::t_8b9b1da7f9ebe6 96-97,102-112,119,124-129
+  s_ed31a28a3813d3::t_8bbd7ebbe9f858 1-49,51-66,70-94,113-118,120-123,136-139,143-145
+  s_ed31a28a3813d3::t_52c39e2287ac08 130-135,140-142,146
+  s_ed31a28a3813d3::t_a5dfd3530a0efc 50
+  s_ed31a28a3813d3::t_734b198eb54f1a 67-69
+  s_ed31a28a3813d3::t_605899d32eb3ba 95,98-101
+.github/workflows/trigger-devsite-sync.yml
+  s_ed31a28a3813d3::t_af606d8ed632ee 1-2,15-25,28-32,35-52,54,57-58,78,81,104-105,122-123,125
+  s_ed31a28a3813d3::t_28ce928ad4a9b8 3,5,7-13
+  s_ed31a28a3813d3::t_b476c1321bcd60 53,55-56,59-77
+  s_ed31a28a3813d3::t_db3325d540c65d 26-27,34
+  s_ed31a28a3813d3::t_4f459ab3953690 4,6,14,33,79-80,82-103,106-121,124,126-141
+scripts/push_to_sdk.py
+  s_ed31a28a3813d3::t_e298a70e3e9936 1-183
+scripts/classify_schemas.py
+  s_ed31a28a3813d3::t_f6b72047401e93 1-228
+scripts/diff.sh
+  s_ed31a28a3813d3::t_8e6806ad2e683e 1-77
+.github/workflows/validate-spec.yml
+  s_ed31a28a3813d3::t_88fac2e88b7fc8 1-43
+meli/wip/001-openapi-pipeline/plan-completo.html
+  s_ed31a28a3813d3::t_6cc903e2699312 290,292-293,295-298,302-303,305-308,317
+  s_ed31a28a3813d3::t_328d3685115e2e 463-465
+  s_ed31a28a3813d3::t_7c939421a0f895 271
+  s_ed31a28a3813d3::t_d14c6bec502b6e 680-685
+  s_ed31a28a3813d3::t_d0d851fb316182 1-5,7-8,20,171-174,218,278,312,386,409,446,474,536,676,687,690,695-697
+  s_ed31a28a3813d3::t_244d8072798b6e 9-19,21-23,26,29-30,32,38,149,151,177,189,192,196-197,348,366,430,445,467-468,693-694
+  s_ed31a28a3813d3::t_c4c76a3ca93d0f 228
+  s_ed31a28a3813d3::t_7061f037c07d75 661,666
+  s_ed31a28a3813d3::t_c7a80eb55efc10 540-542
+  s_ed31a28a3813d3::t_dcc10cf0e4779f 322-323,327-328,330-333,337-339,341-344
+  s_ed31a28a3813d3::t_25bd50dd529e7f 416
+  s_ed31a28a3813d3::t_ba63884418dc31 488-489,495,500-502
+  s_ed31a28a3813d3::t_3a4975cdb3855b 471
+  s_ed31a28a3813d3::t_e4c499809a9769 230-231,235,240-242,246,251-253,257,261-263,267,274-277
+  s_ed31a28a3813d3::t_e5fd181622cfb9 604,606,612-613,620,627,629,635,639-642,655,669
+  s_ed31a28a3813d3::t_93706d8ff69478 265-266,268-270,272-273,282-289
+  s_ed31a28a3813d3::t_9848a5db3fe080 321,324-326,329,340
+  s_ed31a28a3813d3::t_c3da35a3915260 503-504,509,517-527,529
+  s_ed31a28a3813d3::t_b76388ea02c799 335-336,346-347
+  s_ed31a28a3813d3::t_a849d57a38bc4f 27,150,190,219,387-388,473
+  s_ed31a28a3813d3::t_39cf57aa3e53ff 226,229,233-234,238-239,243-245,247-250,254-256,258-260,264
+  s_ed31a28a3813d3::t_c4e88f20cbf9f8 490-494,496-499
+  s_ed31a28a3813d3::t_99f1ddffa6547a 334,345
+  s_ed31a28a3813d3::t_022b5a36d9a059 543,547,549-551,553,556-559,562-563,565-568,570-574,576-589
+  s_ed31a28a3813d3::t_90ec15ad099cd3 597-601,605,607-611,614-619,621-626,628,630-634,636-638,643-646,649-652,656-660,662-665,667,670-673
+  s_ed31a28a3813d3::t_01336a80566c64 214-217,222,227,232,236-237
+  s_ed31a28a3813d3::t_864861c0198d05 6,24-25,28,31,33-37,39-148,152-170,175-176,178-188,191,193-195,198-206,209-213,220-221,223-225,280-281,313-316,318-320,349-365,367-385,389-404,408,410-415,417-429,431-444,447-449,454-455,459-461,466,469,475-480,482,486-487,528,530-535,537-539,544-546,548,552,554-555,560-561,564,569,575,590-596,602-603,668,674-675,677-679,686,688-689,691-692
+  s_ed31a28a3813d3::t_957aaa7f847259 451-453,456-458,470,472
+  s_ed31a28a3813d3::t_bda3f82d2a4bf6 505-508,510-516
+  s_ed31a28a3813d3::t_c6bee0a44f2922 450,462
+  s_ed31a28a3813d3::t_dedb518a795171 291,294,299-301,304,309-311
+  s_ed31a28a3813d3::t_ce4fff46041657 647-648,653-654
+  s_ed31a28a3813d3::t_9d2bbf2e16f0d4 207-208,279
+  s_ed31a28a3813d3::t_d6210d2d53e2b8 405-407
+  s_ed31a28a3813d3::t_27882faa8dacc6 481,483-485
+by-product/merchant_orders/spec3.yaml
+  s_86a8f8af3d999e::t_b9fbe4f48ae1db 1-515
+by-product/pos/spec3.yaml
+  s_86a8f8af3d999e::t_b9fbe4f48ae1db 1-919
+scripts/push_to_devsite.py
+  s_ed31a28a3813d3::t_14d7b45ce6d1d1 373-374
+  s_86a8f8af3d999e::t_17cabf2c4c8b6d 390
+  s_ed31a28a3813d3::t_52f6f48a497cb7 1-20,25-44,47-347,353,355-358,364-372,375-389,391-446
+  s_ed31a28a3813d3::t_48f941cdd3c6ca 348-352,354,359-363
+  s_ed31a28a3813d3::t_bbb35b39cab5ac 45-46
+  s_ed31a28a3813d3::t_325ae725e8887d 21-24
+requirements.txt
+  s_ed31a28a3813d3::t_414eca2a5306fe 1-6
+.github/workflows/trigger-sdk-sync.yml
+  s_ed31a28a3813d3::t_23dc95ec5992f3 89-95
+  s_ed31a28a3813d3::t_d9eb7664eb4f74 51-58,62
+  s_ed31a28a3813d3::t_f3207fd5cbbc35 1,6-13,25,63,66,96-107,109-110,112-117,119-140,148
+  s_ed31a28a3813d3::t_d33553aa6a30a7 2-5,14-24,26-50,59-61,64-65,67-88,108,111,118,141-147
+scripts/bundle.py
+  s_ed31a28a3813d3::t_76eca94cd96143 304-350
+  s_86a8f8af3d999e::t_772eae2b6ec9d5 421-504
+  s_ed31a28a3813d3::t_f9033b7388ae76 512-513,516,519-520,522-525,528-531,536,538-547,549,552,554-566,568,570-577,579
+  s_86a8f8af3d999e::t_c0b9e06988a49b 514-515,526-527,550-551,553,567,569,580-596
+  s_ed31a28a3813d3::t_0c1fa324899191 3,5-8,10-13,15-19
+  s_ed31a28a3813d3::t_b0e8d3813b82de 1-2,4,9,14,20-36,44-303,351-420,505-511,517-518,521,532-535,537,548,578,597-600
+  s_86a8f8af3d999e::t_c68e550e3f1ae4 37-43
+by-product/preferences/spec3.yaml
+  s_86a8f8af3d999e::t_b9fbe4f48ae1db 1-663
+by-product/subscriptions/spec3.yaml
+  s_86a8f8af3d999e::t_b9fbe4f48ae1db 1-856
+by-product/payment_methods/spec3.yaml
+  s_86a8f8af3d999e::t_b9fbe4f48ae1db 1-368
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.5.6",
+  "base_commit_sha": "66c7fb96d9ee4f860813a83c816103e121b3b79f",
+  "prompts": {},
+  "humans": {
+    "h_2fdb5dbaf86600": {
+      "author": "lpinillacuev <lina.pinillacuevas@mercadolibre.com.co>"
+    }
+  },
+  "sessions": {
+    "s_0eeb6e38dd6fd2": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "6ae444bd-03c0-4ebc-9417-5c2278c428ab",
+        "model": "claude-sonnet-4-6"
+      },
+      "human_author": "lpinillacuev <lina.pinillacuevas@mercadolibre.com.co>"
+    },
+    "s_86a8f8af3d999e": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "e8bc684c-b13d-495e-8e0a-2b4b95cf87d9",
+        "model": "claude-sonnet-4-6"
+      },
+      "human_author": "lpinillacuev <lina.pinillacuevas@mercadolibre.com.co>"
+    },
+    "s_ed31a28a3813d3": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "02d2ee7b-c0a3-4636-a482-dd11e018f8de",
+        "model": "claude-sonnet-4-6"
+      },
+      "human_author": "lpinillacuev <lina.pinillacuevas@mercadolibre.com.co>"
+    }
+  }
+}

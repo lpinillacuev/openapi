@@ -6130,6 +6130,781 @@ paths:
           $ref: '#/components/responses/Unauthorized'
         '500':
           description: Internal server error
+  /customers/{customerid}:
+    get:
+      description: Get customer by Id
+      tags:
+        - Customers
+      parameters:
+        - in: path
+          name: customerid
+          schema:
+            type: string
+          required: true
+          description: Customer ID
+        - name: caller.siteId
+          in: query
+          schema:
+            type: string
+          example: MLC
+        - name: caller.id
+          in: query
+          schema:
+            type: string
+          example: '1'
+        - name: caller.scopes
+          in: query
+          schema:
+            type: string
+          example: payments
+        - name: client.id
+          in: query
+          schema:
+            type: string
+          example: '111'
+        - name: access_token
+          description: Use only in Production
+          in: query
+          schema:
+            type: string
+      responses:
+        '200':
+          description: success response
+        '401':
+          description: access denied
+        '404':
+          description: customer not found
+    put:
+      description: Update customer by Id
+      tags:
+        - Customers
+      parameters:
+        - in: path
+          name: customerid
+          schema:
+            type: string
+          required: true
+          description: Customer ID
+        - name: caller.siteId
+          in: query
+          schema:
+            type: string
+          example: MLC
+        - name: caller.id
+          in: query
+          schema:
+            type: string
+          example: '1'
+        - name: caller.scopes
+          in: query
+          schema:
+            type: string
+          example: payments
+        - name: client.id
+          in: query
+          schema:
+            type: string
+          example: '111'
+        - name: access_token
+          description: Use only in Production
+          in: query
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                first_name:
+                  type: string
+            examples:
+              '1':
+                value: |-
+                  {
+                    "first_name": "Jose"
+                  }
+      responses:
+        '200':
+          description: success response
+        '400':
+          description: bad request
+        '401':
+          description: access denied
+        '404':
+          description: customer not found
+    delete:
+      description: Delete customer by Id
+      tags:
+        - Customers
+      parameters:
+        - in: path
+          name: customerid
+          schema:
+            type: string
+          required: true
+          description: Customer ID
+        - name: caller.siteId
+          in: query
+          schema:
+            type: string
+          example: MLC
+        - name: caller.id
+          in: query
+          schema:
+            type: string
+          example: '1'
+        - name: caller.scopes
+          in: query
+          schema:
+            type: string
+          example: payments
+        - name: client.id
+          in: query
+          schema:
+            type: string
+          example: '111'
+        - name: access_token
+          description: Use only in Production
+          in: query
+          schema:
+            type: string
+      responses:
+        '200':
+          description: success response
+        '401':
+          description: access denied
+        '404':
+          description: customer not found
+  /customers:
+    post:
+      description: Create customer
+      tags:
+        - Customers
+      parameters:
+        - name: caller.siteId
+          in: query
+          schema:
+            type: string
+          example: MLC
+        - name: caller.id
+          in: query
+          schema:
+            type: string
+          example: '1'
+        - name: caller.scopes
+          in: query
+          schema:
+            type: string
+          example: payments
+        - name: client.id
+          in: query
+          schema:
+            type: string
+          example: '111'
+        - name: access_token
+          description: Use only in Production
+          in: query
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                identification:
+                  type: object
+                  properties:
+                    number:
+                      type: string
+                    type:
+                      type: string
+                address:
+                  type: object
+                  properties:
+                    zip_code:
+                      type: string
+                    street_name:
+                      type: string
+                phone:
+                  type: object
+                  properties:
+                    number:
+                      type: string
+                    area_code:
+                      type: string
+                last_name:
+                  type: string
+                description:
+                  type: string
+                first_name:
+                  type: string
+                email:
+                  type: string
+            examples:
+              '1':
+                value: |-
+                  {
+                          "email": "armando@mailmock.com",
+                          "first_name": "Armando",
+                          "last_name": "Zerpa",
+                          "phone": {
+                              "area_code": "023",
+                              "number": "12345678"
+                          },
+                          "identification": {
+                              "type": "CE",
+                              "number": "23423"
+                          },
+                          "address": {
+                              "zip_code": "SG1 2AX",
+                              "street_name": "Old Knebworth Ln"
+                          },
+                          "description": "Lorem Ipsum"
+                      }
+      responses:
+        '201':
+          description: customer created
+        '400':
+          description: bad request
+        '401':
+          description: access denied
+  /customers/{customerid}/cards/{cardid}:
+    get:
+      description: Get customer card by Id
+      tags:
+        - Cards
+      parameters:
+        - in: path
+          name: customerid
+          schema:
+            type: string
+          required: true
+          description: Customer ID
+        - in: path
+          name: cardid
+          schema:
+            type: string
+          required: true
+          description: Card ID
+        - name: caller.siteId
+          in: query
+          schema:
+            type: string
+          example: MLC
+        - name: caller.id
+          in: query
+          schema:
+            type: string
+          example: '1'
+        - name: caller.scopes
+          in: query
+          schema:
+            type: string
+          example: payments
+        - name: client.id
+          in: query
+          schema:
+            type: string
+          example: '111'
+        - name: access_token
+          description: Use only in Production
+          in: query
+          schema:
+            type: string
+      responses:
+        '200':
+          description: success response
+        '401':
+          description: access denied
+        '404':
+          description: card not found
+    put:
+      description: Update customer card by Id
+      tags:
+        - Cards
+      parameters:
+        - in: path
+          name: customerid
+          schema:
+            type: string
+          required: true
+          description: Customer ID
+        - in: path
+          name: cardid
+          schema:
+            type: string
+          required: true
+          description: Card ID
+        - name: caller.siteId
+          in: query
+          schema:
+            type: string
+          example: MLC
+        - name: caller.id
+          in: query
+          schema:
+            type: string
+          example: '1'
+        - name: caller.scopes
+          in: query
+          schema:
+            type: string
+          example: payments
+        - name: client.id
+          in: query
+          schema:
+            type: string
+          example: '111'
+        - name: access_token
+          description: Use only in Production
+          in: query
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                first_name:
+                  type: string
+            examples:
+              '1':
+                value: |-
+                  {
+                    "first_name": "Jose"
+                  }
+      responses:
+        '200':
+          description: success response
+        '400':
+          description: bad request
+        '401':
+          description: access denied
+        '404':
+          description: customer not found
+    delete:
+      description: Delete customer card by Id
+      tags:
+        - Cards
+      parameters:
+        - in: path
+          name: customerid
+          schema:
+            type: string
+          required: true
+          description: Customer ID
+        - in: path
+          name: cardid
+          schema:
+            type: string
+          required: true
+          description: Card ID
+        - name: caller.siteId
+          in: query
+          schema:
+            type: string
+          example: MLC
+        - name: caller.id
+          in: query
+          schema:
+            type: string
+          example: '1'
+        - name: caller.scopes
+          in: query
+          schema:
+            type: string
+          example: payments
+        - name: client.id
+          in: query
+          schema:
+            type: string
+          example: '111'
+        - name: access_token
+          description: Use only in Production
+          in: query
+          schema:
+            type: string
+      responses:
+        '200':
+          description: success response
+        '401':
+          description: access denied
+        '404':
+          description: customer not found
+  /customers/{customerid}/cards:
+    post:
+      description: Create customer card
+      tags:
+        - Cards
+      parameters:
+        - in: path
+          name: customerid
+          schema:
+            type: string
+          required: true
+          description: Customer ID
+        - name: caller.siteId
+          in: query
+          schema:
+            type: string
+          example: MLC
+        - name: caller.id
+          in: query
+          schema:
+            type: string
+          example: '1'
+        - name: caller.scopes
+          in: query
+          schema:
+            type: string
+          example: payments
+        - name: client.id
+          in: query
+          schema:
+            type: string
+          example: '111'
+        - name: access_token
+          description: Use only in Production
+          in: query
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                token:
+                  type: string
+            examples:
+              '1':
+                value: |-
+                  {
+                    "token": "card_token_visa"
+                  }
+      responses:
+        '201':
+          description: card created
+        '400':
+          description: bad request
+        '401':
+          description: access denied
+    get:
+      description: Get customer cards list
+      tags:
+        - Cards
+      parameters:
+        - in: path
+          name: customerid
+          schema:
+            type: string
+          required: true
+          description: Customer ID
+        - name: caller.siteId
+          in: query
+          schema:
+            type: string
+          example: MLC
+        - name: caller.id
+          in: query
+          schema:
+            type: string
+          example: '1'
+        - name: caller.scopes
+          in: query
+          schema:
+            type: string
+          example: payments
+        - name: client.id
+          in: query
+          schema:
+            type: string
+          example: '111'
+        - name: access_token
+          description: Use only in Production
+          in: query
+          schema:
+            type: string
+      responses:
+        '200':
+          description: success response
+        '401':
+          description: access denied
+        '404':
+          description: card not found
+  /customers/{customerid}/addresses/{addressid}:
+    get:
+      description: Get customer address by Id
+      tags:
+        - Addresses
+      parameters:
+        - in: path
+          name: customerid
+          schema:
+            type: string
+          required: true
+          description: Customer ID
+        - in: path
+          name: addressid
+          schema:
+            type: string
+          required: true
+          description: Address ID
+        - name: caller.id
+          in: query
+          schema:
+            type: string
+          example: '1'
+        - name: caller.scopes
+          in: query
+          schema:
+            type: string
+          example: payments
+        - name: client.id
+          in: query
+          schema:
+            type: string
+          example: '111'
+        - name: access_token
+          description: Use only in Production
+          in: query
+          schema:
+            type: string
+      responses:
+        '200':
+          description: success response
+        '401':
+          description: access denied
+        '404':
+          description: card not found
+    put:
+      description: Update customer address by Id
+      tags:
+        - Addresses
+      parameters:
+        - in: path
+          name: customerid
+          schema:
+            type: string
+          required: true
+          description: Customer ID
+        - in: path
+          name: addressid
+          schema:
+            type: string
+          required: true
+          description: Address ID
+        - name: caller.siteId
+          in: query
+          schema:
+            type: string
+          example: MLC
+        - name: caller.id
+          in: query
+          schema:
+            type: string
+          example: '1'
+        - name: caller.scopes
+          in: query
+          schema:
+            type: string
+          example: payments
+        - name: client.id
+          in: query
+          schema:
+            type: string
+          example: '111'
+        - name: access_token
+          description: Use only in Production
+          in: query
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                first_name:
+                  type: string
+            examples:
+              '1':
+                value: |-
+                  {
+                    "first_name": "Jose"
+                  }
+      responses:
+        '200':
+          description: success response
+        '400':
+          description: bad request
+        '401':
+          description: access denied
+        '404':
+          description: customer not found
+    delete:
+      description: Delete customer address by Id
+      tags:
+        - Addresses
+      parameters:
+        - in: path
+          name: customerid
+          schema:
+            type: string
+          required: true
+          description: Customer ID
+        - in: path
+          name: addressid
+          schema:
+            type: string
+          required: true
+          description: Address ID
+        - name: caller.id
+          in: query
+          schema:
+            type: string
+          example: '1'
+        - name: caller.scopes
+          in: query
+          schema:
+            type: string
+          example: payments
+        - name: client.id
+          in: query
+          schema:
+            type: string
+          example: '111'
+        - name: access_token
+          description: Use only in Production
+          in: query
+          schema:
+            type: string
+      responses:
+        '200':
+          description: success response
+        '401':
+          description: access denied
+        '404':
+          description: customer not found
+  /customers/{customerid}/addresses:
+    post:
+      description: Create customer address
+      tags:
+        - Addresses
+      parameters:
+        - in: path
+          name: customerid
+          schema:
+            type: string
+          required: true
+          description: Customer ID
+        - name: caller.siteId
+          in: query
+          schema:
+            type: string
+          example: MLA
+        - name: caller.id
+          in: query
+          schema:
+            type: string
+          example: '1'
+        - name: caller.scopes
+          in: query
+          schema:
+            type: string
+          example: payments
+        - name: client.id
+          in: query
+          schema:
+            type: string
+          example: '111'
+        - name: access_token
+          description: Use only in Production
+          in: query
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                street_name:
+                  type: string
+                phone:
+                  type: string
+                name:
+                  type: string
+                zip_code:
+                  type: string
+                city:
+                  type: object
+                  properties:
+                    id:
+                      type: string
+                    name:
+                      type: string
+            examples:
+              '1':
+                value: |-
+                  {
+                      "street_name": "first street",
+                      "phone": "3121154",
+                      "name": "Address 123",
+                      "zip_code": "5700",
+                      "city": {
+                          "id": null,
+                          "name": "Bogota"
+                      }
+                  }
+      responses:
+        '201':
+          description: address created
+        '400':
+          description: bad request
+        '401':
+          description: access denied
+    get:
+      description: Get customer addresses list
+      tags:
+        - Addresses
+      parameters:
+        - in: path
+          name: customerid
+          schema:
+            type: string
+          required: true
+          description: Customer ID
+        - name: caller.id
+          in: query
+          schema:
+            type: string
+          example: '1'
+        - name: caller.scopes
+          in: query
+          schema:
+            type: string
+          example: payments
+        - name: client.id
+          in: query
+          schema:
+            type: string
+          example: '111'
+        - name: access_token
+          description: Use only in Production
+          in: query
+          schema:
+            type: string
+      responses:
+        '200':
+          description: success response
+        '401':
+          description: access denied
+        '404':
+          description: card not found
 components:
   securitySchemes:
     bearerAuth:

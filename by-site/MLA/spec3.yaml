@@ -6922,6 +6922,382 @@ paths:
           description: access denied
         '404':
           description: card not found
+  /payments:
+    post:
+      summary: Process a payment
+      description: >-
+        Initiates a payment transaction for a specified amount using the provided payment method. This endpoint handles
+        the complete payment flow including validation, authorization, and processing.
+      tags:
+        - payments
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PaymentRequest'
+      responses:
+        '201':
+          description: Payment processed successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaymentResponse'
+        '400':
+          description: Invalid payment request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '401':
+          description: Unauthorized access
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '402':
+          description: Payment required or insufficient funds
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    get:
+      summary: List payments
+      description: >-
+        Retrieves a paginated list of payments with optional filtering by status, date range, merchant, or customer.
+        Supports sorting by creation date, amount, or status.
+      tags:
+        - payments
+      parameters:
+        - name: limit
+          schema:
+            type: integer
+            minimum: 1
+            maximum: 100
+            default: 20
+          description: Number of payments to return per page
+          in: query
+          required: false
+        - name: status
+          schema:
+            type: string
+            enum:
+              - pending
+              - processing
+              - completed
+              - failed
+              - cancelled
+          description: Filter payments by status
+          in: query
+          required: false
+        - name: sort_by
+          schema:
+            type: string
+            enum:
+              - created_at
+              - amount
+              - status
+            default: created_at
+          description: Field to sort payments by
+          in: query
+          required: false
+        - name: merchant_id
+          schema:
+            type: string
+            format: uuid
+          description: Filter payments by merchant ID
+          in: query
+          required: false
+        - name: end_date
+          schema:
+            type: string
+            format: date
+          description: Filter payments created before this date
+          in: query
+          required: false
+        - name: offset
+          schema:
+            type: integer
+            minimum: 0
+            default: 0
+          description: Number of payments to skip
+          in: query
+          required: false
+        - name: sort_order
+          schema:
+            type: string
+            enum:
+              - asc
+              - desc
+            default: desc
+          description: Sort order for payments
+          in: query
+          required: false
+        - name: customer_id
+          schema:
+            type: string
+            format: uuid
+          description: Filter payments by customer ID
+          in: query
+          required: false
+        - name: start_date
+          schema:
+            type: string
+            format: date
+          description: Filter payments created after this date
+          in: query
+          required: false
+      responses:
+        '200':
+          description: Payments retrieved successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaymentListResponse'
+        '400':
+          description: Invalid query parameters
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '401':
+          description: Unauthorized access
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /payments/{payment_id}:
+    get:
+      summary: Get payment details
+      description: >-
+        Retrieves detailed information about a specific payment transaction including its current status, amount, fees,
+        and processing history.
+      tags:
+        - payments
+      parameters:
+        - name: payment_id
+          in: path
+          required: true
+          description: Unique payment identifier
+          schema:
+            type: string
+            format: uuid
+            example: 987fcdeb-51a2-43d1-9c15-246531579012
+      responses:
+        '200':
+          description: Payment details retrieved successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaymentResponse'
+        '401':
+          description: Unauthorized access
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '404':
+          description: Payment not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /payments/{payment_id}/cancel:
+    post:
+      summary: Cancel a payment
+      description: >-
+        Cancels a pending or processing payment. Once cancelled, the payment cannot be recovered. Only payments in
+        'pending' or 'processing' status can be cancelled.
+      tags:
+        - payments
+      parameters:
+        - name: payment_id
+          schema:
+            type: string
+            format: uuid
+            example: 987fcdeb-51a2-43d1-9c15-246531579012
+          description: Unique payment identifier
+          in: path
+          required: true
+      requestBody:
+        required: false
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                reason:
+                  type: string
+                  description: Reason for cancellation
+                  maxLength: 500
+                  example: Customer requested cancellation
+      responses:
+        '200':
+          description: Payment cancelled successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaymentResponse'
+        '401':
+          description: Unauthorized access
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '404':
+          description: Payment not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '409':
+          description: Payment cannot be cancelled in current status
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /payments/{payment_id}/refunds:
+    post:
+      summary: Process a refund
+      description: >-
+        Processes a full or partial refund for a completed payment. The refund amount cannot exceed the original payment
+        amount minus any previously processed refunds.
+      tags:
+        - refunds
+      parameters:
+        - name: payment_id
+          schema:
+            type: string
+            format: uuid
+            example: 987fcdeb-51a2-43d1-9c15-246531579012
+          description: Unique payment identifier
+          in: path
+          required: true
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RefundRequest'
+      responses:
+        '201':
+          description: Refund processed successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RefundResponse'
+        '400':
+          description: Invalid refund request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '401':
+          description: Unauthorized access
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '404':
+          description: Payment not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '409':
+          description: Payment cannot be refunded in current status
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    get:
+      summary: List payment refunds
+      description: >-
+        Retrieves a paginated list of all refunds processed for a specific payment, including partial and full refunds
+        with their current status and processing details.
+      tags:
+        - refunds
+      parameters:
+        - name: payment_id
+          schema:
+            type: string
+            format: uuid
+            example: 987fcdeb-51a2-43d1-9c15-246531579012
+          description: Unique payment identifier
+          in: path
+          required: true
+        - name: limit
+          schema:
+            maximum: 100
+            default: 20
+            type: integer
+            minimum: 1
+          description: Number of refunds to return per page
+          in: query
+          required: false
+        - name: offset
+          schema:
+            type: integer
+            minimum: 0
+            default: 0
+          description: Number of refunds to skip
+          in: query
+          required: false
+      responses:
+        '200':
+          description: Payment refunds retrieved successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RefundListResponse'
+        '401':
+          description: Unauthorized access
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '404':
+          description: Payment not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
 components:
   securitySchemes:
     bearerAuth:

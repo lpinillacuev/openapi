@@ -11,280 +11,577 @@ info:
     url: https://www.apache.org/licenses/LICENSE-2.0
   version: 1.0.0
 servers:
-- url: https://api.mercadopago.com
-  description: Production
+  - url: https://api.mercadopago.com
+    description: Production
 security:
-- bearerAuth: []
+  - bearerAuth: []
 tags:
-- name: OAuth
-  description: Authorization flows for marketplace on-behalf-of and Wallet Connect
-  x-mp-sites: &id001
-  - MLA
-  - MLB
-  - MLM
-  - MLC
-  - MCO
-  - MPE
-  - MLU
-- name: Preferences
-  description: Checkout Pro — redirect-based hosted checkout via Preferences
-  x-mp-sites: *id001
-- name: Payments
-  description: Create and manage payment transactions
-  x-mp-sites: *id001
-- name: Orders
-  description: Checkout API via Orders — recommended for new custom checkout integrations
-  x-mp-sites: *id001
-- name: Merchant Orders
-  description: Order containers that group payments for a single purchase
-  x-mp-sites: *id001
-- name: Customers
-  description: Customer profiles and stored payment methods
-  x-mp-sites: *id001
-- name: Cards
-  description: Saved cards and card tokenization
-  x-mp-sites: *id001
-- name: Addresses
-  description: Customer shipping and billing addresses
-  x-mp-sites: *id001
-- name: Payment Methods
-  description: Available payment methods and installment plans per country
-  x-mp-sites: *id001
-- name: Identification Types
-  description: Country-specific identity document type catalog
-  x-mp-sites: *id001
-- name: Cancellations & Refunds
-  description: Cancel payments and create full or partial refunds
-  x-mp-sites: *id001
-- name: Chargebacks
-  description: Chargeback dispute management
-  x-mp-sites: *id001
-- name: Subscriptions
-  description: Recurring payment subscriptions
-  x-mp-sites: *id001
-- name: Plans
-  description: Subscription billing plans
-  x-mp-sites: *id001
-- name: Invoices
-  description: Subscription billing invoices
-  x-mp-sites: *id001
-- name: Wallet Connect
-  description: OAuth-based wallet agreement flows for Wallet Connect
-  x-mp-sites:
-  - MLA
-  - MLB
-  - MLM
-- name: Stores
-  description: Physical store locations
-  x-mp-sites: *id001
-- name: POS
-  description: Point of sale device management
-  x-mp-sites: *id001
-- name: Terminals
-  description: Point hardware terminal management and print actions
-  x-mp-sites:
-  - MLA
-  - MLB
-  - MLC
-  - MLM
-- name: Point Deprecated
-  description: Deprecated Point integration APIs — use Terminals and Point Orders instead
-  x-mp-sites:
-  - MLA
-  - MLB
-  - MLM
-- name: QR Orders
-  description: In-store payment orders associated with QR codes
-  x-mp-sites:
-  - MLA
-  - MLB
-  - MLC
-  - MCO
-  - MPE
-  - MLU
-- name: QR Integrator
-  description: Integrator configuration for QR in-store
-  x-mp-sites: *id001
-- name: QR Deprecated
-  description: Deprecated in-store QR order endpoints (V1, V2, Dynamic QR)
-  x-mp-sites: *id001
-- name: Claims
-  description: Post-sale claim details and search
-  x-mp-sites: *id001
-- name: Claim Messages
-  description: Messages and file attachments within a claim
-  x-mp-sites: *id001
-- name: Claim Resolutions
-  description: Mediation requests and expected resolutions
-  x-mp-sites: *id001
-- name: Claim Shipping
-  description: Upload shipping evidence to support a claim
-  x-mp-sites: *id001
-- name: Releases Report
-  description: Generate and schedule releases (settlement) reports
-  x-mp-sites: *id001
-- name: Settlements Report
-  description: Generate and schedule all-transactions reports
-  x-mp-sites: *id001
-- name: Payouts
-  description: Bank transfer and Pix payouts
-  x-mp-sites:
-  - MLA
-  - MLB
-  - MLM
-  - MLC
+  - name: OAuth
+    description: Authorization flows for marketplace on-behalf-of and Wallet Connect
+    x-mp-sites:
+      - MLA
+      - MLB
+      - MLM
+      - MLC
+      - MCO
+      - MPE
+      - MLU
+  - name: Preferences
+    description: Checkout Pro — redirect-based hosted checkout via Preferences
+    x-mp-sites:
+      - MLA
+      - MLB
+      - MLM
+      - MLC
+      - MCO
+      - MPE
+      - MLU
+  - name: Payments
+    description: Create and manage payment transactions
+    x-mp-sites:
+      - MLA
+      - MLB
+      - MLM
+      - MLC
+      - MCO
+      - MPE
+      - MLU
+  - name: Orders
+    description: Checkout API via Orders — recommended for new custom checkout integrations
+    x-mp-sites:
+      - MLA
+      - MLB
+      - MLM
+      - MLC
+      - MCO
+      - MPE
+      - MLU
+  - name: Merchant Orders
+    description: Order containers that group payments for a single purchase
+    x-mp-sites:
+      - MLA
+      - MLB
+      - MLM
+      - MLC
+      - MCO
+      - MPE
+      - MLU
+  - name: Customers
+    description: Customer profiles and stored payment methods
+    x-mp-sites:
+      - MLA
+      - MLB
+      - MLM
+      - MLC
+      - MCO
+      - MPE
+      - MLU
+  - name: Cards
+    description: Saved cards and card tokenization
+    x-mp-sites:
+      - MLA
+      - MLB
+      - MLM
+      - MLC
+      - MCO
+      - MPE
+      - MLU
+  - name: Addresses
+    description: Customer shipping and billing addresses
+    x-mp-sites:
+      - MLA
+      - MLB
+      - MLM
+      - MLC
+      - MCO
+      - MPE
+      - MLU
+  - name: Payment Methods
+    description: Available payment methods and installment plans per country
+    x-mp-sites:
+      - MLA
+      - MLB
+      - MLM
+      - MLC
+      - MCO
+      - MPE
+      - MLU
+  - name: Identification Types
+    description: Country-specific identity document type catalog
+    x-mp-sites:
+      - MLA
+      - MLB
+      - MLM
+      - MLC
+      - MCO
+      - MPE
+      - MLU
+  - name: Cancellations & Refunds
+    description: Cancel payments and create full or partial refunds
+    x-mp-sites:
+      - MLA
+      - MLB
+      - MLM
+      - MLC
+      - MCO
+      - MPE
+      - MLU
+  - name: Chargebacks
+    description: Chargeback dispute management
+    x-mp-sites:
+      - MLA
+      - MLB
+      - MLM
+      - MLC
+      - MCO
+      - MPE
+      - MLU
+  - name: Subscriptions
+    description: Recurring payment subscriptions
+    x-mp-sites:
+      - MLA
+      - MLB
+      - MLM
+      - MLC
+      - MCO
+      - MPE
+      - MLU
+  - name: Plans
+    description: Subscription billing plans
+    x-mp-sites:
+      - MLA
+      - MLB
+      - MLM
+      - MLC
+      - MCO
+      - MPE
+      - MLU
+  - name: Invoices
+    description: Subscription billing invoices
+    x-mp-sites:
+      - MLA
+      - MLB
+      - MLM
+      - MLC
+      - MCO
+      - MPE
+      - MLU
+  - name: Wallet Connect
+    description: OAuth-based wallet agreement flows for Wallet Connect
+    x-mp-sites:
+      - MLA
+      - MLB
+      - MLM
+  - name: Stores
+    description: Physical store locations
+    x-mp-sites:
+      - MLA
+      - MLB
+      - MLM
+      - MLC
+      - MCO
+      - MPE
+      - MLU
+  - name: POS
+    description: Point of sale device management
+    x-mp-sites:
+      - MLA
+      - MLB
+      - MLM
+      - MLC
+      - MCO
+      - MPE
+      - MLU
+  - name: Terminals
+    description: Point hardware terminal management and print actions
+    x-mp-sites:
+      - MLA
+      - MLB
+      - MLC
+      - MLM
+  - name: Point Deprecated
+    description: Deprecated Point integration APIs — use Terminals and Point Orders instead
+    x-mp-sites:
+      - MLA
+      - MLB
+      - MLM
+  - name: QR Orders
+    description: In-store payment orders associated with QR codes
+    x-mp-sites:
+      - MLA
+      - MLB
+      - MLC
+      - MCO
+      - MPE
+      - MLU
+  - name: QR Integrator
+    description: Integrator configuration for QR in-store
+    x-mp-sites:
+      - MLA
+      - MLB
+      - MLM
+      - MLC
+      - MCO
+      - MPE
+      - MLU
+  - name: QR Deprecated
+    description: Deprecated in-store QR order endpoints (V1, V2, Dynamic QR)
+    x-mp-sites:
+      - MLA
+      - MLB
+      - MLM
+      - MLC
+      - MCO
+      - MPE
+      - MLU
+  - name: Claims
+    description: Post-sale claim details and search
+    x-mp-sites:
+      - MLA
+      - MLB
+      - MLM
+      - MLC
+      - MCO
+      - MPE
+      - MLU
+  - name: Claim Messages
+    description: Messages and file attachments within a claim
+    x-mp-sites:
+      - MLA
+      - MLB
+      - MLM
+      - MLC
+      - MCO
+      - MPE
+      - MLU
+  - name: Claim Resolutions
+    description: Mediation requests and expected resolutions
+    x-mp-sites:
+      - MLA
+      - MLB
+      - MLM
+      - MLC
+      - MCO
+      - MPE
+      - MLU
+  - name: Claim Shipping
+    description: Upload shipping evidence to support a claim
+    x-mp-sites:
+      - MLA
+      - MLB
+      - MLM
+      - MLC
+      - MCO
+      - MPE
+      - MLU
+  - name: Releases Report
+    description: Generate and schedule releases (settlement) reports
+    x-mp-sites:
+      - MLA
+      - MLB
+      - MLM
+      - MLC
+      - MCO
+      - MPE
+      - MLU
+  - name: Settlements Report
+    description: Generate and schedule all-transactions reports
+    x-mp-sites:
+      - MLA
+      - MLB
+      - MLM
+      - MLC
+      - MCO
+      - MPE
+      - MLU
+  - name: Payouts
+    description: Bank transfer and Pix payouts
+    x-mp-sites:
+      - MLA
+      - MLB
+      - MLM
+      - MLC
 paths:
   /checkout/preferences:
     post:
-      operationId: createPreference
-      summary: Create a preference
-      description: "Creates a Checkout Pro preference. The response contains `init_point` (production) and \n**Webhook events\
-        \ triggered:** payment, merchant_order"
       tags:
-      - Preferences
-      security:
-      - bearerAuth: []
+        - Preference
+      summary: Create a Preference
+      parameters:
+        - name: callerID
+          in: query
+          description: Not necessary if Access Token is passed
+          required: false
+          style: form
+          explode: true
+          schema:
+            type: integer
+        - name: AccessToken
+          in: query
+          description: Not necessary if Caller ID is passed
+          required: false
+          style: form
+          explode: true
+          schema:
+            type: string
       requestBody:
-        required: true
+        description: Preference
         content:
-          application/json:
+          '*/*':
             schema:
-              $ref: '#/components/schemas/PreferenceRequest'
-            examples:
-              simple:
-                summary: Simple one-item preference
-                value:
-                  items:
-                  - title: Premium Plan
-                    quantity: 1
-                    unit_price: 99.9
-                  payer:
-                    email: customer@example.com
-                  back_urls:
-                    success: https://mystore.com/success
-                    failure: https://mystore.com/failure
-                    pending: https://mystore.com/pending
-                  auto_return: approved
+              $ref: '#/components/schemas/http.Preference'
+        required: true
       responses:
         '201':
-          description: Preference created
-          content: &id002
+          description: Created
+          content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Preference'
+                $ref: '#/components/schemas/http.Preference'
         '400':
-          $ref: '#/components/responses/BadRequest'
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/github_com_melisource_fury_mpcs-preferences-api_internal_domain_model.PrefError'
         '401':
-          $ref: '#/components/responses/Unauthorized'
-        '200':
-          description: Preference created
-          content: *id002
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/github_com_melisource_fury_mpcs-preferences-api_internal_domain_model.PrefError'
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/github_com_melisource_fury_mpcs-preferences-api_internal_domain_model.PrefError'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/github_com_melisource_fury_mpcs-preferences-api_internal_domain_model.PrefError'
+      x-codegen-request-body-name: Pref
   /checkout/preferences/{id}:
     get:
-      operationId: getPreference
-      summary: Get preference by ID
       tags:
-      - Preferences
-      security:
-      - bearerAuth: []
+        - Preference
+      summary: Get a Preference
+      description: View all payment information for a product or service with the desired preference ID.
       parameters:
-      - name: id
-        in: path
-        required: true
-        schema:
-          type: string
+        - name: id
+          in: path
+          description: Preference ID
+          required: true
+          style: simple
+          explode: false
+          schema:
+            type: string
+        - name: callerID
+          in: query
+          description: Not necessary if Access Token is passed
+          required: false
+          style: form
+          explode: true
+          schema:
+            type: integer
+        - name: AccessToken
+          in: query
+          description: Not necessary if Caller ID is passed
+          required: false
+          style: form
+          explode: true
+          schema:
+            type: string
       responses:
         '200':
-          description: Preference found
+          description: OK
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Preference'
+                $ref: '#/components/schemas/github_com_melisource_fury_mpcs-preferences-api_internal_domain_model.Preference'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/github_com_melisource_fury_mpcs-preferences-api_internal_domain_model.PrefError'
         '404':
-          $ref: '#/components/responses/NotFound'
-        '400':
-          $ref: '#/components/responses/BadRequest'
-    put:
-      operationId: updatePreference
-      summary: Update a preference
-      tags:
-      - Preferences
-      security:
-      - bearerAuth: []
-      parameters:
-      - name: id
-        in: path
-        required: true
-        schema:
-          type: string
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/PreferenceRequest'
-      responses:
-        '200':
-          description: Preference updated
+          description: Not Found
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Preference'
+                $ref: '#/components/schemas/github_com_melisource_fury_mpcs-preferences-api_internal_domain_model.PrefError'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/github_com_melisource_fury_mpcs-preferences-api_internal_domain_model.PrefError'
+    put:
+      tags:
+        - Preference
+      summary: Update a Preference
+      description: >-
+        Update the details of a payment preference. Enter the preference ID and submit the information you wish to
+        update.
+      parameters:
+        - name: id
+          in: path
+          description: Preference ID
+          required: true
+          style: simple
+          explode: false
+          schema:
+            type: integer
+        - name: callerID
+          in: query
+          description: Not necessary if Access Token is passed
+          required: false
+          style: form
+          explode: true
+          schema:
+            type: integer
+        - name: AccessToken
+          in: query
+          description: Not necessary if Caller ID is passed
+          required: false
+          style: form
+          explode: true
+          schema:
+            type: string
+      requestBody:
+        description: Preference
+        content:
+          '*/*':
+            schema:
+              $ref: '#/components/schemas/http.Preference'
+        required: true
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/http.Preference'
         '400':
-          $ref: '#/components/responses/BadRequest'
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/github_com_melisource_fury_mpcs-preferences-api_internal_domain_model.PrefError'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/github_com_melisource_fury_mpcs-preferences-api_internal_domain_model.PrefError'
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/github_com_melisource_fury_mpcs-preferences-api_internal_domain_model.PrefError'
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/github_com_melisource_fury_mpcs-preferences-api_internal_domain_model.PrefError'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/github_com_melisource_fury_mpcs-preferences-api_internal_domain_model.PrefError'
+      x-codegen-request-body-name: Pref
   /checkout/preferences/search:
     get:
-      operationId: searchPreferences
-      summary: Search preferences
       tags:
-      - Preferences
-      security:
-      - bearerAuth: []
+        - Preference
+      summary: Search Preferences
+      description: Returns a list of preferences based on a search query.
       parameters:
-      - name: external_reference
-        in: query
-        schema:
-          type: string
-      - name: marketplace
-        in: query
-        schema:
-          type: string
-      - name: site_id
-        in: query
-        schema:
-          type: string
-      - name: sponsor_id
-        in: query
-        schema:
-          type: integer
-      - name: limit
-        in: query
-        schema:
-          type: integer
-          default: 30
-      - name: offset
-        in: query
-        schema:
-          type: integer
-          default: 0
+        - in: query
+          name: query
+          description: Query string to filter preferences.
+          required: false
+          schema:
+            type: string
       responses:
         '200':
-          description: Search results
+          description: A list of preferences matching the search query.
           content:
             application/json:
               schema:
-                type: object
-                properties:
-                  elements:
-                    type: array
-                    items:
-                      $ref: '#/components/schemas/Preference'
-                  paging:
-                    $ref: '#/components/schemas/Pagination'
+                type: array
+                items:
+                  type: object
+    options:
+      tags:
+        - Preference
+      summary: Get the options
+      description: This will show an example of the responses of all the endpoints
+      responses:
+        '200':
+          description: This will get an example of the GET, CREATE and UPDATE methods
+          content:
+            application/json:
+              schema:
+                type: string
+  /checkout/preferences/{id}/expire:
+    put:
+      tags:
+        - Preference
+      summary: Expires a Preference
+      description: Expires a payment preference. Enter the preference ID and it will be expired.
+      parameters:
+        - name: id
+          in: path
+          description: Preference ID
+          required: true
+          style: simple
+          explode: false
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/http.Preference'
         '400':
-          $ref: '#/components/responses/BadRequest'
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/github_com_melisource_fury_mpcs-preferences-api_internal_domain_model.PrefError'
         '401':
-          $ref: '#/components/responses/Unauthorized'
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/github_com_melisource_fury_mpcs-preferences-api_internal_domain_model.PrefError'
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/github_com_melisource_fury_mpcs-preferences-api_internal_domain_model.PrefError'
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/github_com_melisource_fury_mpcs-preferences-api_internal_domain_model.PrefError'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/github_com_melisource_fury_mpcs-preferences-api_internal_domain_model.PrefError'
 components:
   securitySchemes:
     bearerAuth:
@@ -298,8 +595,9 @@ components:
       description: Public key for client-side card tokenization via MercadoPago.js only. Never use for server-side calls.
     mercadopagoOAuth:
       type: oauth2
-      description: OAuth 2.0 authorization_code flow for marketplace on-behalf-of and Wallet Connect integrations. For client_credentials
-        and refresh_token, use POST /oauth/token directly with the appropriate grant_type.
+      description: >-
+        OAuth 2.0 authorization_code flow for marketplace on-behalf-of and Wallet Connect integrations. For
+        client_credentials and refresh_token, use POST /oauth/token directly with the appropriate grant_type.
       flows:
         authorizationCode:
           authorizationUrl: https://auth.mercadopago.com/authorization
@@ -355,309 +653,539 @@ components:
             error: too_many_requests
             message: Rate limit exceeded. Retry after the indicated number of seconds.
   schemas:
-    PreferenceRequest:
+    github_com_melisource_fury_mpcs-preferences-api_internal_domain_model.Address:
       type: object
-      required:
-      - items
-      description: Request body to create a Checkout Pro preference. The preference generates a hosted checkout URL (init_point)
-        where the payer is redirected to complete payment on MP's UI. Use this for simple integrations; use Orders API for
-        custom checkout experiences.
       properties:
-        items:
-          type: array
-          description: List of products/services being purchased
-          items:
-            $ref: '#/components/schemas/PreferenceItem'
-          minItems: 1
+        city:
+          type: string
+        federal_unit:
+          type: string
+        neighborhood:
+          type: string
+        street_name:
+          type: string
+        street_number:
+          type: string
+        zip_code:
+          type: string
+    github_com_melisource_fury_mpcs-preferences-api_internal_domain_model.Amount:
+      type: object
+      properties:
+        collector:
+          $ref: '#/components/schemas/github_com_melisource_fury_mpcs-preferences-api_internal_domain_model.AmountValues'
         payer:
-          $ref: '#/components/schemas/PreferencePayer'
-        payment_methods:
-          $ref: '#/components/schemas/PreferencePaymentMethods'
-        shipments:
-          $ref: '#/components/schemas/PreferenceShipments'
-        back_urls:
-          $ref: '#/components/schemas/PreferenceBackUrls'
-        notification_url:
-          type: string
-          format: uri
-          description: URL for IPN notifications. DEPRECATED — use Webhooks instead.
-          deprecated: true
-        statement_descriptor:
-          type: string
-          description: Text on the payer's card statement. Max 22 chars.
-          maxLength: 22
-        additional_info:
-          type: string
-          description: Free-text additional info (returned in webhook notifications)
-        auto_return:
-          type: string
-          enum:
-          - approved
-          - all
-          description: approved — auto-redirect to success URL on approved payments; all — auto-redirect for any final status.
-        external_reference:
-          type: string
-          description: Your internal order reference. Returned in webhook payloads.
-          example: ORDER-2024-001234
-        expires:
-          type: boolean
-          description: Whether this preference has an expiry window
-          default: false
-        expiration_date_from:
-          type: string
-          format: date-time
-          description: Preference activation start time (ISO 8601)
-        expiration_date_to:
-          type: string
-          format: date-time
-          description: Preference expiration time (ISO 8601)
-        marketplace:
-          type: string
-          description: Marketplace identifier
-        marketplace_fee:
-          type: number
-          format: float
-          description: Marketplace fee charged to the seller
-        differential_pricing:
-          type: object
-          properties:
-            id:
-              type: integer
-        binary_mode:
-          type: boolean
-          default: false
-    PreferenceItem:
+          $ref: '#/components/schemas/github_com_melisource_fury_mpcs-preferences-api_internal_domain_model.AmountValues'
+    github_com_melisource_fury_mpcs-preferences-api_internal_domain_model.AmountValues:
       type: object
-      required:
-      - title
-      - quantity
-      - unit_price
       properties:
-        id:
-          type: string
-        title:
-          type: string
-          example: Premium Plan
-        description:
-          type: string
-        picture_url:
-          type: string
-          format: uri
-        category_id:
-          type: string
-        quantity:
-          type: integer
-          minimum: 1
-          example: 1
         currency_id:
-          $ref: '#/components/schemas/CurrencyId'
-        unit_price:
+          type: string
+        transaction:
           type: number
-          format: float
-          description: Unit price as a decimal (not integer cents)
-          example: 99.9
-    PreferencePayer:
+    github_com_melisource_fury_mpcs-preferences-api_internal_domain_model.Collector:
+      type: object
+      properties:
+        operator_id:
+          type: number
+          description: Can be null
+        tags:
+          type: array
+          items:
+            type: string
+    github_com_melisource_fury_mpcs-preferences-api_internal_domain_model.CounterCurrency:
+      type: object
+      properties:
+        currency_id:
+          type: string
+    github_com_melisource_fury_mpcs-preferences-api_internal_domain_model.DeductionsByInstallment:
+      type: object
+      properties:
+        installments:
+          type: array
+          items:
+            type: integer
+    github_com_melisource_fury_mpcs-preferences-api_internal_domain_model.DifferentialPricing:
+      type: object
+      properties:
+        deductions_by_installment:
+          type: array
+          items:
+            $ref: >-
+              #/components/schemas/github_com_melisource_fury_mpcs-preferences-api_internal_domain_model.DeductionsByInstallment
+        id:
+          type: integer
+    github_com_melisource_fury_mpcs-preferences-api_internal_domain_model.Dimensions:
+      type: object
+      properties:
+        height:
+          type: number
+        length:
+          type: number
+        unit:
+          type: string
+        weight:
+          type: number
+        width:
+          type: number
+    github_com_melisource_fury_mpcs-preferences-api_internal_domain_model.FeeDetail:
+      type: object
+      properties:
+        amount:
+          type: number
+        fee_payer:
+          type: string
+        type:
+          type: string
+    github_com_melisource_fury_mpcs-preferences-api_internal_domain_model.FiscalData:
+      type: object
+      properties:
+        dangerous_material_id:
+          type: string
+        measurement_unit:
+          type: string
+        package_id:
+          type: string
+        sat:
+          type: string
+        sat_measurement_id:
+          type: string
+    github_com_melisource_fury_mpcs-preferences-api_internal_domain_model.Header:
       type: object
       properties:
         name:
           type: string
-        surname:
+        value:
+          type: string
+    github_com_melisource_fury_mpcs-preferences-api_internal_domain_model.Identification:
+      type: object
+      properties:
+        number:
+          type: string
+        type:
+          type: string
+    github_com_melisource_fury_mpcs-preferences-api_internal_domain_model.Item:
+      type: object
+      properties:
+        catalog_product_id:
+          type: string
+        category_descriptor:
+          type: object
+        category_id:
+          type: string
+        currency_id:
+          type: string
+        description:
+          type: string
+        dimensions:
+          $ref: '#/components/schemas/github_com_melisource_fury_mpcs-preferences-api_internal_domain_model.Dimensions'
+        fiscal_data:
+          $ref: '#/components/schemas/github_com_melisource_fury_mpcs-preferences-api_internal_domain_model.FiscalData'
+        id:
+          type: string
+        picture_id:
+          type: string
+        picture_url:
+          type: string
+        quantity:
+          type: number
+        title:
+          type: string
+        unit_price:
+          type: number
+        warranty:
+          type: boolean
+    github_com_melisource_fury_mpcs-preferences-api_internal_domain_model.Payer:
+      type: object
+      properties:
+        address:
+          $ref: '#/components/schemas/github_com_melisource_fury_mpcs-preferences-api_internal_domain_model.Address'
+        authentication_type:
+          type: string
+        date_created:
           type: string
         email:
           type: string
-          format: email
-        phone:
-          $ref: '#/components/schemas/Phone'
-        identification:
-          $ref: '#/components/schemas/Identification'
-        address:
-          $ref: '#/components/schemas/Address'
-        date_created:
+        guest_payer_id:
           type: string
-          format: date-time
-    PreferencePaymentMethods:
+        id:
+          type: number
+        identification:
+          $ref: '#/components/schemas/github_com_melisource_fury_mpcs-preferences-api_internal_domain_model.Identification'
+        is_first_purchase_online:
+          type: boolean
+        is_prime_user:
+          type: boolean
+        last_purchase:
+          type: string
+        name:
+          type: string
+        phone:
+          $ref: '#/components/schemas/github_com_melisource_fury_mpcs-preferences-api_internal_domain_model.Phone'
+        registered_payer_id:
+          type: string
+        surname:
+          type: string
+    github_com_melisource_fury_mpcs-preferences-api_internal_domain_model.PaymentMethod:
       type: object
       properties:
-        excluded_payment_methods:
-          type: array
-          description: Payment methods to hide from checkout UI
-          items:
-            type: object
-            properties:
-              id:
-                type: string
-        excluded_payment_types:
-          type: array
-          description: Payment type groups to exclude
-          items:
-            type: object
-            properties:
-              id:
-                type: string
-        installments:
-          type: integer
-          description: Maximum number of installments to offer
-          example: 12
+        default_card_id:
+          type: string
         default_installments:
           type: integer
-          description: Pre-selected installments in the UI
-    PreferenceShipments:
-      type: object
-      properties:
-        mode:
+        default_payment_method_id:
           type: string
-          enum:
-          - custom
-          - me2
-          - not_specified
-        free_shipping:
-          type: boolean
-          default: false
-        receiver_address:
-          $ref: '#/components/schemas/Address'
-        cost:
-          type: number
-          format: float
-    PreferenceBackUrls:
-      type: object
-      description: Redirect URLs after checkout completion. Configure auto_return to control when automatic redirects happen.
-      properties:
-        success:
-          type: string
-          format: uri
-          description: Redirect after approved payment
-        pending:
-          type: string
-          format: uri
-          description: Redirect for pending payments (e.g., Boleto)
-        failure:
-          type: string
-          format: uri
-          description: Redirect after rejected payment
-    Preference:
-      type: object
-      description: A created Checkout Pro preference
-      properties:
-        id:
-          type: string
-          description: Preference unique identifier
-          example: 123456789-abcd1234-ef56-7890-abcd-ef1234567890
-        init_point:
-          type: string
-          format: uri
-          description: Production checkout URL. Redirect your payer here to complete payment.
-          example: https://www.mercadopago.com.br/checkout/v1/redirect?pref_id=...
-        items:
+        excluded_payment_methods:
           type: array
           items:
-            $ref: '#/components/schemas/PreferenceItem'
-        payer:
-          $ref: '#/components/schemas/PreferencePayer'
-        payment_methods:
-          $ref: '#/components/schemas/PreferencePaymentMethods'
-        back_urls:
-          $ref: '#/components/schemas/PreferenceBackUrls'
-        external_reference:
+            type: string
+        excluded_payment_types:
+          type: array
+          items:
+            type: string
+        installment_type:
           type: string
-        date_created:
-          type: string
-          format: date-time
-        last_updated:
-          type: string
-          format: date-time
-        total_amount:
-          type: number
-          format: float
-        expires:
-          type: boolean
-        expiration_date_from:
-          type: string
-          format: date-time
-        expiration_date_to:
-          type: string
-          format: date-time
-        collector_id:
+        installments:
           type: integer
-        client_id:
-          type: string
-        marketplace:
-          type: string
-        marketplace_fee:
-          type: number
-          format: float
-    CurrencyId:
-      type: string
-      description: ISO 4217 currency code for the applicable site
-      enum:
-      - ARS
-      - BRL
-      - MXN
-      - CLP
-      - COP
-      - PEN
-      - UYU
-      - BOB
-      - PYG
-      - USD
-      - CRC
-      - DOP
-      - HNL
-      - NIO
-      - GTQ
-      - VES
-      example: BRL
-    Identification:
-      type: object
-      description: Payer identification document. Valid types vary by country.
-      properties:
-        type:
-          type: string
-          description: Identification type (e.g., CPF, CNPJ for Brazil; DNI for Argentina; RFC for Mexico)
-          example: CPF
-        number:
-          type: string
-          description: Identification number (no formatting — digits only)
-          example: '12345678909'
-    Phone:
+    github_com_melisource_fury_mpcs-preferences-api_internal_domain_model.Phone:
       type: object
       properties:
         area_code:
           type: string
-          example: '11'
         number:
           type: string
-          example: '987654321'
-    Address:
+    github_com_melisource_fury_mpcs-preferences-api_internal_domain_model.PrefError:
       type: object
       properties:
-        zip_code:
+        cause:
+          type: array
+          items:
+            type: string
+        error:
           type: string
-          example: 01310-100
+        message:
+          type: string
+        status:
+          type: integer
+    github_com_melisource_fury_mpcs-preferences-api_internal_domain_model.Preference:
+      required:
+        - items
+      type: object
+      properties:
+        additional_info:
+          type: string
+        amounts:
+          $ref: '#/components/schemas/github_com_melisource_fury_mpcs-preferences-api_internal_domain_model.Amount'
+        auto_return:
+          type: string
+        back_urls:
+          $ref: '#/components/schemas/github_com_melisource_fury_mpcs-preferences-api_internal_domain_model.URLConfig'
+        binary_mode:
+          type: boolean
+        client_id:
+          type: string
+        collector:
+          $ref: '#/components/schemas/github_com_melisource_fury_mpcs-preferences-api_internal_domain_model.Collector'
+        collector_email:
+          type: string
+        collector_id:
+          type: integer
+        concept_amount:
+          type: number
+        concept_id:
+          type: string
+        counter_currency:
+          $ref: '#/components/schemas/github_com_melisource_fury_mpcs-preferences-api_internal_domain_model.CounterCurrency'
+        coupon_code:
+          type: string
+        coupon_labels:
+          type: array
+          items:
+            type: string
+        created_by_app:
+          type: string
+        created_source:
+          type: string
+        date_created:
+          type: string
+        date_of_expiration:
+          type: string
+        differential_pricing:
+          $ref: >-
+            #/components/schemas/github_com_melisource_fury_mpcs-preferences-api_internal_domain_model.DifferentialPricing
+        expiration_date_from:
+          type: string
+        expiration_date_to:
+          type: string
+        expires:
+          type: boolean
+        external_reference:
+          type: string
+        fee_details:
+          type: array
+          items:
+            $ref: '#/components/schemas/github_com_melisource_fury_mpcs-preferences-api_internal_domain_model.FeeDetail'
+        financing_group:
+          type: string
+        headers:
+          type: array
+          items:
+            $ref: '#/components/schemas/github_com_melisource_fury_mpcs-preferences-api_internal_domain_model.Header'
+        id:
+          type: string
+        init_point:
+          type: string
+        internal_metadata:
+          type: object
+          additionalProperties: true
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/github_com_melisource_fury_mpcs-preferences-api_internal_domain_model.Item'
+        last_updated:
+          type: string
+        live_mode:
+          type: boolean
+        marketplace:
+          type: string
+        marketplace_fee:
+          type: number
+        merchant_order_id:
+          type: number
+        metadata:
+          type: object
+          additionalProperties: true
+        modified_by_app:
+          type: string
+        modified_source:
+          type: string
+        notification_url:
+          type: string
+        operation_type:
+          type: string
+        order_id:
+          type: number
+        payer:
+          $ref: '#/components/schemas/github_com_melisource_fury_mpcs-preferences-api_internal_domain_model.Payer'
+        payment_methods:
+          $ref: '#/components/schemas/github_com_melisource_fury_mpcs-preferences-api_internal_domain_model.PaymentMethod'
+        preference_expired:
+          type: boolean
+        processing_modes:
+          type: array
+          items:
+            type: string
+        product_id:
+          type: string
+        purpose:
+          type: string
+        purpose_descriptor:
+          type: object
+        redirect_urls:
+          $ref: '#/components/schemas/github_com_melisource_fury_mpcs-preferences-api_internal_domain_model.URLConfig'
+        sandbox_init_point:
+          type: string
+        sanitized_version:
+          type: integer
+        shipments:
+          $ref: '#/components/schemas/github_com_melisource_fury_mpcs-preferences-api_internal_domain_model.Shipment'
+        site_id:
+          type: string
+        sponsor_id:
+          type: number
+        statement_descriptor:
+          type: string
+        taxes:
+          type: array
+          items:
+            $ref: '#/components/schemas/github_com_melisource_fury_mpcs-preferences-api_internal_domain_model.Tax'
+        total_amount:
+          type: number
+        tracks:
+          type: array
+          items:
+            $ref: '#/components/schemas/github_com_melisource_fury_mpcs-preferences-api_internal_domain_model.Track'
+        version:
+          type: integer
+    github_com_melisource_fury_mpcs-preferences-api_internal_domain_model.ReceiverAddress:
+      type: object
+      properties:
+        apartment:
+          type: string
+        city_name:
+          type: string
+        country_name:
+          type: string
+        floor:
+          type: string
+        id:
+          type: string
+        state_name:
+          type: string
         street_name:
           type: string
-          example: Av. Paulista
         street_number:
           type: string
-          example: '1000'
-        city:
+        zip_code:
           type: string
-        state:
-          type: string
-        country:
-          type: string
-    Pagination:
+    github_com_melisource_fury_mpcs-preferences-api_internal_domain_model.Shipment:
       type: object
-      description: Pagination metadata returned in list/search responses
       properties:
-        total:
+        cost:
+          type: number
+        default_shipping_method:
           type: integer
-          description: Total number of results
-          example: 42
-        limit:
+        dimensions:
+          type: string
+        express_shipment:
+          type: boolean
+        free_methods:
+          type: array
+          items:
+            type: number
+        free_methods_types:
+          type: array
+          items:
+            type: string
+        free_shipping:
+          type: boolean
+        local_pickup:
+          type: boolean
+        mode:
+          type: string
+        receiver_address:
+          $ref: '#/components/schemas/github_com_melisource_fury_mpcs-preferences-api_internal_domain_model.ReceiverAddress'
+    github_com_melisource_fury_mpcs-preferences-api_internal_domain_model.Tax:
+      type: object
+      properties:
+        percentage:
+          type: number
+        type:
+          type: string
+        value:
+          type: string
+    github_com_melisource_fury_mpcs-preferences-api_internal_domain_model.Track:
+      type: object
+      properties:
+        type:
+          type: string
+        values:
+          type: object
+          additionalProperties:
+            type: string
+    github_com_melisource_fury_mpcs-preferences-api_internal_domain_model.URLConfig:
+      type: object
+      properties:
+        failure:
+          type: string
+        pending:
+          type: string
+        success:
+          type: string
+    http.Preference:
+      required:
+        - items
+      type: object
+      properties:
+        additional_info:
+          type: string
+        amounts:
+          $ref: '#/components/schemas/github_com_melisource_fury_mpcs-preferences-api_internal_domain_model.Amount'
+        auto_return:
+          type: string
+        back_urls:
+          $ref: '#/components/schemas/github_com_melisource_fury_mpcs-preferences-api_internal_domain_model.URLConfig'
+        binary_mode:
+          type: boolean
+        client_id:
+          type: string
+        collector:
+          $ref: '#/components/schemas/github_com_melisource_fury_mpcs-preferences-api_internal_domain_model.Collector'
+        collector_email:
+          type: string
+        collector_id:
           type: integer
-          description: Results per page
-          example: 30
-        offset:
+        concept_amount:
+          type: number
+        concept_id:
+          type: string
+        counter_currency:
+          $ref: '#/components/schemas/github_com_melisource_fury_mpcs-preferences-api_internal_domain_model.CounterCurrency'
+        coupon_code:
+          type: string
+        coupon_labels:
+          type: array
+          items:
+            type: string
+        date_of_expiration:
+          type: string
+        differential_pricing:
+          $ref: >-
+            #/components/schemas/github_com_melisource_fury_mpcs-preferences-api_internal_domain_model.DifferentialPricing
+        expiration_date_from:
+          type: string
+        expiration_date_to:
+          type: string
+        expires:
+          type: boolean
+        external_reference:
+          type: string
+        fee_details:
+          type: array
+          items:
+            $ref: '#/components/schemas/github_com_melisource_fury_mpcs-preferences-api_internal_domain_model.FeeDetail'
+        financing_group:
+          type: string
+        internal_metadata:
+          type: object
+          additionalProperties: true
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/github_com_melisource_fury_mpcs-preferences-api_internal_domain_model.Item'
+        live_mode:
+          type: boolean
+        marketplace:
+          type: string
+        marketplace_fee:
+          type: number
+        merchant_order_id:
+          type: number
+        metadata:
+          type: object
+          additionalProperties: true
+        notification_url:
+          type: string
+        operation_type:
+          type: string
+        order_id:
+          type: number
+        payer:
+          $ref: '#/components/schemas/github_com_melisource_fury_mpcs-preferences-api_internal_domain_model.Payer'
+        payment_methods:
+          $ref: '#/components/schemas/github_com_melisource_fury_mpcs-preferences-api_internal_domain_model.PaymentMethod'
+        processing_modes:
+          type: array
+          items:
+            type: string
+        purpose:
+          type: string
+        purpose_descriptor:
+          type: object
+        redirect_urls:
+          $ref: '#/components/schemas/github_com_melisource_fury_mpcs-preferences-api_internal_domain_model.URLConfig'
+        shipments:
+          $ref: '#/components/schemas/github_com_melisource_fury_mpcs-preferences-api_internal_domain_model.Shipment'
+        sponsor_id:
+          type: number
+        statement_descriptor:
+          type: number
+        taxes:
+          type: array
+          items:
+            $ref: '#/components/schemas/github_com_melisource_fury_mpcs-preferences-api_internal_domain_model.Tax'
+        tracks:
+          type: array
+          items:
+            $ref: '#/components/schemas/github_com_melisource_fury_mpcs-preferences-api_internal_domain_model.Track'
+        version:
           type: integer
-          description: Offset of the current page
-          example: 0

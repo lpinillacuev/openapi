@@ -11,139 +11,308 @@ info:
     url: https://www.apache.org/licenses/LICENSE-2.0
   version: 1.0.0
 servers:
-- url: https://api.mercadopago.com
-  description: Production
+  - url: https://api.mercadopago.com
+    description: Production
 security:
-- bearerAuth: []
+  - bearerAuth: []
 tags:
-- name: OAuth
-  description: Authorization flows for marketplace on-behalf-of and Wallet Connect
-  x-mp-sites: &id001
-  - MLA
-  - MLB
-  - MLM
-  - MLC
-  - MCO
-  - MPE
-  - MLU
-- name: Preferences
-  description: Checkout Pro — redirect-based hosted checkout via Preferences
-  x-mp-sites: *id001
-- name: Payments
-  description: Create and manage payment transactions
-  x-mp-sites: *id001
-- name: Orders
-  description: Checkout API via Orders — recommended for new custom checkout integrations
-  x-mp-sites: *id001
-- name: Merchant Orders
-  description: Order containers that group payments for a single purchase
-  x-mp-sites: *id001
-- name: Customers
-  description: Customer profiles and stored payment methods
-  x-mp-sites: *id001
-- name: Cards
-  description: Saved cards and card tokenization
-  x-mp-sites: *id001
-- name: Addresses
-  description: Customer shipping and billing addresses
-  x-mp-sites: *id001
-- name: Payment Methods
-  description: Available payment methods and installment plans per country
-  x-mp-sites: *id001
-- name: Identification Types
-  description: Country-specific identity document type catalog
-  x-mp-sites: *id001
-- name: Cancellations & Refunds
-  description: Cancel payments and create full or partial refunds
-  x-mp-sites: *id001
-- name: Chargebacks
-  description: Chargeback dispute management
-  x-mp-sites: *id001
-- name: Subscriptions
-  description: Recurring payment subscriptions
-  x-mp-sites: *id001
-- name: Plans
-  description: Subscription billing plans
-  x-mp-sites: *id001
-- name: Invoices
-  description: Subscription billing invoices
-  x-mp-sites: *id001
-- name: Wallet Connect
-  description: OAuth-based wallet agreement flows for Wallet Connect
-  x-mp-sites:
-  - MLA
-  - MLB
-  - MLM
-- name: Stores
-  description: Physical store locations
-  x-mp-sites: *id001
-- name: POS
-  description: Point of sale device management
-  x-mp-sites: *id001
-- name: Terminals
-  description: Point hardware terminal management and print actions
-  x-mp-sites:
-  - MLA
-  - MLB
-  - MLC
-  - MLM
-- name: Point Deprecated
-  description: Deprecated Point integration APIs — use Terminals and Point Orders instead
-  x-mp-sites:
-  - MLA
-  - MLB
-  - MLM
-- name: QR Orders
-  description: In-store payment orders associated with QR codes
-  x-mp-sites:
-  - MLA
-  - MLB
-  - MLC
-  - MCO
-  - MPE
-  - MLU
-- name: QR Integrator
-  description: Integrator configuration for QR in-store
-  x-mp-sites: *id001
-- name: QR Deprecated
-  description: Deprecated in-store QR order endpoints (V1, V2, Dynamic QR)
-  x-mp-sites: *id001
-- name: Claims
-  description: Post-sale claim details and search
-  x-mp-sites: *id001
-- name: Claim Messages
-  description: Messages and file attachments within a claim
-  x-mp-sites: *id001
-- name: Claim Resolutions
-  description: Mediation requests and expected resolutions
-  x-mp-sites: *id001
-- name: Claim Shipping
-  description: Upload shipping evidence to support a claim
-  x-mp-sites: *id001
-- name: Releases Report
-  description: Generate and schedule releases (settlement) reports
-  x-mp-sites: *id001
-- name: Settlements Report
-  description: Generate and schedule all-transactions reports
-  x-mp-sites: *id001
-- name: Payouts
-  description: Bank transfer and Pix payouts
-  x-mp-sites:
-  - MLA
-  - MLB
-  - MLM
-  - MLC
+  - name: OAuth
+    description: Authorization flows for marketplace on-behalf-of and Wallet Connect
+    x-mp-sites:
+      - MLA
+      - MLB
+      - MLM
+      - MLC
+      - MCO
+      - MPE
+      - MLU
+  - name: Preferences
+    description: Checkout Pro — redirect-based hosted checkout via Preferences
+    x-mp-sites:
+      - MLA
+      - MLB
+      - MLM
+      - MLC
+      - MCO
+      - MPE
+      - MLU
+  - name: Payments
+    description: Create and manage payment transactions
+    x-mp-sites:
+      - MLA
+      - MLB
+      - MLM
+      - MLC
+      - MCO
+      - MPE
+      - MLU
+  - name: Orders
+    description: Checkout API via Orders — recommended for new custom checkout integrations
+    x-mp-sites:
+      - MLA
+      - MLB
+      - MLM
+      - MLC
+      - MCO
+      - MPE
+      - MLU
+  - name: Merchant Orders
+    description: Order containers that group payments for a single purchase
+    x-mp-sites:
+      - MLA
+      - MLB
+      - MLM
+      - MLC
+      - MCO
+      - MPE
+      - MLU
+  - name: Customers
+    description: Customer profiles and stored payment methods
+    x-mp-sites:
+      - MLA
+      - MLB
+      - MLM
+      - MLC
+      - MCO
+      - MPE
+      - MLU
+  - name: Cards
+    description: Saved cards and card tokenization
+    x-mp-sites:
+      - MLA
+      - MLB
+      - MLM
+      - MLC
+      - MCO
+      - MPE
+      - MLU
+  - name: Addresses
+    description: Customer shipping and billing addresses
+    x-mp-sites:
+      - MLA
+      - MLB
+      - MLM
+      - MLC
+      - MCO
+      - MPE
+      - MLU
+  - name: Payment Methods
+    description: Available payment methods and installment plans per country
+    x-mp-sites:
+      - MLA
+      - MLB
+      - MLM
+      - MLC
+      - MCO
+      - MPE
+      - MLU
+  - name: Identification Types
+    description: Country-specific identity document type catalog
+    x-mp-sites:
+      - MLA
+      - MLB
+      - MLM
+      - MLC
+      - MCO
+      - MPE
+      - MLU
+  - name: Cancellations & Refunds
+    description: Cancel payments and create full or partial refunds
+    x-mp-sites:
+      - MLA
+      - MLB
+      - MLM
+      - MLC
+      - MCO
+      - MPE
+      - MLU
+  - name: Chargebacks
+    description: Chargeback dispute management
+    x-mp-sites:
+      - MLA
+      - MLB
+      - MLM
+      - MLC
+      - MCO
+      - MPE
+      - MLU
+  - name: Subscriptions
+    description: Recurring payment subscriptions
+    x-mp-sites:
+      - MLA
+      - MLB
+      - MLM
+      - MLC
+      - MCO
+      - MPE
+      - MLU
+  - name: Plans
+    description: Subscription billing plans
+    x-mp-sites:
+      - MLA
+      - MLB
+      - MLM
+      - MLC
+      - MCO
+      - MPE
+      - MLU
+  - name: Invoices
+    description: Subscription billing invoices
+    x-mp-sites:
+      - MLA
+      - MLB
+      - MLM
+      - MLC
+      - MCO
+      - MPE
+      - MLU
+  - name: Wallet Connect
+    description: OAuth-based wallet agreement flows for Wallet Connect
+    x-mp-sites:
+      - MLA
+      - MLB
+      - MLM
+  - name: Stores
+    description: Physical store locations
+    x-mp-sites:
+      - MLA
+      - MLB
+      - MLM
+      - MLC
+      - MCO
+      - MPE
+      - MLU
+  - name: POS
+    description: Point of sale device management
+    x-mp-sites:
+      - MLA
+      - MLB
+      - MLM
+      - MLC
+      - MCO
+      - MPE
+      - MLU
+  - name: Terminals
+    description: Point hardware terminal management and print actions
+    x-mp-sites:
+      - MLA
+      - MLB
+      - MLC
+      - MLM
+  - name: Point Deprecated
+    description: Deprecated Point integration APIs — use Terminals and Point Orders instead
+    x-mp-sites:
+      - MLA
+      - MLB
+      - MLM
+  - name: QR Orders
+    description: In-store payment orders associated with QR codes
+    x-mp-sites:
+      - MLA
+      - MLB
+      - MLC
+      - MCO
+      - MPE
+      - MLU
+  - name: QR Integrator
+    description: Integrator configuration for QR in-store
+    x-mp-sites:
+      - MLA
+      - MLB
+      - MLM
+      - MLC
+      - MCO
+      - MPE
+      - MLU
+  - name: QR Deprecated
+    description: Deprecated in-store QR order endpoints (V1, V2, Dynamic QR)
+    x-mp-sites:
+      - MLA
+      - MLB
+      - MLM
+      - MLC
+      - MCO
+      - MPE
+      - MLU
+  - name: Claims
+    description: Post-sale claim details and search
+    x-mp-sites:
+      - MLA
+      - MLB
+      - MLM
+      - MLC
+      - MCO
+      - MPE
+      - MLU
+  - name: Claim Messages
+    description: Messages and file attachments within a claim
+    x-mp-sites:
+      - MLA
+      - MLB
+      - MLM
+      - MLC
+      - MCO
+      - MPE
+      - MLU
+  - name: Claim Resolutions
+    description: Mediation requests and expected resolutions
+    x-mp-sites:
+      - MLA
+      - MLB
+      - MLM
+      - MLC
+      - MCO
+      - MPE
+      - MLU
+  - name: Claim Shipping
+    description: Upload shipping evidence to support a claim
+    x-mp-sites:
+      - MLA
+      - MLB
+      - MLM
+      - MLC
+      - MCO
+      - MPE
+      - MLU
+  - name: Releases Report
+    description: Generate and schedule releases (settlement) reports
+    x-mp-sites:
+      - MLA
+      - MLB
+      - MLM
+      - MLC
+      - MCO
+      - MPE
+      - MLU
+  - name: Settlements Report
+    description: Generate and schedule all-transactions reports
+    x-mp-sites:
+      - MLA
+      - MLB
+      - MLM
+      - MLC
+      - MCO
+      - MPE
+      - MLU
+  - name: Payouts
+    description: Bank transfer and Pix payouts
+    x-mp-sites:
+      - MLA
+      - MLB
+      - MLM
+      - MLC
 paths:
   /v1/payment_methods:
     get:
       operationId: listPaymentMethods
       summary: List available payment methods
-      description: Returns all payment methods available for the credential's site_id. Use this to build payment method selectors
+      description: >-
+        Returns all payment methods available for the credential's site_id. Use this to build payment method selectors
         and validate method availability before attempting a payment.
       tags:
-      - Payment Methods
+        - Payment Methods
       security:
-      - bearerAuth: []
+        - bearerAuth: []
       responses:
         '200':
           description: Payment methods list
@@ -163,8 +332,8 @@ paths:
                     status:
                       type: string
                       enum:
-                      - active
-                      - deactivated
+                        - active
+                        - deactivated
                     secure_thumbnail:
                       type: string
                       format: uri
@@ -174,9 +343,9 @@ paths:
                     deferred_capture:
                       type: string
                       enum:
-                      - supported
-                      - unsupported
-                      - does_not_apply
+                        - supported
+                        - unsupported
+                        - does_not_apply
                     settings:
                       type: object
                       description: Card settings (bin ranges, security codes, card length).
@@ -207,48 +376,79 @@ paths:
                       items:
                         type: string
                         enum:
-                        - aggregator
-                        - gateway
+                          - aggregator
+                          - gateway
         '400':
           $ref: '#/components/responses/BadRequest'
         '401':
           $ref: '#/components/responses/Unauthorized'
         '404':
           $ref: '#/components/responses/NotFound'
+    post:
+      consumes:
+        - application/json
+      description: create payment method configuration
+      parameters:
+        - description: Payment Method Configuration
+          in: body
+          name: data
+          required: true
+          schema:
+            $ref: '#/definitions/dtos.PaymentMethodConfigurationInputCreate'
+      produces:
+        - application/json
+      responses:
+        '201':
+          description: Created
+          schema:
+            $ref: '#/definitions/dtos.PaymentMethodConfigurationOutput'
+        '400':
+          description: Bad Request
+          schema: {}
+        '404':
+          description: Not Found
+          schema: {}
+        '500':
+          description: Internal Server Error
+          schema: {}
+      summary: Create Payment Method Configuration
+      tags:
+        - Payment Method Configuration
   /v1/payment_methods/installments:
     get:
       operationId: getInstallments
       summary: Get installment options
-      description: Returns available installment plans for a given card BIN, amount, and site. Use this to populate installment
+      description: >-
+        Returns available installment plans for a given card BIN, amount, and site. Use this to populate installment
         selectors in your checkout.
       tags:
-      - Payment Methods
+        - Payment Methods
       security:
-      - bearerAuth: []
+        - bearerAuth: []
       parameters:
-      - name: payment_method_id
-        in: query
-        required: true
-        schema:
-          type: string
-        example: visa
-      - name: amount
-        in: query
-        required: true
-        schema:
-          type: number
-          format: float
-        example: 1000.0
-      - name: issuer_id
-        in: query
-        schema:
-          type: string
-      - name: bin
-        in: query
-        schema:
-          type: string
-        description: First 6 digits of the card (BIN) for more accurate installment pricing
-        example: '411111'
+        - name: payment_method_id
+          in: query
+          required: true
+          schema:
+            type: string
+          example: visa
+        - name: amount
+          in: query
+          required: true
+          schema:
+            type: number
+            format: float
+          example: 1000
+        - name: issuer_id
+          in: query
+          schema:
+            type: string
+        - name: bin
+          in: query
+          schema:
+            type: string
+          description: First 6 digits of the card (BIN) for more accurate installment pricing
+          example: '411111'
       responses:
         '200':
           description: Installment options
@@ -296,6 +496,2711 @@ paths:
                           installment_amount:
                             type: number
                             format: float
+    post:
+      consumes:
+        - application/json
+      description: create or update
+      parameters:
+        - description: Installment
+          in: body
+          name: data
+          required: true
+          schema:
+            $ref: '#/definitions/dtos.Installment'
+      produces:
+        - application/json
+      responses:
+        '201':
+          description: Created
+          schema:
+            $ref: '#/definitions/dtos.Installment'
+        '400':
+          description: Bad Request
+          schema: {}
+        '404':
+          description: Not Found
+          schema: {}
+        '500':
+          description: Internal Server Error
+          schema: {}
+      summary: Create or Update Installment
+      tags:
+        - Installment
+  /v1/payment_methods/{id}:
+    get:
+      consumes:
+        - application/json
+      description: get payment method configuration by id
+      parameters:
+        - description: Payment Method Configuration ID
+          in: path
+          name: id
+          required: true
+          type: integer
+      produces:
+        - application/json
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/dtos.PaymentMethodConfigurationOutput'
+        '400':
+          description: Bad Request
+          schema: {}
+        '404':
+          description: Not Found
+          schema: {}
+        '500':
+          description: Internal Server Error
+          schema: {}
+      summary: Get Payment Method Configuration
+      tags:
+        - Payment Method Configuration
+    put:
+      consumes:
+        - application/json
+      description: update payment method configuration
+      parameters:
+        - description: Payment Method Configuration
+          in: body
+          name: data
+          required: true
+          schema:
+            $ref: '#/definitions/dtos.PaymentMethodConfigurationInputUpdate'
+      produces:
+        - application/json
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/dtos.PaymentMethodConfigurationOutput'
+        '400':
+          description: Bad Request
+          schema: {}
+        '404':
+          description: Not Found
+          schema: {}
+        '500':
+          description: Internal Server Error
+          schema: {}
+      summary: Update Payment Method Configuration
+      tags:
+        - Payment Method Configuration
+  /v1/payment_methods/{pm_id}/bins:
+    post:
+      consumes:
+        - application/json
+      description: create
+      parameters:
+        - description: Bins
+          in: body
+          name: data
+          required: true
+          schema:
+            $ref: '#/definitions/dtos.BinMulti'
+      produces:
+        - application/json
+      responses:
+        '201':
+          description: Created
+          schema:
+            $ref: '#/definitions/dtos.Bin'
+        '400':
+          description: Bad Request
+          schema: {}
+        '404':
+          description: Not Found
+          schema: {}
+        '500':
+          description: Internal Server Error
+          schema: {}
+      summary: Create Bins by Payment Method Configuration id
+      tags:
+        - Bins
+    put:
+      consumes:
+        - application/json
+      description: update
+      parameters:
+        - description: Bins ID
+          in: path
+          name: id
+          required: true
+          type: integer
+        - description: Bins
+          in: body
+          name: data
+          required: true
+          schema:
+            $ref: '#/definitions/dtos.BinMulti'
+      produces:
+        - application/json
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/dtos.Bin'
+        '400':
+          description: Bad Request
+          schema: {}
+        '404':
+          description: Not Found
+          schema: {}
+        '500':
+          description: Internal Server Error
+          schema: {}
+      summary: Inactive Bins by Payment method id
+      tags:
+        - Bins
+  /v1/payment_methods/{pmc_id}/installments:
+    post:
+      consumes:
+        - application/json
+      description: multi create or update
+      parameters:
+        - description: Payment Method Configuration ID
+          in: path
+          name: pmc_id
+          required: true
+          type: integer
+        - description: Installment
+          in: body
+          name: data
+          required: true
+          schema:
+            $ref: '#/definitions/dtos.Installment'
+      produces:
+        - application/json
+      responses:
+        '201':
+          description: Created
+          schema:
+            $ref: '#/definitions/dtos.Installment'
+        '400':
+          description: Bad Request
+          schema: {}
+        '404':
+          description: Not Found
+          schema: {}
+        '500':
+          description: Internal Server Error
+          schema: {}
+      summary: Multi Create or Update Installment
+      tags:
+        - Installment
+    put:
+      consumes:
+        - application/json
+      description: multi update
+      parameters:
+        - description: Payment Method Configuration ID
+          in: path
+          name: pmc_id
+          required: true
+          type: integer
+        - description: Installment
+          in: body
+          name: data
+          required: true
+          schema:
+            $ref: '#/definitions/dtos.Installment'
+      produces:
+        - application/json
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/dtos.Installment'
+        '400':
+          description: Bad Request
+          schema: {}
+        '404':
+          description: Not Found
+          schema: {}
+        '500':
+          description: Internal Server Error
+          schema: {}
+      summary: Multi Update Installment
+      tags:
+        - Installment
+  /v1/payment_methods/{pmcID}/{activate-deactivate}:
+    put:
+      consumes:
+        - application/json
+      description: activate or deactivate payment method configuration
+      parameters:
+        - description: Payment Method Configuration
+          in: body
+          name: data
+          required: true
+          schema:
+            $ref: '#/definitions/dtos.PaymentMethodConfigurationInputUpdate'
+      produces:
+        - application/json
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/dtos.PaymentMethodConfigurationOutput'
+        '400':
+          description: Bad Request
+          schema: {}
+        '404':
+          description: Not Found
+          schema: {}
+        '500':
+          description: Internal Server Error
+          schema: {}
+      summary: Activate or Deactivate Payment Method Configuration
+      tags:
+        - Payment Method Configuration
+  /v1/payment_methods/{pmcID}/settings:
+    get:
+      consumes:
+        - application/json
+      description: get card setting by PMC id
+      parameters:
+        - description: Payment Method Configuration ID
+          in: path
+          name: pmcID
+          required: true
+          type: integer
+      produces:
+        - application/json
+      responses:
+        '200':
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/dtos.CardSettingOutput'
+            type: array
+        '400':
+          description: Bad Request
+          schema: {}
+        '404':
+          description: Not Found
+          schema: {}
+        '500':
+          description: Internal Server Error
+          schema: {}
+      summary: Get Card Setting by PMC ID
+      tags:
+        - Card Setting
+    post:
+      consumes:
+        - application/json
+      description: create card setting by PMCID
+      parameters:
+        - description: Card Setting
+          in: body
+          name: data
+          required: true
+          schema:
+            $ref: '#/definitions/dtos.CardSettingInputCreate'
+      produces:
+        - application/json
+      responses:
+        '201':
+          description: Created
+          schema:
+            $ref: '#/definitions/dtos.CardSettingOutput'
+        '400':
+          description: Bad Request
+          schema: {}
+        '404':
+          description: Not Found
+          schema: {}
+        '500':
+          description: Internal Server Error
+          schema: {}
+      summary: Create Card Setting by PMCID
+      tags:
+        - Card Setting
+  /v1/payment_methods/{pmid}/agreements:
+    post:
+      consumes:
+        - application/json
+      description: create
+      parameters:
+        - description: PM Issuer Relation ID
+          in: path
+          name: pmid
+          required: true
+          type: integer
+        - description: Agreements
+          in: body
+          name: data
+          required: true
+          schema:
+            $ref: '#/definitions/dtos.Agreements'
+      produces:
+        - application/json
+      responses:
+        '201':
+          description: Created
+          schema:
+            $ref: '#/definitions/dtos.Agreements'
+        '400':
+          description: Bad Request
+          schema: {}
+        '404':
+          description: Not Found
+          schema: {}
+        '500':
+          description: Internal Server Error
+          schema: {}
+      summary: Create Agreements
+      tags:
+        - Agreements
+  /v1/payment_methods/{pmid}/agreements/{agreementId}:
+    put:
+      consumes:
+        - application/json
+      description: update
+      parameters:
+        - description: PM Issuer Relation ID
+          in: path
+          name: pmid
+          required: true
+          type: integer
+        - description: Agreements ID
+          in: path
+          name: id
+          required: true
+          type: integer
+        - description: Agreements
+          in: body
+          name: data
+          required: true
+          schema:
+            $ref: '#/definitions/dtos.Agreements'
+      produces:
+        - application/json
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/dtos.Agreements'
+        '400':
+          description: Bad Request
+          schema: {}
+        '404':
+          description: Not Found
+          schema: {}
+        '500':
+          description: Internal Server Error
+          schema: {}
+      summary: Update Agreements
+      tags:
+        - Agreements
+  /v1/payment_methods/agreements:
+    get:
+      consumes:
+        - application/json
+      description: search
+      produces:
+        - application/json
+      responses:
+        '200':
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/dtos.Agreements'
+            type: array
+        '400':
+          description: Bad Request
+          schema: {}
+        '404':
+          description: Not Found
+          schema: {}
+        '500':
+          description: Internal Server Error
+          schema: {}
+      summary: Search Agreements
+      tags:
+        - Agreements
+  /v1/payment_methods/agreements/{id}:
+    get:
+      consumes:
+        - application/json
+      description: get by id
+      parameters:
+        - description: Agreements ID
+          in: path
+          name: id
+          required: true
+          type: integer
+      produces:
+        - application/json
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/dtos.Agreements'
+        '400':
+          description: Bad Request
+          schema: {}
+        '404':
+          description: Not Found
+          schema: {}
+        '500':
+          description: Internal Server Error
+          schema: {}
+      summary: Get Agreements
+      tags:
+        - Agreements
+  /v1/payment_methods/amount_allowed_by_user:
+    post:
+      consumes:
+        - application/json
+      description: create
+      parameters:
+        - description: AmountAllowedByUser
+          in: body
+          name: data
+          required: true
+          schema:
+            $ref: '#/definitions/dtos.AmountAllowedByUserInput'
+      produces:
+        - application/json
+      responses:
+        '201':
+          description: Created
+          schema:
+            $ref: '#/definitions/dtos.AmountAllowedByUserOutput'
+        '400':
+          description: Bad Request
+          schema: {}
+        '404':
+          description: Not Found
+          schema: {}
+        '500':
+          description: Internal Server Error
+          schema: {}
+      summary: Create AmountAllowedByUser
+      tags:
+        - AmountAllowedByUser
+  /v1/payment_methods/amount_allowed_by_user/{id}:
+    delete:
+      consumes:
+        - application/json
+      description: delete by id
+      parameters:
+        - description: AmountAllowedByUser ID
+          in: path
+          name: id
+          required: true
+          type: integer
+      produces:
+        - application/json
+      responses:
+        '204':
+          description: No Content
+        '400':
+          description: Bad Request
+          schema: {}
+        '404':
+          description: Not Found
+          schema: {}
+        '500':
+          description: Internal Server Error
+          schema: {}
+      summary: Delete AmountAllowedByUser
+      tags:
+        - AmountAllowedByUser
+    get:
+      consumes:
+        - application/json
+      description: get by id
+      parameters:
+        - description: AmountAllowedByUser ID
+          in: path
+          name: id
+          required: true
+          type: integer
+      produces:
+        - application/json
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/dtos.AmountAllowedByUserOutput'
+        '400':
+          description: Bad Request
+          schema: {}
+        '404':
+          description: Not Found
+          schema: {}
+        '500':
+          description: Internal Server Error
+          schema: {}
+      summary: Get AmountAllowedByUser
+      tags:
+        - AmountAllowedByUser
+    put:
+      consumes:
+        - application/json
+      description: update
+      parameters:
+        - description: AmountAllowedByUser ID
+          in: path
+          name: id
+          required: true
+          type: integer
+        - description: AmountAllowedByUser
+          in: body
+          name: data
+          required: true
+          schema:
+            $ref: '#/definitions/dtos.AmountAllowedByUserInput'
+      produces:
+        - application/json
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/dtos.AmountAllowedByUserOutput'
+        '400':
+          description: Bad Request
+          schema: {}
+        '404':
+          description: Not Found
+          schema: {}
+        '500':
+          description: Internal Server Error
+          schema: {}
+      summary: Update AmountAllowedByUser
+      tags:
+        - AmountAllowedByUser
+  /v1/payment_methods/amount_allowed_by_user/search:
+    get:
+      consumes:
+        - application/json
+      description: search
+      produces:
+        - application/json
+      responses:
+        '200':
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/dtos.AmountAllowedByUserInput'
+            type: array
+        '400':
+          description: Bad Request
+          schema: {}
+        '404':
+          description: Not Found
+          schema: {}
+        '500':
+          description: Internal Server Error
+          schema: {}
+      summary: Search AmountAllowedByUser
+      tags:
+        - AmountAllowedByUser
+  /v1/payment_methods/bins:
+    post:
+      consumes:
+        - application/json
+      description: create
+      parameters:
+        - description: Bins
+          in: body
+          name: data
+          required: true
+          schema:
+            $ref: '#/definitions/dtos.Bin'
+      produces:
+        - application/json
+      responses:
+        '201':
+          description: Created
+          schema:
+            $ref: '#/definitions/dtos.Bin'
+        '400':
+          description: Bad Request
+          schema: {}
+        '404':
+          description: Not Found
+          schema: {}
+        '500':
+          description: Internal Server Error
+          schema: {}
+      summary: Create Bins
+      tags:
+        - Bins
+  /v1/payment_methods/bins/{id}:
+    put:
+      consumes:
+        - application/json
+      description: update
+      parameters:
+        - description: Bins ID
+          in: path
+          name: id
+          required: true
+          type: integer
+      produces:
+        - application/json
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/dtos.Bin'
+        '400':
+          description: Bad Request
+          schema: {}
+        '404':
+          description: Not Found
+          schema: {}
+        '500':
+          description: Internal Server Error
+          schema: {}
+      summary: Update Bins
+      tags:
+        - Bins
+  /v1/payment_methods/bins/search:
+    get:
+      consumes:
+        - application/json
+      description: search
+      produces:
+        - application/json
+      responses:
+        '200':
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/dtos.Bin'
+            type: array
+        '400':
+          description: Bad Request
+          schema: {}
+        '404':
+          description: Not Found
+          schema: {}
+        '500':
+          description: Internal Server Error
+          schema: {}
+      summary: Search Bins
+      tags:
+        - Bins
+  /v1/payment_methods/brands:
+    get:
+      consumes:
+        - application/json
+      description: search brand
+      parameters:
+        - description: Name
+          in: query
+          name: name
+          type: string
+      produces:
+        - application/json
+      responses:
+        '200':
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/dtos.Brand'
+            type: array
+        '400':
+          description: Bad Request
+          schema: {}
+        '404':
+          description: Not Found
+          schema: {}
+        '500':
+          description: Internal Server Error
+          schema: {}
+      summary: Search Brand
+      tags:
+        - Brand
+    post:
+      consumes:
+        - application/json
+      description: create brand
+      parameters:
+        - description: Brand
+          in: body
+          name: data
+          required: true
+          schema:
+            $ref: '#/definitions/dtos.Brand'
+      produces:
+        - application/json
+      responses:
+        '201':
+          description: Created
+          schema:
+            $ref: '#/definitions/dtos.Brand'
+        '400':
+          description: Bad Request
+          schema: {}
+        '404':
+          description: Not Found
+          schema: {}
+        '500':
+          description: Internal Server Error
+          schema: {}
+      summary: Create Brand
+      tags:
+        - Brand
+  /v1/payment_methods/brands/{id}:
+    get:
+      consumes:
+        - application/json
+      description: get brand by id
+      parameters:
+        - description: Brand ID
+          in: path
+          name: id
+          required: true
+          type: integer
+      produces:
+        - application/json
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/dtos.Brand'
+        '400':
+          description: Bad Request
+          schema: {}
+        '404':
+          description: Not Found
+          schema: {}
+        '500':
+          description: Internal Server Error
+          schema: {}
+      summary: Get Brand
+      tags:
+        - Brand
+    put:
+      consumes:
+        - application/json
+      description: update brand
+      parameters:
+        - description: Brand ID
+          in: path
+          name: id
+          required: true
+          type: integer
+        - description: Brand
+          in: body
+          name: data
+          required: true
+          schema:
+            $ref: '#/definitions/dtos.Brand'
+      produces:
+        - application/json
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/dtos.Brand'
+        '400':
+          description: Bad Request
+          schema: {}
+        '404':
+          description: Not Found
+          schema: {}
+        '500':
+          description: Internal Server Error
+          schema: {}
+      summary: Update Brand
+      tags:
+        - Brand
+  /v1/payment_methods/card_settings:
+    post:
+      consumes:
+        - application/json
+      description: multi create card setting
+      parameters:
+        - description: Card Settings
+          in: body
+          name: data
+          required: true
+          schema:
+            items:
+              $ref: '#/definitions/dtos.CardSettingInputCreate'
+            type: array
+      produces:
+        - application/json
+      responses:
+        '200':
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/dtos.CardSettingOutput'
+            type: array
+        '400':
+          description: Bad Request
+          schema: {}
+        '404':
+          description: Not Found
+          schema: {}
+        '500':
+          description: Internal Server Error
+          schema: {}
+      summary: Multi Create Card Setting
+      tags:
+        - Card Setting
+  /v1/payment_methods/category_meli-mcc:
+    get:
+      consumes:
+        - application/json
+      description: get by id
+      produces:
+        - application/json
+      responses:
+        '200':
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/dtos.CategoryMeliApiOutput'
+            type: array
+        '400':
+          description: Bad Request
+          schema: {}
+        '404':
+          description: Not Found
+          schema: {}
+        '500':
+          description: Internal Server Error
+          schema: {}
+      summary: Get List CategoryMeli
+      tags:
+        - CategoryMeliMcc
+    post:
+      consumes:
+        - application/json
+      description: create
+      parameters:
+        - description: CategoryMeli
+          in: body
+          name: data
+          required: true
+          schema:
+            $ref: '#/definitions/dtos.CategoryMeliApiInput'
+      produces:
+        - application/json
+      responses:
+        '201':
+          description: Created
+          schema:
+            $ref: '#/definitions/dtos.CategoryMeliApiOutput'
+        '400':
+          description: Bad Request
+          schema: {}
+        '404':
+          description: Not Found
+          schema: {}
+        '500':
+          description: Internal Server Error
+          schema: {}
+      summary: Create CategoryMeli
+      tags:
+        - CategoryMeliMcc
+  /v1/payment_methods/category_meli-mcc/{code}:
+    get:
+      consumes:
+        - application/json
+      description: get by id
+      parameters:
+        - description: CategoryMeli Code
+          in: path
+          name: code
+          required: true
+          type: string
+      produces:
+        - application/json
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/dtos.CategoryMeliApiOutput'
+        '400':
+          description: Bad Request
+          schema: {}
+        '404':
+          description: Not Found
+          schema: {}
+        '500':
+          description: Internal Server Error
+          schema: {}
+      summary: Get CategoryMeliByCode
+      tags:
+        - CategoryMeliMcc
+    put:
+      consumes:
+        - application/json
+      description: update
+      parameters:
+        - description: CategoryMeli Code
+          in: path
+          name: code
+          required: true
+          type: string
+        - description: CategoryMeli
+          in: body
+          name: data
+          required: true
+          schema:
+            $ref: '#/definitions/dtos.CategoryMeliApiInput'
+      produces:
+        - application/json
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/dtos.CategoryMeliApiOutput'
+        '400':
+          description: Bad Request
+          schema: {}
+        '404':
+          description: Not Found
+          schema: {}
+        '500':
+          description: Internal Server Error
+          schema: {}
+      summary: Update CategoryMeli
+      tags:
+        - CategoryMeliMcc
+  /v1/payment_methods/composables_assets:
+    post:
+      consumes:
+        - application/json
+      description: create
+      parameters:
+        - description: Asset
+          in: body
+          name: data
+          required: true
+          schema:
+            $ref: '#/definitions/dtos.Asset'
+      produces:
+        - application/json
+      responses:
+        '201':
+          description: Created
+          schema:
+            $ref: '#/definitions/dtos.Asset'
+        '400':
+          description: Bad Request
+          schema: {}
+        '404':
+          description: Not Found
+          schema: {}
+        '500':
+          description: Internal Server Error
+          schema: {}
+      summary: Create Asset
+      tags:
+        - Asset
+  /v1/payment_methods/composables_assets/{id}:
+    get:
+      consumes:
+        - application/json
+      description: get by id
+      parameters:
+        - description: Asset ID
+          in: path
+          name: id
+          required: true
+          type: integer
+      produces:
+        - application/json
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/dtos.Asset'
+        '400':
+          description: Bad Request
+          schema: {}
+        '404':
+          description: Not Found
+          schema: {}
+        '500':
+          description: Internal Server Error
+          schema: {}
+      summary: Get Asset
+      tags:
+        - Asset
+    put:
+      consumes:
+        - application/json
+      description: update
+      parameters:
+        - description: Asset ID
+          in: path
+          name: id
+          required: true
+          type: integer
+        - description: Asset
+          in: body
+          name: data
+          required: true
+          schema:
+            $ref: '#/definitions/dtos.Asset'
+      produces:
+        - application/json
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/dtos.Asset'
+        '400':
+          description: Bad Request
+          schema: {}
+        '404':
+          description: Not Found
+          schema: {}
+        '500':
+          description: Internal Server Error
+          schema: {}
+      summary: Update Asset
+      tags:
+        - Asset
+  /v1/payment_methods/composables_assets/notify:
+    post:
+      consumes:
+        - application/json
+      description: Notify
+      parameters:
+        - description: Asset
+          in: body
+          name: data
+          required: true
+          schema:
+            $ref: '#/definitions/dtos.Asset'
+      produces:
+        - application/json
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/dtos.Asset'
+        '400':
+          description: Bad Request
+          schema: {}
+        '404':
+          description: Not Found
+          schema: {}
+        '500':
+          description: Internal Server Error
+          schema: {}
+      summary: Notify Asset
+      tags:
+        - Asset
+  /v1/payment_methods/composables_assets/search:
+    get:
+      consumes:
+        - application/json
+      description: search
+      produces:
+        - application/json
+      responses:
+        '200':
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/dtos.Asset'
+            type: array
+        '400':
+          description: Bad Request
+          schema: {}
+        '404':
+          description: Not Found
+          schema: {}
+        '500':
+          description: Internal Server Error
+          schema: {}
+      summary: Search Asset
+      tags:
+        - Asset
+  /v1/payment_methods/composables_assets_segments:
+    post:
+      consumes:
+        - application/json
+      description: create
+      parameters:
+        - description: AssetSegmented
+          in: body
+          name: data
+          required: true
+          schema:
+            $ref: '#/definitions/dtos.AssetSegmented'
+      produces:
+        - application/json
+      responses:
+        '201':
+          description: Created
+          schema:
+            $ref: '#/definitions/dtos.AssetSegmented'
+        '400':
+          description: Bad Request
+          schema: {}
+        '404':
+          description: Not Found
+          schema: {}
+        '500':
+          description: Internal Server Error
+          schema: {}
+      summary: Create AssetSegmented
+      tags:
+        - AssetSegmented
+  /v1/payment_methods/composables_assets_segments/{id}:
+    get:
+      consumes:
+        - application/json
+      description: get by id
+      parameters:
+        - description: AssetSegmented ID
+          in: path
+          name: id
+          required: true
+          type: integer
+      produces:
+        - application/json
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/dtos.AssetSegmented'
+        '400':
+          description: Bad Request
+          schema: {}
+        '404':
+          description: Not Found
+          schema: {}
+        '500':
+          description: Internal Server Error
+          schema: {}
+      summary: Get AssetSegmented
+      tags:
+        - AssetSegmented
+    put:
+      consumes:
+        - application/json
+      description: update
+      parameters:
+        - description: AssetSegmented ID
+          in: path
+          name: id
+          required: true
+          type: integer
+        - description: AssetSegmented
+          in: body
+          name: data
+          required: true
+          schema:
+            $ref: '#/definitions/dtos.AssetSegmented'
+      produces:
+        - application/json
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/dtos.AssetSegmented'
+        '400':
+          description: Bad Request
+          schema: {}
+        '404':
+          description: Not Found
+          schema: {}
+        '500':
+          description: Internal Server Error
+          schema: {}
+      summary: Update AssetSegmented
+      tags:
+        - AssetSegmented
+  /v1/payment_methods/default_installments:
+    post:
+      consumes:
+        - application/json
+      description: create default installment
+      parameters:
+        - description: Default Installments
+          in: body
+          name: data
+          required: true
+          schema:
+            $ref: '#/definitions/dtos.DefaultInstallment'
+      produces:
+        - application/json
+      responses:
+        '201':
+          description: Created
+          schema:
+            $ref: '#/definitions/dtos.DefaultInstallment'
+        '400':
+          description: Bad Request
+          schema: {}
+        '404':
+          description: Not Found
+          schema: {}
+        '500':
+          description: Internal Server Error
+          schema: {}
+      summary: Create Default Installments
+      tags:
+        - Default Installments
+  /v1/payment_methods/default_installments/{id}:
+    get:
+      consumes:
+        - application/json
+      description: get default installment by id
+      parameters:
+        - description: Default Installments ID
+          in: path
+          name: id
+          required: true
+          type: integer
+      produces:
+        - application/json
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/dtos.DefaultInstallment'
+        '400':
+          description: Bad Request
+          schema: {}
+        '404':
+          description: Not Found
+          schema: {}
+        '500':
+          description: Internal Server Error
+          schema: {}
+      summary: Get Default Installments
+      tags:
+        - Default Installments
+    put:
+      consumes:
+        - application/json
+      description: update default installment
+      parameters:
+        - description: Default Installments ID
+          in: path
+          name: id
+          required: true
+          type: integer
+        - description: Default Installments
+          in: body
+          name: data
+          required: true
+          schema:
+            $ref: '#/definitions/dtos.DefaultInstallment'
+      produces:
+        - application/json
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/dtos.DefaultInstallment'
+        '400':
+          description: Bad Request
+          schema: {}
+        '404':
+          description: Not Found
+          schema: {}
+        '500':
+          description: Internal Server Error
+          schema: {}
+      summary: Update Default Installments
+      tags:
+        - Default Installments
+  /v1/payment_methods/default_installments/search:
+    get:
+      consumes:
+        - application/json
+      description: search default installment
+      parameters:
+        - description: Site ID
+          in: query
+          name: site_id
+          required: true
+          type: string
+      produces:
+        - application/json
+      responses:
+        '200':
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/dtos.DefaultInstallment'
+            type: array
+        '400':
+          description: Bad Request
+          schema: {}
+        '404':
+          description: Not Found
+          schema: {}
+        '500':
+          description: Internal Server Error
+          schema: {}
+      summary: Search Default Installments
+      tags:
+        - Default Installments
+  /v1/payment_methods/exclusions_by_user:
+    post:
+      consumes:
+        - application/json
+      description: create
+      parameters:
+        - description: ExclusionByUser
+          in: body
+          name: data
+          required: true
+          schema:
+            $ref: '#/definitions/dtos.ExclusionByUserInput'
+      produces:
+        - application/json
+      responses:
+        '201':
+          description: Created
+          schema:
+            $ref: '#/definitions/dtos.ExclusionByUserOutput'
+        '400':
+          description: Bad Request
+          schema: {}
+        '404':
+          description: Not Found
+          schema: {}
+        '500':
+          description: Internal Server Error
+          schema: {}
+      summary: Create ExclusionByUser
+      tags:
+        - ExclusionByUser
+  /v1/payment_methods/exclusions_by_user/{id}:
+    get:
+      consumes:
+        - application/json
+      description: get by id
+      parameters:
+        - description: ExclusionByUser ID
+          in: path
+          name: id
+          required: true
+          type: integer
+      produces:
+        - application/json
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/dtos.ExclusionByUserInput'
+        '400':
+          description: Bad Request
+          schema: {}
+        '404':
+          description: Not Found
+          schema: {}
+        '500':
+          description: Internal Server Error
+          schema: {}
+      summary: Get ExclusionByUser
+      tags:
+        - ExclusionByUser
+  /v1/payment_methods/exclusions_by_user/{key}:
+    delete:
+      consumes:
+        - application/json
+      description: delete by key
+      parameters:
+        - description: ExclusionByUser Key
+          in: path
+          name: key
+          required: true
+          type: string
+      produces:
+        - application/json
+      responses:
+        '204':
+          description: No Content
+        '400':
+          description: Bad Request
+          schema: {}
+        '404':
+          description: Not Found
+          schema: {}
+        '500':
+          description: Internal Server Error
+          schema: {}
+      summary: Delete ExclusionByUser
+      tags:
+        - ExclusionByUser
+  /v1/payment_methods/exclusions_by_user/search:
+    get:
+      consumes:
+        - application/json
+      description: search
+      parameters:
+        - description: Issuer ID
+          in: query
+          name: issuer_id
+          type: integer
+        - description: Marketplace
+          in: query
+          name: marketplace
+          type: string
+        - description: User ID
+          in: query
+          name: user_id
+          required: true
+          type: string
+        - description: Payment Method ID
+          in: query
+          name: payment_method_id
+          type: string
+      produces:
+        - application/json
+      responses:
+        '200':
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/dtos.ExclusionByUserOutput'
+            type: array
+        '400':
+          description: Bad Request
+          schema: {}
+        '404':
+          description: Not Found
+          schema: {}
+        '500':
+          description: Internal Server Error
+          schema: {}
+      summary: Search ExclusionByUser
+      tags:
+        - ExclusionByUser
+  /v1/payment_methods/finance_deals:
+    post:
+      consumes:
+        - application/json
+      description: create
+      parameters:
+        - description: FinanceDeal
+          in: body
+          name: data
+          required: true
+          schema:
+            $ref: '#/definitions/dtos.FinanceDeal'
+      produces:
+        - application/json
+      responses:
+        '201':
+          description: Created
+          schema:
+            $ref: '#/definitions/dtos.FinanceDeal'
+        '400':
+          description: Bad Request
+          schema: {}
+        '404':
+          description: Not Found
+          schema: {}
+        '500':
+          description: Internal Server Error
+          schema: {}
+      summary: Create FinanceDeal
+      tags:
+        - FinanceDeal
+  /v1/payment_methods/finance_deals/{id}:
+    get:
+      consumes:
+        - application/json
+      description: get by id
+      parameters:
+        - description: FinanceDeal ID
+          in: path
+          name: id
+          required: true
+          type: integer
+      produces:
+        - application/json
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/dtos.FinanceDeal'
+        '400':
+          description: Bad Request
+          schema: {}
+        '404':
+          description: Not Found
+          schema: {}
+        '500':
+          description: Internal Server Error
+          schema: {}
+      summary: Get FinanceDeal
+      tags:
+        - FinanceDeal
+    put:
+      consumes:
+        - application/json
+      description: update
+      parameters:
+        - description: FinanceDeal ID
+          in: path
+          name: id
+          required: true
+          type: integer
+        - description: FinanceDeal
+          in: body
+          name: data
+          required: true
+          schema:
+            $ref: '#/definitions/dtos.FinanceDeal'
+      produces:
+        - application/json
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/dtos.FinanceDeal'
+        '400':
+          description: Bad Request
+          schema: {}
+        '404':
+          description: Not Found
+          schema: {}
+        '500':
+          description: Internal Server Error
+          schema: {}
+      summary: Update legals by Issuer ID
+      tags:
+        - FinanceDeal
+  /v1/payment_methods/finance_deals/last_legals_by_issuer/{issuer_id}:
+    get:
+      consumes:
+        - application/json
+      description: get by issuer id
+      parameters:
+        - description: Issuer ID
+          in: path
+          name: id
+          required: true
+          type: integer
+      produces:
+        - application/json
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/dtos.FinanceDeal'
+        '400':
+          description: Bad Request
+          schema: {}
+        '404':
+          description: Not Found
+          schema: {}
+        '500':
+          description: Internal Server Error
+          schema: {}
+      summary: Get legals by Issuer ID
+      tags:
+        - FinanceDeal
+  /v1/payment_methods/finance_deals/legals_by_issuers:
+    get:
+      consumes:
+        - application/json
+      description: get legals by Issuer ids
+      parameters:
+        - description: Issuers ID
+          in: query
+          name: issuers
+          required: true
+          type: string
+      produces:
+        - application/json
+      responses:
+        '200':
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/dtos.IssuerIdWithLegal'
+            type: array
+        '400':
+          description: Bad Request
+          schema: {}
+        '404':
+          description: Not Found
+          schema: {}
+        '500':
+          description: Internal Server Error
+          schema: {}
+      summary: Get Legals By Issuer Ids
+      tags:
+        - Issuer
+  /v1/payment_methods/finance_deals/search:
+    get:
+      consumes:
+        - application/json
+      description: search
+      produces:
+        - application/json
+      responses:
+        '200':
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/dtos.FinanceDeal'
+            type: array
+        '400':
+          description: Bad Request
+          schema: {}
+        '404':
+          description: Not Found
+          schema: {}
+        '500':
+          description: Internal Server Error
+          schema: {}
+      summary: Search FinanceDeal
+      tags:
+        - FinanceDeal
+  /v1/payment_methods/financial_institutions:
+    post:
+      consumes:
+        - application/json
+      description: create financial institution
+      parameters:
+        - description: Financial Institution
+          in: body
+          name: data
+          required: true
+          schema:
+            $ref: '#/definitions/dtos.FinancialInstitution'
+      produces:
+        - application/json
+      responses:
+        '201':
+          description: Created
+          schema:
+            $ref: '#/definitions/dtos.FinancialInstitution'
+        '400':
+          description: Bad Request
+          schema: {}
+        '404':
+          description: Not Found
+          schema: {}
+        '500':
+          description: Internal Server Error
+          schema: {}
+      summary: Create Financial Institution
+      tags:
+        - Financial Institution
+  /v1/payment_methods/financial_institutions/{id}:
+    delete:
+      consumes:
+        - application/json
+      description: delete financial institution by id
+      parameters:
+        - description: Financial Institution ID
+          in: path
+          name: id
+          required: true
+          type: integer
+      produces:
+        - application/json
+      responses:
+        '204':
+          description: No Content
+        '400':
+          description: Bad Request
+          schema: {}
+        '404':
+          description: Not Found
+          schema: {}
+        '500':
+          description: Internal Server Error
+          schema: {}
+      summary: Delete Financial Institution
+      tags:
+        - Financial Institution
+    get:
+      consumes:
+        - application/json
+      description: get financial institution by id
+      parameters:
+        - description: Financial Institution ID
+          in: path
+          name: id
+          required: true
+          type: integer
+      produces:
+        - application/json
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/dtos.FinancialInstitution'
+        '400':
+          description: Bad Request
+          schema: {}
+        '404':
+          description: Not Found
+          schema: {}
+        '500':
+          description: Internal Server Error
+          schema: {}
+      summary: Get Financial Institution
+      tags:
+        - Financial Institution
+    put:
+      consumes:
+        - application/json
+      description: update financial institution
+      parameters:
+        - description: Financial Institution ID
+          in: path
+          name: id
+          required: true
+          type: integer
+        - description: Financial Institution
+          in: body
+          name: data
+          required: true
+          schema:
+            $ref: '#/definitions/dtos.FinancialInstitution'
+      produces:
+        - application/json
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/dtos.FinancialInstitution'
+        '400':
+          description: Bad Request
+          schema: {}
+        '404':
+          description: Not Found
+          schema: {}
+        '500':
+          description: Internal Server Error
+          schema: {}
+      summary: Update Financial Institution
+      tags:
+        - Financial Institution
+  /v1/payment_methods/financial_institutions/search:
+    get:
+      consumes:
+        - application/json
+      description: search financial institutions
+      parameters:
+        - description: Site ID
+          in: query
+          name: site_id
+          required: true
+          type: string
+        - description: Description
+          in: query
+          name: description
+          type: string
+        - description: Reference ID
+          in: query
+          name: reference_id
+          type: string
+        - description: Payment Method ID
+          in: query
+          name: payment_method_id
+          type: string
+        - description: Merchant Account ID
+          in: query
+          name: merchant_account_id
+          type: string
+        - description: Differential Pricing ID
+          in: query
+          name: diff_pricing_id
+          type: string
+      produces:
+        - application/json
+      responses:
+        '200':
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/dtos.FinancialInstitution'
+            type: array
+        '400':
+          description: Bad Request
+          schema: {}
+        '404':
+          description: Not Found
+          schema: {}
+        '500':
+          description: Internal Server Error
+          schema: {}
+      summary: Search Financial Institutions
+      tags:
+        - Financial Institution
+  /v1/payment_methods/find_all:
+    get:
+      consumes:
+        - application/json
+      description: find all payment methods configuration by params
+      parameters:
+        - description: Site ID
+          in: query
+          name: site_id
+          required: true
+          type: string
+        - description: Payment Method Id
+          in: query
+          name: payment_method_id
+          type: string
+        - description: Owner
+          in: query
+          name: owner
+          type: string
+        - description: Processing Mode
+          in: query
+          name: processing_mode
+          type: string
+        - description: Issuer Id
+          in: query
+          name: issuer_id
+          type: integer
+        - description: Marketplace
+          in: query
+          name: marketplace
+          type: string
+        - description: Status
+          in: query
+          name: status
+          type: string
+      produces:
+        - application/json
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/dtos.PaymentMethodConfigurationOutput'
+        '400':
+          description: Bad Request
+          schema: {}
+        '404':
+          description: Not Found
+          schema: {}
+        '500':
+          description: Internal Server Error
+          schema: {}
+      summary: Find All Payment Methods Configuration
+      tags:
+        - Payment Method Configuration
+  /v1/payment_methods/groups:
+    get:
+      consumes:
+        - application/json
+      description: List Group
+      produces:
+        - application/json
+      responses:
+        '200':
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/dtos.Group'
+            type: array
+        '400':
+          description: Bad Request
+          schema: {}
+        '404':
+          description: Not Found
+          schema: {}
+        '500':
+          description: Internal Server Error
+          schema: {}
+      summary: List Group
+      tags:
+        - Group
+    post:
+      consumes:
+        - application/json
+      description: create
+      parameters:
+        - description: Group
+          in: body
+          name: data
+          required: true
+          schema:
+            $ref: '#/definitions/dtos.Group'
+      produces:
+        - application/json
+      responses:
+        '201':
+          description: Created
+          schema:
+            $ref: '#/definitions/dtos.Group'
+        '400':
+          description: Bad Request
+          schema: {}
+        '404':
+          description: Not Found
+          schema: {}
+        '500':
+          description: Internal Server Error
+          schema: {}
+      summary: Create Group
+      tags:
+        - Group
+  /v1/payment_methods/groups/{name}:
+    put:
+      consumes:
+        - application/json
+      description: update
+      parameters:
+        - description: Group name
+          in: path
+          name: name
+          required: true
+          type: string
+        - description: Group
+          in: body
+          name: data
+          required: true
+          schema:
+            $ref: '#/definitions/dtos.GroupInputBulk'
+      produces:
+        - application/json
+      responses:
+        '200':
+          description: OK
+        '400':
+          description: Bad Request
+          schema: {}
+        '404':
+          description: Not Found
+          schema: {}
+        '500':
+          description: Internal Server Error
+          schema: {}
+      summary: Update Group
+      tags:
+        - Group
+  /v1/payment_methods/groups/{name}/sellers:
+    get:
+      consumes:
+        - application/json
+      description: get group sellers by name
+      parameters:
+        - description: Group Name
+          in: path
+          name: name
+          required: true
+          type: string
+      produces:
+        - application/json
+      responses:
+        '200':
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/dtos.GroupSeller'
+            type: array
+        '400':
+          description: Bad Request
+          schema: {}
+        '404':
+          description: Not Found
+          schema: {}
+        '500':
+          description: Internal Server Error
+          schema: {}
+      summary: Get Group
+      tags:
+        - Group
+  /v1/payment_methods/installments/{id}:
+    delete:
+      consumes:
+        - application/json
+      description: delete by id
+      parameters:
+        - description: Installment ID
+          in: path
+          name: id
+          required: true
+          type: integer
+      produces:
+        - application/json
+      responses:
+        '204':
+          description: No Content
+        '400':
+          description: Bad Request
+          schema: {}
+        '404':
+          description: Not Found
+          schema: {}
+        '500':
+          description: Internal Server Error
+          schema: {}
+      summary: Delete Installment
+      tags:
+        - Installment
+    get:
+      consumes:
+        - application/json
+      description: get by id
+      parameters:
+        - description: Installment ID
+          in: path
+          name: id
+          required: true
+          type: integer
+      produces:
+        - application/json
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/dtos.Installment'
+        '400':
+          description: Bad Request
+          schema: {}
+        '404':
+          description: Not Found
+          schema: {}
+        '500':
+          description: Internal Server Error
+          schema: {}
+      summary: Get Installment
+      tags:
+        - Installment
+    put:
+      consumes:
+        - application/json
+      description: update
+      parameters:
+        - description: Installment ID
+          in: path
+          name: id
+          required: true
+          type: integer
+        - description: Installment
+          in: body
+          name: data
+          required: true
+          schema:
+            $ref: '#/definitions/dtos.Installment'
+      produces:
+        - application/json
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/dtos.Installment'
+        '400':
+          description: Bad Request
+          schema: {}
+        '404':
+          description: Not Found
+          schema: {}
+        '500':
+          description: Internal Server Error
+          schema: {}
+      summary: Update Installment
+      tags:
+        - Installment
+  /v1/payment_methods/installments_by_user:
+    post:
+      consumes:
+        - application/json
+      description: create
+      parameters:
+        - description: InstallmentsByUser
+          in: body
+          name: data
+          required: true
+          schema:
+            $ref: '#/definitions/dtos.InstallmentsByUser'
+      produces:
+        - application/json
+      responses:
+        '201':
+          description: Created
+          schema:
+            $ref: '#/definitions/dtos.InstallmentsByUser'
+        '400':
+          description: Bad Request
+          schema: {}
+        '404':
+          description: Not Found
+          schema: {}
+        '500':
+          description: Internal Server Error
+          schema: {}
+      summary: Create InstallmentsByUser
+      tags:
+        - InstallmentsByUser
+  /v1/payment_methods/installments_by_user/{id}:
+    delete:
+      consumes:
+        - application/json
+      description: delete by id
+      parameters:
+        - description: InstallmentsByUser ID
+          in: path
+          name: id
+          required: true
+          type: integer
+      produces:
+        - application/json
+      responses:
+        '204':
+          description: No Content
+        '400':
+          description: Bad Request
+          schema: {}
+        '404':
+          description: Not Found
+          schema: {}
+        '500':
+          description: Internal Server Error
+          schema: {}
+      summary: Delete InstallmentsByUser
+      tags:
+        - InstallmentsByUser
+    get:
+      consumes:
+        - application/json
+      description: get by id
+      parameters:
+        - description: InstallmentsByUser ID
+          in: path
+          name: id
+          required: true
+          type: integer
+      produces:
+        - application/json
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/dtos.InstallmentsByUser'
+        '400':
+          description: Bad Request
+          schema: {}
+        '404':
+          description: Not Found
+          schema: {}
+        '500':
+          description: Internal Server Error
+          schema: {}
+      summary: Get InstallmentsByUser
+      tags:
+        - InstallmentsByUser
+  /v1/payment_methods/installments_by_user/search:
+    get:
+      consumes:
+        - application/json
+      description: search
+      produces:
+        - application/json
+      responses:
+        '200':
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/dtos.InstallmentsByUser'
+            type: array
+        '400':
+          description: Bad Request
+          schema: {}
+        '404':
+          description: Not Found
+          schema: {}
+        '500':
+          description: Internal Server Error
+          schema: {}
+      summary: Search InstallmentsByUser
+      tags:
+        - InstallmentsByUser
+  /v1/payment_methods/own_promos_by_user/search:
+    get:
+      consumes:
+        - application/json
+      description: search
+      produces:
+        - application/json
+      responses:
+        '200':
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/dtos.OwnPromosByUser'
+            type: array
+        '400':
+          description: Bad Request
+          schema: {}
+        '404':
+          description: Not Found
+          schema: {}
+        '500':
+          description: Internal Server Error
+          schema: {}
+      summary: Search OwnPromosByUser
+      tags:
+        - OwnPromosByUser
+  /v1/payment_methods/payment_methods:
+    get:
+      consumes:
+        - application/json
+      description: list payment method
+      produces:
+        - application/json
+      responses:
+        '200':
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/dtos.PaymentMethod'
+            type: array
+        '400':
+          description: Bad Request
+          schema: {}
+        '404':
+          description: Not Found
+          schema: {}
+        '500':
+          description: Internal Server Error
+          schema: {}
+      summary: List Payment Method
+      tags:
+        - Payment Method
+    post:
+      consumes:
+        - application/json
+      description: create payment method
+      parameters:
+        - description: Payment Method
+          in: body
+          name: data
+          required: true
+          schema:
+            $ref: '#/definitions/dtos.PaymentMethod'
+      produces:
+        - application/json
+      responses:
+        '201':
+          description: Created
+          schema:
+            $ref: '#/definitions/dtos.PaymentMethod'
+        '400':
+          description: Bad Request
+          schema: {}
+        '404':
+          description: Not Found
+          schema: {}
+        '500':
+          description: Internal Server Error
+          schema: {}
+      summary: Create Payment Method - ONLY FOR MIGRATION REASONS, NEXT TO DEPRECATE
+      tags:
+        - Payment Method
+  /v1/payment_methods/payment_methods-category_meli:
+    post:
+      consumes:
+        - application/json
+      description: create
+      parameters:
+        - description: PMCategoryMeli
+          in: body
+          name: data
+          required: true
+          schema:
+            $ref: '#/definitions/dtos.PMCategoryMeli'
+      produces:
+        - application/json
+      responses:
+        '201':
+          description: Created
+          schema:
+            $ref: '#/definitions/dtos.PMCategoryMeli'
+        '400':
+          description: Bad Request
+          schema: {}
+        '404':
+          description: Not Found
+          schema: {}
+        '500':
+          description: Internal Server Error
+          schema: {}
+      summary: Create PMCategoryMeli
+      tags:
+        - PMCategoryMeli
+  /v1/payment_methods/payment_methods-category_meli/{id}:
+    put:
+      consumes:
+        - application/json
+      description: update
+      parameters:
+        - description: PMCategoryMeli ID
+          in: path
+          name: id
+          required: true
+          type: integer
+        - description: PMCategoryMeli
+          in: body
+          name: data
+          required: true
+          schema:
+            $ref: '#/definitions/dtos.PMCategoryMeli'
+      produces:
+        - application/json
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/dtos.PMCategoryMeli'
+        '400':
+          description: Bad Request
+          schema: {}
+        '404':
+          description: Not Found
+          schema: {}
+        '500':
+          description: Internal Server Error
+          schema: {}
+      summary: Update PMCategoryMeli
+      tags:
+        - PMCategoryMeli
+  /v1/payment_methods/payment_methods/{id}:
+    get:
+      consumes:
+        - application/json
+      description: get payment method by id
+      parameters:
+        - description: Payment Method ID
+          in: path
+          name: id
+          required: true
+          type: integer
+      produces:
+        - application/json
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/dtos.PaymentMethod'
+        '400':
+          description: Bad Request
+          schema: {}
+        '404':
+          description: Not Found
+          schema: {}
+        '500':
+          description: Internal Server Error
+          schema: {}
+      summary: Get Payment Method
+      tags:
+        - Payment Method
+    put:
+      consumes:
+        - application/json
+      description: update payment method
+      parameters:
+        - description: Payment Method ID
+          in: path
+          name: id
+          required: true
+          type: integer
+        - description: Payment Method
+          in: body
+          name: data
+          required: true
+          schema:
+            $ref: '#/definitions/dtos.PaymentMethod'
+      produces:
+        - application/json
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/dtos.PaymentMethod'
+        '400':
+          description: Bad Request
+          schema: {}
+        '404':
+          description: Not Found
+          schema: {}
+        '500':
+          description: Internal Server Error
+          schema: {}
+      summary: Update Payment Method - ONLY FOR PMWV2
+      tags:
+        - Payment Method
+  /v1/payment_methods/payment_type/search:
+    get:
+      consumes:
+        - application/json
+      description: search payment method
+      parameters:
+        - description: Site ID
+          in: query
+          name: site_id
+          type: string
+        - description: Marketplace
+          in: query
+          name: marketplace
+          type: string
+        - description: Payment Type ID
+          in: query
+          name: payment_type_id
+          type: string
+      produces:
+        - application/json
+      responses:
+        '200':
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/dtos.PaymentMethod'
+            type: array
+        '400':
+          description: Bad Request
+          schema: {}
+        '404':
+          description: Not Found
+          schema: {}
+        '500':
+          description: Internal Server Error
+          schema: {}
+      summary: Search Payment Method
+      tags:
+        - Payment Method
+  /v1/payment_methods/regulations_notification:
+    post:
+      consumes:
+        - application/json
+      description: RegulationNotification
+      parameters:
+        - description: body
+          in: body
+          name: Mgs
+          required: true
+          schema:
+            type: object
+      produces:
+        - application/json
+      responses:
+        '200':
+          description: ok
+          schema:
+            type: object
+        '400':
+          description: bad request
+          schema:
+            type: object
+      summary: Create or Eliminate Exclusions By User for regulation mla_uif
+      tags:
+        - RegulationNotification
+  /v1/payment_methods/search:
+    get:
+      consumes:
+        - application/json
+      description: search payment method configuration by id
+      parameters:
+        - description: Site ID
+          in: query
+          name: site_id
+          required: true
+          type: string
+      produces:
+        - application/json
+      responses:
+        '200':
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/dtos.PaymentMethodConfigurationOutput'
+            type: array
+        '400':
+          description: Bad Request
+          schema: {}
+        '404':
+          description: Not Found
+          schema: {}
+        '500':
+          description: Internal Server Error
+          schema: {}
+      summary: Search Payment Method Configuration
+      tags:
+        - Payment Method Configuration
+  /v1/payment_methods/sellers/{sellerID}/groups:
+    get:
+      consumes:
+        - application/json
+      description: get group sellers by seller id
+      parameters:
+        - description: Seller ID
+          in: path
+          name: sellerID
+          required: true
+          type: integer
+      produces:
+        - application/json
+      responses:
+        '200':
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/dtos.GroupSellerOutputWithPaymentMethod'
+            type: array
+        '400':
+          description: Bad Request
+          schema: {}
+        '404':
+          description: Not Found
+          schema: {}
+        '500':
+          description: Internal Server Error
+          schema: {}
+      summary: Get Group
+      tags:
+        - Group
+  /v1/payment_methods/settings:
+    post:
+      consumes:
+        - application/json
+      description: create card setting
+      parameters:
+        - description: Card Setting
+          in: body
+          name: data
+          required: true
+          schema:
+            $ref: '#/definitions/dtos.CardSettingInputCreate'
+      produces:
+        - application/json
+      responses:
+        '201':
+          description: Created
+          schema:
+            $ref: '#/definitions/dtos.CardSettingOutput'
+        '400':
+          description: Bad Request
+          schema: {}
+        '404':
+          description: Not Found
+          schema: {}
+        '500':
+          description: Internal Server Error
+          schema: {}
+      summary: Create Card Setting
+      tags:
+        - Card Setting
+  /v1/payment_methods/settings/{id}:
+    delete:
+      consumes:
+        - application/json
+      description: delete card setting by id
+      parameters:
+        - description: Card Setting ID
+          in: path
+          name: id
+          required: true
+          type: integer
+      produces:
+        - application/json
+      responses:
+        '204':
+          description: No Content
+        '400':
+          description: Bad Request
+          schema: {}
+        '404':
+          description: Not Found
+          schema: {}
+        '500':
+          description: Internal Server Error
+          schema: {}
+      summary: Delete Card Setting
+      tags:
+        - Card Setting
+    get:
+      consumes:
+        - application/json
+      description: get card setting by id
+      parameters:
+        - description: Card Setting ID
+          in: path
+          name: id
+          required: true
+          type: integer
+      produces:
+        - application/json
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/dtos.CardSettingOutput'
+        '400':
+          description: Bad Request
+          schema: {}
+        '404':
+          description: Not Found
+          schema: {}
+        '500':
+          description: Internal Server Error
+          schema: {}
+      summary: Get Card Setting
+      tags:
+        - Card Setting
+    put:
+      consumes:
+        - application/json
+      description: update card setting
+      parameters:
+        - description: Card Setting ID
+          in: path
+          name: id
+          required: true
+          type: integer
+        - description: Card Setting
+          in: body
+          name: data
+          required: true
+          schema:
+            $ref: '#/definitions/dtos.CardSettingInputUpdate'
+      produces:
+        - application/json
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/dtos.CardSettingOutput'
+        '400':
+          description: Bad Request
+          schema: {}
+        '404':
+          description: Not Found
+          schema: {}
+        '500':
+          description: Internal Server Error
+          schema: {}
+      summary: Update Card Setting
+      tags:
+        - Card Setting
+  /v1/payment_methods/sync:
+    post:
+      consumes:
+        - application/json
+      description: create eventos
+      produces:
+        - application/json
+      responses:
+        '200':
+          description: OK
+        '500':
+          description: Internal Server Error
+          schema: {}
+      summary: Job to create events for custom payment methods
+      tags:
+        - custom
+        - events
 components:
   securitySchemes:
     bearerAuth:
@@ -309,8 +3214,9 @@ components:
       description: Public key for client-side card tokenization via MercadoPago.js only. Never use for server-side calls.
     mercadopagoOAuth:
       type: oauth2
-      description: OAuth 2.0 authorization_code flow for marketplace on-behalf-of and Wallet Connect integrations. For client_credentials
-        and refresh_token, use POST /oauth/token directly with the appropriate grant_type.
+      description: >-
+        OAuth 2.0 authorization_code flow for marketplace on-behalf-of and Wallet Connect integrations. For
+        client_credentials and refresh_token, use POST /oauth/token directly with the appropriate grant_type.
       flows:
         authorizationCode:
           authorizationUrl: https://auth.mercadopago.com/authorization

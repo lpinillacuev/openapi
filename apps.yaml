@@ -10,13 +10,13 @@ apps:
     tag: Payments
     product: payments
     paths:
-      - /payments
+      - /v1/payments
 
   - fury_app: openplatform-customer-go
     tag: Customers
     product: customers
     paths:
-      - /customers
+      - /v1/customers
 
   - fury_app: mpcs-preferences-api
     tag: Preferences

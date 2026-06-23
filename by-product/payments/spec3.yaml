@@ -302,582 +302,382 @@ tags:
       - MLM
       - MLC
 paths:
-  /v1/payments:
+  /payments:
     post:
-      operationId: createPayment
-      summary: Create a payment
+      summary: Process a payment
       description: >-
-        Creates a payment. For card payments, generate a card token client-side via MercadoPago.js before calling this
-        endpoint. For cash/offline methods (Boleto, OXXO, Pix), the response includes a payment URL in
-        `transaction_details.external_resource_url`.
-
-        **Idempotency**: Include `X-Idempotency-Key` to safely retry on network errors without risk of double charges.
-
-        **Recommendation**: For new integrations, prefer the Orders API (`POST /v1/orders`).
-
-        **Idempotent:** Supports `X-Idempotency-Key` header to safely retry without duplicate charges.
-
-        **Webhook events triggered:** payment, merchant_order
+        Initiates a payment transaction for a specified amount using the provided payment method. This endpoint handles
+        the complete payment flow including validation, authorization, and processing.
       tags:
-        - Payments
-      security:
-        - bearerAuth: []
-      parameters:
-        - name: X-Idempotency-Key
-          in: header
-          required: false
-          schema:
-            type: string
-            format: uuid
-          description: >-
-            Unique key per payment attempt. If you retry with the same key and the original payment was processed, MP
-            returns the original result without creating a duplicate.
+        - payments
       requestBody:
         required: true
         content:
           application/json:
             schema:
               $ref: '#/components/schemas/PaymentRequest'
-            examples:
-              card_brazil:
-                summary: Credit card — Brazil (Visa)
-                value:
-                  transaction_amount: 100.5
-                  token: YOUR_ACCESS_TOKEN
-                  description: Premium subscription — 1 month
-                  installments: 1
-                  payment_method_id: visa
-                  payer:
-                    email: test@example.com
-                    identification:
-                      type: CPF
-                      number: '12345678909'
-              pix_brazil:
-                summary: Pix — Brazil
-                value:
-                  transaction_amount: 100.5
-                  payment_method_id: pix
-                  payer:
-                    email: test@example.com
-                    identification:
-                      type: CPF
-                      number: '12345678909'
-              boleto_brazil:
-                summary: Boleto Bancário — Brazil
-                value:
-                  transaction_amount: 100.5
-                  payment_method_id: bolbradesco
-                  payer:
-                    email: test@example.com
-                    first_name: João
-                    last_name: Silva
-                    identification:
-                      type: CPF
-                      number: '12345678909'
-              card_argentina:
-                summary: Credit card — Argentina (Visa)
-                value:
-                  transaction_amount: 5000
-                  token: YOUR_ACCESS_TOKEN
-                  description: 'Order #1234'
-                  installments: 3
-                  payment_method_id: visa
-                  payer:
-                    email: test@example.com
-                    identification:
-                      type: DNI
-                      number: '12345678'
-              oxxo_mexico:
-                summary: OXXO — Mexico
-                value:
-                  transaction_amount: 500
-                  payment_method_id: oxxo
-                  date_of_expiration: '2024-12-31T23:59:59.000-06:00'
-                  payer:
-                    email: test@example.com
       responses:
-        '200':
-          description: Payment created
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Payment'
         '201':
-          description: Payment created
+          description: Payment processed successfully
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Payment'
+                $ref: '#/components/schemas/PaymentResponse'
         '400':
-          $ref: '#/components/responses/BadRequest'
+          description: Invalid payment request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
         '401':
-          $ref: '#/components/responses/Unauthorized'
-        '403':
-          $ref: '#/components/responses/Forbidden'
-        '422':
-          $ref: '#/components/responses/UnprocessableEntity'
-  /v1/payments/{id}:
+          description: Unauthorized access
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '402':
+          description: Payment required or insufficient funds
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
     get:
-      operationId: getPayment
-      summary: Get payment by ID
-      tags:
-        - Payments
-      security:
-        - bearerAuth: []
-      parameters:
-        - name: id
-          in: path
-          required: true
-          schema:
-            type: integer
-          description: Payment ID
-      responses:
-        '200':
-          description: Payment found
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Payment'
-        '400':
-          $ref: '#/components/responses/BadRequest'
-        '401':
-          $ref: '#/components/responses/Unauthorized'
-        '403':
-          $ref: '#/components/responses/Forbidden'
-        '404':
-          $ref: '#/components/responses/NotFound'
-    put:
-      operationId: updatePayment
-      summary: Update or capture a payment
+      summary: List payments
       description: >-
-        Update payment fields or capture an authorized payment. To capture an authorized two-step payment: send
-        `{"capture": true}`. To cancel an authorized payment: send `{"status": "cancelled"}`.
+        Retrieves a paginated list of payments with optional filtering by status, date range, merchant, or customer.
+        Supports sorting by creation date, amount, or status.
       tags:
-        - Payments
-      security:
-        - bearerAuth: []
+        - payments
       parameters:
-        - name: id
-          in: path
-          required: true
+        - name: limit
           schema:
             type: integer
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/PaymentUpdateRequest'
-      responses:
-        '200':
-          description: Payment updated
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Payment'
-        '400':
-          $ref: '#/components/responses/BadRequest'
-        '401':
-          $ref: '#/components/responses/Unauthorized'
-        '403':
-          $ref: '#/components/responses/Forbidden'
-        '404':
-          $ref: '#/components/responses/NotFound'
-  /v1/payments/search:
-    get:
-      operationId: searchPayments
-      summary: Search payments
-      tags:
-        - Payments
-      security:
-        - bearerAuth: []
-      parameters:
-        - name: sort
+            minimum: 1
+            maximum: 100
+            default: 20
+          description: Number of payments to return per page
           in: query
-          required: true
+          required: false
+        - name: status
           schema:
             type: string
-        - name: criteria
+            enum:
+              - pending
+              - processing
+              - completed
+              - failed
+              - cancelled
+          description: Filter payments by status
           in: query
-          required: true
+          required: false
+        - name: sort_by
+          schema:
+            type: string
+            enum:
+              - created_at
+              - amount
+              - status
+            default: created_at
+          description: Field to sort payments by
+          in: query
+          required: false
+        - name: merchant_id
+          schema:
+            type: string
+            format: uuid
+          description: Filter payments by merchant ID
+          in: query
+          required: false
+        - name: end_date
+          schema:
+            type: string
+            format: date
+          description: Filter payments created before this date
+          in: query
+          required: false
+        - name: offset
+          schema:
+            type: integer
+            minimum: 0
+            default: 0
+          description: Number of payments to skip
+          in: query
+          required: false
+        - name: sort_order
           schema:
             type: string
             enum:
               - asc
               - desc
-        - name: external_reference
+            default: desc
+          description: Sort order for payments
           in: query
-          schema:
-            type: string
-        - name: range
-          in: query
-          schema:
-            type: string
-            enum:
-              - date_created
-              - date_last_updated
-              - money_release_date
-        - name: begin_date
-          in: query
-          schema:
-            type: string
-            format: date-time
-        - name: end_date
-          in: query
-          schema:
-            type: string
-            format: date-time
-        - name: status
-          in: query
-          schema:
-            type: string
-        - name: store_id
-          in: query
-          schema:
-            type: string
-        - name: pos_id
-          in: query
-          schema:
-            type: string
-        - name: collector.id
-          in: query
-          schema:
-            type: string
-        - name: payer.id
-          in: query
-          schema:
-            type: string
-        - name: limit
-          in: query
-          schema:
-            type: integer
-            default: 30
-        - name: offset
-          in: query
-          schema:
-            type: integer
-            default: 0
-      responses:
-        '200':
-          description: Search results
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/PaymentSearchResult'
-        '400':
-          $ref: '#/components/responses/BadRequest'
-        '401':
-          $ref: '#/components/responses/Unauthorized'
-        '403':
-          $ref: '#/components/responses/Forbidden'
-  /v1/payments/{id}/refunds:
-    post:
-      operationId: createRefund
-      summary: Create a refund
-      description: >-
-        Creates a full or partial refund for an approved payment. Omit the `amount` field for a full refund. Partial
-        refunds are supported; multiple partials are allowed up to the original transaction amount.
-
-        **Idempotent:** Supports `X-Idempotency-Key` header to safely retry without duplicate charges.
-      tags:
-        - Cancellations & Refunds
-      security:
-        - bearerAuth: []
-      parameters:
-        - name: id
-          in: path
-          required: true
-          schema:
-            type: integer
-          description: Payment ID to refund
-        - name: X-Idempotency-Key
-          in: header
           required: false
+        - name: customer_id
           schema:
             type: string
             format: uuid
+          description: Filter payments by customer ID
+          in: query
+          required: false
+        - name: start_date
+          schema:
+            type: string
+            format: date
+          description: Filter payments created after this date
+          in: query
+          required: false
+      responses:
+        '200':
+          description: Payments retrieved successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaymentListResponse'
+        '400':
+          description: Invalid query parameters
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '401':
+          description: Unauthorized access
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /payments/{payment_id}:
+    get:
+      summary: Get payment details
+      description: >-
+        Retrieves detailed information about a specific payment transaction including its current status, amount, fees,
+        and processing history.
+      tags:
+        - payments
+      parameters:
+        - name: payment_id
+          in: path
+          required: true
+          description: Unique payment identifier
+          schema:
+            type: string
+            format: uuid
+            example: 987fcdeb-51a2-43d1-9c15-246531579012
+      responses:
+        '200':
+          description: Payment details retrieved successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaymentResponse'
+        '401':
+          description: Unauthorized access
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '404':
+          description: Payment not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /payments/{payment_id}/cancel:
+    post:
+      summary: Cancel a payment
+      description: >-
+        Cancels a pending or processing payment. Once cancelled, the payment cannot be recovered. Only payments in
+        'pending' or 'processing' status can be cancelled.
+      tags:
+        - payments
+      parameters:
+        - name: payment_id
+          schema:
+            type: string
+            format: uuid
+            example: 987fcdeb-51a2-43d1-9c15-246531579012
+          description: Unique payment identifier
+          in: path
+          required: true
       requestBody:
         required: false
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/RefundRequest'
-            examples:
-              full_refund:
-                summary: Full refund (omit amount)
-                value: {}
-              partial_refund:
-                summary: Partial refund of R$50
-                value:
-                  amount: 50
-      responses:
-        '201':
-          description: Refund created
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  id:
-                    type: integer
-                  payment_id:
-                    type: integer
-                  amount:
-                    type: number
-                    format: float
-                  metadata:
-                    type: object
-                    additionalProperties: true
-                  source:
-                    type: object
-                    properties:
-                      id:
-                        type: string
-                      name:
-                        type: string
-                      type:
-                        type: string
-                  date_created:
-                    type: string
-                    format: date-time
-                  unique_sequence_number:
-                    type: string
-                  refund_mode:
-                    type: string
-                    enum:
-                      - standard
-                      - instant
-                  adjustment_amount:
-                    type: number
-                    format: float
-                    nullable: true
-                  status:
-                    type: string
-                    enum:
-                      - approved
-                      - in_process
-                      - rejected
-                  reason:
-                    type: string
-                    nullable: true
-                  label:
-                    type: string
-                    nullable: true
-                  partition_details:
-                    type: array
-                    items:
-                      type: object
-        '400':
-          $ref: '#/components/responses/BadRequest'
-        '401':
-          $ref: '#/components/responses/Unauthorized'
-        '404':
-          $ref: '#/components/responses/NotFound'
-    get:
-      operationId: listRefunds
-      summary: List refunds for a payment
-      tags:
-        - Cancellations & Refunds
-      security:
-        - bearerAuth: []
-      parameters:
-        - name: id
-          in: path
-          required: true
-          schema:
-            type: integer
+              type: object
+              properties:
+                reason:
+                  type: string
+                  description: Reason for cancellation
+                  maxLength: 500
+                  example: Customer requested cancellation
       responses:
         '200':
-          description: Refund list
+          description: Payment cancelled successfully
           content:
             application/json:
               schema:
-                type: object
-                properties:
-                  id:
-                    type: integer
-                  payment_id:
-                    type: integer
-                  amount:
-                    type: number
-                    format: float
-                  metadata:
-                    type: object
-                    additionalProperties: true
-                  source:
-                    type: object
-                    properties:
-                      id:
-                        type: string
-                      name:
-                        type: string
-                      type:
-                        type: string
-                  date_created:
-                    type: string
-                    format: date-time
-                  unique_sequence_number:
-                    type: string
-                  refund_mode:
-                    type: string
-                    enum:
-                      - standard
-                      - instant
-                  adjustment_amount:
-                    type: number
-                    format: float
-                    nullable: true
-                  status:
-                    type: string
-                    enum:
-                      - approved
-                      - in_process
-                      - rejected
-                  reason:
-                    type: string
-                    nullable: true
-                  label:
-                    type: string
-                    nullable: true
-                  partition_details:
-                    type: array
-                    items:
-                      type: object
-        '400':
-          $ref: '#/components/responses/BadRequest'
+                $ref: '#/components/schemas/PaymentResponse'
         '401':
-          $ref: '#/components/responses/Unauthorized'
-        '404':
-          $ref: '#/components/responses/NotFound'
-  /v1/payments/{id}/refunds/{refund_id}:
-    get:
-      operationId: getRefund
-      summary: Get a specific refund
-      tags:
-        - Cancellations & Refunds
-      security:
-        - bearerAuth: []
-      parameters:
-        - name: id
-          in: path
-          required: true
-          schema:
-            type: integer
-        - name: refund_id
-          in: path
-          required: true
-          schema:
-            type: integer
-      responses:
-        '200':
-          description: Refund found
+          description: Unauthorized access
           content:
             application/json:
               schema:
-                type: object
-                properties:
-                  id:
-                    type: integer
-                  payment_id:
-                    type: integer
-                  amount:
-                    type: number
-                    format: float
-                  metadata:
-                    type: object
-                    additionalProperties: true
-                  source:
-                    type: object
-                    properties:
-                      id:
-                        type: string
-                      name:
-                        type: string
-                      type:
-                        type: string
-                  date_created:
-                    type: string
-                    format: date-time
-                  unique_sequence_number:
-                    type: string
-                  refund_mode:
-                    type: string
-                    enum:
-                      - standard
-                      - instant
-                  adjustment_amount:
-                    type: number
-                    format: float
-                    nullable: true
-                  status:
-                    type: string
-                    enum:
-                      - approved
-                      - in_process
-                      - rejected
-                  reason:
-                    type: string
-                    nullable: true
-                  label:
-                    type: string
-                    nullable: true
-                  partition_details:
-                    type: array
-                    items:
-                      type: object
-        '400':
-          $ref: '#/components/responses/BadRequest'
+                $ref: '#/components/schemas/Error'
         '404':
-          $ref: '#/components/responses/NotFound'
-  /v1/payments/{id}/cancellations:
-    put:
-      operationId: cancelPayment
-      summary: Cancel a payment
+          description: Payment not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '409':
+          description: Payment cannot be cancelled in current status
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /payments/{payment_id}/refunds:
+    post:
+      summary: Process a refund
       description: >-
-        Cancels a payment that is in `pending` or `authorized` status. Only payments that have not yet been captured or
-        processed can be cancelled. For approved payments use the refunds endpoint instead.
+        Processes a full or partial refund for a completed payment. The refund amount cannot exceed the original payment
+        amount minus any previously processed refunds.
       tags:
-        - Cancellations & Refunds
-      security:
-        - bearerAuth: []
+        - refunds
       parameters:
-        - name: id
+        - name: payment_id
+          schema:
+            type: string
+            format: uuid
+            example: 987fcdeb-51a2-43d1-9c15-246531579012
+          description: Unique payment identifier
           in: path
           required: true
-          schema:
-            type: integer
-          description: Payment ID to cancel
       requestBody:
         required: true
         content:
           application/json:
             schema:
-              type: object
-              required:
-                - status
-              properties:
-                status:
-                  type: string
-                  enum:
-                    - cancelled
-                  description: Must be "cancelled"
+              $ref: '#/components/schemas/RefundRequest'
       responses:
-        '200':
-          description: Payment cancelled
+        '201':
+          description: Refund processed successfully
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Payment'
+                $ref: '#/components/schemas/RefundResponse'
         '400':
-          $ref: '#/components/responses/BadRequest'
+          description: Invalid refund request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
         '401':
-          $ref: '#/components/responses/Unauthorized'
+          description: Unauthorized access
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
         '404':
-          $ref: '#/components/responses/NotFound'
-        '422':
-          $ref: '#/components/responses/UnprocessableEntity'
-        '429':
-          $ref: '#/components/responses/TooManyRequests'
+          description: Payment not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '409':
+          description: Payment cannot be refunded in current status
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    get:
+      summary: List payment refunds
+      description: >-
+        Retrieves a paginated list of all refunds processed for a specific payment, including partial and full refunds
+        with their current status and processing details.
+      tags:
+        - refunds
+      parameters:
+        - name: payment_id
+          schema:
+            type: string
+            format: uuid
+            example: 987fcdeb-51a2-43d1-9c15-246531579012
+          description: Unique payment identifier
+          in: path
+          required: true
+        - name: limit
+          schema:
+            maximum: 100
+            default: 20
+            type: integer
+            minimum: 1
+          description: Number of refunds to return per page
+          in: query
+          required: false
+        - name: offset
+          schema:
+            type: integer
+            minimum: 0
+            default: 0
+          description: Number of refunds to skip
+          in: query
+          required: false
+      responses:
+        '200':
+          description: Payment refunds retrieved successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RefundListResponse'
+        '401':
+          description: Unauthorized access
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '404':
+          description: Payment not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
 components:
   securitySchemes:
     bearerAuth:
@@ -949,39 +749,29 @@ components:
             error: too_many_requests
             message: Rate limit exceeded. Retry after the indicated number of seconds.
   schemas:
-    CurrencyId:
-      type: string
-      description: ISO 4217 currency code for the applicable site
-      enum:
-        - ARS
-        - BRL
-        - MXN
-        - CLP
-        - COP
-        - PEN
-        - UYU
-        - BOB
-        - PYG
-        - USD
-        - CRC
-        - DOP
-        - HNL
-        - NIO
-        - GTQ
-        - VES
-      example: BRL
-    Identification:
+    Error:
       type: object
-      description: Payer identification document. Valid types vary by country.
+      required:
+        - error
+        - message
       properties:
-        type:
+        error:
           type: string
-          description: Identification type (e.g., CPF, CNPJ for Brazil; DNI for Argentina; RFC for Mexico)
-          example: CPF
-        number:
+          description: Error code
+          example: invalid_payment_method
+        message:
           type: string
-          description: Identification number (no formatting — digits only)
-          example: '12345678909'
+          description: Human-readable error message
+          example: The provided payment method is invalid or expired
+        details:
+          type: object
+          additionalProperties: true
+          description: Additional error details
+        timestamp:
+          type: string
+          format: date-time
+          description: Error timestamp
+          example: '2024-01-15T10:30:00Z'
     Pagination:
       type: object
       required:
@@ -1047,182 +837,6 @@ components:
           additionalProperties:
             type: string
           description: Additional metadata for the payment
-    Payment:
-      type: object
-      description: A MercadoPago payment object
-      properties:
-        id:
-          type: integer
-          description: Payment unique identifier
-          example: 1234567890
-        date_created:
-          type: string
-          format: date-time
-          example: '2024-01-15T10:30:00.000-03:00'
-        date_approved:
-          type: string
-          format: date-time
-          nullable: true
-        date_last_updated:
-          type: string
-          format: date-time
-        date_of_expiration:
-          type: string
-          format: date-time
-          nullable: true
-        money_release_date:
-          type: string
-          format: date-time
-          nullable: true
-        operation_type:
-          type: string
-          enum:
-            - regular_payment
-            - money_transfer
-            - recurring_payment
-            - account_fund
-            - payment_addition
-            - cellphone_recharge
-            - pos_payment
-            - money_exchange
-        issuer_id:
-          type: string
-          nullable: true
-        payment_method_id:
-          type: string
-          example: visa
-        payment_type_id:
-          type: string
-          enum:
-            - account_money
-            - ticket
-            - bank_transfer
-            - atm
-            - credit_card
-            - debit_card
-            - prepaid_card
-            - digital_currency
-            - digital_wallet
-            - voucher_card
-            - crypto
-            - pix
-        status:
-          type: string
-          enum:
-            - pending
-            - approved
-            - authorized
-            - in_process
-            - in_mediation
-            - rejected
-            - cancelled
-            - refunded
-            - charged_back
-          description: >-
-            Current payment status. Key values: approved — payment completed successfully; pending — awaiting payer
-            action (e.g., Boleto payment); in_process — under review; rejected — payment declined.
-          example: approved
-        status_detail:
-          type: string
-          description: Detailed reason for the current status
-          example: accredited
-        currency_id:
-          $ref: '#/components/schemas/CurrencyId'
-        description:
-          type: string
-        payer:
-          type: object
-          properties:
-            id:
-              type: string
-            email:
-              type: string
-              format: email
-            identification:
-              $ref: '#/components/schemas/Identification'
-            type:
-              type: string
-        metadata:
-          type: object
-          additionalProperties: true
-        additional_info:
-          type: object
-        external_reference:
-          type: string
-        transaction_amount:
-          type: number
-          format: float
-          description: Original payment amount (decimal, not cents)
-        transaction_amount_refunded:
-          type: number
-          format: float
-          description: Total amount refunded so far
-        coupon_amount:
-          type: number
-          format: float
-        transaction_details:
-          type: object
-          properties:
-            net_received_amount:
-              type: number
-              format: float
-            total_paid_amount:
-              type: number
-              format: float
-            overpaid_amount:
-              type: number
-              format: float
-            external_resource_url:
-              type: string
-              format: uri
-              description: Boleto/OXXO/cash payment URL or barcode
-            installment_amount:
-              type: number
-              format: float
-        captured:
-          type: boolean
-        binary_mode:
-          type: boolean
-        statement_descriptor:
-          type: string
-        installments:
-          type: integer
-        card:
-          type: object
-          description: Card data (last 4 digits only — never full PAN)
-          properties:
-            last_four_digits:
-              type: string
-              example: '4321'
-            first_six_digits:
-              type: string
-              example: '411111'
-            expiration_year:
-              type: integer
-            expiration_month:
-              type: integer
-            date_created:
-              type: string
-              format: date-time
-            date_last_updated:
-              type: string
-              format: date-time
-            cardholder:
-              type: object
-              properties:
-                name:
-                  type: string
-                identification:
-                  $ref: '#/components/schemas/Identification'
-        notification_url:
-          type: string
-          format: uri
-          deprecated: true
-        processing_mode:
-          type: string
-          enum:
-            - aggregator
-            - gateway
     RefundRequest:
       type: object
       required:
@@ -1244,35 +858,6 @@ components:
           description: Additional metadata for the refund
           additionalProperties:
             type: string
-    PaymentSearchResult:
-      type: object
-      properties:
-        results:
-          type: array
-          items:
-            $ref: '#/components/schemas/Payment'
-        paging:
-          $ref: '#/components/schemas/Pagination'
-    PaymentUpdateRequest:
-      type: object
-      description: Request body to update a payment (capture, cancel, or extend expiration).
-      properties:
-        capture:
-          type: boolean
-          description: Set true to capture an authorized payment.
-        status:
-          type: string
-          enum:
-            - cancelled
-          description: Set to cancelled to cancel an authorized payment.
-        transaction_amount:
-          type: number
-          format: float
-          description: Partial capture amount (must be ≤ original authorized amount).
-        date_of_expiration:
-          type: string
-          format: date-time
-          description: New expiration date for cash payment methods.
     PaymentMethod:
       type: object
       required:
@@ -1362,3 +947,139 @@ components:
         wallet_id:
           type: string
           description: Wallet identifier or token
+    PaymentResponse:
+      type: object
+      required:
+        - payment_id
+        - status
+        - amount
+        - currency
+        - created_at
+      properties:
+        payment_id:
+          type: string
+          format: uuid
+          description: Unique payment identifier
+          example: 987fcdeb-51a2-43d1-9c15-246531579012
+        status:
+          type: string
+          enum:
+            - pending
+            - processing
+            - completed
+            - failed
+            - cancelled
+          description: Current payment status
+          example: completed
+        amount:
+          type: number
+          format: decimal
+          description: Payment amount
+          example: 29.99
+        currency:
+          type: string
+          description: Payment currency
+          example: USD
+        transaction_id:
+          type: string
+          description: External transaction identifier from payment processor
+          example: txn_1234567890
+        created_at:
+          type: string
+          format: date-time
+          description: Payment creation timestamp
+          example: '2024-01-15T10:30:00Z'
+        updated_at:
+          type: string
+          format: date-time
+          description: Last update timestamp
+          example: '2024-01-15T10:30:15Z'
+        fees:
+          $ref: '#/components/schemas/PaymentFees'
+    PaymentFees:
+      type: object
+      properties:
+        processing_fee:
+          type: number
+          format: decimal
+          description: Processing fee charged
+          example: 0.89
+        platform_fee:
+          type: number
+          format: decimal
+          description: Platform fee charged
+          example: 1.5
+        total_fees:
+          type: number
+          format: decimal
+          description: Total fees charged
+          example: 2.39
+    PaymentListResponse:
+      type: object
+      required:
+        - data
+        - pagination
+      properties:
+        pagination:
+          $ref: '#/components/schemas/Pagination'
+        data:
+          type: array
+          description: List of payments
+          items:
+            $ref: '#/components/schemas/PaymentResponse'
+    RefundResponse:
+      type: object
+      required:
+        - refund_id
+        - payment_id
+        - amount
+        - status
+        - created_at
+      properties:
+        refund_id:
+          format: uuid
+          description: Unique refund identifier
+          type: string
+          example: ref_123e4567-e89b-12d3-a456-426614174000
+        updated_at:
+          format: date-time
+          description: Last update timestamp
+          type: string
+          example: '2024-01-15T11:30:15Z'
+        payment_id:
+          format: uuid
+          description: Original payment identifier
+          type: string
+          example: 987fcdeb-51a2-43d1-9c15-246531579012
+        created_at:
+          format: date-time
+          description: Refund creation timestamp
+          type: string
+          example: '2024-01-15T11:30:00Z'
+        amount:
+          format: decimal
+          description: Refunded amount
+          type: number
+          example: 15.99
+        status:
+          description: Current refund status
+          type: string
+          enum:
+            - pending
+            - processing
+            - completed
+            - failed
+          example: completed
+    RefundListResponse:
+      type: object
+      required:
+        - data
+        - pagination
+      properties:
+        data:
+          type: array
+          description: List of refunds for the payment
+          items:
+            $ref: '#/components/schemas/RefundResponse'
+        pagination:
+          $ref: '#/components/schemas/Pagination'

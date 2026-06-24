@@ -69,15 +69,7 @@ jobs:
             const shortHash = branchMatch ? branchMatch[2] : 'unknown';
             const prTitle   = `[OpenAPI Sync] ${appName} | ${shortHash}_${today}`;
 
-            // Rotating reviewer — deterministic by ISO week number
             const reviewers = ['lpinillacuev', 'lsanchezgarc'];
-            const now = new Date();
-            const startOfYear = new Date(now.getFullYear(), 0, 1);
-            const weekNumber = Math.ceil(
-              ((now - startOfYear) / 86400000 + startOfYear.getDay() + 1) / 7
-            );
-            const reviewer = reviewers[weekNumber % reviewers.length];
-            console.log(`Week ${weekNumber} → reviewer: ${reviewer}`);
 
             let pr;
             try {
@@ -116,9 +108,9 @@ jobs:
 
             try {
               await github.rest.pulls.requestReviewers({
-                owner, repo, pull_number: pr.number, reviewers: [reviewer],
+                owner, repo, pull_number: pr.number, reviewers,
               });
-              console.log(`Reviewer requested: ${reviewer} — they will be notified by GitHub`);
+              console.log(`Reviewers requested: ${reviewers.join(', ')} — they will be notified by GitHub`);
             } catch (e) { console.warn(`Reviewer failed: ${e.message}`); }
 
             core.setOutput('pr_number', pr.number);

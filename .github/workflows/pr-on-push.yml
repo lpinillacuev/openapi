@@ -27,7 +27,7 @@ jobs:
           github-token: ${{ secrets.GH_PAT || github.token }}
           script: |
             const branch = context.ref.replace('refs/heads/', '');
-            const baseBranch = 'main';
+            const baseBranch = 'feature/add-fury-spec';
             const owner = context.repo.owner;
             const repo = context.repo.repo;
 
@@ -121,3 +121,4 @@ jobs:
         run: |
           echo "PR #${{ steps.create-pr.outputs.pr_number }} created — requires manual review and approval before merge."
           echo "PR URL: ${{ steps.create-pr.outputs.pr_url }}"
+

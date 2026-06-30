@@ -8,9 +8,16 @@ name: Push to devsite-docs
 #               Regenera by-site/{MLA,MLB,MLM,MLC,MCO,MPE,MLU}/spec3.yaml
 #               aplicando los overlays por país sobre el spec3.yaml actualizado
 #     → Step 2: Commit + push by-site changes to main (si hay diferencias)
+#     → Step 2b: bundle.py --products-only
+#               Genera by-product/{product}/spec3.yaml — spec OpenAPI 3.1
+#               limpio y autocontenido, filtrado por producto
+#     → Step 2c: Commit + push by-product changes to main
 #     → Step 3: Detecta qué apps cambiaron
 #     → Step 4: push_to_devsite.py por cada app → branch en devsite-docs
 #     → pr-on-push.yml en devsite-docs auto-crea el PR
+#     → Step 5: push_to_api.py — envía by-product/{product}/spec3.yaml
+#               a la API externa por cada producto cambiado
+#               (configurar PRODUCT_SPEC_API_ENDPOINT + PRODUCT_SPEC_API_TOKEN)
 
 on:
   push:
@@ -76,6 +83,50 @@ jobs:
             echo "by-site specs pushed to main."
           fi
 
+      # ── Step 2b: Validar qué productos cambiaron realmente ───────────────────
+      # Compara spec3.yaml HEAD~1 vs HEAD para detectar exactamente qué cambió
+      # por producto (paths y schemas). Si el reviewer rechazó parte del PR,
+      # eso no aparecerá aquí. Solo lo que realmente llegó a main.
+      # Produce by-product/{product}/diff.yaml y by-product/.changed-products
+      - name: Generate per-product diffs
+        id: product_diff
+        run: |
+          python openapi/scripts/generate_product_diff.py
+        working-directory: ${{ github.workspace }}
+
+      - name: Read changed products
+        id: changed
+        run: |
+          if [ -f openapi/by-product/.changed-products ]; then
+            CHANGED=$(cat openapi/by-product/.changed-products)
+          else
+            CHANGED=""
+          fi
+          echo "products=${CHANGED}" >> $GITHUB_OUTPUT
+          echo "has_changes=$([ -n "$CHANGED" ] && echo true || echo false)" >> $GITHUB_OUTPUT
+          echo "Changed products: ${CHANGED:-none}"
+
+      # ── Step 2c: Regenerar by-product specs (solo los que cambiaron) ─────────
+      # bundle.py Phase 3: genera by-product/{product}/spec3.yaml — spec OpenAPI
+      # 3.1 limpio, autocontenido y acotado al producto. Solo se regenera si
+      # generate_product_diff.py detectó cambios reales para ese producto.
+      - name: Regenerate by-product specs
+        if: steps.changed.outputs.has_changes == 'true'
+        run: python openapi/scripts/bundle.py --products-only
+        working-directory: ${{ github.workspace }}
+
+      - name: Commit by-product changes to openapi main
+        run: |
+          cd openapi
+          if git diff --quiet by-product/; then
+            echo "No by-product changes to commit."
+          else
+            git add by-product/
+            git commit -m "chore(by-product): regenerate product specs from updated spec3.yaml"
+            git push origin main
+            echo "by-product specs pushed to main."
+          fi
+
       - name: Detect changed apps from spec3.yaml diff
         id: apps
         run: |
@@ -139,3 +190,22 @@ jobs:
         #   3. Creates branch: enhancement/automatic-spec-{app}/{app}-{hash}
         #   4. Pushes to devsite-docs
         #   → pr-on-push.yml in devsite-docs auto-creates the PR
+
+      # ── Step 5: Enviar by-product specs a la API externa ─────────────────────
+      # Solo se ejecuta para productos que cambiaron realmente (validado en 2b).
+      # Envía dos archivos por producto:
+      #   by-product/{product}/spec3.yaml  — spec OpenAPI 3.1 completo del producto
+      #   by-product/{product}/diff.yaml   — changelog de lo que cambió en este merge
+      # Requiere dos secrets en el repo:
+      #   PRODUCT_SPEC_API_ENDPOINT  — URL base de la API (sin trailing slash)
+      #   PRODUCT_SPEC_API_TOKEN     — token de autenticación
+      - name: Send by-product specs to API
+        if: steps.changed.outputs.has_changes == 'true'
+        env:
+          PRODUCT_SPEC_API_ENDPOINT: ${{ secrets.PRODUCT_SPEC_API_ENDPOINT }}
+          PRODUCT_SPEC_API_TOKEN: ${{ secrets.PRODUCT_SPEC_API_TOKEN }}
+          CHANGED_PRODUCTS: ${{ steps.changed.outputs.products }}
+        run: |
+          python3 openapi/scripts/push_to_api.py \
+            --apps "$CHANGED_PRODUCTS" \
+            --openapi-path openapi

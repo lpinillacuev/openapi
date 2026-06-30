@@ -1,0 +1,114 @@
+product: payments
+fury_app: payments
+generated_at: '2026-06-25T13:02:16Z'
+total_changes: 12
+paths:
+  added: []
+  removed: []
+  modified: []
+  detail:
+    added: []
+    removed: []
+    modified: []
+schemas:
+  added:
+  - Address
+  - PaymentAdditionalInfo
+  - PaymentItem
+  - PaymentPayer
+  - Phone
+  removed:
+  - BankAccount
+  - CardDetails
+  - DigitalWallet
+  - PaymentMethod
+  modified:
+  - Pagination
+  - PaymentRequest
+  - RefundRequest
+  detail:
+    added:
+    - name: Address
+      summary:
+        type: object
+        properties:
+        - city
+        - country
+        - state
+        - street_name
+        - street_number
+        - zip_code
+    - name: PaymentAdditionalInfo
+      summary:
+        type: object
+        properties:
+        - items
+        - payer
+        - shipments
+        description: Additional context for fraud scoring and installment calculation
+    - name: PaymentItem
+      summary:
+        type: object
+        properties:
+        - category_id
+        - description
+        - id
+        - quantity
+        - title
+        - unit_price
+    - name: PaymentPayer
+      summary:
+        type: object
+        properties:
+        - email
+        - id
+        - identification
+        - type
+        required:
+        - email
+    - name: Phone
+      summary:
+        type: object
+        properties:
+        - area_code
+        - number
+    removed:
+    - name: BankAccount
+    - name: CardDetails
+    - name: DigitalWallet
+    - name: PaymentMethod
+    modified:
+    - name: Pagination
+      properties_added: []
+      properties_removed:
+      - has_more
+    - name: PaymentRequest
+      properties_added:
+      - additional_info
+      - application_fee
+      - binary_mode
+      - callback_url
+      - capture
+      - coupon_amount
+      - coupon_code
+      - date_of_expiration
+      - external_reference
+      - installments
+      - issuer_id
+      - notification_url
+      - payer
+      - payment_method_id
+      - statement_descriptor
+      - token
+      - transaction_amount
+      properties_removed:
+      - amount
+      - currency
+      - customer_id
+      - merchant_id
+      - payment_method
+    - name: RefundRequest
+      properties_added: []
+      properties_removed:
+      - metadata
+      - reason

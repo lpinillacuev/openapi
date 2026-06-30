@@ -1,0 +1,461 @@
+{
+  "url": "https://api.mercadopago.com",
+  "paths": {
+    "/users/{user_id}/stores": {
+      "post": {
+        "tags": [
+          "Stores"
+        ],
+        "parameters": [
+          {
+            "name": "user_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string"
+                  },
+                  "business_hours": {
+                    "type": "object"
+                  },
+                  "location": {
+                    "type": "object"
+                  },
+                  "external_id": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": {
+              "en": "Store created",
+              "pt": "TODO",
+              "es": "TODO"
+            }
+          }
+        },
+        "title": {
+          "en": "Create a store",
+          "pt": "TODO",
+          "es": "TODO"
+        },
+        "description": {
+          "en": "Create a store",
+          "pt": "TODO",
+          "es": "TODO"
+        }
+      }
+    },
+    "/users/{user_id}/pos": {
+      "get": {
+        "tags": [
+          "POS"
+        ],
+        "parameters": [
+          {
+            "name": "user_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": {
+              "en": "POS list",
+              "pt": "TODO",
+              "es": "TODO"
+            }
+          }
+        },
+        "title": {
+          "en": "List POS devices for a user",
+          "pt": "TODO",
+          "es": "TODO"
+        },
+        "description": {
+          "en": "List POS devices for a user",
+          "pt": "TODO",
+          "es": "TODO"
+        }
+      }
+    },
+    "/users/{user_id}/stores/search": {
+      "get": {
+        "tags": [
+          "Stores"
+        ],
+        "parameters": [
+          {
+            "name": "user_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
+            "name": "external_id",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "description": {
+              "en": "Filter by your external store ID",
+              "pt": "TODO",
+              "es": "TODO"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": {
+              "en": "Store search results",
+              "pt": "TODO",
+              "es": "TODO"
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "paging": {
+                      "$ref": "#/components/schemas/Pagination"
+                    },
+                    "results": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/Store"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "title": {
+          "en": "Search stores",
+          "pt": "TODO",
+          "es": "TODO"
+        },
+        "description": {
+          "en": "Search stores",
+          "pt": "TODO",
+          "es": "TODO"
+        }
+      }
+    },
+    "/users/{user_id}/stores/{id}": {
+      "put": {
+        "tags": [
+          "Stores"
+        ],
+        "parameters": [
+          {
+            "name": "user_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/StoreRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": {
+              "en": "Store updated",
+              "pt": "TODO",
+              "es": "TODO"
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Store"
+                }
+              }
+            }
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "errorKey": {
+                      "type": "string",
+                      "enum": [
+                        {
+                          "title": "TODO_error_code",
+                          "description": {
+                            "en": "TODO: describe this error",
+                            "pt": "TODO",
+                            "es": "TODO"
+                          }
+                        }
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "title": {
+          "en": "Update a store",
+          "pt": "TODO",
+          "es": "TODO"
+        },
+        "description": {
+          "en": "Update a store",
+          "pt": "TODO",
+          "es": "TODO"
+        }
+      },
+      "delete": {
+        "tags": [
+          "Stores"
+        ],
+        "parameters": [
+          {
+            "name": "user_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": {
+              "en": "Store deleted",
+              "pt": "TODO",
+              "es": "TODO"
+            }
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "errorKey": {
+                      "type": "string",
+                      "enum": [
+                        {
+                          "title": "TODO_error_code",
+                          "description": {
+                            "en": "TODO: describe this error",
+                            "pt": "TODO",
+                            "es": "TODO"
+                          }
+                        }
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "title": {
+          "en": "Delete a store",
+          "pt": "TODO",
+          "es": "TODO"
+        },
+        "description": {
+          "en": "Delete a store",
+          "pt": "TODO",
+          "es": "TODO"
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "StoreRequest": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": {
+              "en": "Store display name",
+              "pt": "TODO",
+              "es": "TODO"
+            },
+            "example": "Main Branch — Paulista"
+          },
+          "external_id": {
+            "type": "string",
+            "description": {
+              "en": "Your internal store identifier",
+              "pt": "TODO",
+              "es": "TODO"
+            }
+          },
+          "business_hours": {
+            "type": "object",
+            "properties": {
+              "monday": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "open": {
+                      "type": "string",
+                      "example": "09:00"
+                    },
+                    "close": {
+                      "type": "string",
+                      "example": "18:00"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "location": {
+            "type": "object",
+            "properties": {
+              "street_number": {
+                "type": "string"
+              },
+              "street_name": {
+                "type": "string"
+              },
+              "city_name": {
+                "type": "string"
+              },
+              "state_name": {
+                "type": "string"
+              },
+              "zip_code": {
+                "type": "string"
+              },
+              "latitude": {
+                "type": "number",
+                "format": "float"
+              },
+              "longitude": {
+                "type": "number",
+                "format": "float"
+              }
+            }
+          }
+        }
+      },
+      "Store": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/StoreRequest"
+          },
+          {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "string",
+                "description": {
+                  "en": "Store unique identifier",
+                  "pt": "TODO",
+                  "es": "TODO"
+                }
+              },
+              "date_created": {
+                "type": "string",
+                "format": "date-time"
+              },
+              "date_last_updated": {
+                "type": "string",
+                "format": "date-time"
+              }
+            }
+          }
+        ]
+      },
+      "Pagination": {
+        "type": "object",
+        "description": {
+          "en": "Pagination metadata returned in list/search responses",
+          "pt": "TODO",
+          "es": "TODO"
+        },
+        "properties": {
+          "total": {
+            "type": "integer",
+            "description": {
+              "en": "Total number of results",
+              "pt": "TODO",
+              "es": "TODO"
+            },
+            "example": 42
+          },
+          "limit": {
+            "type": "integer",
+            "description": {
+              "en": "Results per page",
+              "pt": "TODO",
+              "es": "TODO"
+            },
+            "example": 30
+          },
+          "offset": {
+            "type": "integer",
+            "description": {
+              "en": "Offset of the current page",
+              "pt": "TODO",
+              "es": "TODO"
+            },
+            "example": 0
+          }
+        }
+      }
+    }
+  }
+}

@@ -1,9 +1,17 @@
 # Pipeline configuration: Fury Spec Hub → openapi/spec3.yaml
 #
-# fury_app: exact app name registered in Fury Spec Hub
-# tag:      matching tag name in spec3.yaml (groups paths by product)
-# product:  product slug — used as subfolder in by-site/{SITE}/{product}/spec3.yaml
-# paths:    path prefixes owned by this app (scopes merges in both directions)
+# fury_app:   exact app name registered in Fury Spec Hub
+# tag:        matching tag name in spec3.yaml (groups paths by product)
+# product:    product slug — used as subfolder in by-site/{SITE}/{product}/spec3.yaml
+# paths:      path prefixes owned by this app (scopes merges in both directions)
+# reviewers:  GitHub users assigned to review PRs for this app (overrides default)
+# pathPolicy: controls which paths from Fury Spec Hub are accepted
+#   mode:       denylist (default) — allow everything in paths[] except blacklist entries
+#   whitelist:  paths explicitly approved — always synced
+#   blacklist:  paths explicitly rejected — never synced, bot ignores them permanently
+#   pending:    paths detected by the bot awaiting a reviewer decision
+#               ⚠️  CI blocks merge while any pending entry exists
+#               Move each entry to whitelist or blacklist before merging
 
 apps:
   - fury_app: payments
@@ -11,24 +19,44 @@ apps:
     product: payments
     paths:
       - /v1/payments
+    pathPolicy:
+      mode: denylist
+      whitelist: []
+      blacklist: []
+      pending: []
 
   - fury_app: openplatform-customer-go
     tag: Customers
     product: customers
     paths:
       - /v1/customers
+    pathPolicy:
+      mode: denylist
+      whitelist: []
+      blacklist: []
+      pending: []
 
   - fury_app: mpcs-preferences-api
     tag: Preferences
     product: preferences
     paths:
       - /checkout/preferences
+    pathPolicy:
+      mode: denylist
+      whitelist: []
+      blacklist: []
+      pending: []
 
   - fury_app: chargeback-frontend-wrapper
     tag: Chargebacks
     product: chargebacks
     paths:
       - /v1/chargebacks
+    pathPolicy:
+      mode: denylist
+      whitelist: []
+      blacklist: []
+      pending: []
 
   - fury_app: mp-subscriptions
     tag: Subscriptions
@@ -36,33 +64,63 @@ apps:
     paths:
       - /preapproval
       - /preapproval_plan
+    pathPolicy:
+      mode: denylist
+      whitelist: []
+      blacklist: []
+      pending: []
 
   - fury_app: merchant-orders-api
     tag: Merchant Orders
     product: merchant_orders
     paths:
       - /merchant_orders
+    pathPolicy:
+      mode: denylist
+      whitelist: []
+      blacklist: []
+      pending: []
 
   - fury_app: platsec-oauth-api
     tag: OAuth
     product: oauth
     paths:
       - /oauth/token
+    pathPolicy:
+      mode: denylist
+      whitelist: []
+      blacklist: []
+      pending: []
 
   - fury_app: payment-methods-write-v2
     tag: Payment Methods
     product: payment_methods
     paths:
       - /v1/payment_methods
+    pathPolicy:
+      mode: denylist
+      whitelist: []
+      blacklist: []
+      pending: []
 
   - fury_app: stores-api
     tag: Stores
     product: stores
     paths:
       - /users/
+    pathPolicy:
+      mode: denylist
+      whitelist: []
+      blacklist: []
+      pending: []
 
   - fury_app: instore-api-pos
     tag: POS
     product: pos
     paths:
       - /pos
+    pathPolicy:
+      mode: denylist
+      whitelist: []
+      blacklist: []
+      pending: []

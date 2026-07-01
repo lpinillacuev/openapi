@@ -168,6 +168,23 @@ paths:
       responses:
         '201':
           description: Store created
+  /users/{user_id}/pos:
+    get:
+      operationId: listPOS
+      summary: List POS devices for a user
+      tags:
+      - POS
+      security:
+      - bearerAuth: []
+      parameters:
+      - name: user_id
+        in: path
+        required: true
+        schema:
+          type: integer
+      responses:
+        '200':
+          description: POS list
   /users/{user_id}/stores/search:
     get:
       operationId: searchStores

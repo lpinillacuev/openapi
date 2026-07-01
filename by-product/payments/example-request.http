@@ -1,0 +1,597 @@
+###
+# Example API request — product: payments
+#
+# ONE request, ONE file. Includes the diff (what changed) + the full spec.
+# This is exactly what push_to_api.py sends after every merge to main.
+#
+# Replace {{endpoint}} and {{token}} with real values when available.
+# Compatible with: VS Code REST Client, IntelliJ HTTP Client, Postman
+###
+
+POST {{endpoint}}/payments
+Authorization: Bearer {{token}}
+Content-Type: application/yaml
+
+# ── Header: what this merge changed ─────────────────────────────────────────
+product: payments
+generated_at: '2026-06-25T13:02:16Z'
+total_changes: 12
+
+changes:
+  paths:
+    added: []
+    removed: []
+    modified: []
+
+  schemas:
+    added:
+      - Address
+      - PaymentAdditionalInfo
+      - PaymentItem
+      - PaymentPayer
+      - Phone
+    removed:
+      - BankAccount
+      - CardDetails
+      - DigitalWallet
+      - PaymentMethod
+    modified:
+      - Pagination
+      - PaymentRequest
+      - RefundRequest
+    detail:
+      added:
+        - name: Address
+          summary:
+            type: object
+            properties: [city, country, state, street_name, street_number, zip_code]
+        - name: PaymentAdditionalInfo
+          summary:
+            type: object
+            properties: [items, payer, shipments]
+            description: Additional context for fraud scoring and installment calculation
+        - name: PaymentItem
+          summary:
+            type: object
+            properties: [category_id, description, id, quantity, title, unit_price]
+        - name: PaymentPayer
+          summary:
+            type: object
+            properties: [email, id, identification, type]
+            required: [email]
+        - name: Phone
+          summary:
+            type: object
+            properties: [area_code, number]
+      removed:
+        - name: BankAccount
+        - name: CardDetails
+        - name: DigitalWallet
+        - name: PaymentMethod
+      modified:
+        - name: Pagination
+          properties_added: []
+          properties_removed: [has_more]
+        - name: PaymentRequest
+          properties_added:
+            - additional_info
+            - application_fee
+            - binary_mode
+            - callback_url
+            - capture
+            - coupon_amount
+            - coupon_code
+            - date_of_expiration
+            - external_reference
+            - installments
+            - issuer_id
+            - notification_url
+            - payer
+            - payment_method_id
+            - statement_descriptor
+            - token
+            - transaction_amount
+          properties_removed:
+            - amount
+            - currency
+            - customer_id
+            - merchant_id
+            - payment_method
+        - name: RefundRequest
+          properties_added: []
+          properties_removed: [metadata, reason]
+
+# ── Spec: estado completo del producto después del merge ─────────────────────
+spec:
+  openapi: 3.1.0
+  info:
+    title: MercadoPago API
+    description: The MercadoPago REST API.
+    version: 1.0.0
+  servers:
+    - url: https://api.mercadopago.com
+      description: Production
+  security:
+    - bearerAuth: []
+
+  paths:
+    /v1/payments:
+      post:
+        operationId: createPayment
+        summary: Create a payment
+        tags: [Payments]
+        parameters:
+          - name: X-Idempotency-Key
+            in: header
+            required: false
+            schema:
+              type: string
+              format: uuid
+        requestBody:
+          required: true
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaymentRequest'
+        responses:
+          '201':
+            description: Payment created
+            content:
+              application/json:
+                schema:
+                  $ref: '#/components/schemas/Payment'
+          '400':
+            $ref: '#/components/responses/BadRequest'
+          '401':
+            $ref: '#/components/responses/Unauthorized'
+          '422':
+            $ref: '#/components/responses/UnprocessableEntity'
+
+    /v1/payments/{id}:
+      get:
+        operationId: getPayment
+        summary: Get payment by ID
+        tags: [Payments]
+        parameters:
+          - name: id
+            in: path
+            required: true
+            schema:
+              type: integer
+        responses:
+          '200':
+            description: Payment found
+            content:
+              application/json:
+                schema:
+                  $ref: '#/components/schemas/Payment'
+          '401':
+            $ref: '#/components/responses/Unauthorized'
+          '404':
+            $ref: '#/components/responses/NotFound'
+      put:
+        operationId: updatePayment
+        summary: Update or capture a payment
+        tags: [Payments]
+        parameters:
+          - name: id
+            in: path
+            required: true
+            schema:
+              type: integer
+        requestBody:
+          required: true
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaymentUpdateRequest'
+        responses:
+          '200':
+            description: Payment updated
+            content:
+              application/json:
+                schema:
+                  $ref: '#/components/schemas/Payment'
+
+    /v1/payments/search:
+      get:
+        operationId: searchPayments
+        summary: Search payments
+        tags: [Payments]
+        parameters:
+          - name: sort
+            in: query
+            required: true
+            schema:
+              type: string
+          - name: criteria
+            in: query
+            required: true
+            schema:
+              type: string
+              enum: [asc, desc]
+          - name: external_reference
+            in: query
+            schema:
+              type: string
+          - name: limit
+            in: query
+            schema:
+              type: integer
+              default: 30
+          - name: offset
+            in: query
+            schema:
+              type: integer
+              default: 0
+        responses:
+          '200':
+            description: Search results
+            content:
+              application/json:
+                schema:
+                  $ref: '#/components/schemas/PaymentSearchResult'
+
+    /v1/payments/{id}/refunds:
+      post:
+        operationId: createRefund
+        summary: Create a refund
+        tags: [Cancellations & Refunds]
+        parameters:
+          - name: id
+            in: path
+            required: true
+            schema:
+              type: integer
+          - name: X-Idempotency-Key
+            in: header
+            required: false
+            schema:
+              type: string
+              format: uuid
+        requestBody:
+          required: false
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RefundRequest'
+        responses:
+          '201':
+            description: Refund created
+      get:
+        operationId: listRefunds
+        summary: List refunds for a payment
+        tags: [Cancellations & Refunds]
+        parameters:
+          - name: id
+            in: path
+            required: true
+            schema:
+              type: integer
+        responses:
+          '200':
+            description: Refund list
+
+    /v1/payments/{id}/cancellations:
+      put:
+        operationId: cancelPayment
+        summary: Cancel a payment
+        tags: [Cancellations & Refunds]
+        parameters:
+          - name: id
+            in: path
+            required: true
+            schema:
+              type: integer
+        requestBody:
+          required: true
+          content:
+            application/json:
+              schema:
+                type: object
+                required: [status]
+                properties:
+                  status:
+                    type: string
+                    enum: [cancelled]
+        responses:
+          '200':
+            description: Payment cancelled
+            content:
+              application/json:
+                schema:
+                  $ref: '#/components/schemas/Payment'
+
+  components:
+    securitySchemes:
+      bearerAuth:
+        type: http
+        scheme: bearer
+        description: Access token — send in Authorization header only.
+
+    responses:
+      BadRequest:
+        description: Bad request — validation error
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Error'
+      Unauthorized:
+        description: Missing or invalid access token
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Error'
+      NotFound:
+        description: Resource not found
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Error'
+      UnprocessableEntity:
+        description: Business rule violation
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Error'
+
+    schemas:
+      PaymentRequest:
+        type: object
+        required: [transaction_amount, payer]
+        description: Request body to create a payment.
+        properties:
+          transaction_amount:
+            type: number
+            format: float
+            description: Payment amount as a decimal. CLP uses 0 decimal places.
+            example: 100.5
+          token:
+            type: string
+            description: Card token from MercadoPago.js. Required for card payments.
+          payment_method_id:
+            type: string
+            description: 'Examples: visa, master, pix, bolbradesco, oxxo'
+            example: visa
+          installments:
+            type: integer
+            example: 1
+          issuer_id:
+            type: string
+          payer:
+            $ref: '#/components/schemas/PaymentPayer'
+          capture:
+            type: boolean
+            default: true
+          binary_mode:
+            type: boolean
+            default: false
+          external_reference:
+            type: string
+            example: ORDER-2024-001234
+          statement_descriptor:
+            type: string
+            maxLength: 22
+          date_of_expiration:
+            type: string
+            format: date-time
+          additional_info:
+            $ref: '#/components/schemas/PaymentAdditionalInfo'
+          application_fee:
+            type: number
+            format: float
+          notification_url:
+            type: string
+            format: uri
+            deprecated: true
+          callback_url:
+            type: string
+            format: uri
+          coupon_code:
+            type: string
+          coupon_amount:
+            type: number
+            format: float
+
+      PaymentPayer:
+        type: object
+        required: [email]
+        properties:
+          email:
+            type: string
+            format: email
+          id:
+            type: string
+          identification:
+            $ref: '#/components/schemas/Identification'
+          type:
+            type: string
+            enum: [customer, registered, guest]
+
+      PaymentAdditionalInfo:
+        type: object
+        description: Additional context for fraud scoring and installment calculation
+        properties:
+          items:
+            type: array
+            items:
+              $ref: '#/components/schemas/PaymentItem'
+          payer:
+            type: object
+            properties:
+              first_name:
+                type: string
+              last_name:
+                type: string
+              phone:
+                $ref: '#/components/schemas/Phone'
+              address:
+                $ref: '#/components/schemas/Address'
+          shipments:
+            type: object
+            properties:
+              receiver_address:
+                $ref: '#/components/schemas/Address'
+
+      PaymentItem:
+        type: object
+        properties:
+          id:
+            type: string
+          title:
+            type: string
+          description:
+            type: string
+          category_id:
+            type: string
+          quantity:
+            type: integer
+          unit_price:
+            type: number
+            format: float
+
+      Payment:
+        type: object
+        description: A MercadoPago payment object
+        properties:
+          id:
+            type: integer
+          status:
+            type: string
+            enum: [pending, approved, authorized, in_process, in_mediation, rejected, cancelled, refunded, charged_back]
+          status_detail:
+            type: string
+          transaction_amount:
+            type: number
+            format: float
+          transaction_amount_refunded:
+            type: number
+            format: float
+          payment_method_id:
+            type: string
+          payment_type_id:
+            type: string
+          currency_id:
+            $ref: '#/components/schemas/CurrencyId'
+          payer:
+            $ref: '#/components/schemas/PaymentPayer'
+          external_reference:
+            type: string
+          installments:
+            type: integer
+          captured:
+            type: boolean
+          date_created:
+            type: string
+            format: date-time
+          date_approved:
+            type: string
+            format: date-time
+          transaction_details:
+            type: object
+            properties:
+              external_resource_url:
+                type: string
+                format: uri
+                description: Boleto/OXXO/cash payment URL
+              total_paid_amount:
+                type: number
+                format: float
+              net_received_amount:
+                type: number
+                format: float
+
+      PaymentUpdateRequest:
+        type: object
+        properties:
+          capture:
+            type: boolean
+          status:
+            type: string
+            enum: [cancelled]
+          transaction_amount:
+            type: number
+            format: float
+          date_of_expiration:
+            type: string
+            format: date-time
+
+      RefundRequest:
+        type: object
+        description: Omit amount for a full refund.
+        properties:
+          amount:
+            type: number
+            format: float
+
+      PaymentSearchResult:
+        type: object
+        properties:
+          results:
+            type: array
+            items:
+              $ref: '#/components/schemas/Payment'
+          paging:
+            $ref: '#/components/schemas/Pagination'
+
+      Pagination:
+        type: object
+        properties:
+          total:
+            type: integer
+          limit:
+            type: integer
+          offset:
+            type: integer
+
+      Identification:
+        type: object
+        properties:
+          type:
+            type: string
+            description: 'CPF, CNPJ (Brazil); DNI (Argentina); RFC (Mexico)'
+          number:
+            type: string
+
+      Address:
+        type: object
+        properties:
+          zip_code:
+            type: string
+          street_name:
+            type: string
+          street_number:
+            type: string
+          city:
+            type: string
+          state:
+            type: string
+          country:
+            type: string
+
+      Phone:
+        type: object
+        properties:
+          area_code:
+            type: string
+          number:
+            type: string
+
+      CurrencyId:
+        type: string
+        enum: [ARS, BRL, MXN, CLP, COP, PEN, UYU]
+        example: BRL
+
+      Error:
+        type: object
+        properties:
+          status:
+            type: integer
+          error:
+            type: string
+          message:
+            type: string
+          cause:
+            type: array
+            items:
+              type: object

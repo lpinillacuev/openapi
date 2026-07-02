@@ -1,31 +1,3 @@
-# Registry: Fury Spec Hub → openapi/spec3.yaml
-#
-# ── Required fields ──────────────────────────────────────────────────────────
-# fury_app:  exact app name in Fury Specs Hub
-# product:   product slug → by-product/{product}/spec3.yaml
-# tag:       tag name in spec3.yaml → used for schema domain classification
-# paths:     path prefixes owned by this app (scopes merges in both directions)
-#
-# ── Optional fields ──────────────────────────────────────────────────────────
-# enabled:   set to false to temporarily disable sync without removing the entry
-#            default: true
-# sdk:       SDK generation targets (one entry per language/site combination)
-#   language:  target language (python | java | node | php | ruby | go)
-#   site_id:   site identifier (MLB | MLA | MLM | MLC | MCO | MPE | MLU)
-#   (target_repo is configured as GitHub Secret: SDK_REPO_<LANGUAGE_UPPERCASE>)
-#
-# ── Managed externally ───────────────────────────────────────────────────────
-# reviewers  → Fury env var OPENAPI_PR_REVIEWERS (not here — public repo)
-# pathPolicy → Fury KVS container rules-code-generator (not here — sensitive)
-#              managed via bot endpoints /openapi/policy/:app/approve|reject
-#
-# ── Unregistered apps ────────────────────────────────────────────────────────
-# If a Fury app sends specs but is not listed here, the bot will:
-#   1. Skip the sync (no changes to spec3.yaml)
-#   2. Send a Slack notification to reviewers with registration instructions
-#   3. Log a warning with the fury_app name
-# To register a new app, add an entry below and open a PR.
-
 apps:
   - fury_app: payments
     product: payments
@@ -35,62 +7,52 @@ apps:
     sdk:
       - language: python
         site_id: MLB
-
   - fury_app: openplatform-customer-go
     product: customers
     tag: Customers
     paths:
       - /v1/customers
-
   - fury_app: mpcs-preferences-api
     product: preferences
     tag: Preferences
     paths:
       - /checkout/preferences
-
   - fury_app: chargeback-frontend-wrapper
     product: chargebacks
     tag: Chargebacks
     paths:
       - /v1/chargebacks
-
   - fury_app: mp-subscriptions
     product: subscriptions
     tag: Subscriptions
     paths:
       - /preapproval
       - /preapproval_plan
-
   - fury_app: merchant-orders-api
     product: merchant_orders
     tag: Merchant Orders
     paths:
       - /merchant_orders
-
   - fury_app: platsec-oauth-api
     product: oauth
     tag: OAuth
     paths:
       - /oauth/token
-
   - fury_app: payment-methods-write-v2
     product: payment_methods
     tag: Payment Methods
     paths:
       - /v1/payment_methods
-
   - fury_app: stores-api
     product: stores
     tag: Stores
     paths:
       - /users/
-
   - fury_app: instore-api-pos
     product: pos
     tag: POS
     paths:
       - /pos
-
   - fury_app: mp-public-order-api
     product: orders
     tag: Orders

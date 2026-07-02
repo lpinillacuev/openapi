@@ -1,0 +1,25 @@
+.github/workflows/spec-diff-comment.yml
+  s_c6fa9f5ec88947::t_429992408b6ffa 41,45-91
+.github/workflows/schema-decisions.yml
+  s_c6fa9f5ec88947::t_b9a7ad447aab91 1-193
+.github/scripts/spec_diff_md.py
+  s_c6fa9f5ec88947::t_d053a779de6127 304-380
+  s_c6fa9f5ec88947::t_be34281063762e 405-411
+  s_c6fa9f5ec88947::t_e381d543a197b4 389-390
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.5.6",
+  "base_commit_sha": "ab1705fc808a68e191886698c1a22e1c3f8eb5eb",
+  "prompts": {},
+  "sessions": {
+    "s_c6fa9f5ec88947": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "80d91040-c873-408f-87a1-099fcd382947",
+        "model": "claude-sonnet-4-6"
+      },
+      "human_author": "lpinillacuev <lina.pinillacuevas@mercadolibre.com.co>"
+    }
+  }
+}

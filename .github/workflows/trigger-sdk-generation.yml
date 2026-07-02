@@ -70,17 +70,28 @@ jobs:
       # push_to_sdk.py reads each product's diff.yaml and spec3.yaml,
       # transforms them into the SDK generator API format, and POSTs
       # to spec-agent-generator for each sdk target configured in apps.yaml.
-      - name: Trigger SDK generation
+      - name: Trigger SDK generation via bot-sync
         if: steps.changed.outputs.has_changes == 'true'
         env:
-          SDK_GENERATOR_URL: ${{ secrets.SDK_GENERATOR_URL || 'https://spec-agent-generator-test.melioffice.com' }}
-          SDK_GENERATOR_TOKEN: ${{ secrets.SDK_GENERATOR_TOKEN }}
+          BOT_URL: ${{ secrets.BOT_SYNC_SPECS_URL || 'https://beta-bot-sync-specs.melioffice.com' }}
           CHANGED_PRODUCTS: ${{ steps.changed.outputs.products }}
         run: |
-          python openapi/scripts/push_to_sdk.py \
-            --apps "$CHANGED_PRODUCTS" \
-            --openapi-path openapi
-        working-directory: ${{ github.workspace }}
+          # Bot-sync runs inside ML's network and can reach spec-agent-generator
+          # GitHub Actions cannot reach internal ML services directly
+          RESPONSE=$(curl -s -o /tmp/sdk_response.json -w "%{http_code}" \
+            -X POST "${BOT_URL}/openapi/sdk/trigger" \
+            -H "Content-Type: application/json" \
+            -H "X-github-token: ${{ secrets.GH_PAT }}" \
+            --max-time 120 \
+            -d "{\"apps\": \"$CHANGED_PRODUCTS\"}")
+
+          echo "HTTP: $RESPONSE"
+          cat /tmp/sdk_response.json || true
+
+          if [ "$RESPONSE" != "200" ]; then
+            echo "❌ SDK trigger failed with HTTP $RESPONSE"
+            exit 1
+          fi
 
       - name: Summary
         if: steps.changed.outputs.has_changes == 'true'

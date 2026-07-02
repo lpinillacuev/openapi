@@ -5,8 +5,6 @@ on:
     branches:
       - main
       - 'feature/add-fury-spec'
-    paths:
-      - 'apps.yaml'
 
 jobs:
   validate-policy:
@@ -27,6 +25,32 @@ jobs:
 
       - name: Validate path policy — no pending entries
         run: python scripts/validate-policy.py
+
+      - name: Sync bot/pending-paths status when KVS has no pending paths
+        if: success()
+        env:
+          GH_TOKEN: ${{ secrets.GH_PAT || github.token }}
+          BOT_URL: ${{ secrets.BOT_SYNC_SPECS_URL || 'http://beta-bot-sync-specs.melisystems.com' }}
+        run: |
+          BRANCH="${{ github.head_ref }}"
+          APP=$(echo "$BRANCH" | sed -n 's|enhancement/automatic-spec-\([^/]*\)/.*|\1|p')
+          COMMIT_SHA="${{ github.event.pull_request.head.sha }}"
+
+          if [ -z "$APP" ]; then
+            echo "Not a sync PR — skipping status sync."
+            exit 0
+          fi
+
+          echo "Syncing bot/pending-paths status for app=$APP commit=$COMMIT_SHA"
+
+          RESPONSE=$(curl -s -o /tmp/sync_response.json -w "%{http_code}" \
+            -X POST "${BOT_URL}/openapi/policy/${APP}/sync-status" \
+            -H "Content-Type: application/json" \
+            -H "X-github-token: ${{ secrets.GH_PAT }}" \
+            -d "{\"commitSha\":\"$COMMIT_SHA\"}")
+
+          echo "HTTP: $RESPONSE"
+          cat /tmp/sync_response.json || true
 
       - name: Summary on failure
         if: failure()

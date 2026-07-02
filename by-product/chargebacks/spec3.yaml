@@ -11,200 +11,357 @@ info:
     url: https://www.apache.org/licenses/LICENSE-2.0
   version: 1.0.0
 servers:
-- url: https://api.mercadopago.com
-  description: Production
+  - url: https://api.mercadopago.com
+    description: Production
 security:
-- bearerAuth: []
+  - bearerAuth: []
 tags:
-- name: OAuth
-  description: Authorization flows for marketplace on-behalf-of and Wallet Connect
-  x-mp-sites: &id001
-  - MLA
-  - MLB
-  - MLM
-  - MLC
-  - MCO
-  - MPE
-  - MLU
-- name: Preferences
-  description: Checkout Pro — redirect-based hosted checkout via Preferences
-  x-mp-sites: *id001
-- name: Payments
-  description: Create and manage payment transactions
-  x-mp-sites: *id001
-- name: Orders
-  description: Checkout API via Orders — recommended for new custom checkout integrations
-  x-mp-sites: *id001
-- name: Merchant Orders
-  description: Order containers that group payments for a single purchase
-  x-mp-sites: *id001
-- name: Customers
-  description: Customer profiles and stored payment methods
-  x-mp-sites: *id001
-- name: Cards
-  description: Saved cards and card tokenization
-  x-mp-sites: *id001
-- name: Addresses
-  description: Customer shipping and billing addresses
-  x-mp-sites: *id001
-- name: Payment Methods
-  description: Available payment methods and installment plans per country
-  x-mp-sites: *id001
-- name: Identification Types
-  description: Country-specific identity document type catalog
-  x-mp-sites: *id001
-- name: Cancellations & Refunds
-  description: Cancel payments and create full or partial refunds
-  x-mp-sites: *id001
-- name: Chargebacks
-  description: Chargeback dispute management
-  x-mp-sites: *id001
-- name: Subscriptions
-  description: Recurring payment subscriptions
-  x-mp-sites: *id001
-- name: Plans
-  description: Subscription billing plans
-  x-mp-sites: *id001
-- name: Invoices
-  description: Subscription billing invoices
-  x-mp-sites: *id001
-- name: Wallet Connect
-  description: OAuth-based wallet agreement flows for Wallet Connect
-  x-mp-sites:
-  - MLA
-  - MLB
-  - MLM
-- name: Stores
-  description: Physical store locations
-  x-mp-sites: *id001
-- name: POS
-  description: Point of sale device management
-  x-mp-sites: *id001
-- name: Terminals
-  description: Point hardware terminal management and print actions
-  x-mp-sites:
-  - MLA
-  - MLB
-  - MLC
-  - MLM
-- name: Point Deprecated
-  description: Deprecated Point integration APIs — use Terminals and Point Orders instead
-  x-mp-sites:
-  - MLA
-  - MLB
-  - MLM
-- name: QR Orders
-  description: In-store payment orders associated with QR codes
-  x-mp-sites:
-  - MLA
-  - MLB
-  - MLC
-  - MCO
-  - MPE
-  - MLU
-- name: QR Integrator
-  description: Integrator configuration for QR in-store
-  x-mp-sites: *id001
-- name: QR Deprecated
-  description: Deprecated in-store QR order endpoints (V1, V2, Dynamic QR)
-  x-mp-sites: *id001
-- name: Claims
-  description: Post-sale claim details and search
-  x-mp-sites: *id001
-- name: Claim Messages
-  description: Messages and file attachments within a claim
-  x-mp-sites: *id001
-- name: Claim Resolutions
-  description: Mediation requests and expected resolutions
-  x-mp-sites: *id001
-- name: Claim Shipping
-  description: Upload shipping evidence to support a claim
-  x-mp-sites: *id001
-- name: Releases Report
-  description: Generate and schedule releases (settlement) reports
-  x-mp-sites: *id001
-- name: Settlements Report
-  description: Generate and schedule all-transactions reports
-  x-mp-sites: *id001
-- name: Payouts
-  description: Bank transfer and Pix payouts
-  x-mp-sites:
-  - MLA
-  - MLB
-  - MLM
-  - MLC
+  - name: OAuth
+    description: Authorization flows for marketplace on-behalf-of and Wallet Connect
+    x-mp-sites:
+      - MLA
+      - MLB
+      - MLM
+      - MLC
+      - MCO
+      - MPE
+      - MLU
+  - name: Preferences
+    description: Checkout Pro — redirect-based hosted checkout via Preferences
+    x-mp-sites:
+      - MLA
+      - MLB
+      - MLM
+      - MLC
+      - MCO
+      - MPE
+      - MLU
+  - name: Payments
+    description: Create and manage payment transactions
+    x-mp-sites:
+      - MLA
+      - MLB
+      - MLM
+      - MLC
+      - MCO
+      - MPE
+      - MLU
+  - name: Orders
+    description: Checkout API via Orders — recommended for new custom checkout integrations
+    x-mp-sites:
+      - MLA
+      - MLB
+      - MLM
+      - MLC
+      - MCO
+      - MPE
+      - MLU
+  - name: Merchant Orders
+    description: Order containers that group payments for a single purchase
+    x-mp-sites:
+      - MLA
+      - MLB
+      - MLM
+      - MLC
+      - MCO
+      - MPE
+      - MLU
+  - name: Customers
+    description: Customer profiles and stored payment methods
+    x-mp-sites:
+      - MLA
+      - MLB
+      - MLM
+      - MLC
+      - MCO
+      - MPE
+      - MLU
+  - name: Cards
+    description: Saved cards and card tokenization
+    x-mp-sites:
+      - MLA
+      - MLB
+      - MLM
+      - MLC
+      - MCO
+      - MPE
+      - MLU
+  - name: Addresses
+    description: Customer shipping and billing addresses
+    x-mp-sites:
+      - MLA
+      - MLB
+      - MLM
+      - MLC
+      - MCO
+      - MPE
+      - MLU
+  - name: Payment Methods
+    description: Available payment methods and installment plans per country
+    x-mp-sites:
+      - MLA
+      - MLB
+      - MLM
+      - MLC
+      - MCO
+      - MPE
+      - MLU
+  - name: Identification Types
+    description: Country-specific identity document type catalog
+    x-mp-sites:
+      - MLA
+      - MLB
+      - MLM
+      - MLC
+      - MCO
+      - MPE
+      - MLU
+  - name: Cancellations & Refunds
+    description: Cancel payments and create full or partial refunds
+    x-mp-sites:
+      - MLA
+      - MLB
+      - MLM
+      - MLC
+      - MCO
+      - MPE
+      - MLU
+  - name: Chargebacks
+    description: Chargeback dispute management
+    x-mp-sites:
+      - MLA
+      - MLB
+      - MLM
+      - MLC
+      - MCO
+      - MPE
+      - MLU
+  - name: Subscriptions
+    description: Recurring payment subscriptions
+    x-mp-sites:
+      - MLA
+      - MLB
+      - MLM
+      - MLC
+      - MCO
+      - MPE
+      - MLU
+  - name: Plans
+    description: Subscription billing plans
+    x-mp-sites:
+      - MLA
+      - MLB
+      - MLM
+      - MLC
+      - MCO
+      - MPE
+      - MLU
+  - name: Invoices
+    description: Subscription billing invoices
+    x-mp-sites:
+      - MLA
+      - MLB
+      - MLM
+      - MLC
+      - MCO
+      - MPE
+      - MLU
+  - name: Wallet Connect
+    description: OAuth-based wallet agreement flows for Wallet Connect
+    x-mp-sites:
+      - MLA
+      - MLB
+      - MLM
+  - name: Stores
+    description: Physical store locations
+    x-mp-sites:
+      - MLA
+      - MLB
+      - MLM
+      - MLC
+      - MCO
+      - MPE
+      - MLU
+  - name: POS
+    description: Point of sale device management
+    x-mp-sites:
+      - MLA
+      - MLB
+      - MLM
+      - MLC
+      - MCO
+      - MPE
+      - MLU
+  - name: Terminals
+    description: Point hardware terminal management and print actions
+    x-mp-sites:
+      - MLA
+      - MLB
+      - MLC
+      - MLM
+  - name: Point Deprecated
+    description: Deprecated Point integration APIs — use Terminals and Point Orders instead
+    x-mp-sites:
+      - MLA
+      - MLB
+      - MLM
+  - name: QR Orders
+    description: In-store payment orders associated with QR codes
+    x-mp-sites:
+      - MLA
+      - MLB
+      - MLC
+      - MCO
+      - MPE
+      - MLU
+  - name: QR Integrator
+    description: Integrator configuration for QR in-store
+    x-mp-sites:
+      - MLA
+      - MLB
+      - MLM
+      - MLC
+      - MCO
+      - MPE
+      - MLU
+  - name: QR Deprecated
+    description: Deprecated in-store QR order endpoints (V1, V2, Dynamic QR)
+    x-mp-sites:
+      - MLA
+      - MLB
+      - MLM
+      - MLC
+      - MCO
+      - MPE
+      - MLU
+  - name: Claims
+    description: Post-sale claim details and search
+    x-mp-sites:
+      - MLA
+      - MLB
+      - MLM
+      - MLC
+      - MCO
+      - MPE
+      - MLU
+  - name: Claim Messages
+    description: Messages and file attachments within a claim
+    x-mp-sites:
+      - MLA
+      - MLB
+      - MLM
+      - MLC
+      - MCO
+      - MPE
+      - MLU
+  - name: Claim Resolutions
+    description: Mediation requests and expected resolutions
+    x-mp-sites:
+      - MLA
+      - MLB
+      - MLM
+      - MLC
+      - MCO
+      - MPE
+      - MLU
+  - name: Claim Shipping
+    description: Upload shipping evidence to support a claim
+    x-mp-sites:
+      - MLA
+      - MLB
+      - MLM
+      - MLC
+      - MCO
+      - MPE
+      - MLU
+  - name: Releases Report
+    description: Generate and schedule releases (settlement) reports
+    x-mp-sites:
+      - MLA
+      - MLB
+      - MLM
+      - MLC
+      - MCO
+      - MPE
+      - MLU
+  - name: Settlements Report
+    description: Generate and schedule all-transactions reports
+    x-mp-sites:
+      - MLA
+      - MLB
+      - MLM
+      - MLC
+      - MCO
+      - MPE
+      - MLU
+  - name: Payouts
+    description: Bank transfer and Pix payouts
+    x-mp-sites:
+      - MLA
+      - MLB
+      - MLM
+      - MLC
 paths:
   /v1/chargebacks/{id}:
     get:
-      operationId: getChargeback
-      summary: Get chargeback by ID
+      summary: Get chargeback case details
+      description: |
+        Open platform endpoint to retrieve detailed information about a specific chargeback case.
+        This endpoint provides comprehensive chargeback data including payment information, coverage
+        details, documentation status, and timeline information. Requires valid caller authentication
+        and authorization.
+      operationId: getChargebackCase
       tags:
-      - Chargebacks
+        - Open Platform
       security:
-      - bearerAuth: []
+        - CallerAuth: []
       parameters:
-      - name: id
-        in: path
-        required: true
-        schema:
-          type: string
+        - name: id
+          in: path
+          required: true
+          description: Numeric identifier of the chargeback case
+          schema:
+            type: string
+            pattern: ^\d+$
+          example: '12345678'
       responses:
         '200':
-          description: Chargeback found
+          description: Chargeback case retrieved successfully
           content:
             application/json:
               schema:
-                type: object
-                properties:
-                  id:
-                    type: string
-                  payments:
-                    type: array
-                    items:
-                      type: object
-                  currency:
-                    type: string
-                  amount:
-                    type: number
-                    format: float
-                  coverage_applied:
-                    type: boolean
-                  coverage_elegible:
-                    type: boolean
-                  documentation_required:
-                    type: boolean
-                  documentation_status:
-                    type: string
-                    enum:
-                    - valid
-                    - invalid
-                    - not_supplied
-                  documentation:
-                    type: object
-                  date_documentation_deadline:
-                    type: string
-                    format: date-time
-                  date_created:
-                    type: string
-                    format: date-time
-                  date_last_updated:
-                    type: string
-                    format: date-time
+                $ref: '#/components/schemas/Chargeback'
+        '400':
+          description: Bad request - invalid parameters
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StandardResponse'
         '404':
-          $ref: '#/components/responses/NotFound'
+          description: Chargeback case not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StandardResponse'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StandardResponse'
     put:
       operationId: updateChargeback
       summary: Upload chargeback documentation
       tags:
-      - Chargebacks
+        - Chargebacks
       security:
-      - bearerAuth: []
+        - bearerAuth: []
       parameters:
-      - name: id
-        in: path
-        required: true
-        schema:
-          type: string
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
       requestBody:
         required: true
         content:
@@ -227,6 +384,25 @@ paths:
       responses:
         '200':
           description: Chargeback updated
+    options:
+      summary: Get API documentation for chargebacks endpoint
+      description: Returns API documentation in JSON format for the chargebacks endpoint
+      operationId: getChargebacksOptions
+      tags:
+        - Open Platform
+      responses:
+        '200':
+          description: API documentation retrieved successfully
+          content:
+            application/json:
+              schema:
+                type: object
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StandardResponse'
 components:
   securitySchemes:
     bearerAuth:
@@ -240,8 +416,9 @@ components:
       description: Public key for client-side card tokenization via MercadoPago.js only. Never use for server-side calls.
     mercadopagoOAuth:
       type: oauth2
-      description: OAuth 2.0 authorization_code flow for marketplace on-behalf-of and Wallet Connect integrations. For client_credentials
-        and refresh_token, use POST /oauth/token directly with the appropriate grant_type.
+      description: >-
+        OAuth 2.0 authorization_code flow for marketplace on-behalf-of and Wallet Connect integrations. For
+        client_credentials and refresh_token, use POST /oauth/token directly with the appropriate grant_type.
       flows:
         authorizationCode:
           authorizationUrl: https://auth.mercadopago.com/authorization
@@ -296,4 +473,186 @@ components:
             status: 429
             error: too_many_requests
             message: Rate limit exceeded. Retry after the indicated number of seconds.
-  schemas: {}
+  schemas:
+    Chargeback:
+      type: object
+      description: Open platform chargeback case representation
+      properties:
+        id:
+          type: string
+          description: Unique identifier of the chargeback case
+          example: '12345678'
+        payments:
+          type: array
+          description: List of payment IDs associated with the chargeback
+          items:
+            type: integer
+            format: int64
+          example:
+            - 98765432101
+            - 98765432102
+        currency:
+          type: string
+          description: Currency code
+          example: ARS
+        amount:
+          type: number
+          format: decimal
+          description: Chargeback amount
+          example: 1250.5
+        reason:
+          type: string
+          description: Human-readable reason for the chargeback
+          example: Unrecognized transaction
+        reason_id:
+          type: string
+          description: Reason identifier code
+          example: unrecognized
+        coverage_applied:
+          type: boolean
+          description: Indicates if coverage has been applied
+          example: true
+        coverage_elegible:
+          type: boolean
+          description: Indicates if the case is eligible for coverage
+          example: true
+        documentation_required:
+          type: boolean
+          description: Indicates if documentation is required
+          example: true
+        documentation_status:
+          type: string
+          description: Current status of documentation
+          enum:
+            - pending
+            - review_pending
+            - valid
+            - invalid
+            - not_supplied
+            - not_applicable
+          example: review_pending
+        documentation:
+          type: array
+          description: List of documentation files
+          items:
+            $ref: '#/components/schemas/Documentation'
+        date_documentation_deadline:
+          type: string
+          format: date-time
+          description: Deadline for submitting documentation
+          example: '2026-06-20T23:59:59Z'
+        date_created:
+          type: string
+          format: date-time
+          description: Date when the chargeback was created
+          example: '2026-06-01T10:00:00Z'
+        date_last_updated:
+          type: string
+          format: date-time
+          description: Date of last update
+          example: '2026-06-15T14:22:00Z'
+        live_mode:
+          type: boolean
+          description: Indicates if the chargeback is in live mode (production)
+          example: true
+        tags:
+          type: array
+          description: Tags associated with the chargeback
+          items:
+            type: string
+          example:
+            - high_priority
+            - needs_review
+        status:
+          type: string
+          description: Current status of the chargeback
+          enum:
+            - open
+            - closed
+            - in_review
+            - documentation_pending
+          example: documentation_pending
+    Documentation:
+      type: object
+      description: Documentation file associated with a chargeback case
+      properties:
+        type:
+          type: string
+          description: Type of documentation
+          example: invoice
+        url:
+          type: string
+          description: URL to access the documentation
+          example: https://api.mercadolibre.com/v1/chargebacks/documentation/invoice/550e8400-e29b-41d4-a716-446655440000
+        description:
+          type: string
+          description: Description of the documentation
+          example: Purchase invoice
+    StandardResponse:
+      type: object
+      description: Standard API response format for errors and messages
+      properties:
+        status:
+          type: string
+          enum:
+            - success
+            - error
+          description: Response status
+          example: error
+        data:
+          type: string
+          description: Response message or error description
+          example: Internal Server Error
+  parameters:
+    CaseIdPath:
+      name: caseId
+      in: path
+      required: true
+      description: Unique identifier of the chargeback case
+      schema:
+        type: string
+      example: '12345678'
+    XCallerIdHeader:
+      name: X-Caller-Id
+      in: header
+      required: false
+      description: Caller ID provided via header
+      schema:
+        type: string
+      example: '987654321'
+    XPublicHeader:
+      name: X-Public
+      in: header
+      required: false
+      description: Public access indicator
+      schema:
+        type: string
+    XCallerScopesHeader:
+      name: X-Caller-Scopes
+      in: header
+      required: false
+      description: Caller scopes for authorization
+      schema:
+        type: string
+    CallerIdQuery:
+      name: caller.id
+      in: query
+      required: false
+      description: Caller ID provided via query parameter
+      schema:
+        type: string
+      example: '987654321'
+    CallerAdminQuery:
+      name: caller.admin
+      in: query
+      required: false
+      description: Indicates if caller has admin privileges
+      schema:
+        type: string
+    CallerScopesQuery:
+      name: caller.scopes
+      in: query
+      required: false
+      description: Caller scopes for authorization
+      schema:
+        type: string

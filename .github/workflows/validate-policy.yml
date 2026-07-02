@@ -30,7 +30,7 @@ jobs:
         if: success()
         continue-on-error: true
         env:
-          BOT_URL: ${{ secrets.BOT_SYNC_SPECS_URL || 'http://beta-bot-sync-specs.melisystems.com' }}
+          BOT_URL: ${{ secrets.BOT_SYNC_SPECS_URL || 'https://beta-bot-sync-specs.melioffice.com' }}
         run: |
           BRANCH="${{ github.head_ref }}"
           APP=$(echo "$BRANCH" | sed -n 's|enhancement/automatic-spec-\([^/]*\)/.*|\1|p')

@@ -1,25 +1,18 @@
 name: Trigger SDK generation
 
-# Triggered when spec3.yaml lands on the target branch (auto-merge from bot PR).
+# Triggered when spec3.yaml merges to main.
 #
-# Full flow:
-#   spec3.yaml merges to feature/add-fury-spec (testing) or main (production)
-#     → Step 1: generate_product_diff.py
-#               Compares HEAD~1 vs HEAD to detect what changed per product.
-#               Produces by-product/{product}/diff.yaml for each changed product.
-#     → Step 2: push_to_sdk.py
-#               Reads diff.yaml + spec3.yaml per product.
-#               Transforms changes into the SDK generator API format.
-#               POSTs to spec-agent-generator for each sdk target in apps.yaml.
-#
-# Apps are only processed if they have an sdk[] entry in apps.yaml.
-# SDK language, site_id and target_repo are configured per app in apps.yaml.
+# Flow (with fallback):
+#   1. generate_product_diff.py → detects what changed per product
+#   2. push_to_sdk.py → tries to call spec-agent-generator directly (fast path)
+#      └─ If unreachable (no VPN from GitHub Actions) → continue-on-error: true
+#   3. Bot-sync fallback → already triggered SDK when it created the PR
+#      (runs inside ML's network, no VPN needed)
 
 on:
   push:
     branches:
       - main
-      - 'feature/add-fury-spec'
     paths:
       - spec3.yaml
 
@@ -45,10 +38,7 @@ jobs:
       - name: Install dependencies
         run: pip install pyyaml requests
 
-      # ── Step 1: Generate per-product diffs ────────────────────────────────────
-      # Compares spec3.yaml HEAD~1 vs HEAD to identify exactly what changed
-      # per product. Produces by-product/{product}/diff.yaml.
-      # If a product has no changes, no diff.yaml is written and it is skipped.
+      # ── Step 1: Generate per-product diffs ──────────────────────────────────
       - name: Generate per-product diffs
         id: product_diff
         run: python openapi/scripts/generate_product_diff.py
@@ -66,42 +56,54 @@ jobs:
           echo "has_changes=$([ -n "$CHANGED" ] && echo true || echo false)" >> $GITHUB_OUTPUT
           echo "Changed products: ${CHANGED:-none}"
 
-      # ── Step 2: Trigger SDK generation for changed products ───────────────────
-      # push_to_sdk.py reads each product's diff.yaml and spec3.yaml,
-      # transforms them into the SDK generator API format, and POSTs
-      # to spec-agent-generator for each sdk target configured in apps.yaml.
-      - name: Trigger SDK generation via bot-sync
+      # ── Step 2a: Try spec-agent-generator directly (fast path) ──────────────
+      # If GitHub Actions can reach the endpoint → SDK generated immediately.
+      # If unreachable (no VPN) → continue-on-error skips to fallback.
+      # Fallback: bot-sync already triggered SDK when it created the PR.
+      - name: Trigger SDK generation — direct (fast path)
+        id: sdk_direct
         if: steps.changed.outputs.has_changes == 'true'
+        continue-on-error: true
+        env:
+          SDK_GENERATOR_URL: ${{ secrets.SDK_GENERATOR_URL || 'https://spec-agent-generator-test.melioffice.com' }}
+          SDK_GENERATOR_TOKEN: ${{ secrets.SDK_GENERATOR_TOKEN }}
+          CHANGED_PRODUCTS: ${{ steps.changed.outputs.products }}
+        run: |
+          python openapi/scripts/push_to_sdk.py \
+            --apps "$CHANGED_PRODUCTS" \
+            --openapi-path openapi
+        working-directory: ${{ github.workspace }}
+
+      # ── Step 2b: Fallback — notify bot-sync if direct call failed ───────────
+      # Bot-sync runs inside ML's network and can always reach spec-agent-generator.
+      # This step is a best-effort secondary trigger.
+      - name: Trigger SDK generation — via bot-sync (fallback)
+        if: steps.changed.outputs.has_changes == 'true' && steps.sdk_direct.outcome == 'failure'
         continue-on-error: true
         env:
           BOT_URL: ${{ secrets.BOT_SYNC_SPECS_URL || 'https://beta-bot-sync-specs.melioffice.com' }}
           CHANGED_PRODUCTS: ${{ steps.changed.outputs.products }}
         run: |
-          # Bot-sync runs inside ML's network and can reach spec-agent-generator
-          # GitHub Actions cannot reach internal ML services directly
-          RESPONSE=$(curl -s -o /tmp/sdk_response.json -w "%{http_code}" \
+          echo "Direct call failed — trying bot-sync fallback"
+          curl -s -o /tmp/sdk_response.json -w "HTTP: %{http_code}\n" \
             -X POST "${BOT_URL}/openapi/sdk/trigger" \
             -H "Content-Type: application/json" \
             -H "X-github-token: ${{ secrets.GH_PAT }}" \
             --max-time 300 \
-            -d "{\"apps\": \"$CHANGED_PRODUCTS\"}")
-
-          echo "HTTP: $RESPONSE"
+            -d "{\"apps\": \"$CHANGED_PRODUCTS\"}" || true
           cat /tmp/sdk_response.json || true
-
-          if [ "$RESPONSE" != "200" ]; then
-            echo "❌ SDK trigger failed with HTTP $RESPONSE"
-            exit 1
-          fi
 
       - name: Summary
         if: steps.changed.outputs.has_changes == 'true'
         run: |
-          echo "## SDK generation triggered" >> $GITHUB_STEP_SUMMARY
-          echo "" >> $GITHUB_STEP_SUMMARY
+          DIRECT="${{ steps.sdk_direct.outcome }}"
+          echo "## SDK generation" >> $GITHUB_STEP_SUMMARY
           echo "**Changed products:** ${{ steps.changed.outputs.products }}" >> $GITHUB_STEP_SUMMARY
-          echo "" >> $GITHUB_STEP_SUMMARY
-          echo "_Triggered by merge to \`${{ github.ref_name }}\`_" >> $GITHUB_STEP_SUMMARY
+          if [ "$DIRECT" = "success" ]; then
+            echo "✅ Triggered directly from GitHub Actions" >> $GITHUB_STEP_SUMMARY
+          else
+            echo "⚠️ Direct call failed — bot-sync fallback triggered (or already handled when PR was created)" >> $GITHUB_STEP_SUMMARY
+          fi
 
       - name: No changes
         if: steps.changed.outputs.has_changes != 'true'

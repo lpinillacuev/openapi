@@ -28,8 +28,8 @@ jobs:
 
       - name: Sync bot/pending-paths status when KVS has no pending paths
         if: success()
+        continue-on-error: true
         env:
-          GH_TOKEN: ${{ secrets.GH_PAT || github.token }}
           BOT_URL: ${{ secrets.BOT_SYNC_SPECS_URL || 'http://beta-bot-sync-specs.melisystems.com' }}
         run: |
           BRANCH="${{ github.head_ref }}"
@@ -41,16 +41,13 @@ jobs:
             exit 0
           fi
 
-          echo "Syncing bot/pending-paths status for app=$APP commit=$COMMIT_SHA"
+          echo "Syncing bot/pending-paths for app=$APP"
 
-          RESPONSE=$(curl -s -o /tmp/sync_response.json -w "%{http_code}" \
+          curl -s --max-time 10 \
             -X POST "${BOT_URL}/openapi/policy/${APP}/sync-status" \
             -H "Content-Type: application/json" \
             -H "X-github-token: ${{ secrets.GH_PAT }}" \
-            -d "{\"commitSha\":\"$COMMIT_SHA\"}")
-
-          echo "HTTP: $RESPONSE"
-          cat /tmp/sync_response.json || true
+            -d "{\"commitSha\":\"$COMMIT_SHA\"}" || echo "sync-status call failed — non-blocking"
 
       - name: Summary on failure
         if: failure()

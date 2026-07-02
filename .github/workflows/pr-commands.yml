@@ -60,8 +60,10 @@ jobs:
           echo "Not a sync PR — skipping."
           exit 0
 
-      - name: Bulk approve or reject all pending paths
-        id: bulk
+      - name: Parse checkboxes and decide per path
+        id: decide
+        env:
+          GH_TOKEN: ${{ secrets.GH_PAT || github.token }}
         run: |
           ACTION="${{ steps.ctx.outputs.action }}"
           APP="${{ steps.ctx.outputs.app }}"
@@ -70,48 +72,89 @@ jobs:
           COMMIT_SHA="${{ steps.ctx.outputs.commit_sha }}"
           BOT_URL="${{ secrets.BOT_SYNC_SPECS_URL }}"
 
-          PAYLOAD=$(cat <<EOF
-          {
-            "decidedBy": "$REVIEWER",
-            "prNumber": $PR_NUMBER,
-            "commitSha": "$COMMIT_SHA"
-          }
-          EOF
-          )
+          # Read the PR body
+          PR_BODY=$(gh pr view "$PR_NUMBER" --json body --jq '.body' 2>/dev/null || echo "")
 
-          RESPONSE=$(curl -s -o /tmp/bulk_response.json -w "%{http_code}" \
-            -X POST "${BOT_URL}/openapi/policy/${APP}/bulk-${ACTION}" \
-            -H "Content-Type: application/json" \
-            -H "X-github-token: ${{ secrets.GH_PAT }}" \
-            -d "$PAYLOAD")
+          # Extract paths between markers
+          SECTION=$(echo "$PR_BODY" | sed -n '/PENDING_PATHS_START/,/PENDING_PATHS_END/p')
 
-          echo "HTTP: $RESPONSE"
-          cat /tmp/bulk_response.json
-
-          if [ "$RESPONSE" != "200" ]; then
-            echo "❌ Bulk $ACTION failed with HTTP $RESPONSE"
-            exit 1
+          if [ -z "$SECTION" ]; then
+            echo "No pending paths section found — nothing to decide."
+            echo "decided_count=0" >> $GITHUB_OUTPUT
+            exit 0
           fi
 
-          DECIDED=$(cat /tmp/bulk_response.json | python3 -c \
-            "import sys,json; print(json.load(sys.stdin).get('decidedCount', 0))")
-          echo "decided_count=$DECIDED" >> $GITHUB_OUTPUT
+          APPROVED=()
+          REJECTED=()
+
+          # Parse checked [x] and unchecked [ ] boxes
+          while IFS= read -r line; do
+            if echo "$line" | grep -qE '^\- \[x\]'; then
+              PATH_VAL=$(echo "$line" | sed "s/- \[x\] \`//;s/\`//")
+              APPROVED+=("$PATH_VAL")
+            elif echo "$line" | grep -qE '^\- \[ \]'; then
+              PATH_VAL=$(echo "$line" | sed "s/- \[ \] \`//;s/\`//")
+              REJECTED+=("$PATH_VAL")
+            fi
+          done <<< "$SECTION"
+
+          echo "Approved paths: ${APPROVED[*]}"
+          echo "Rejected paths: ${REJECTED[*]}"
+
+          TOTAL=0
+
+          # If reviewer clicked "Approve" — use checkbox state
+          # If reviewer clicked "Request changes" — reject ALL pending paths
+          if [ "$ACTION" = "reject" ]; then
+            # Request changes = reject everything regardless of checkboxes
+            ALL_PATHS=("${APPROVED[@]}" "${REJECTED[@]}")
+            APPROVED=()
+            REJECTED=("${ALL_PATHS[@]}")
+          fi
+
+          for PATH_VAL in "${APPROVED[@]}"; do
+            PAYLOAD="{\"path\":\"$PATH_VAL\",\"approvedBy\":\"$REVIEWER\",\"decidedBy\":\"$REVIEWER\",\"prNumber\":$PR_NUMBER,\"commitSha\":\"$COMMIT_SHA\"}"
+            curl -s -X POST "${BOT_URL}/openapi/policy/${APP}/approve" \
+              -H "Content-Type: application/json" \
+              -H "X-github-token: ${{ secrets.GH_PAT }}" \
+              -d "$PAYLOAD" > /dev/null
+            TOTAL=$((TOTAL + 1))
+            echo "✅ Approved: $PATH_VAL"
+          done
+
+          for PATH_VAL in "${REJECTED[@]}"; do
+            PAYLOAD="{\"path\":\"$PATH_VAL\",\"decidedBy\":\"$REVIEWER\",\"reason\":\"rejected via GitHub Review\",\"prNumber\":$PR_NUMBER,\"commitSha\":\"$COMMIT_SHA\"}"
+            curl -s -X POST "${BOT_URL}/openapi/policy/${APP}/reject" \
+              -H "Content-Type: application/json" \
+              -H "X-github-token: ${{ secrets.GH_PAT }}" \
+              -d "$PAYLOAD" > /dev/null
+            TOTAL=$((TOTAL + 1))
+            echo "❌ Rejected: $PATH_VAL"
+          done
+
+          echo "decided_count=$TOTAL"        >> $GITHUB_OUTPUT
+          echo "approved_count=${#APPROVED[@]}" >> $GITHUB_OUTPUT
+          echo "rejected_count=${#REJECTED[@]}" >> $GITHUB_OUTPUT
 
       - name: Comment result on PR
         uses: actions/github-script@d746ffe35508b1917358783b479e04febd2b8f71
         with:
           github-token: ${{ secrets.GH_PAT || github.token }}
           script: |
-            const action    = '${{ steps.ctx.outputs.action }}';
-            const reviewer  = '${{ steps.ctx.outputs.reviewer }}';
-            const decided   = parseInt('${{ steps.bulk.outputs.decided_count }}', 10);
-            const prNumber  = parseInt('${{ steps.ctx.outputs.pr_number }}', 10);
-            const emoji     = action === 'approve' ? '✅' : '❌';
-            const label     = action === 'approve' ? 'approved all pending paths' : 'rejected all pending paths';
+            const reviewer     = '${{ steps.ctx.outputs.reviewer }}';
+            const prNumber     = parseInt('${{ steps.ctx.outputs.pr_number }}', 10);
+            const approved     = parseInt('${{ steps.decide.outputs.approved_count }}', 10);
+            const rejected     = parseInt('${{ steps.decide.outputs.rejected_count }}', 10);
+            const total        = approved + rejected;
 
-            const body = decided > 0
-              ? `${emoji} **@${reviewer}** ${label} (${decided} path(s)) via GitHub Review.\n\n🎉 PR is now unblocked and ready to merge.`
-              : `ℹ️ **@${reviewer}** submitted a review — no pending paths to decide.`;
+            if (total === 0) {
+              return;
+            }
+
+            let body = `**@${reviewer}** revisó los paths pendientes:\n\n`;
+            if (approved > 0) body += `✅ **${approved}** path(s) aprobados (whitelist)\n`;
+            if (rejected > 0) body += `❌ **${rejected}** path(s) rechazados (blacklist)\n`;
+            body += `\n🎉 PR desbloqueado y listo para mergear.`;
 
             await github.rest.issues.createComment({
               owner: context.repo.owner,

@@ -30,6 +30,54 @@ components:
           type: string
           description: Postal or ZIP code
           example: '10001'
+    AutomaticPayments:
+      x-visibility: internal
+      type: object
+      description: >-
+        Present when the order uses the Automatic Payments feature. `payment_profile_id` is included when a profile was
+        used or created; omitted otherwise.
+      properties:
+        payment_profile_id:
+          type: string
+        retries:
+          type: integer
+        schedule_date:
+          type: string
+          format: date-time
+        due_date:
+          type: string
+          format: date-time
+        subscription:
+          type: object
+          properties:
+            id:
+              type: string
+            sequence:
+              type: object
+              properties:
+                number:
+                  type: integer
+                total:
+                  type: integer
+            invoice:
+              type: object
+              properties:
+                id:
+                  type: string
+                billing_date:
+                  type: string
+                  format: date
+                period:
+                  type: object
+                  properties:
+                    interval:
+                      type: integer
+                    type:
+                      type: string
+                      enum:
+                        - daily
+                        - weekly
+                        - monthly
     AutoRecurring:
       type: object
       required:
@@ -91,6 +139,82 @@ components:
             - checking
             - savings
           description: Type of bank account
+    CaptureOrderOPRequest:
+      description: Capture Order request for type=online
+      type: object
+      properties:
+        payments:
+          type: array
+          minItems: 1
+          items:
+            type: object
+            required:
+              - id
+            properties:
+              id:
+                type: string
+                format: ulid
+              amount:
+                type: string
+                pattern: ^\d+(\.\d{1,2})?$
+                example: '123.45'
+    CaptureOrderOPResponse:
+      description: Transaction response for type=online
+      type: object
+      properties:
+        id:
+          type: string
+          example: ORD01HRYJPXYM3ZK71F31AQR76KGR
+        status:
+          type: string
+        status_detail:
+          type: string
+        transactions:
+          type: object
+          properties:
+            payments:
+              type: array
+              items:
+                type: object
+                properties:
+                  id:
+                    type: string
+                    example: PAY01HRYJPXYM3ZK71F31AQR76KGR
+                  status:
+                    type: string
+                  status_detail:
+                    type: string
+                  amount:
+                    type: string
+                  paid_amount:
+                    type: string
+                  reference_id:
+                    type: string
+    ConfirmOrderRequest:
+      description: Confirm transaction amounts request (only for instore QR payment type)
+      type: object
+      required:
+        - transactions
+      properties:
+        transactions:
+          type: array
+          minItems: 1
+          items:
+            type: object
+            required:
+              - id
+              - confirmed_amount
+            properties:
+              id:
+                type: string
+                format: ulid
+                description: Transaction ID to confirm
+                example: PAY01J3GW5GCVQQB7MEN5FMA6ZJF8
+              confirmed_amount:
+                type: string
+                pattern: ^\d+(\.\d{1,2})?$
+                description: Final confirmed amount for the transaction
+                example: '113.34'
     CurrencyId:
       type: string
       description: ISO 4217 currency code for the applicable site
@@ -138,28 +262,22 @@ components:
           type: string
           description: Wallet identifier or token
     Error:
+      description: Error objects
       type: object
-      required:
-        - error
-        - message
       properties:
-        error:
-          type: string
-          description: Error code
-          example: invalid_payment_method
-        message:
-          type: string
-          description: Human-readable error message
-          example: The provided payment method is invalid or expired
-        details:
-          type: object
-          additionalProperties: true
-          description: Additional error details
-        timestamp:
-          type: string
-          format: date-time
-          description: Error timestamp
-          example: '2024-01-15T10:30:00Z'
+        errors:
+          type: array
+          items:
+            type: object
+            properties:
+              code:
+                type: string
+              message:
+                type: string
+              doc_url:
+                type: string
+        data:
+          $ref: '#/components/schemas/OrderOPResponse'
     ErrorCause:
       type: object
       properties:
@@ -172,6 +290,533 @@ components:
         data:
           type: string
           nullable: true
+    GetOrderOPResponse:
+      description: Order response for GET type=online
+      type: object
+      properties:
+        id:
+          type: string
+          example: ORD01HRYJPXYM3ZK71F31AQR76KGR
+        type:
+          type: string
+          enum:
+            - online
+        processing_mode:
+          type: string
+          enum:
+            - manual
+            - automatic
+            - automatic_async
+        external_reference:
+          type: string
+        description:
+          type: string
+        total_amount:
+          type: string
+        total_paid_amount:
+          type: string
+        checkout_available_at:
+          x-visibility: internal
+          type: string
+          example: P3Y6M4DT12H30M5S
+        expiration_time:
+          type: string
+          example: P3Y6M4DT12H30M5S
+        country_code:
+          type: string
+          enum:
+            - ARG
+            - BRA
+            - CHL
+            - COL
+            - MEX
+            - PER
+            - URY
+            - VEN
+        user_id:
+          x-visibility: internal
+          type: string
+        status:
+          type: string
+        status_detail:
+          type: string
+        capture_mode:
+          type: string
+          enum:
+            - manual
+            - automatic
+            - automatic_async
+          default: automatic_async
+        created_date:
+          type: string
+        last_updated_date:
+          type: string
+        client_token:
+          type:
+            - string
+            - 'null'
+        currency:
+          type: string
+        integration_data:
+          type: object
+          properties:
+            application_id:
+              type: string
+        payer:
+          x-visibility: internal
+          type: object
+          properties:
+            customer_id:
+              type: string
+            entity_type:
+              type:
+                - string
+                - 'null'
+              description: >-
+                Payer entity type, present for guest payers (e.g. PSE) without a customer_id. Examples: individual,
+                association
+            email:
+              type: string
+              description: >
+                Email of the payer. Exposed only by `GET /v1/orders/{id}`; `GET /v1/orders` (SEARCH) always strips this
+                field.
+
+                Omitted when empty or null upstream. If after omitting `email` no other payer fields remain, the entire
+                `payer` node is omitted.
+              example: user@example.com
+        config:
+          type: object
+          properties:
+            payment_method:
+              type: object
+              properties:
+                not_allowed_ids:
+                  x-visibility: internal
+                  type: array
+                  items:
+                    type: string
+                not_allowed_types:
+                  x-visibility: internal
+                  type: array
+                  items:
+                    type: string
+                default_id:
+                  x-visibility: internal
+                  type: string
+                max_installments:
+                  x-visibility: internal
+                  type: integer
+                default_installments:
+                  x-visibility: internal
+                  type: integer
+            online:
+              type: object
+              properties:
+                callback_url:
+                  type: string
+                success_url:
+                  x-visibility: internal
+                  type: string
+                pending_url:
+                  x-visibility: internal
+                  type: string
+                failure_url:
+                  x-visibility: internal
+                  type: string
+                auto_return:
+                  x-visibility: internal
+                  type: string
+                  enum:
+                    - approved
+                    - all
+                differential_pricing:
+                  x-visibility: internal
+                  type: object
+                  properties:
+                    id:
+                      type: integer
+            split_rules:
+              x-visibility: wip
+              type: object
+              description: Configuration for split payment rules
+              properties:
+                amount_type:
+                  type: string
+                  enum:
+                    - percentage
+                    - fixed
+                  description: Type of amount calculation for splits
+            cross_border:
+              type: object
+              description: Cross-border payment data returned when present in the order.
+              x-visibility: wip
+              properties:
+                destination_currency:
+                  type: string
+                  description: Currency code of the destination amount.
+                  example: USD
+                  x-visibility: wip
+                destination_amount:
+                  type: string
+                  description: >-
+                    Amount in the destination currency, serialized as a string to preserve precision
+                    (Treasury-calculated or provided).
+                  example: '45.50'
+                  x-visibility: wip
+        transactions:
+          type: object
+          properties:
+            payments:
+              type: array
+              items:
+                type: object
+                properties:
+                  id:
+                    type: string
+                    format: ulid
+                    example: PAY01HRYJPXYM3ZK71F31AQR76KGR
+                  amount:
+                    type: string
+                    example: '100.00'
+                  confirmed_amount:
+                    x-visibility: internal
+                    type: string
+                    description: Confirmed (captured) amount, monetary string. Omitted when not provided upstream.
+                    example: '100.00'
+                  paid_amount:
+                    type: string
+                    example: '100.00'
+                  expiration_time:
+                    type: string
+                    example: P1D
+                  date_of_expiration:
+                    type: string
+                    format: date-time
+                  reference_id:
+                    type: string
+                  status:
+                    type: string
+                  status_detail:
+                    type: string
+                  provider:
+                    type: string
+                  authorization_code:
+                    x-visibility: wip
+                    type: string
+                    description: Authorization code returned by the card network after payment approval
+                  attempt_number:
+                    x-visibility: internal
+                    type: integer
+                  attempts:
+                    x-visibility: internal
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: string
+                        status:
+                          type: string
+                        status_detail:
+                          type: string
+                        payment_method:
+                          type: object
+                          properties:
+                            id:
+                              type: string
+                              enum:
+                                - abitab
+                                - account_money
+                                - amex
+                                - argencard
+                                - banesco
+                                - bolbradesco
+                                - boleto
+                                - cabal
+                                - cencosud
+                                - clabe
+                                - cmr
+                                - codensa
+                                - consumer_credits
+                                - creditel
+                                - debcabal
+                                - debelo
+                                - debin_transfer
+                                - debmaster
+                                - debvisa
+                                - diners
+                                - edenred
+                                - efecty
+                                - elo
+                                - hipercard
+                                - interop_transfer
+                                - kushki
+                                - lider
+                                - maestro
+                                - master
+                                - mercantil
+                                - naranja
+                                - oca
+                                - oxxo
+                                - pagoefectivo_atm
+                                - pagofacil
+                                - paycash
+                                - pix
+                                - pse
+                                - rapipago
+                                - redcompra
+                                - redpagos
+                                - serfin
+                                - sivale_despensa
+                                - sivale_restaurant
+                                - smart_transfer
+                                - sucredito
+                                - visa
+                            type:
+                              type: string
+                            card_id:
+                              type: string
+                            installments:
+                              type: integer
+                  payment_method:
+                    type: object
+                    properties:
+                      id:
+                        type: string
+                        enum:
+                          - abitab
+                          - account_money
+                          - amex
+                          - argencard
+                          - banesco
+                          - bolbradesco
+                          - boleto
+                          - cabal
+                          - cencosud
+                          - clabe
+                          - cmr
+                          - codensa
+                          - consumer_credits
+                          - creditel
+                          - debcabal
+                          - debelo
+                          - debin_transfer
+                          - debmaster
+                          - debvisa
+                          - diners
+                          - edenred
+                          - efecty
+                          - elo
+                          - hipercard
+                          - interop_transfer
+                          - kushki
+                          - lider
+                          - maestro
+                          - master
+                          - mercantil
+                          - naranja
+                          - oca
+                          - oxxo
+                          - pagoefectivo_atm
+                          - pagofacil
+                          - paycash
+                          - pix
+                          - pse
+                          - rapipago
+                          - redcompra
+                          - redpagos
+                          - serfin
+                          - sivale_despensa
+                          - sivale_restaurant
+                          - smart_transfer
+                          - sucredito
+                          - visa
+                      type:
+                        type: string
+                      token:
+                        type: string
+                      installments:
+                        type: integer
+                      statement_descriptor:
+                        type: string
+                      ticket_url:
+                        type: string
+                        description: >-
+                          Ticket URL. Returned for offline payment methods (e.g., Pix, Rapipago, Pago fácil, boleto,
+                          OXXO, Paycash, Clabe).
+                      redirect_url:
+                        type: string
+                        description: >-
+                          Redirect URL. Returned for PSE bank_transfer payments in MCO to redirect the payer to their
+                          bank's portal.
+                      barcode_content:
+                        type: string
+                      reference:
+                        type: string
+                      verification_code:
+                        type: string
+                      financial_institution:
+                        type: string
+                        description: >-
+                          Financial institution code. Returned for bank_transfer and offline payment methods (e.g., PSE,
+                          boleto).
+                      qr_code:
+                        type: string
+                      qr_code_base64:
+                        type: string
+                      digitable_line:
+                        type: string
+                      e2e_id:
+                        type: string
+                      open_finance_account_id:
+                        type: string
+                        x-visibility: wip
+                        description: >-
+                          Open Finance account id. Returned only for `smart_transfer` payments — identifies the account
+                          that originated the transfer.
+                      transaction_security:
+                        type: object
+                        properties:
+                          validation:
+                            type: string
+                            enum:
+                              - on_fraud_risk
+                              - never
+                          liability_shift:
+                            type: string
+                            enum:
+                              - required
+                          id:
+                            type: string
+                          url:
+                            type: string
+                          type:
+                            type: string
+                          status:
+                            type: string
+                  card:
+                    x-visibility: internal
+                    type: object
+                    properties:
+                      last_digits:
+                        type: string
+                      first_digits:
+                        type: string
+                  automatic_payments:
+                    $ref: '#/components/schemas/AutomaticPayments'
+            refunds:
+              type: array
+              items:
+                type: object
+                properties:
+                  id:
+                    type: string
+                  transaction_id:
+                    type: string
+                    format: ulid
+                  reference_id:
+                    x-visibility: internal
+                    type: string
+                  amount:
+                    type: string
+                  status:
+                    type: string
+                  items:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        title:
+                          type: string
+                        unit_price:
+                          type: string
+                        quantity:
+                          type: integer
+                        external_code:
+                          type: string
+                        category_id:
+                          type: string
+                        type:
+                          type: string
+                        description:
+                          type: string
+                        picture_url:
+                          type: string
+            chargebacks:
+              type: array
+              items:
+                type: object
+                properties:
+                  id:
+                    type: string
+                  transaction_id:
+                    type: string
+                    format: ulid
+                  case_id:
+                    type: string
+                  status:
+                    type: string
+                  references:
+                    type: array
+                    items:
+                      type: string
+        splits:
+          x-visibility: wip
+          type: array
+          description: Split payment configuration for distributing payments among multiple participants
+          items:
+            type: object
+            properties:
+              user_id:
+                type: integer
+                format: int64
+                description: User ID of the split participant
+                example: 123456789
+              amount:
+                type: string
+                description: Amount to be paid to this participant
+                example: '100.00'
+              description:
+                type: string
+                description: Description of this split payment
+                example: Payment for seller
+              item_references:
+                type: array
+                description: References to items associated with this split
+                items:
+                  type: string
+        items:
+          type: array
+          items:
+            type: object
+            properties:
+              title:
+                type: string
+              unit_price:
+                type: string
+              quantity:
+                type: integer
+              external_code:
+                type: string
+              external_position:
+                type: string
+                description: >-
+                  Position supplied by the integrator at order creation time. Returned as a string (matching the
+                  upstream `mp-order-api` contract). Omitted when not provided upstream (empty string upstream is
+                  treated as absent).
+                example: '2'
+              category_id:
+                type: string
+              type:
+                type: string
+              description:
+                type: string
+              picture_url:
+                type: string
+              warranty:
+                type: boolean
+              event_date:
+                type: string
     Identification:
       type: object
       description: Payer identification document. Valid types vary by country.
@@ -227,6 +872,26 @@ components:
           type: integer
           description: Offset of the current page
           example: 0
+    PagingResponse:
+      description: Pagination information
+      type: object
+      properties:
+        offset:
+          type: string
+          description: Number of items skipped
+          example: '0'
+        limit:
+          type: string
+          description: Maximum number of items returned
+          example: '20'
+        total:
+          type: string
+          description: Total number of items available
+          example: '100'
+        total_pages:
+          type: string
+          description: Total number of pages available
+          example: '5'
     Payer:
       type: object
       description: Payment payer information
@@ -315,6 +980,19 @@ components:
           type: string
           format: uri
           description: Webhook URL for this specific POS
+    SearchOrdersResponse:
+      description: Search orders response
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            oneOf:
+              - $ref: '#/components/schemas/OrderOPResponse'
+              - $ref: '#/components/schemas/OrderPointResponse'
+              - $ref: '#/components/schemas/OrderQRResponse'
+        paging:
+          $ref: '#/components/schemas/PagingResponse'
     SendMessageRequest:
       type: object
       required:
@@ -329,6 +1007,30 @@ components:
           description: File IDs to attach (upload first via attachments endpoint)
           items:
             type: string
+    SimulateOrderEventRequest:
+      description: Order request for type point
+      type: object
+      required:
+        - status
+      properties:
+        status:
+          type: string
+          enum:
+            - processed
+            - expired
+            - canceled
+            - refunded
+            - failed
+        payment_method_type:
+          type: string
+          enum:
+            - credit_card
+            - debit_card
+            - qr
+            - voucher_card
+            - cash
+        installments:
+          type: integer
     Store:
       allOf:
         - $ref: '#/components/schemas/StoreRequest'
@@ -435,6 +1137,334 @@ components:
             longitude:
               type: number
               format: float
+    TransactionOPRequest:
+      description: Transaction request for type=online
+      type: object
+      properties:
+        payments:
+          type: array
+          minItems: 1
+          maxItems: 2
+          items:
+            type: object
+            minProperties: 1
+            required:
+              - amount
+              - payment_method
+            properties:
+              amount:
+                type: string
+                minLength: 1
+                maxLength: 18
+                pattern: ^\d+(\.\d{1,2})?$
+                example: '123.45'
+              expiration_time:
+                type: string
+                format: duration
+                pattern: ^P(?:\d+Y)?(?:\d+M)?(?:\d+D)?(?:T(?:\d+H)?(?:\d+M)?(?:\d+S)?)?$
+                example: P3Y6M4DT12H30M5S
+                description: Duration in ISO 8601 format (e.g. 'P1D' for 1 day, 'PT1H' for 1 hour).
+              payment_method:
+                type: object
+                minProperties: 1
+                required:
+                  - id
+                properties:
+                  id:
+                    type: string
+                    enum:
+                      - abitab
+                      - account_money
+                      - amex
+                      - argencard
+                      - banesco
+                      - bolbradesco
+                      - boleto
+                      - cabal
+                      - cencosud
+                      - clabe
+                      - cmr
+                      - codensa
+                      - consumer_credits
+                      - creditel
+                      - debcabal
+                      - debelo
+                      - debin_transfer
+                      - debmaster
+                      - debvisa
+                      - diners
+                      - edenred
+                      - efecty
+                      - elo
+                      - hipercard
+                      - interop_transfer
+                      - kushki
+                      - lider
+                      - maestro
+                      - master
+                      - mercantil
+                      - naranja
+                      - oca
+                      - oxxo
+                      - pagoefectivo_atm
+                      - pagofacil
+                      - paycash
+                      - pix
+                      - pse
+                      - rapipago
+                      - redcompra
+                      - redpagos
+                      - serfin
+                      - sivale_despensa
+                      - sivale_restaurant
+                      - sucredito
+                      - visa
+                  type:
+                    type: string
+                  token:
+                    type: string
+                    minLength: 32
+                    maxLength: 32
+                  installments:
+                    type: integer
+                    minimum: 1
+                  statement_descriptor:
+                    type: string
+                    minLength: 1
+                    maxLength: 50
+                  financial_institution:
+                    type: string
+                    description: Financial institution code. Required for PSE bank_transfer payments in MCO.
+                    example: '1007'
+    TransactionOPResponse:
+      description: Transaction response for type=online
+      type: object
+      properties:
+        payments:
+          type: array
+          items:
+            type: object
+            properties:
+              id:
+                type: string
+                format: ulid
+              reference_id:
+                type: string
+              status:
+                type: string
+              status_detail:
+                type: string
+              amount:
+                type: string
+              date_of_expiration:
+                type: string
+                format: date-time
+              payment_method:
+                type: object
+                properties:
+                  id:
+                    type: string
+                    enum:
+                      - abitab
+                      - account_money
+                      - amex
+                      - argencard
+                      - banesco
+                      - bolbradesco
+                      - boleto
+                      - cabal
+                      - cencosud
+                      - clabe
+                      - cmr
+                      - codensa
+                      - consumer_credits
+                      - creditel
+                      - debcabal
+                      - debelo
+                      - debin_transfer
+                      - debmaster
+                      - debvisa
+                      - diners
+                      - edenred
+                      - efecty
+                      - elo
+                      - hipercard
+                      - interop_transfer
+                      - kushki
+                      - lider
+                      - maestro
+                      - master
+                      - mercantil
+                      - naranja
+                      - oca
+                      - oxxo
+                      - pagoefectivo_atm
+                      - pagofacil
+                      - paycash
+                      - pix
+                      - pse
+                      - rapipago
+                      - redcompra
+                      - redpagos
+                      - serfin
+                      - sivale_despensa
+                      - sivale_restaurant
+                      - smart_transfer
+                      - sucredito
+                      - visa
+                  type:
+                    type: string
+                  installments:
+                    type: integer
+                  statement_descriptor:
+                    type: string
+                  open_finance_account_id:
+                    type: string
+                    x-visibility: wip
+                    description: >-
+                      Open Finance account id. Returned only for `smart_transfer` payments — identifies the account that
+                      originated the transfer.
+    TransactionPointRequest:
+      description: Transaction request for type=point
+      type: object
+      properties:
+        transactions:
+          type: object
+          minProperties: 1
+          properties:
+            payments:
+              type: array
+              minItems: 1
+              maxItems: 2
+              items:
+                type: object
+                minProperties: 1
+                required:
+                  - amount
+                  - tip_amount
+                properties:
+                  amount:
+                    type: string
+                    minLength: 1
+                    maxLength: 18
+                    pattern: ^\d+(\.\d{1,2})?$
+                    example: '123.45'
+                  tip_amount:
+                    type: string
+                    minLength: 1
+                    maxLength: 18
+                    pattern: ^\d+(\.\d{1,2})?$
+                    example: '123.45'
+            cash_outs:
+              type: array
+              minItems: 1
+              items:
+                type: object
+                minProperties: 1
+                required:
+                  - amount
+                  - external_cashier_id
+                  - fixed_amount
+                  - agency_type
+                  - bank_service_code
+                properties:
+                  amount:
+                    type: string
+                    minLength: 1
+                    maxLength: 18
+                    pattern: ^\d+(\.\d{1,2})?$
+                    example: '123.45'
+                  additional_info:
+                    type: object
+                    properties:
+                      external_cashier_id:
+                        type: integer
+                      fixed_amount:
+                        type: boolean
+                      agency_type:
+                        type: string
+                        enum:
+                          - AGTEC
+                          - AGTOT
+                          - AGPSS
+                      bank_service_code:
+                        type: string
+    UpdatePaymentTransaction:
+      description: Objects payment to update a transaction
+      type: object
+      properties:
+        payment_method:
+          type: object
+          minProperties: 1
+          properties:
+            id:
+              type: string
+              enum:
+                - abitab
+                - account_money
+                - amex
+                - argencard
+                - banesco
+                - bolbradesco
+                - boleto
+                - cabal
+                - cencosud
+                - clabe
+                - cmr
+                - codensa
+                - consumer_credits
+                - creditel
+                - debcabal
+                - debelo
+                - debin_transfer
+                - debmaster
+                - debvisa
+                - diners
+                - edenred
+                - efecty
+                - elo
+                - hipercard
+                - interop_transfer
+                - kushki
+                - lider
+                - maestro
+                - master
+                - mercantil
+                - naranja
+                - oca
+                - oxxo
+                - pagoefectivo_atm
+                - pagofacil
+                - paycash
+                - pix
+                - pse
+                - rapipago
+                - redcompra
+                - redpagos
+                - serfin
+                - sivale_despensa
+                - sivale_restaurant
+                - sucredito
+                - visa
+            type:
+              type: string
+            token:
+              type: string
+              minLength: 32
+              maxLength: 32
+            installments:
+              type: integer
+              minimum: 1
+            statement_descriptor:
+              type: string
+              minLength: 1
+              maxLength: 50
+            default_payment_due_date:
+              type: string
+              format: duration
+              pattern: ^P(?:\d+Y)?(?:\d+M)?(?:\d+D)?(?:T(?:\d+H)?(?:\d+M)?(?:\d+S)?)?$
+              example: P1D
+              description: Default ISO 8601 expiration duration applied to payments without an individual expiration_time.
     ValidationResponse:
       type: object
       required:

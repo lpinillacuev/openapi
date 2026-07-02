@@ -2179,51 +2179,62 @@ paths:
           description: Internal server error
   /v1/chargebacks/{id}:
     get:
-      summary: Get chargeback case details
-      description: |
-        Open platform endpoint to retrieve detailed information about a specific chargeback case.
-        This endpoint provides comprehensive chargeback data including payment information, coverage
-        details, documentation status, and timeline information. Requires valid caller authentication
-        and authorization.
-      operationId: getChargebackCase
+      operationId: getChargeback
+      summary: Get chargeback by ID
       tags:
-        - Open Platform
+        - Chargebacks
       security:
-        - CallerAuth: []
+        - bearerAuth: []
       parameters:
         - name: id
           in: path
           required: true
-          description: Numeric identifier of the chargeback case
           schema:
             type: string
-            pattern: ^\d+$
-          example: '12345678'
       responses:
         '200':
-          description: Chargeback case retrieved successfully
+          description: Chargeback found
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Chargeback'
-        '400':
-          description: Bad request - invalid parameters
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/StandardResponse'
+                type: object
+                properties:
+                  id:
+                    type: string
+                  payments:
+                    type: array
+                    items:
+                      type: object
+                  currency:
+                    type: string
+                  amount:
+                    type: number
+                    format: float
+                  coverage_applied:
+                    type: boolean
+                  coverage_elegible:
+                    type: boolean
+                  documentation_required:
+                    type: boolean
+                  documentation_status:
+                    type: string
+                    enum:
+                      - valid
+                      - invalid
+                      - not_supplied
+                  documentation:
+                    type: object
+                  date_documentation_deadline:
+                    type: string
+                    format: date-time
+                  date_created:
+                    type: string
+                    format: date-time
+                  date_last_updated:
+                    type: string
+                    format: date-time
         '404':
-          description: Chargeback case not found
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/StandardResponse'
-        '500':
-          description: Internal server error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/StandardResponse'
+          $ref: '#/components/responses/NotFound'
     put:
       operationId: updateChargeback
       summary: Upload chargeback documentation
@@ -7343,21 +7354,27 @@ components:
             type: string
     Error:
       type: object
-      description: Error response format
+      required:
+        - error
+        - message
       properties:
+        error:
+          type: string
+          description: Error code
+          example: invalid_payment_method
         message:
           type: string
-          description: Error message
-          example: caller.id is missing
-        statusCode:
-          type: integer
-          description: HTTP status code
-          example: 400
+          description: Human-readable error message
+          example: The provided payment method is invalid or expired
+        details:
+          type: object
+          additionalProperties: true
+          description: Additional error details
         timestamp:
           type: string
           format: date-time
           description: Error timestamp
-          example: '2026-06-18T10:15:30Z'
+          example: '2024-01-15T10:30:00Z'
     ErrorCause:
       type: object
       properties:
@@ -7967,51 +7984,216 @@ components:
           format: float
     Payment:
       type: object
-      description: Payment information associated with a chargeback
+      description: A MercadoPago payment object
       properties:
         id:
-          type: string
-          description: Payment identifier
-          example: '98765432101'
-        amount:
-          type: string
-          description: Payment amount
-          example: '1250.50'
-        cardInfo:
-          type: string
-          description: Masked card information
-          example: '**** **** **** 1234'
-        date:
+          type: integer
+          description: Payment unique identifier
+          example: 1234567890
+        date_created:
           type: string
           format: date-time
-          description: Payment date
-          example: '2026-05-10T15:30:00Z'
-        payerId:
+          example: '2024-01-15T10:30:00.000-03:00'
+        date_approved:
           type: string
-          description: Payer user identifier
-          example: '987654321'
-        siteId:
+          format: date-time
+          nullable: true
+        date_last_updated:
           type: string
-          description: Site identifier
-          example: MLA
-        cardHolder:
+          format: date-time
+        date_of_expiration:
           type: string
-          description: Name of the card holder
-          example: JOHN DOE
-        refunds:
-          type: array
-          description: List of refunds associated with the payment
-          items:
-            $ref: '#/components/schemas/Refund'
+          format: date-time
+          nullable: true
+        money_release_date:
+          type: string
+          format: date-time
+          nullable: true
+        operation_type:
+          type: string
+          enum:
+            - regular_payment
+            - money_transfer
+            - recurring_payment
+            - account_fund
+            - payment_addition
+            - cellphone_recharge
+            - pos_payment
+            - money_exchange
+        issuer_id:
+          type: string
+          nullable: true
+        payment_method_id:
+          type: string
+          example: visa
+        payment_type_id:
+          type: string
+          enum:
+            - account_money
+            - ticket
+            - bank_transfer
+            - atm
+            - credit_card
+            - debit_card
+            - prepaid_card
+            - digital_currency
+            - digital_wallet
+            - voucher_card
+            - crypto
+            - pix
+        status:
+          type: string
+          enum:
+            - pending
+            - approved
+            - authorized
+            - in_process
+            - in_mediation
+            - rejected
+            - cancelled
+            - refunded
+            - charged_back
+          description: >-
+            Current payment status. Key values: approved — payment completed successfully; pending — awaiting payer
+            action (e.g., Boleto payment); in_process — under review; rejected — payment declined.
+          example: approved
+        status_detail:
+          type: string
+          description: Detailed reason for the current status
+          example: accredited
+        currency_id:
+          $ref: '#/components/schemas/CurrencyId'
+        description:
+          type: string
+        payer:
+          type: object
+          properties:
+            id:
+              type: string
+            email:
+              type: string
+              format: email
+            identification:
+              $ref: '#/components/schemas/Identification'
+            type:
+              type: string
+        metadata:
+          type: object
+          additionalProperties: true
+        additional_info:
+          type: object
+        external_reference:
+          type: string
+        transaction_amount:
+          type: number
+          format: float
+          description: Original payment amount (decimal, not cents)
+        transaction_amount_refunded:
+          type: number
+          format: float
+          description: Total amount refunded so far
+        coupon_amount:
+          type: number
+          format: float
+        transaction_details:
+          type: object
+          properties:
+            net_received_amount:
+              type: number
+              format: float
+            total_paid_amount:
+              type: number
+              format: float
+            overpaid_amount:
+              type: number
+              format: float
+            external_resource_url:
+              type: string
+              format: uri
+              description: Boleto/OXXO/cash payment URL or barcode
+            installment_amount:
+              type: number
+              format: float
+        captured:
+          type: boolean
+        binary_mode:
+          type: boolean
+        statement_descriptor:
+          type: string
+        installments:
+          type: integer
+        card:
+          type: object
+          description: Card data (last 4 digits only — never full PAN)
+          properties:
+            last_four_digits:
+              type: string
+              example: '4321'
+            first_six_digits:
+              type: string
+              example: '411111'
+            expiration_year:
+              type: integer
+            expiration_month:
+              type: integer
+            date_created:
+              type: string
+              format: date-time
+            date_last_updated:
+              type: string
+              format: date-time
+            cardholder:
+              type: object
+              properties:
+                name:
+                  type: string
+                identification:
+                  $ref: '#/components/schemas/Identification'
+        notification_url:
+          type: string
+          format: uri
+          deprecated: true
+        processing_mode:
+          type: string
+          enum:
+            - aggregator
+            - gateway
     Refund:
       type: object
-      description: Refund information
+      description: A payment refund (partial or full)
       properties:
-        dateCreated:
+        id:
+          type: integer
+          example: 987654321
+        payment_id:
+          type: integer
+        date_created:
           type: string
           format: date-time
-          description: Date when the refund was created
-          example: '2026-06-05T11:20:00Z'
+        amount:
+          type: number
+          format: float
+          description: Refunded amount (decimal)
+        source:
+          type: object
+          properties:
+            id:
+              type: string
+            name:
+              type: string
+            type:
+              type: string
+        refund_mode:
+          type: string
+          enum:
+            - standard
+            - instant
+        status:
+          type: string
+          enum:
+            - approved
+            - in_process
+            - rejected
     RefundRequest:
       type: object
       required:
@@ -10003,628 +10185,6 @@ components:
             $ref: '#/components/schemas/WebhookEvent'
         pagination:
           $ref: '#/components/schemas/Pagination'
-    BuyerChargebackDetail:
-      type: object
-      description: Comprehensive details of a chargeback case from the buyer's perspective
-      properties:
-        id:
-          type: string
-          description: Unique identifier of the chargeback case
-          example: '12345678'
-        item:
-          $ref: '#/components/schemas/Item'
-        payment:
-          $ref: '#/components/schemas/Payment'
-        detailLink:
-          type: string
-          description: URL link to detailed chargeback information
-          example: https://www.mercadolibre.com/jms/mla/lgz/msl/chargeback/12345678
-        caseStatus:
-          type: string
-          description: Current status of the chargeback case
-          enum:
-            - open
-            - closed
-            - in_review
-            - resolved
-          example: open
-        repaymentLink:
-          type: string
-          description: URL link for repayment processing
-          example: https://www.mercadopago.com/mla/debits/12345678/pay
-        typificationPayer:
-          type: string
-          description: Typification category assigned to the payer
-          example: unrecognized_purchase
-        repaymentStatus:
-          type: string
-          description: Status of the repayment process
-          enum:
-            - pending
-            - in_process
-            - completed
-            - failed
-          example: pending
-        debt:
-          $ref: '#/components/schemas/BuyerChargebackDebtStatus'
-        labels:
-          type: array
-          description: Labels or tags associated with the chargeback
-          items:
-            type: string
-          example:
-            - high_priority
-            - documentation_pending
-        flow:
-          type: string
-          description: The workflow or process flow the chargeback is following
-          example: standard_flow
-        activities:
-          type: object
-          description: Map of activity categories to activity lists
-          additionalProperties:
-            type: array
-            items:
-              $ref: '#/components/schemas/Activity'
-          example:
-            messages:
-              - dateCreated: '2026-06-15T10:30:00Z'
-                message: Documentation requested
-                sender: system
-            updates:
-              - dateCreated: '2026-06-16T14:20:00Z'
-                message: Case status updated
-                sender: operator
-    BuyerChargebackDebtStatus:
-      type: object
-      description: Debt information associated with a chargeback case
-      properties:
-        amount:
-          type: number
-          format: decimal
-          description: Total debt amount
-          example: 1250.5
-        recoveryAmount:
-          type: number
-          format: decimal
-          description: Amount recovered so far
-          example: 500
-        targetAmount:
-          type: number
-          format: decimal
-          description: Target amount for recovery
-          example: 1250.5
-        status:
-          type: string
-          description: Current status of the debt
-          enum:
-            - pending
-            - in_recovery
-            - recovered
-            - written_off
-          example: in_recovery
-        refundedDate:
-          type: string
-          format: date-time
-          description: Date when the debt was refunded
-          example: '2026-06-18T09:15:00Z'
-    SellerChargebackDetail:
-      type: object
-      description: Comprehensive details of a chargeback case from the seller's perspective
-      properties:
-        id:
-          type: integer
-          format: int64
-          description: Unique identifier of the chargeback case
-          example: 12345678
-        siteId:
-          type: string
-          description: Site identifier (e.g., MLA, MLB, MLM)
-          example: MLA
-        paymentId:
-          type: integer
-          format: int64
-          description: Associated payment identifier
-          example: 98765432101
-        transactionId:
-          type: integer
-          format: int64
-          description: Transaction identifier
-          example: 11122233344
-        paymentDate:
-          type: string
-          format: date-time
-          description: Date when the payment was made
-          example: '2026-05-10T15:30:00Z'
-        amount:
-          type: number
-          format: decimal
-          description: Chargeback amount
-          example: 1250.5
-        coveragePercentage:
-          type: number
-          format: decimal
-          description: Percentage of coverage applied
-          example: 80
-        orderId:
-          type: string
-          description: Associated order identifier
-          example: '2000123456789'
-        reason:
-          type: string
-          description: Reason for the chargeback
-          example: Unrecognized transaction
-        dateCreated:
-          type: string
-          format: date-time
-          description: Date when the chargeback was created
-          example: '2026-06-01T10:00:00Z'
-        dateClosed:
-          type:
-            - string
-            - 'null'
-          format: date-time
-          description: Date when the chargeback was closed
-        paymentDateCreated:
-          type: string
-          format: date-time
-          description: Date when the payment was created
-          example: '2026-05-10T15:30:00Z'
-        lastModified:
-          type: string
-          format: date-time
-          description: Date of last modification
-          example: '2026-06-15T14:22:00Z'
-        marketplace:
-          type: string
-          description: Marketplace identifier
-          example: MELI
-        itemId:
-          type: string
-          description: Item identifier involved in the chargeback
-          example: MLA123456789
-        itemThumbnail:
-          type: string
-          description: URL to item thumbnail image
-          example: https://http2.mlstatic.com/D_123456-MLA.jpg
-        currencyId:
-          type: string
-          description: Currency code
-          example: ARS
-        cartType:
-          type: string
-          description: Type of cart or purchase
-          example: cart
-        marketplaceOwnerId:
-          type: integer
-          format: int64
-          description: Marketplace owner identifier
-          example: 135790246
-        cartPurchaseId:
-          type: integer
-          format: int64
-          description: Cart purchase identifier
-          example: 11111222223
-        cartPackId:
-          type: integer
-          format: int64
-          description: Cart pack identifier
-          example: 99988877766
-        status:
-          type: string
-          description: Current status of the chargeback
-          enum:
-            - open
-            - documentation_pending
-            - under_review
-            - closed
-            - resolved
-          example: documentation_pending
-        statusDetail:
-          type: string
-          description: Detailed status information
-          example: Waiting for seller documentation
-        documentationDeadline:
-          type: string
-          format: date-time
-          description: Deadline for submitting documentation
-          example: '2026-06-20T23:59:59Z'
-        collector:
-          $ref: '#/components/schemas/SellerUser'
-        payer:
-          $ref: '#/components/schemas/PayerUser'
-        labels:
-          type: array
-          description: Labels or tags associated with the chargeback
-          items:
-            type: string
-          example:
-            - requires_attention
-            - high_value
-        flow:
-          type: string
-          description: The workflow or process flow
-          example: seller_documentation_flow
-    Chargeback:
-      type: object
-      description: Open platform chargeback case representation
-      properties:
-        id:
-          type: string
-          description: Unique identifier of the chargeback case
-          example: '12345678'
-        payments:
-          type: array
-          description: List of payment IDs associated with the chargeback
-          items:
-            type: integer
-            format: int64
-          example:
-            - 98765432101
-            - 98765432102
-        currency:
-          type: string
-          description: Currency code
-          example: ARS
-        amount:
-          type: number
-          format: decimal
-          description: Chargeback amount
-          example: 1250.5
-        reason:
-          type: string
-          description: Human-readable reason for the chargeback
-          example: Unrecognized transaction
-        reason_id:
-          type: string
-          description: Reason identifier code
-          example: unrecognized
-        coverage_applied:
-          type: boolean
-          description: Indicates if coverage has been applied
-          example: true
-        coverage_elegible:
-          type: boolean
-          description: Indicates if the case is eligible for coverage
-          example: true
-        documentation_required:
-          type: boolean
-          description: Indicates if documentation is required
-          example: true
-        documentation_status:
-          type: string
-          description: Current status of documentation
-          enum:
-            - pending
-            - review_pending
-            - valid
-            - invalid
-            - not_supplied
-            - not_applicable
-          example: review_pending
-        documentation:
-          type: array
-          description: List of documentation files
-          items:
-            $ref: '#/components/schemas/Documentation'
-        date_documentation_deadline:
-          type: string
-          format: date-time
-          description: Deadline for submitting documentation
-          example: '2026-06-20T23:59:59Z'
-        date_created:
-          type: string
-          format: date-time
-          description: Date when the chargeback was created
-          example: '2026-06-01T10:00:00Z'
-        date_last_updated:
-          type: string
-          format: date-time
-          description: Date of last update
-          example: '2026-06-15T14:22:00Z'
-        live_mode:
-          type: boolean
-          description: Indicates if the chargeback is in live mode (production)
-          example: true
-        tags:
-          type: array
-          description: Tags associated with the chargeback
-          items:
-            type: string
-          example:
-            - high_priority
-            - needs_review
-        status:
-          type: string
-          description: Current status of the chargeback
-          enum:
-            - open
-            - closed
-            - in_review
-            - documentation_pending
-          example: documentation_pending
-    ChargebackSearchResult:
-      type: object
-      description: Paginated search results for chargeback cases
-      properties:
-        paging:
-          $ref: '#/components/schemas/Paging'
-        results:
-          type: array
-          description: List of matching chargeback cases
-          items:
-            $ref: '#/components/schemas/Chargeback'
-    PayerChargebacks:
-      type: object
-      description: Collection of chargeback cases for a specific payer/user
-      properties:
-        open:
-          type: array
-          description: List of open chargeback cases
-          items:
-            $ref: '#/components/schemas/BuyerChargebackDetail'
-        closed:
-          type: array
-          description: List of closed chargeback cases
-          items:
-            $ref: '#/components/schemas/BuyerChargebackDetail'
-    Item:
-      type: object
-      description: Item information involved in the chargeback
-      properties:
-        id:
-          type: string
-          description: Item identifier
-          example: MLA123456789
-        name:
-          type: string
-          description: Item name or title
-          example: Smartphone Samsung Galaxy S23
-        image:
-          type: string
-          description: URL to item image
-          example: https://http2.mlstatic.com/D_123456-MLA.jpg
-        categoryId:
-          type: string
-          description: Category identifier
-          example: MLA1055
-        shippingAddress:
-          type: string
-          description: Shipping address for the item
-          example: Av. Libertador 1234, CABA, Argentina
-    Activity:
-      type: object
-      description: Activity or communication entry in a chargeback case
-      properties:
-        dateCreated:
-          type: string
-          format: date-time
-          description: Date when the activity was created
-          example: '2026-06-15T10:30:00Z'
-        dateCreatedFormated:
-          type: string
-          description: Formatted date string for display
-          example: 15/06/2026 10:30
-        context:
-          type: string
-          description: Context or category of the activity
-          example: buyer_message
-        milestone:
-          type: string
-          description: Milestone or key event indicator
-          example: documentation_submitted
-        message:
-          type: string
-          description: Activity message content
-          example: Documentation has been uploaded for review
-        sender:
-          type: string
-          description: Sender of the activity (user, system, operator)
-          example: buyer
-        operatorId:
-          type:
-            - integer
-            - 'null'
-          format: int64
-          description: Operator ID if activity was created by an operator
-        attachments:
-          type: array
-          description: List of attachments associated with the activity
-          items:
-            $ref: '#/components/schemas/Attachment'
-        owner:
-          type: string
-          description: Owner of the activity (e.g., 'cbk', 'buyer', 'seller')
-          example: buyer
-    Attachment:
-      type: object
-      description: File attachment associated with an activity
-      properties:
-        uuid:
-          type: string
-          format: uuid
-          description: Unique identifier of the attachment
-          example: 550e8400-e29b-41d4-a716-446655440000
-        mimeType:
-          type: string
-          description: MIME type of the file
-          example: application/pdf
-        fileName:
-          type: string
-          description: Original filename
-          example: invoice.pdf
-        size:
-          type: string
-          description: File size
-          example: '245760'
-        filePath:
-          type: string
-          description: Storage path of the file
-          example: /storage/chargebacks/12345678/550e8400-e29b-41d4-a716-446655440000.pdf
-    Documentation:
-      type: object
-      description: Documentation file associated with a chargeback case
-      properties:
-        type:
-          type: string
-          description: Type of documentation
-          example: invoice
-        url:
-          type: string
-          description: URL to access the documentation
-          example: https://api.mercadolibre.com/v1/chargebacks/documentation/invoice/550e8400-e29b-41d4-a716-446655440000
-        description:
-          type: string
-          description: Description of the documentation
-          example: Purchase invoice
-    Paging:
-      type: object
-      description: Pagination information for search results
-      properties:
-        offset:
-          type: integer
-          description: Number of results skipped
-          example: 0
-        limit:
-          type: integer
-          description: Maximum number of results returned
-          example: 20
-        total:
-          type: integer
-          description: Total number of results available
-          example: 45
-    SellerUser:
-      type: object
-      description: Seller/collector user information
-      properties:
-        id:
-          type: integer
-          format: int64
-          description: User identifier
-          example: 123456789
-        email:
-          type: string
-          format: email
-          description: User email address
-          example: seller@example.com
-        nickname:
-          type: string
-          description: User nickname
-          example: SELLER123
-        collaborators:
-          type: array
-          description: List of collaborators associated with the seller
-          items:
-            $ref: '#/components/schemas/CollaboratorDetail'
-    PayerUser:
-      type: object
-      description: Payer/buyer user information
-      properties:
-        id:
-          type: integer
-          format: int64
-          description: User identifier
-          example: 987654321
-        email:
-          type: string
-          format: email
-          description: User email address
-          example: buyer@example.com
-        nickname:
-          type: string
-          description: User nickname
-          example: BUYER456
-    CollaboratorDetail:
-      type: object
-      description: Collaborator information associated with a seller
-      properties:
-        id:
-          type: integer
-          format: int64
-          description: Collaborator identifier
-          example: 555666777
-        activities:
-          type: array
-          description: List of activities performed by the collaborator
-          items:
-            $ref: '#/components/schemas/CollaboratorActivity'
-    CollaboratorActivity:
-      type: object
-      description: Activity performed by a collaborator
-      properties:
-        date:
-          type: string
-          format: date-time
-          description: Date of the activity
-          example: '2026-06-15T14:30:00Z'
-    StandardResponse:
-      type: object
-      description: Standard API response format for errors and messages
-      properties:
-        status:
-          type: string
-          enum:
-            - success
-            - error
-          description: Response status
-          example: error
-        data:
-          type: string
-          description: Response message or error description
-          example: Internal Server Error
-  parameters:
-    CaseIdPath:
-      name: caseId
-      in: path
-      required: true
-      description: Unique identifier of the chargeback case
-      schema:
-        type: string
-      example: '12345678'
-    XCallerIdHeader:
-      name: X-Caller-Id
-      in: header
-      required: false
-      description: Caller ID provided via header
-      schema:
-        type: string
-      example: '987654321'
-    XPublicHeader:
-      name: X-Public
-      in: header
-      required: false
-      description: Public access indicator
-      schema:
-        type: string
-    XCallerScopesHeader:
-      name: X-Caller-Scopes
-      in: header
-      required: false
-      description: Caller scopes for authorization
-      schema:
-        type: string
-    CallerIdQuery:
-      name: caller.id
-      in: query
-      required: false
-      description: Caller ID provided via query parameter
-      schema:
-        type: string
-      example: '987654321'
-    CallerAdminQuery:
-      name: caller.admin
-      in: query
-      required: false
-      description: Indicates if caller has admin privileges
-      schema:
-        type: string
-    CallerScopesQuery:
-      name: caller.scopes
-      in: query
-      required: false
-      description: Caller scopes for authorization
-      schema:
-        type: string
   x-mp-mlc-payment-methods:
     credit_cards:
       - visa

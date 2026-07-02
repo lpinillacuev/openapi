@@ -70,7 +70,7 @@ jobs:
           REVIEWER="${{ steps.ctx.outputs.reviewer }}"
           PR_NUMBER="${{ steps.ctx.outputs.pr_number }}"
           COMMIT_SHA="${{ steps.ctx.outputs.commit_sha }}"
-          BOT_URL="${{ secrets.BOT_SYNC_SPECS_URL }}"
+          BOT_URL="${{ secrets.BOT_SYNC_SPECS_URL || 'http://beta-bot-sync-specs.melisystems.com' }}"
 
           # Read the PR body
           PR_BODY=$(gh pr view "$PR_NUMBER" --json body --jq '.body' 2>/dev/null || echo "")
@@ -220,7 +220,7 @@ jobs:
           COMMENTER="${{ steps.parse.outputs.commenter }}"
           PR_NUMBER="${{ steps.parse.outputs.pr_number }}"
           COMMIT_SHA="${{ steps.parse.outputs.commit_sha }}"
-          BOT_URL="${{ secrets.BOT_SYNC_SPECS_URL }}"
+          BOT_URL="${{ secrets.BOT_SYNC_SPECS_URL || 'http://beta-bot-sync-specs.melisystems.com' }}"
 
           PAYLOAD=$(cat <<EOF
           {

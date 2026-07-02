@@ -38,11 +38,57 @@ jobs:
       - name: Fetch rama base
         run: git fetch origin ${{ github.base_ref }}
 
-      - name: Generar resumen Markdown
+      - name: Generar resumen Markdown y checkboxes de schemas
         run: |
           python3 .github/scripts/spec_diff_md.py \
             --base "${{ github.base_ref }}" \
-            --output /tmp/spec-diff.md
+            --output /tmp/spec-diff.md \
+            --schema-checkboxes /tmp/schema-checkboxes.md
+
+      - name: Agregar checkboxes de schemas al PR body
+        uses: actions/github-script@60a0d83039c74a4aee543508d2ffcb1c3799cdea
+        with:
+          script: |
+            const fs = require('fs');
+            const SCHEMA_MARKER_START = '<!-- PENDING_SCHEMAS_START -->';
+            const SCHEMA_MARKER_END   = '<!-- PENDING_SCHEMAS_END -->';
+
+            let schemaBlock = '';
+            try {
+              schemaBlock = fs.readFileSync('/tmp/schema-checkboxes.md', 'utf8').trim();
+            } catch (e) {}
+
+            if (!schemaBlock) {
+              console.log('Sin cambios en schemas, omitiendo actualización del PR body.');
+              return;
+            }
+
+            // Leer PR body actual
+            const { data: pr } = await github.rest.pulls.get({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              pull_number: context.issue.number,
+            });
+
+            let currentBody = pr.body || '';
+
+            // Reemplazar bloque existente o agregar al final
+            if (currentBody.includes(SCHEMA_MARKER_START)) {
+              const re = new RegExp(
+                /.*<!-- PENDING_SCHEMAS_START -->[\s\S]*<!-- PENDING_SCHEMAS_END -->.*\n?/
+              );
+              currentBody = currentBody.replace(re, schemaBlock + '\n');
+            } else {
+              currentBody = currentBody + '\n' + schemaBlock;
+            }
+
+            await github.rest.pulls.update({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              pull_number: context.issue.number,
+              body: currentBody,
+            });
+            console.log('PR body actualizado con checkboxes de schemas.');
 
       - name: Publicar o actualizar comentario en el PR
         uses: actions/github-script@60a0d83039c74a4aee543508d2ffcb1c3799cdea

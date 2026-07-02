@@ -301,6 +301,83 @@ def generate_markdown(base_ref: str) -> str:
     return header + body
 
 
+# ── Schema checkboxes para el PR body ────────────────────────────────────────
+
+def compute_schema_changes(base_ref: str) -> list[dict]:
+    """
+    Devuelve lista de schemas que cambiaron vs la rama base.
+    Cada item: { name, status: 'added'|'modified'|'removed', added_props, removed_props }
+    """
+    old_raw = git_show(f"origin/{base_ref}", "spec3.yaml")
+    new_raw = git_show("HEAD", "spec3.yaml")
+    if not old_raw or not new_raw:
+        return []
+
+    try:
+        old_spec = yaml.safe_load(old_raw) or {}
+        new_spec = yaml.safe_load(new_raw) or {}
+    except yaml.YAMLError:
+        return []
+
+    old_schemas = (old_spec.get("components") or {}).get("schemas") or {}
+    new_schemas = (new_spec.get("components") or {}).get("schemas") or {}
+    result = []
+
+    for name in sorted(set(list(old_schemas.keys()) + list(new_schemas.keys()))):
+        if name not in old_schemas:
+            result.append({"name": name, "status": "added", "added_props": [], "removed_props": []})
+        elif name not in new_schemas:
+            result.append({"name": name, "status": "removed", "added_props": [], "removed_props": []})
+        elif jdump(old_schemas[name]) != jdump(new_schemas[name]):
+            old_props = set((old_schemas[name].get("properties") or {}).keys())
+            new_props = set((new_schemas[name].get("properties") or {}).keys())
+            result.append({
+                "name": name,
+                "status": "modified",
+                "added_props": sorted(new_props - old_props),
+                "removed_props": sorted(old_props - new_props),
+            })
+
+    return result
+
+
+def generate_schema_checkboxes(base_ref: str) -> str:
+    """
+    Genera el bloque PENDING_SCHEMAS_START/END para el PR body.
+    Formato idéntico al de PENDING_PATHS: cada schema es una línea con checkbox.
+    """
+    changes = compute_schema_changes(base_ref)
+    if not changes:
+        return ""
+
+    lines = [
+        "\n\n---\n\n"
+        "## 📦 Schemas modificados — decidí cuáles sincronizar\n\n"
+        "**Desmarcá** los schemas que querés rechazar, "
+        "luego hacé **Review changes → Approve**.\n\n"
+        "<!-- PENDING_SCHEMAS_START -->"
+    ]
+
+    for s in changes:
+        if s["status"] == "added":
+            detail = "_nuevo_"
+        elif s["status"] == "removed":
+            detail = "_eliminado_"
+        else:
+            parts = []
+            if s["added_props"]:
+                parts.append(f"+{len(s['added_props'])} campo{'s' if len(s['added_props']) != 1 else ''}")
+            if s["removed_props"]:
+                parts.append(f"-{len(s['removed_props'])} campo{'s' if len(s['removed_props']) != 1 else ''}")
+            detail = f"_modificado: {', '.join(parts)}_" if parts else "_modificado_"
+
+        lines.append(f"- [x] `{s['name']}` — {detail}")
+
+    lines.append("<!-- PENDING_SCHEMAS_END -->")
+    lines.append("\n> ✅ Marcado = aceptado · ☐ Desmarcado = rechazado (se revierte en `spec3.yaml`)")
+    return "\n".join(lines)
+
+
 # ── Main ──────────────────────────────────────────────────────────────────────
 
 def main() -> None:
@@ -309,6 +386,8 @@ def main() -> None:
     )
     parser.add_argument("--base", default="main", help="Rama base (default: main)")
     parser.add_argument("--output", default="/tmp/spec-diff.md", help="Archivo de salida")
+    parser.add_argument("--schema-checkboxes", default="/tmp/schema-checkboxes.md",
+                        help="Archivo de salida para los checkboxes de schemas (PR body)")
     args = parser.parse_args()
 
     md = generate_markdown(args.base)
@@ -322,6 +401,13 @@ def main() -> None:
         print(md[:800] + "…" if len(md) > 800 else md)
     else:
         print("Sin cambios en spec3.yaml detectados.")
+
+    # Generar checkboxes de schemas para el PR body
+    schema_cb = generate_schema_checkboxes(args.base)
+    with open(args.schema_checkboxes, "w", encoding="utf-8") as f:
+        f.write(schema_cb)
+    if schema_cb:
+        print(f"✅ Schema checkboxes escritos en: {args.schema_checkboxes}")
 
 
 if __name__ == "__main__":

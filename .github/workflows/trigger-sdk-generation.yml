@@ -72,6 +72,7 @@ jobs:
       # to spec-agent-generator for each sdk target configured in apps.yaml.
       - name: Trigger SDK generation via bot-sync
         if: steps.changed.outputs.has_changes == 'true'
+        continue-on-error: true
         env:
           BOT_URL: ${{ secrets.BOT_SYNC_SPECS_URL || 'https://beta-bot-sync-specs.melioffice.com' }}
           CHANGED_PRODUCTS: ${{ steps.changed.outputs.products }}

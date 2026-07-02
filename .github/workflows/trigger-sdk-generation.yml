@@ -83,7 +83,7 @@ jobs:
             -X POST "${BOT_URL}/openapi/sdk/trigger" \
             -H "Content-Type: application/json" \
             -H "X-github-token: ${{ secrets.GH_PAT }}" \
-            --max-time 120 \
+            --max-time 300 \
             -d "{\"apps\": \"$CHANGED_PRODUCTS\"}")
 
           echo "HTTP: $RESPONSE"

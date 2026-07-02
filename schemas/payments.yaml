@@ -2,180 +2,42 @@ components:
   schemas:
     Payment:
       type: object
-      description: A MercadoPago payment object
+      description: Payment information associated with a chargeback
       properties:
         id:
-          type: integer
-          description: Payment unique identifier
-          example: 1234567890
-        date_created:
+          type: string
+          description: Payment identifier
+          example: '98765432101'
+        amount:
+          type: string
+          description: Payment amount
+          example: '1250.50'
+        cardInfo:
+          type: string
+          description: Masked card information
+          example: '**** **** **** 1234'
+        date:
           type: string
           format: date-time
-          example: '2024-01-15T10:30:00.000-03:00'
-        date_approved:
+          description: Payment date
+          example: '2026-05-10T15:30:00Z'
+        payerId:
           type: string
-          format: date-time
-          nullable: true
-        date_last_updated:
+          description: Payer user identifier
+          example: '987654321'
+        siteId:
           type: string
-          format: date-time
-        date_of_expiration:
+          description: Site identifier
+          example: MLA
+        cardHolder:
           type: string
-          format: date-time
-          nullable: true
-        money_release_date:
-          type: string
-          format: date-time
-          nullable: true
-        operation_type:
-          type: string
-          enum:
-            - regular_payment
-            - money_transfer
-            - recurring_payment
-            - account_fund
-            - payment_addition
-            - cellphone_recharge
-            - pos_payment
-            - money_exchange
-        issuer_id:
-          type: string
-          nullable: true
-        payment_method_id:
-          type: string
-          example: visa
-        payment_type_id:
-          type: string
-          enum:
-            - account_money
-            - ticket
-            - bank_transfer
-            - atm
-            - credit_card
-            - debit_card
-            - prepaid_card
-            - digital_currency
-            - digital_wallet
-            - voucher_card
-            - crypto
-            - pix
-        status:
-          type: string
-          enum:
-            - pending
-            - approved
-            - authorized
-            - in_process
-            - in_mediation
-            - rejected
-            - cancelled
-            - refunded
-            - charged_back
-          description: >-
-            Current payment status. Key values: approved — payment completed successfully; pending — awaiting payer
-            action (e.g., Boleto payment); in_process — under review; rejected — payment declined.
-          example: approved
-        status_detail:
-          type: string
-          description: Detailed reason for the current status
-          example: accredited
-        currency_id:
-          $ref: '#/components/schemas/CurrencyId'
-        description:
-          type: string
-        payer:
-          type: object
-          properties:
-            id:
-              type: string
-            email:
-              type: string
-              format: email
-            identification:
-              $ref: '#/components/schemas/Identification'
-            type:
-              type: string
-        metadata:
-          type: object
-          additionalProperties: true
-        additional_info:
-          type: object
-        external_reference:
-          type: string
-        transaction_amount:
-          type: number
-          format: float
-          description: Original payment amount (decimal, not cents)
-        transaction_amount_refunded:
-          type: number
-          format: float
-          description: Total amount refunded so far
-        coupon_amount:
-          type: number
-          format: float
-        transaction_details:
-          type: object
-          properties:
-            net_received_amount:
-              type: number
-              format: float
-            total_paid_amount:
-              type: number
-              format: float
-            overpaid_amount:
-              type: number
-              format: float
-            external_resource_url:
-              type: string
-              format: uri
-              description: Boleto/OXXO/cash payment URL or barcode
-            installment_amount:
-              type: number
-              format: float
-        captured:
-          type: boolean
-        binary_mode:
-          type: boolean
-        statement_descriptor:
-          type: string
-        installments:
-          type: integer
-        card:
-          type: object
-          description: Card data (last 4 digits only — never full PAN)
-          properties:
-            last_four_digits:
-              type: string
-              example: '4321'
-            first_six_digits:
-              type: string
-              example: '411111'
-            expiration_year:
-              type: integer
-            expiration_month:
-              type: integer
-            date_created:
-              type: string
-              format: date-time
-            date_last_updated:
-              type: string
-              format: date-time
-            cardholder:
-              type: object
-              properties:
-                name:
-                  type: string
-                identification:
-                  $ref: '#/components/schemas/Identification'
-        notification_url:
-          type: string
-          format: uri
-          deprecated: true
-        processing_mode:
-          type: string
-          enum:
-            - aggregator
-            - gateway
+          description: Name of the card holder
+          example: JOHN DOE
+        refunds:
+          type: array
+          description: List of refunds associated with the payment
+          items:
+            $ref: '#/components/schemas/Refund'
     PaymentAdditionalInfo:
       type: object
       description: Additional context for fraud scoring and installment calculation
@@ -490,40 +352,13 @@ components:
           description: New expiration date for cash payment methods.
     Refund:
       type: object
-      description: A payment refund (partial or full)
+      description: Refund information
       properties:
-        id:
-          type: integer
-          example: 987654321
-        payment_id:
-          type: integer
-        date_created:
+        dateCreated:
           type: string
           format: date-time
-        amount:
-          type: number
-          format: float
-          description: Refunded amount (decimal)
-        source:
-          type: object
-          properties:
-            id:
-              type: string
-            name:
-              type: string
-            type:
-              type: string
-        refund_mode:
-          type: string
-          enum:
-            - standard
-            - instant
-        status:
-          type: string
-          enum:
-            - approved
-            - in_process
-            - rejected
+          description: Date when the refund was created
+          example: '2026-06-05T11:20:00Z'
     RefundListResponse:
       type: object
       required:
@@ -537,6 +372,79 @@ components:
             $ref: '#/components/schemas/RefundResponse'
         pagination:
           $ref: '#/components/schemas/Pagination'
+    RefundOrderOPRequest:
+      description: >-
+        Transaction request for type=online. 'transactions' and 'splits' are mutually exclusive — only one can be sent
+        per request.
+      type: object
+      properties:
+        transactions:
+          type: array
+          description: Transactions to refund. Mutually exclusive with 'splits'.
+          minItems: 1
+          items:
+            type: object
+            required:
+              - id
+            properties:
+              id:
+                type: string
+                format: ulid
+              amount:
+                type: string
+                pattern: ^\d+(\.\d{1,2})?$
+                example: '123.45'
+        splits:
+          x-visibility: wip
+          type: array
+          description: Split participants to refund. Mutually exclusive with 'transactions'.
+          minItems: 1
+          items:
+            type: object
+            required:
+              - user_id
+            properties:
+              user_id:
+                type: integer
+                description: User ID of the participant to refund
+                example: 1
+              amount:
+                type: string
+                pattern: ^\d+(\.\d{1,2})?$
+                description: Amount to refund (if not specified, refunds the full split amount)
+                example: '50.00'
+    RefundOrderOPResponse:
+      description: Transaction response for type=online
+      type: object
+      properties:
+        id:
+          type: string
+          format: ulid
+        status:
+          type: string
+        status_detail:
+          type: string
+        transactions:
+          type: object
+          properties:
+            refunds:
+              type: array
+              items:
+                type: object
+                properties:
+                  id:
+                    type: string
+                    format: ulid
+                  transaction_id:
+                    type: string
+                    format: ulid
+                  reference_id:
+                    x-visibility: internal
+                    type: string
+                  amount:
+                    type: string
+                  status:
+                    type: string
     RefundRequest:
       type: object
       required:
@@ -601,3 +509,22 @@ components:
             - completed
             - failed
           example: completed
+    RefundsResponse:
+      description: Refunds response
+      type: object
+      properties:
+        refunds:
+          type: array
+          items:
+            type: object
+            properties:
+              id:
+                type: string
+                format: ulid
+              transaction_id:
+                type: string
+                format: ulid
+              amount:
+                type: string
+              status:
+                type: string

@@ -180,6 +180,22 @@ components:
           type: string
           format: uri
           deprecated: true
+    MerchantQrResponse:
+      type: object
+      required:
+        - qr
+        - qr_template
+        - pos_id
+      properties:
+        qr:
+          type: string
+          description: QR code image URL
+        qr_template:
+          type: string
+          description: QR code template URL
+        pos_id:
+          type: string
+          description: Point of sale identifier
     MerchantResponse:
       type: object
       required:

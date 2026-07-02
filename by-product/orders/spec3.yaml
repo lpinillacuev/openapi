@@ -1,0 +1,1025 @@
+openapi: 3.1.0
+info:
+  title: MercadoPago API
+  description: The MercadoPago REST API. Please see https://www.mercadopago.com/developers for more details.
+  termsOfService: https://www.mercadopago.com/developers/es/docs/resources/legal/terms-and-conditions
+  contact:
+    name: MercadoPago Developer Experience
+    url: https://www.mercadopago.com/developers
+  license:
+    name: Apache 2.0
+    url: https://www.apache.org/licenses/LICENSE-2.0
+  version: 1.0.0
+servers:
+  - url: https://api.mercadopago.com
+    description: Production
+security:
+  - bearerAuth: []
+tags:
+  - name: OAuth
+    description: Authorization flows for marketplace on-behalf-of and Wallet Connect
+    x-mp-sites:
+      - MLA
+      - MLB
+      - MLM
+      - MLC
+      - MCO
+      - MPE
+      - MLU
+  - name: Preferences
+    description: Checkout Pro — redirect-based hosted checkout via Preferences
+    x-mp-sites:
+      - MLA
+      - MLB
+      - MLM
+      - MLC
+      - MCO
+      - MPE
+      - MLU
+  - name: Payments
+    description: Create and manage payment transactions
+    x-mp-sites:
+      - MLA
+      - MLB
+      - MLM
+      - MLC
+      - MCO
+      - MPE
+      - MLU
+  - name: Orders
+    description: Checkout API via Orders — recommended for new custom checkout integrations
+    x-mp-sites:
+      - MLA
+      - MLB
+      - MLM
+      - MLC
+      - MCO
+      - MPE
+      - MLU
+  - name: Merchant Orders
+    description: Order containers that group payments for a single purchase
+    x-mp-sites:
+      - MLA
+      - MLB
+      - MLM
+      - MLC
+      - MCO
+      - MPE
+      - MLU
+  - name: Customers
+    description: Customer profiles and stored payment methods
+    x-mp-sites:
+      - MLA
+      - MLB
+      - MLM
+      - MLC
+      - MCO
+      - MPE
+      - MLU
+  - name: Cards
+    description: Saved cards and card tokenization
+    x-mp-sites:
+      - MLA
+      - MLB
+      - MLM
+      - MLC
+      - MCO
+      - MPE
+      - MLU
+  - name: Addresses
+    description: Customer shipping and billing addresses
+    x-mp-sites:
+      - MLA
+      - MLB
+      - MLM
+      - MLC
+      - MCO
+      - MPE
+      - MLU
+  - name: Payment Methods
+    description: Available payment methods and installment plans per country
+    x-mp-sites:
+      - MLA
+      - MLB
+      - MLM
+      - MLC
+      - MCO
+      - MPE
+      - MLU
+  - name: Identification Types
+    description: Country-specific identity document type catalog
+    x-mp-sites:
+      - MLA
+      - MLB
+      - MLM
+      - MLC
+      - MCO
+      - MPE
+      - MLU
+  - name: Cancellations & Refunds
+    description: Cancel payments and create full or partial refunds
+    x-mp-sites:
+      - MLA
+      - MLB
+      - MLM
+      - MLC
+      - MCO
+      - MPE
+      - MLU
+  - name: Chargebacks
+    description: Chargeback dispute management
+    x-mp-sites:
+      - MLA
+      - MLB
+      - MLM
+      - MLC
+      - MCO
+      - MPE
+      - MLU
+  - name: Subscriptions
+    description: Recurring payment subscriptions
+    x-mp-sites:
+      - MLA
+      - MLB
+      - MLM
+      - MLC
+      - MCO
+      - MPE
+      - MLU
+  - name: Plans
+    description: Subscription billing plans
+    x-mp-sites:
+      - MLA
+      - MLB
+      - MLM
+      - MLC
+      - MCO
+      - MPE
+      - MLU
+  - name: Invoices
+    description: Subscription billing invoices
+    x-mp-sites:
+      - MLA
+      - MLB
+      - MLM
+      - MLC
+      - MCO
+      - MPE
+      - MLU
+  - name: Wallet Connect
+    description: OAuth-based wallet agreement flows for Wallet Connect
+    x-mp-sites:
+      - MLA
+      - MLB
+      - MLM
+  - name: Stores
+    description: Physical store locations
+    x-mp-sites:
+      - MLA
+      - MLB
+      - MLM
+      - MLC
+      - MCO
+      - MPE
+      - MLU
+  - name: POS
+    description: Point of sale device management
+    x-mp-sites:
+      - MLA
+      - MLB
+      - MLM
+      - MLC
+      - MCO
+      - MPE
+      - MLU
+  - name: Terminals
+    description: Point hardware terminal management and print actions
+    x-mp-sites:
+      - MLA
+      - MLB
+      - MLC
+      - MLM
+  - name: Point Deprecated
+    description: Deprecated Point integration APIs — use Terminals and Point Orders instead
+    x-mp-sites:
+      - MLA
+      - MLB
+      - MLM
+  - name: QR Orders
+    description: In-store payment orders associated with QR codes
+    x-mp-sites:
+      - MLA
+      - MLB
+      - MLC
+      - MCO
+      - MPE
+      - MLU
+  - name: QR Integrator
+    description: Integrator configuration for QR in-store
+    x-mp-sites:
+      - MLA
+      - MLB
+      - MLM
+      - MLC
+      - MCO
+      - MPE
+      - MLU
+  - name: QR Deprecated
+    description: Deprecated in-store QR order endpoints (V1, V2, Dynamic QR)
+    x-mp-sites:
+      - MLA
+      - MLB
+      - MLM
+      - MLC
+      - MCO
+      - MPE
+      - MLU
+  - name: Claims
+    description: Post-sale claim details and search
+    x-mp-sites:
+      - MLA
+      - MLB
+      - MLM
+      - MLC
+      - MCO
+      - MPE
+      - MLU
+  - name: Claim Messages
+    description: Messages and file attachments within a claim
+    x-mp-sites:
+      - MLA
+      - MLB
+      - MLM
+      - MLC
+      - MCO
+      - MPE
+      - MLU
+  - name: Claim Resolutions
+    description: Mediation requests and expected resolutions
+    x-mp-sites:
+      - MLA
+      - MLB
+      - MLM
+      - MLC
+      - MCO
+      - MPE
+      - MLU
+  - name: Claim Shipping
+    description: Upload shipping evidence to support a claim
+    x-mp-sites:
+      - MLA
+      - MLB
+      - MLM
+      - MLC
+      - MCO
+      - MPE
+      - MLU
+  - name: Releases Report
+    description: Generate and schedule releases (settlement) reports
+    x-mp-sites:
+      - MLA
+      - MLB
+      - MLM
+      - MLC
+      - MCO
+      - MPE
+      - MLU
+  - name: Settlements Report
+    description: Generate and schedule all-transactions reports
+    x-mp-sites:
+      - MLA
+      - MLB
+      - MLM
+      - MLC
+      - MCO
+      - MPE
+      - MLU
+  - name: Payouts
+    description: Bank transfer and Pix payouts
+    x-mp-sites:
+      - MLA
+      - MLB
+      - MLM
+      - MLC
+paths:
+  /v1/orders:
+    post:
+      tags:
+        - Public Order
+      summary: Creates a new order
+      description: >
+        Create orders in **Automatic** or **Manual** mode for payment and cash out transactions.
+
+
+        * In **Automatic** mode, the request is created and its transactions are executed, all information must be sent
+        in a single request.
+
+
+        * In **Manual** mode, the request can be built in parts, creation is made on the first request and allows for
+        further interactions without executing transactions. To confirm the execution of transactions, you must call the
+        processing feature.
+
+
+        To select the mode in which the request will be created, use the **processing_mode** property.
+
+        * **automatic**: Creates in Automatic mode.
+
+        * **manual**: Creates in Manual mode.
+
+
+        For transactions involving the means of payment credit card, allows to perform authorization and subsequent
+        capture through the **capture_mode** property.
+
+        * **automatic_async**: Authorizes and captures values at the same time.
+
+        * **manual**: Authorizes and the capture of values must be performed manually.
+      parameters:
+        - $ref: '#/components/parameters/XIdempotencyKey'
+        - $ref: '#/components/parameters/XProductID'
+      requestBody:
+        $ref: '#/components/requestBodies/CreateOrder'
+      responses:
+        '201':
+          $ref: '#/components/responses/CreateOrder'
+        '400':
+          $ref: '#/components/responses/CreateOrderBadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '402':
+          $ref: '#/components/responses/CreateOrderFailed'
+        '404':
+          $ref: '#/components/responses/CreateOrderNotFound'
+        '409':
+          $ref: '#/components/responses/CreateOrderConflict'
+        '410':
+          $ref: '#/components/responses/CreateOrderGone'
+        '422':
+          $ref: '#/components/responses/CreateOrderUnprocessableEntity'
+        '423':
+          $ref: '#/components/responses/CreateOrderResourceLocked'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+    get:
+      tags:
+        - Public Order
+      summary: Search orders
+      description: |
+        Search for orders using various filters and pagination. This endpoint allows you to find orders based on:
+
+        * **Date range** (required): Filter orders by creation date using `begin_date` and `end_date`
+        * **External reference**: Filter by external reference ID
+        * **Order type**: Filter by order type (online, point, qr)
+        * **Status**: Filter by order status (created, in_review, processing, etc.)
+        * **Status detail**: Filter by detailed status information
+        * **Payment method**: Filter by payment method ID
+        * **Payment type**: Filter by payment type ID
+
+        Results are paginated and can be sorted by creation date or last updated date.
+      parameters:
+        - $ref: '#/components/parameters/BeginDate'
+        - $ref: '#/components/parameters/EndDate'
+        - $ref: '#/components/parameters/ExternalReference'
+        - $ref: '#/components/parameters/OrderType'
+        - $ref: '#/components/parameters/OrderStatus'
+        - $ref: '#/components/parameters/StatusDetail'
+        - $ref: '#/components/parameters/PaymentMethodID'
+        - $ref: '#/components/parameters/PaymentMethodType'
+        - $ref: '#/components/parameters/Page'
+        - $ref: '#/components/parameters/PageSize'
+        - $ref: '#/components/parameters/SortBy'
+        - $ref: '#/components/parameters/SortOrder'
+      responses:
+        '200':
+          $ref: '#/components/responses/SearchOrders'
+        '400':
+          $ref: '#/components/responses/SearchOrdersBadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '500':
+          description: Internal server error
+  /v1/orders/{id}:
+    get:
+      operationId: getOrder
+      summary: Get order by ID
+      description: Returns all order information for the given order ID.
+      tags:
+        - Orders
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+          description: Order ID
+      responses:
+        '200':
+          description: Order found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Order'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+  /v1/orders/{order_id}/cancel:
+    post:
+      tags:
+        - Public Order
+      summary: Cancel an existing order
+      parameters:
+        - $ref: '#/components/parameters/OrderID'
+        - $ref: '#/components/parameters/XIdempotencyKey'
+        - $ref: '#/components/parameters/XProductID'
+      responses:
+        '200':
+          $ref: '#/components/responses/CancelOrder'
+        '400':
+          $ref: '#/components/responses/CancelOrderBadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/CancelOrderNotFound'
+        '409':
+          $ref: '#/components/responses/CancelOrderConflict'
+        '500':
+          description: Generic error
+  /v1/orders/{order_id}/process:
+    post:
+      tags:
+        - Public Order
+      summary: Process order
+      description: Execute the transactions of an Order created in **Manual** mode.
+      parameters:
+        - $ref: '#/components/parameters/OrderID'
+        - $ref: '#/components/parameters/XIdempotencyKey'
+        - $ref: '#/components/parameters/XProductID'
+      responses:
+        '200':
+          $ref: '#/components/responses/Process'
+        '400':
+          $ref: '#/components/responses/ProcessOrderBadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '402':
+          $ref: '#/components/responses/CreateOrderFailed'
+        '404':
+          $ref: '#/components/responses/ProcessOrderNotFound'
+        '423':
+          $ref: '#/components/responses/ProcessOrderResourceLocked'
+  /v1/orders/{order_id}/capture:
+    post:
+      tags:
+        - Public Order
+      summary: Execute capture in order
+      parameters:
+        - $ref: '#/components/parameters/OrderID'
+        - $ref: '#/components/parameters/XIdempotencyKey'
+        - $ref: '#/components/parameters/XProductID'
+      requestBody:
+        $ref: '#/components/requestBodies/CaptureOrder'
+      responses:
+        '200':
+          $ref: '#/components/responses/CaptureOrder'
+        '400':
+          $ref: '#/components/responses/CaptureOrderBadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '402':
+          $ref: '#/components/responses/CreateOrderFailed'
+        '404':
+          $ref: '#/components/responses/CaptureOrderNotFound'
+        '409':
+          $ref: '#/components/responses/CaptureOrderConflict'
+        '422':
+          $ref: '#/components/responses/CaptureOrderUnprocessableEntity'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+  /v1/orders/{order_id}/refund:
+    post:
+      tags:
+        - Public Order
+      summary: Create refund on order
+      description: >
+        Creates **total** or **partial** refunds for payment transactions.
+
+
+        The Order will be considered **refunded in total** when **all the transactions are refunded in total**.
+        Otherwise, it will be considered **partially refunded**.
+
+
+        To refund a transaction **in total** you must **not specify the amount** or **specify the amount equal to the
+        transaction total amount**.
+
+
+        When specifying a transaction to be refunded, any other transaction will remain as is.
+      parameters:
+        - $ref: '#/components/parameters/OrderID'
+        - $ref: '#/components/parameters/XIdempotencyKey'
+        - $ref: '#/components/parameters/XProductID'
+      requestBody:
+        $ref: '#/components/requestBodies/RefundOrder'
+      responses:
+        '201':
+          $ref: '#/components/responses/RefundOrder'
+        '400':
+          $ref: '#/components/responses/RefundOrderBadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/RefundOrderNotFound'
+        '409':
+          $ref: '#/components/responses/RefundOrderConflict'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+    get:
+      tags:
+        - Public Order
+      summary: Get refunds of order
+      parameters:
+        - $ref: '#/components/parameters/OrderID'
+        - $ref: '#/components/parameters/XIdempotencyKey'
+        - $ref: '#/components/parameters/XProductID'
+      responses:
+        '200':
+          $ref: '#/components/responses/GetOrderRefunds'
+        '400':
+          description: Invalid order
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          description: Order not found
+  /v1/orders/{order_id}/transactions/{transaction_id}:
+    put:
+      tags:
+        - Public Order
+      summary: Updates an Order transaction
+      description: |
+        This operation updates one item inside any of the fields of the `$.transactions` property.
+
+        Only allowed for Orders created in **Manual** mode (`$.processing_mode = "manual"`).
+      parameters:
+        - $ref: '#/components/parameters/OrderID'
+        - $ref: '#/components/parameters/TransactionID'
+        - $ref: '#/components/parameters/XIdempotencyKey'
+        - $ref: '#/components/parameters/XProductID'
+      requestBody:
+        $ref: '#/components/requestBodies/UpdateTransaction'
+      responses:
+        '200':
+          $ref: '#/components/responses/UpdateTransaction'
+        '400':
+          $ref: '#/components/responses/BadRequestPutTransaction'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/UpdateTransactionNotFound'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+    delete:
+      tags:
+        - Public Order
+      summary: Deletes an Order transaction
+      description: >-
+        This operation of deleting a **transaction** from the Order can only be carried out in **Manual** mode, with
+        these **processing_mode** fields with this **manual** value.
+      parameters:
+        - $ref: '#/components/parameters/OrderID'
+        - $ref: '#/components/parameters/TransactionID'
+        - $ref: '#/components/parameters/XProductID'
+      responses:
+        '204':
+          description: Successful operation
+        '400':
+          $ref: '#/components/responses/DeleteTransactionBadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/DeleteTransactionNotFound'
+        '500':
+          description: Generic error
+  /v1/orders/{order_id}/transactions:
+    post:
+      tags:
+        - Public Order
+      summary: Creates a transaction to an Order.
+      description: >-
+        This operation of adding **transactions** to the Order can only be carried out in **Manual** mode, with these
+        **processing_mode** fields with this **manual** value.
+      parameters:
+        - $ref: '#/components/parameters/OrderID'
+        - $ref: '#/components/parameters/XIdempotencyKey'
+        - $ref: '#/components/parameters/XProductID'
+      requestBody:
+        $ref: '#/components/requestBodies/CreateTransaction'
+      responses:
+        '201':
+          $ref: '#/components/responses/CreateTransaction'
+        '400':
+          $ref: '#/components/responses/PostTransactionBadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/CreateTransactionNotFound'
+        '409':
+          $ref: '#/components/responses/PostTransactionConflict'
+        '500':
+          description: Generic error
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      description: Access token. Send in Authorization header only — never as a URL query parameter.
+    publicKey:
+      type: apiKey
+      in: header
+      name: X-Public-Key
+      description: Public key for client-side card tokenization via MercadoPago.js only. Never use for server-side calls.
+    mercadopagoOAuth:
+      type: oauth2
+      description: >-
+        OAuth 2.0 authorization_code flow for marketplace on-behalf-of and Wallet Connect integrations. For
+        client_credentials and refresh_token, use POST /oauth/token directly with the appropriate grant_type.
+      flows:
+        authorizationCode:
+          authorizationUrl: https://auth.mercadopago.com/authorization
+          tokenUrl: https://api.mercadopago.com/oauth/token
+          scopes:
+            read: Read access to account data
+            write: Write access (create payments, orders)
+            offline_access: Issue refresh tokens for long-lived access
+  responses:
+    BadRequest:
+      description: Bad request — validation error
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    Unauthorized:
+      description: Missing or invalid access token
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    Forbidden:
+      description: Insufficient permissions
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    NotFound:
+      description: Resource not found
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    UnprocessableEntity:
+      description: Business rule violation
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    TooManyRequests:
+      description: Rate limit exceeded — wait before retrying
+      headers:
+        Retry-After:
+          schema:
+            type: integer
+          description: Seconds to wait before retrying this request
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+          example:
+            status: 429
+            error: too_many_requests
+            message: Rate limit exceeded. Retry after the indicated number of seconds.
+  schemas:
+    OrderPayer:
+      type: object
+      required:
+        - email
+      properties:
+        email:
+          type: string
+          format: email
+          example: customer@example.com
+        first_name:
+          type: string
+        last_name:
+          type: string
+        identification:
+          type: object
+          properties:
+            type:
+              type: string
+              description: Document type (e.g. CPF, CNPJ, DNI, NIT, RFC)
+              example: CPF
+            number:
+              type: string
+              description: Document number (digits only, no formatting)
+              example: '99999999999'
+        phone:
+          type: object
+          properties:
+            area_code:
+              type: string
+              example: '11'
+            number:
+              type: string
+              example: '43434343'
+        address:
+          type: object
+          properties:
+            zip_code:
+              type: string
+            street_name:
+              type: string
+            street_number:
+              type: string
+            neighborhood:
+              type: string
+            city:
+              type: string
+            state:
+              type: string
+            complement:
+              type: string
+        entity_type:
+          type: string
+          enum:
+            - individual
+            - association
+          description: Payer entity type. Required for PSE (Colombia) payments.
+    OrderConfig:
+      type: object
+      description: Optional settings for the order.
+      properties:
+        online:
+          type: object
+          description: Settings for online card transactions.
+          properties:
+            transaction_security:
+              type: object
+              description: >
+                3DS (3D Secure) configuration. After creating the order, the response indicates if a challenge is
+                required via transactions.payments[].payment_method.transaction_security.
+              properties:
+                validation:
+                  type: string
+                  enum:
+                    - supported
+                    - required
+                    - never
+                  description: >
+                    supported — run 3DS when supported by issuer; required — always run 3DS, reject if not supported;
+                    never — skip 3DS entirely.
+                liability_shift:
+                  type: string
+                  enum:
+                    - required
+                    - not_required
+                  description: >
+                    Required when validation is not "never". required — only approve if liability shifts to issuer;
+                    not_required — approve regardless of liability shift outcome.
+            callback_url:
+              type: string
+              format: uri
+              description: Redirect URL after PSE bank authentication completes.
+              example: https://merchant.com/pse/return
+    OrderItem:
+      type: object
+      properties:
+        id:
+          type: string
+        title:
+          type: string
+        description:
+          type: string
+        quantity:
+          type: integer
+          minimum: 1
+        unit_price:
+          type: number
+          format: float
+        category_id:
+          type: string
+    OrderShipment:
+      type: object
+      properties:
+        address:
+          type: object
+          properties:
+            zip_code:
+              type: string
+            street_name:
+              type: string
+            street_number:
+              type: string
+            neighborhood:
+              type: string
+            city:
+              type: string
+            state:
+              type: string
+            complement:
+              type: string
+    Order:
+      type: object
+      description: A MercadoPago Order.
+      properties:
+        id:
+          type: string
+          description: Order unique identifier, automatically generated by MercadoPago.
+          example: 01JG28GRB9NYTG6VVS3R5N58YT
+        type:
+          type: string
+          example: online
+        processing_mode:
+          type: string
+          enum:
+            - automatic
+            - manual
+        capture_mode:
+          type: string
+          enum:
+            - automatic
+            - manual
+            - automatic_async
+        status:
+          type: string
+          enum:
+            - created
+            - processed
+            - action_required
+            - processing
+            - canceled
+          description: >
+            created — order created, waiting for processing. processed — all transactions successfully processed.
+            action_required — integrator action needed (e.g. capture an authorized payment). processing — being
+            processed; no action needed from integrator. canceled — order canceled, will not be processed further.
+          example: processed
+        status_detail:
+          type: string
+          enum:
+            - created
+            - accredited
+            - in_process
+            - in_review
+            - waiting_payment
+            - waiting_capture
+            - waiting_transfer
+          description: >
+            accredited — payment credited; waiting_payment — waiting for payer to complete offline payment;
+            waiting_capture — authorized payment awaiting capture; waiting_transfer — waiting for bank transfer.
+          example: accredited
+        external_reference:
+          type: string
+        total_amount:
+          type: string
+          description: Total order amount as decimal string.
+          example: '100.00'
+        total_paid_amount:
+          type: string
+          description: Total amount effectively paid so far.
+          example: '100.00'
+        description:
+          type: string
+        country_code:
+          type: string
+          description: site_id of the order (e.g. MLB, MLA).
+          example: MLB
+        user_id:
+          type: integer
+          description: Collector (seller) user ID.
+        created_date:
+          type: string
+          format: date-time
+        last_updated_date:
+          type: string
+          format: date-time
+        client_token:
+          type: string
+          description: |
+            Token for client-side rendering of the payment UI (e.g. Bricks). Only returned when applicable.
+        payer:
+          $ref: '#/components/schemas/OrderPayer'
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/OrderItem'
+        shipment:
+          $ref: '#/components/schemas/OrderShipment'
+        transactions:
+          type: object
+          properties:
+            payments:
+              type: array
+              items:
+                $ref: '#/components/schemas/OrderTransactionPayment'
+        config:
+          $ref: '#/components/schemas/OrderConfig'
+        integration_data:
+          type: object
+    OrderTransactionPayment:
+      type: object
+      properties:
+        id:
+          type: string
+          description: Transaction ID, automatically generated by MercadoPago.
+        amount:
+          type: string
+          description: Transaction amount.
+          example: '100.00'
+        paid_amount:
+          type: string
+          description: Amount effectively paid.
+        reference_id:
+          type: string
+          description: External reference for this transaction.
+        status:
+          type: string
+          enum:
+            - created
+            - processed
+            - action_required
+            - processing
+          description: >
+            created — transaction created; processed — transaction successfully processed; action_required — integrator
+            must act (e.g. capture); processing — awaiting asynchronous result.
+        status_detail:
+          type: string
+          enum:
+            - accredited
+            - waiting_capture
+            - created
+            - pending_review_manual
+            - in_process
+        date_of_expiration:
+          type: string
+          format: date-time
+        expiration_time:
+          type: string
+          description: Expiration duration in ISO 8601 format.
+        payment_method:
+          type: object
+          properties:
+            id:
+              type: string
+            type:
+              type: string
+            token:
+              type: string
+            installments:
+              type: integer
+            statement_descriptor:
+              type: string
+            ticket_url:
+              type: string
+              format: uri
+              description: URL to view or print the ticket (Boleto, OXXO, etc.).
+            barcode_content:
+              type: string
+              description: Barcode string for offline payment methods.
+            reference:
+              type: string
+              description: Reference number for offline payment methods.
+            verification_code:
+              type: string
+            financial_institution:
+              type: string
+            redirect_url:
+              type: string
+              format: uri
+              description: >
+                Redirect URL for PSE bank transfer (Colombia). In production, redirect the payer to this URL to complete
+                authentication at their bank.
+            digitable_line:
+              type: string
+              description: Digitable line for Boleto payments.
+            qr_code:
+              type: string
+              description: QR code string for Pix payments.
+            qr_code_base64:
+              type: string
+              description: QR code image as Base64 for Pix payments.
+            e2e_id:
+              type: string
+              description: End-to-end identifier for Pix transactions (mandatory tracking code).
+            transaction_security:
+              type: object
+              description: 3DS challenge result.
+              properties:
+                status:
+                  type: string
+                  enum:
+                    - pending
+                    - success
+                    - failed
+                redirect_url:
+                  type: string
+                  format: uri
+                  description: URL to redirect payer to complete 3DS challenge (when status=pending).

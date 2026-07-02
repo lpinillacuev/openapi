@@ -1,5 +1,50 @@
 components:
   schemas:
+    Activity:
+      type: object
+      description: Activity or communication entry in a chargeback case
+      properties:
+        dateCreated:
+          type: string
+          format: date-time
+          description: Date when the activity was created
+          example: '2026-06-15T10:30:00Z'
+        dateCreatedFormated:
+          type: string
+          description: Formatted date string for display
+          example: 15/06/2026 10:30
+        context:
+          type: string
+          description: Context or category of the activity
+          example: buyer_message
+        milestone:
+          type: string
+          description: Milestone or key event indicator
+          example: documentation_submitted
+        message:
+          type: string
+          description: Activity message content
+          example: Documentation has been uploaded for review
+        sender:
+          type: string
+          description: Sender of the activity (user, system, operator)
+          example: buyer
+        operatorId:
+          type:
+            - integer
+            - 'null'
+          format: int64
+          description: Operator ID if activity was created by an operator
+          example: null
+        attachments:
+          type: array
+          description: List of attachments associated with the activity
+          items:
+            $ref: '#/components/schemas/Attachment'
+        owner:
+          type: string
+          description: Owner of the activity (e.g., 'cbk', 'buyer', 'seller')
+          example: buyer
     Address:
       type: object
       required:
@@ -30,6 +75,90 @@ components:
           type: string
           description: Postal or ZIP code
           example: '10001'
+    ApiError:
+      properties:
+        error:
+          type: string
+        message:
+          type: string
+        status:
+          type: integer
+        causes:
+          type: array
+          items: {}
+    Attachment:
+      type: object
+      description: File attachment associated with an activity
+      properties:
+        uuid:
+          type: string
+          format: uuid
+          description: Unique identifier of the attachment
+          example: 550e8400-e29b-41d4-a716-446655440000
+        mimeType:
+          type: string
+          description: MIME type of the file
+          example: application/pdf
+        fileName:
+          type: string
+          description: Original filename
+          example: invoice.pdf
+        size:
+          type: string
+          description: File size
+          example: '245760'
+        filePath:
+          type: string
+          description: Storage path of the file
+          example: /storage/chargebacks/12345678/550e8400-e29b-41d4-a716-446655440000.pdf
+    AutomaticPayments:
+      x-visibility: internal
+      type: object
+      description: >-
+        Present when the order uses the Automatic Payments feature. `payment_profile_id` is included when a profile was
+        used or created; omitted otherwise.
+      properties:
+        payment_profile_id:
+          type: string
+        retries:
+          type: integer
+        schedule_date:
+          type: string
+          format: date-time
+        due_date:
+          type: string
+          format: date-time
+        subscription:
+          type: object
+          properties:
+            id:
+              type: string
+            sequence:
+              type: object
+              properties:
+                number:
+                  type: integer
+                total:
+                  type: integer
+            invoice:
+              type: object
+              properties:
+                id:
+                  type: string
+                billing_date:
+                  type: string
+                  format: date
+                period:
+                  type: object
+                  properties:
+                    interval:
+                      type: integer
+                    type:
+                      type: string
+                      enum:
+                        - daily
+                        - weekly
+                        - monthly
     AutoRecurring:
       type: object
       required:
@@ -91,6 +220,333 @@ components:
             - checking
             - savings
           description: Type of bank account
+    BrandCollectorMessage:
+      type: object
+      required:
+        - brand_id
+        - collector_id
+      properties:
+        brand_id:
+          type: integer
+          format: int64
+          description: The brand ID
+        collector_id:
+          type: integer
+          format: int64
+          description: The collector ID
+    BuyerChargebackDebtStatus:
+      type: object
+      description: Debt information associated with a chargeback case
+      properties:
+        amount:
+          type: number
+          format: decimal
+          description: Total debt amount
+          example: 1250.5
+        recoveryAmount:
+          type: number
+          format: decimal
+          description: Amount recovered so far
+          example: 500
+        targetAmount:
+          type: number
+          format: decimal
+          description: Target amount for recovery
+          example: 1250.5
+        status:
+          type: string
+          description: Current status of the debt
+          enum:
+            - pending
+            - in_recovery
+            - recovered
+            - written_off
+          example: in_recovery
+        refundedDate:
+          type: string
+          format: date-time
+          description: Date when the debt was refunded
+          example: '2026-06-18T09:15:00Z'
+    BuyerChargebackDetail:
+      type: object
+      description: Comprehensive details of a chargeback case from the buyer's perspective
+      properties:
+        id:
+          type: string
+          description: Unique identifier of the chargeback case
+          example: '12345678'
+        item:
+          $ref: '#/components/schemas/Item'
+        payment:
+          $ref: '#/components/schemas/Payment'
+        detailLink:
+          type: string
+          description: URL link to detailed chargeback information
+          example: https://www.mercadolibre.com/jms/mla/lgz/msl/chargeback/12345678
+        caseStatus:
+          type: string
+          description: Current status of the chargeback case
+          enum:
+            - open
+            - closed
+            - in_review
+            - resolved
+          example: open
+        repaymentLink:
+          type: string
+          description: URL link for repayment processing
+          example: https://www.mercadopago.com/mla/debits/12345678/pay
+        typificationPayer:
+          type: string
+          description: Typification category assigned to the payer
+          example: unrecognized_purchase
+        repaymentStatus:
+          type: string
+          description: Status of the repayment process
+          enum:
+            - pending
+            - in_process
+            - completed
+            - failed
+          example: pending
+        debt:
+          $ref: '#/components/schemas/BuyerChargebackDebtStatus'
+        labels:
+          type: array
+          description: Labels or tags associated with the chargeback
+          items:
+            type: string
+          example:
+            - high_priority
+            - documentation_pending
+        flow:
+          type: string
+          description: The workflow or process flow the chargeback is following
+          example: standard_flow
+        activities:
+          type: object
+          description: Map of activity categories to activity lists
+          additionalProperties:
+            type: array
+            items:
+              $ref: '#/components/schemas/Activity'
+          example:
+            messages:
+              - dateCreated: '2026-06-15T10:30:00Z'
+                message: Documentation requested
+                sender: system
+            updates:
+              - dateCreated: '2026-06-16T14:20:00Z'
+                message: Case status updated
+                sender: operator
+    CaptureOrderOPRequest:
+      description: Capture Order request for type=online
+      type: object
+      properties:
+        payments:
+          type: array
+          minItems: 1
+          items:
+            type: object
+            required:
+              - id
+            properties:
+              id:
+                type: string
+                format: ulid
+              amount:
+                type: string
+                pattern: ^\d+(\.\d{1,2})?$
+                example: '123.45'
+    CaptureOrderOPResponse:
+      description: Transaction response for type=online
+      type: object
+      properties:
+        id:
+          type: string
+          example: ORD01HRYJPXYM3ZK71F31AQR76KGR
+        status:
+          type: string
+        status_detail:
+          type: string
+        transactions:
+          type: object
+          properties:
+            payments:
+              type: array
+              items:
+                type: object
+                properties:
+                  id:
+                    type: string
+                    example: PAY01HRYJPXYM3ZK71F31AQR76KGR
+                  status:
+                    type: string
+                  status_detail:
+                    type: string
+                  amount:
+                    type: string
+                  paid_amount:
+                    type: string
+                  reference_id:
+                    type: string
+    Chargeback:
+      type: object
+      description: Open platform chargeback case representation
+      properties:
+        id:
+          type: string
+          description: Unique identifier of the chargeback case
+          example: '12345678'
+        payments:
+          type: array
+          description: List of payment IDs associated with the chargeback
+          items:
+            type: integer
+            format: int64
+          example:
+            - 98765432101
+            - 98765432102
+        currency:
+          type: string
+          description: Currency code
+          example: ARS
+        amount:
+          type: number
+          format: decimal
+          description: Chargeback amount
+          example: 1250.5
+        reason:
+          type: string
+          description: Human-readable reason for the chargeback
+          example: Unrecognized transaction
+        reason_id:
+          type: string
+          description: Reason identifier code
+          example: unrecognized
+        coverage_applied:
+          type: boolean
+          description: Indicates if coverage has been applied
+          example: true
+        coverage_elegible:
+          type: boolean
+          description: Indicates if the case is eligible for coverage
+          example: true
+        documentation_required:
+          type: boolean
+          description: Indicates if documentation is required
+          example: true
+        documentation_status:
+          type: string
+          description: Current status of documentation
+          enum:
+            - pending
+            - review_pending
+            - valid
+            - invalid
+            - not_supplied
+            - not_applicable
+          example: review_pending
+        documentation:
+          type: array
+          description: List of documentation files
+          items:
+            $ref: '#/components/schemas/Documentation'
+        date_documentation_deadline:
+          type: string
+          format: date-time
+          description: Deadline for submitting documentation
+          example: '2026-06-20T23:59:59Z'
+        date_created:
+          type: string
+          format: date-time
+          description: Date when the chargeback was created
+          example: '2026-06-01T10:00:00Z'
+        date_last_updated:
+          type: string
+          format: date-time
+          description: Date of last update
+          example: '2026-06-15T14:22:00Z'
+        live_mode:
+          type: boolean
+          description: Indicates if the chargeback is in live mode (production)
+          example: true
+        tags:
+          type: array
+          description: Tags associated with the chargeback
+          items:
+            type: string
+          example:
+            - high_priority
+            - needs_review
+        status:
+          type: string
+          description: Current status of the chargeback
+          enum:
+            - open
+            - closed
+            - in_review
+            - documentation_pending
+          example: documentation_pending
+    ChargebackSearchResult:
+      type: object
+      description: Paginated search results for chargeback cases
+      properties:
+        paging:
+          $ref: '#/components/schemas/Paging'
+        results:
+          type: array
+          description: List of matching chargeback cases
+          items:
+            $ref: '#/components/schemas/Chargeback'
+    CollaboratorActivity:
+      type: object
+      description: Activity performed by a collaborator
+      properties:
+        date:
+          type: string
+          format: date-time
+          description: Date of the activity
+          example: '2026-06-15T14:30:00Z'
+    CollaboratorDetail:
+      type: object
+      description: Collaborator information associated with a seller
+      properties:
+        id:
+          type: integer
+          format: int64
+          description: Collaborator identifier
+          example: 555666777
+        activities:
+          type: array
+          description: List of activities performed by the collaborator
+          items:
+            $ref: '#/components/schemas/CollaboratorActivity'
+    ConfirmOrderRequest:
+      description: Confirm transaction amounts request (only for instore QR payment type)
+      type: object
+      required:
+        - transactions
+      properties:
+        transactions:
+          type: array
+          minItems: 1
+          items:
+            type: object
+            required:
+              - id
+              - confirmed_amount
+            properties:
+              id:
+                type: string
+                format: ulid
+                description: Transaction ID to confirm
+                example: PAY01J3GW5GCVQQB7MEN5FMA6ZJF8
+              confirmed_amount:
+                type: string
+                pattern: ^\d+(\.\d{1,2})?$
+                description: Final confirmed amount for the transaction
+                example: '113.34'
     CurrencyId:
       type: string
       description: ISO 4217 currency code for the applicable site
@@ -120,6 +576,19 @@ components:
         - MPE
         - MLU
       example: BRL
+    DeleteQrFilesMessage:
+      type: object
+      required:
+        - pos_id
+      properties:
+        pos_id:
+          type: integer
+          format: int64
+          description: The point of sale ID
+        control_version:
+          type: boolean
+          default: false
+          description: Whether to control version during deletion
     DigitalWallet:
       type: object
       required:
@@ -137,29 +606,152 @@ components:
         wallet_id:
           type: string
           description: Wallet identifier or token
-    Error:
+    Documentation:
+      type: object
+      description: Documentation file associated with a chargeback case
+      properties:
+        type:
+          type: string
+          description: Type of documentation
+          example: invoice
+        url:
+          type: string
+          description: URL to access the documentation
+          example: https://api.mercadolibre.com/v1/chargebacks/documentation/invoice/550e8400-e29b-41d4-a716-446655440000
+        description:
+          type: string
+          description: Description of the documentation
+          example: Purchase invoice
+    Enabler:
       type: object
       required:
-        - error
-        - message
+        - id
+        - point_of_sale
+        - is_active
       properties:
-        error:
+        id:
           type: string
-          description: Error code
-          example: invalid_payment_method
-        message:
+          description: Unique identifier for the enabler
+        description:
           type: string
-          description: Human-readable error message
-          example: The provided payment method is invalid or expired
-        details:
-          type: object
-          additionalProperties: true
-          description: Additional error details
-        timestamp:
+          description: Optional description, defaults to point_of_sale.pos_id if not provided
+        point_of_sale:
+          $ref: '#/components/schemas/EnablerPointOfSale'
+        qr:
+          $ref: '#/components/schemas/Qr'
+          description: QR code links for the enabler
+        is_active:
+          type: boolean
+          default: true
+          description: Whether the enabler is active
+        date_created:
           type: string
           format: date-time
-          description: Error timestamp
-          example: '2024-01-15T10:30:00Z'
+          description: Creation timestamp
+        date_last_updated:
+          type: string
+          format: date-time
+          description: Last update timestamp
+        configurations:
+          $ref: '#/components/schemas/EnablerConfigurations'
+        type:
+          type: string
+          description: Type of enabler
+      example:
+        id: 123e4567-e89b-12d3-a456-426614174000
+        description: Store A - POS 1
+        point_of_sale:
+          pos_id: '12345'
+          store_id: STORE_001
+          brand_id: '789'
+          user_id: '93912278'
+        qr:
+          image: https://example.com/qr/123.png
+          template_document: https://example.com/qr/123.pdf
+          template_image: https://example.com/qr/123_template.png
+        is_active: true
+        date_created: '2024-01-29T14:19:43.163Z'
+        date_last_updated: '2024-01-29T14:19:43.163Z'
+        configurations:
+          tips:
+            destination_account: '93912278'
+        type: TIPS
+    EnablerConfigurations:
+      type: object
+      properties:
+        tips:
+          type: object
+          properties:
+            destination_account:
+              type: string
+              description: User ID that will receive the tips
+          required:
+            - destination_account
+      example:
+        tips:
+          destination_account: '93912278'
+    EnablerCreateRequest:
+      allOf:
+        - $ref: '#/components/schemas/Enabler'
+        - type: object
+          required:
+            - point_of_sale
+          properties:
+            id:
+              readOnly: true
+            date_created:
+              readOnly: true
+            date_last_updated:
+              readOnly: true
+          example:
+            point_of_sale:
+              pos_id: '12345'
+              store_id: STORE_001
+              brand_id: '789'
+              user_id: '93912278'
+            configurations:
+              tips:
+                destination_account: '93912278'
+            type: TIPS
+    EnablerPointOfSale:
+      type: object
+      required:
+        - pos_id
+      properties:
+        pos_id:
+          type: string
+          description: Point of sale identifier
+        store_id:
+          type: string
+          description: Store identifier
+        brand_id:
+          type: string
+          description: Brand identifier
+        user_id:
+          type: string
+          description: User identifier
+      example:
+        pos_id: '12345'
+        store_id: STORE_001
+        brand_id: '789'
+        user_id: '93912278'
+    Error:
+      description: Error objects
+      type: object
+      properties:
+        errors:
+          type: array
+          items:
+            type: object
+            properties:
+              code:
+                type: string
+              message:
+                type: string
+              doc_url:
+                type: string
+        data:
+          $ref: '#/components/schemas/OrderOPResponse'
     ErrorCause:
       type: object
       properties:
@@ -172,6 +764,1318 @@ components:
         data:
           type: string
           nullable: true
+    GenerateEnablerQrImageRequest:
+      type: object
+      required:
+        - enabler_id
+      properties:
+        enabler_id:
+          type: string
+          description: Enabler identifier
+    GetOrderOPResponse:
+      description: Order response for GET type=online
+      type: object
+      properties:
+        id:
+          type: string
+          example: ORD01HRYJPXYM3ZK71F31AQR76KGR
+        type:
+          type: string
+          enum:
+            - online
+        processing_mode:
+          type: string
+          enum:
+            - manual
+            - automatic
+            - automatic_async
+        external_reference:
+          type: string
+        description:
+          type: string
+        total_amount:
+          type: string
+        total_paid_amount:
+          type: string
+        checkout_available_at:
+          x-visibility: internal
+          type: string
+          example: P3Y6M4DT12H30M5S
+        expiration_time:
+          type: string
+          example: P3Y6M4DT12H30M5S
+        country_code:
+          type: string
+          enum:
+            - ARG
+            - BRA
+            - CHL
+            - COL
+            - MEX
+            - PER
+            - URY
+            - VEN
+        user_id:
+          x-visibility: internal
+          type: string
+        status:
+          type: string
+        status_detail:
+          type: string
+        capture_mode:
+          type: string
+          enum:
+            - manual
+            - automatic
+            - automatic_async
+          default: automatic_async
+        created_date:
+          type: string
+        last_updated_date:
+          type: string
+        client_token:
+          type:
+            - string
+            - 'null'
+        currency:
+          type: string
+        integration_data:
+          type: object
+          properties:
+            application_id:
+              type: string
+        payer:
+          x-visibility: internal
+          type: object
+          properties:
+            customer_id:
+              type: string
+            entity_type:
+              type:
+                - string
+                - 'null'
+              description: >-
+                Payer entity type, present for guest payers (e.g. PSE) without a customer_id. Examples: individual,
+                association
+            email:
+              type: string
+              description: >
+                Email of the payer. Exposed only by `GET /v1/orders/{id}`; `GET /v1/orders` (SEARCH) always strips this
+                field.
+
+                Omitted when empty or null upstream. If after omitting `email` no other payer fields remain, the entire
+                `payer` node is omitted.
+              example: user@example.com
+        config:
+          type: object
+          properties:
+            payment_method:
+              type: object
+              properties:
+                not_allowed_ids:
+                  x-visibility: internal
+                  type: array
+                  items:
+                    type: string
+                not_allowed_types:
+                  x-visibility: internal
+                  type: array
+                  items:
+                    type: string
+                default_id:
+                  x-visibility: internal
+                  type: string
+                max_installments:
+                  x-visibility: internal
+                  type: integer
+                default_installments:
+                  x-visibility: internal
+                  type: integer
+            online:
+              type: object
+              properties:
+                callback_url:
+                  type: string
+                success_url:
+                  x-visibility: internal
+                  type: string
+                pending_url:
+                  x-visibility: internal
+                  type: string
+                failure_url:
+                  x-visibility: internal
+                  type: string
+                auto_return:
+                  x-visibility: internal
+                  type: string
+                  enum:
+                    - approved
+                    - all
+                differential_pricing:
+                  x-visibility: internal
+                  type: object
+                  properties:
+                    id:
+                      type: integer
+            split_rules:
+              x-visibility: wip
+              type: object
+              description: Configuration for split payment rules
+              properties:
+                amount_type:
+                  type: string
+                  enum:
+                    - percentage
+                    - fixed
+                  description: Type of amount calculation for splits
+            cross_border:
+              type: object
+              description: Cross-border payment data returned when present in the order.
+              x-visibility: wip
+              properties:
+                destination_currency:
+                  type: string
+                  description: Currency code of the destination amount.
+                  example: USD
+                  x-visibility: wip
+                destination_amount:
+                  type: string
+                  description: >-
+                    Amount in the destination currency, serialized as a string to preserve precision
+                    (Treasury-calculated or provided).
+                  example: '45.50'
+                  x-visibility: wip
+        transactions:
+          type: object
+          properties:
+            payments:
+              type: array
+              items:
+                type: object
+                properties:
+                  id:
+                    type: string
+                    format: ulid
+                    example: PAY01HRYJPXYM3ZK71F31AQR76KGR
+                  amount:
+                    type: string
+                    example: '100.00'
+                  confirmed_amount:
+                    x-visibility: internal
+                    type: string
+                    description: Confirmed (captured) amount, monetary string. Omitted when not provided upstream.
+                    example: '100.00'
+                  paid_amount:
+                    type: string
+                    example: '100.00'
+                  expiration_time:
+                    type: string
+                    example: P1D
+                  date_of_expiration:
+                    type: string
+                    format: date-time
+                  reference_id:
+                    type: string
+                  status:
+                    type: string
+                  status_detail:
+                    type: string
+                  provider:
+                    type: string
+                  authorization_code:
+                    x-visibility: wip
+                    type: string
+                    description: Authorization code returned by the card network after payment approval
+                  attempt_number:
+                    x-visibility: internal
+                    type: integer
+                  attempts:
+                    x-visibility: internal
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: string
+                        status:
+                          type: string
+                        status_detail:
+                          type: string
+                        payment_method:
+                          type: object
+                          properties:
+                            id:
+                              type: string
+                              enum:
+                                - abitab
+                                - account_money
+                                - amex
+                                - argencard
+                                - banesco
+                                - bolbradesco
+                                - boleto
+                                - cabal
+                                - cencosud
+                                - clabe
+                                - cmr
+                                - codensa
+                                - consumer_credits
+                                - creditel
+                                - debcabal
+                                - debelo
+                                - debin_transfer
+                                - debmaster
+                                - debvisa
+                                - diners
+                                - edenred
+                                - efecty
+                                - elo
+                                - hipercard
+                                - interop_transfer
+                                - kushki
+                                - lider
+                                - maestro
+                                - master
+                                - mercantil
+                                - naranja
+                                - oca
+                                - oxxo
+                                - pagoefectivo_atm
+                                - pagofacil
+                                - paycash
+                                - pix
+                                - pse
+                                - rapipago
+                                - redcompra
+                                - redpagos
+                                - serfin
+                                - sivale_despensa
+                                - sivale_restaurant
+                                - smart_transfer
+                                - sucredito
+                                - visa
+                            type:
+                              type: string
+                            card_id:
+                              type: string
+                            installments:
+                              type: integer
+                  payment_method:
+                    type: object
+                    properties:
+                      id:
+                        type: string
+                        enum:
+                          - abitab
+                          - account_money
+                          - amex
+                          - argencard
+                          - banesco
+                          - bolbradesco
+                          - boleto
+                          - cabal
+                          - cencosud
+                          - clabe
+                          - cmr
+                          - codensa
+                          - consumer_credits
+                          - creditel
+                          - debcabal
+                          - debelo
+                          - debin_transfer
+                          - debmaster
+                          - debvisa
+                          - diners
+                          - edenred
+                          - efecty
+                          - elo
+                          - hipercard
+                          - interop_transfer
+                          - kushki
+                          - lider
+                          - maestro
+                          - master
+                          - mercantil
+                          - naranja
+                          - oca
+                          - oxxo
+                          - pagoefectivo_atm
+                          - pagofacil
+                          - paycash
+                          - pix
+                          - pse
+                          - rapipago
+                          - redcompra
+                          - redpagos
+                          - serfin
+                          - sivale_despensa
+                          - sivale_restaurant
+                          - smart_transfer
+                          - sucredito
+                          - visa
+                      type:
+                        type: string
+                      token:
+                        type: string
+                      installments:
+                        type: integer
+                      statement_descriptor:
+                        type: string
+                      ticket_url:
+                        type: string
+                        description: >-
+                          Ticket URL. Returned for offline payment methods (e.g., Pix, Rapipago, Pago fácil, boleto,
+                          OXXO, Paycash, Clabe).
+                      redirect_url:
+                        type: string
+                        description: >-
+                          Redirect URL. Returned for PSE bank_transfer payments in MCO to redirect the payer to their
+                          bank's portal.
+                      barcode_content:
+                        type: string
+                      reference:
+                        type: string
+                      verification_code:
+                        type: string
+                      financial_institution:
+                        type: string
+                        description: >-
+                          Financial institution code. Returned for bank_transfer and offline payment methods (e.g., PSE,
+                          boleto).
+                      qr_code:
+                        type: string
+                      qr_code_base64:
+                        type: string
+                      digitable_line:
+                        type: string
+                      e2e_id:
+                        type: string
+                      open_finance_account_id:
+                        type: string
+                        x-visibility: wip
+                        description: >-
+                          Open Finance account id. Returned only for `smart_transfer` payments — identifies the account
+                          that originated the transfer.
+                      transaction_security:
+                        type: object
+                        properties:
+                          validation:
+                            type: string
+                            enum:
+                              - on_fraud_risk
+                              - never
+                          liability_shift:
+                            type: string
+                            enum:
+                              - required
+                          id:
+                            type: string
+                          url:
+                            type: string
+                          type:
+                            type: string
+                          status:
+                            type: string
+                  card:
+                    x-visibility: internal
+                    type: object
+                    properties:
+                      last_digits:
+                        type: string
+                      first_digits:
+                        type: string
+                  automatic_payments:
+                    $ref: '#/components/schemas/AutomaticPayments'
+            refunds:
+              type: array
+              items:
+                type: object
+                properties:
+                  id:
+                    type: string
+                  transaction_id:
+                    type: string
+                    format: ulid
+                  reference_id:
+                    x-visibility: internal
+                    type: string
+                  amount:
+                    type: string
+                  status:
+                    type: string
+                  items:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        title:
+                          type: string
+                        unit_price:
+                          type: string
+                        quantity:
+                          type: integer
+                        external_code:
+                          type: string
+                        category_id:
+                          type: string
+                        type:
+                          type: string
+                        description:
+                          type: string
+                        picture_url:
+                          type: string
+            chargebacks:
+              type: array
+              items:
+                type: object
+                properties:
+                  id:
+                    type: string
+                  transaction_id:
+                    type: string
+                    format: ulid
+                  case_id:
+                    type: string
+                  status:
+                    type: string
+                  references:
+                    type: array
+                    items:
+                      type: string
+        splits:
+          x-visibility: wip
+          type: array
+          description: Split payment configuration for distributing payments among multiple participants
+          items:
+            type: object
+            properties:
+              user_id:
+                type: integer
+                format: int64
+                description: User ID of the split participant
+                example: 123456789
+              amount:
+                type: string
+                description: Amount to be paid to this participant
+                example: '100.00'
+              description:
+                type: string
+                description: Description of this split payment
+                example: Payment for seller
+              item_references:
+                type: array
+                description: References to items associated with this split
+                items:
+                  type: string
+        items:
+          type: array
+          items:
+            type: object
+            properties:
+              title:
+                type: string
+              unit_price:
+                type: string
+              quantity:
+                type: integer
+              external_code:
+                type: string
+              external_position:
+                type: string
+                description: >-
+                  Position supplied by the integrator at order creation time. Returned as a string (matching the
+                  upstream `mp-order-api` contract). Omitted when not provided upstream (empty string upstream is
+                  treated as absent).
+                example: '2'
+              category_id:
+                type: string
+              type:
+                type: string
+              description:
+                type: string
+              picture_url:
+                type: string
+              warranty:
+                type: boolean
+              event_date:
+                type: string
+    github_com_melisource_fury_mpcs-preferences-api_internal_domain_model.Address:
+      type: object
+      properties:
+        city:
+          type: string
+        federal_unit:
+          type: string
+        neighborhood:
+          type: string
+        street_name:
+          type: string
+        street_number:
+          type: string
+        zip_code:
+          type: string
+    github_com_melisource_fury_mpcs-preferences-api_internal_domain_model.Amount:
+      type: object
+      properties:
+        collector:
+          $ref: '#/components/schemas/github_com_melisource_fury_mpcs-preferences-api_internal_domain_model.AmountValues'
+        payer:
+          $ref: '#/components/schemas/github_com_melisource_fury_mpcs-preferences-api_internal_domain_model.AmountValues'
+    github_com_melisource_fury_mpcs-preferences-api_internal_domain_model.AmountValues:
+      type: object
+      properties:
+        currency_id:
+          type: string
+        transaction:
+          type: number
+    github_com_melisource_fury_mpcs-preferences-api_internal_domain_model.Collector:
+      type: object
+      properties:
+        operator_id:
+          type: number
+          description: Can be null
+        tags:
+          type: array
+          items:
+            type: string
+    github_com_melisource_fury_mpcs-preferences-api_internal_domain_model.CounterCurrency:
+      type: object
+      properties:
+        currency_id:
+          type: string
+    github_com_melisource_fury_mpcs-preferences-api_internal_domain_model.DeductionsByInstallment:
+      type: object
+      properties:
+        installments:
+          type: array
+          items:
+            type: integer
+    github_com_melisource_fury_mpcs-preferences-api_internal_domain_model.DifferentialPricing:
+      type: object
+      properties:
+        deductions_by_installment:
+          type: array
+          items:
+            $ref: >-
+              #/components/schemas/github_com_melisource_fury_mpcs-preferences-api_internal_domain_model.DeductionsByInstallment
+        id:
+          type: integer
+    github_com_melisource_fury_mpcs-preferences-api_internal_domain_model.Dimensions:
+      type: object
+      properties:
+        height:
+          type: number
+        length:
+          type: number
+        unit:
+          type: string
+        weight:
+          type: number
+        width:
+          type: number
+    github_com_melisource_fury_mpcs-preferences-api_internal_domain_model.FeeDetail:
+      type: object
+      properties:
+        amount:
+          type: number
+        fee_payer:
+          type: string
+        type:
+          type: string
+    github_com_melisource_fury_mpcs-preferences-api_internal_domain_model.FiscalData:
+      type: object
+      properties:
+        dangerous_material_id:
+          type: string
+        measurement_unit:
+          type: string
+        package_id:
+          type: string
+        sat:
+          type: string
+        sat_measurement_id:
+          type: string
+    github_com_melisource_fury_mpcs-preferences-api_internal_domain_model.Header:
+      type: object
+      properties:
+        name:
+          type: string
+        value:
+          type: string
+    github_com_melisource_fury_mpcs-preferences-api_internal_domain_model.Identification:
+      type: object
+      properties:
+        number:
+          type: string
+        type:
+          type: string
+    github_com_melisource_fury_mpcs-preferences-api_internal_domain_model.Item:
+      type: object
+      properties:
+        catalog_product_id:
+          type: string
+        category_descriptor:
+          type: object
+        category_id:
+          type: string
+        currency_id:
+          type: string
+        description:
+          type: string
+        dimensions:
+          $ref: '#/components/schemas/github_com_melisource_fury_mpcs-preferences-api_internal_domain_model.Dimensions'
+        fiscal_data:
+          $ref: '#/components/schemas/github_com_melisource_fury_mpcs-preferences-api_internal_domain_model.FiscalData'
+        id:
+          type: string
+        picture_id:
+          type: string
+        picture_url:
+          type: string
+        quantity:
+          type: number
+        title:
+          type: string
+        unit_price:
+          type: number
+        warranty:
+          type: boolean
+    github_com_melisource_fury_mpcs-preferences-api_internal_domain_model.Payer:
+      type: object
+      properties:
+        address:
+          $ref: '#/components/schemas/github_com_melisource_fury_mpcs-preferences-api_internal_domain_model.Address'
+        authentication_type:
+          type: string
+        date_created:
+          type: string
+        email:
+          type: string
+        guest_payer_id:
+          type: string
+        id:
+          type: number
+        identification:
+          $ref: '#/components/schemas/github_com_melisource_fury_mpcs-preferences-api_internal_domain_model.Identification'
+        is_first_purchase_online:
+          type: boolean
+        is_prime_user:
+          type: boolean
+        last_purchase:
+          type: string
+        name:
+          type: string
+        phone:
+          $ref: '#/components/schemas/github_com_melisource_fury_mpcs-preferences-api_internal_domain_model.Phone'
+        registered_payer_id:
+          type: string
+        surname:
+          type: string
+    github_com_melisource_fury_mpcs-preferences-api_internal_domain_model.PaymentMethod:
+      type: object
+      properties:
+        default_card_id:
+          type: string
+        default_installments:
+          type: integer
+        default_payment_method_id:
+          type: string
+        excluded_payment_methods:
+          type: array
+          items:
+            type: string
+        excluded_payment_types:
+          type: array
+          items:
+            type: string
+        installment_type:
+          type: string
+        installments:
+          type: integer
+    github_com_melisource_fury_mpcs-preferences-api_internal_domain_model.Phone:
+      type: object
+      properties:
+        area_code:
+          type: string
+        number:
+          type: string
+    github_com_melisource_fury_mpcs-preferences-api_internal_domain_model.Preference:
+      required:
+        - items
+      type: object
+      properties:
+        additional_info:
+          type: string
+        amounts:
+          $ref: '#/components/schemas/github_com_melisource_fury_mpcs-preferences-api_internal_domain_model.Amount'
+        auto_return:
+          type: string
+        back_urls:
+          $ref: '#/components/schemas/github_com_melisource_fury_mpcs-preferences-api_internal_domain_model.URLConfig'
+        binary_mode:
+          type: boolean
+        client_id:
+          type: string
+        collector:
+          $ref: '#/components/schemas/github_com_melisource_fury_mpcs-preferences-api_internal_domain_model.Collector'
+        collector_email:
+          type: string
+        collector_id:
+          type: integer
+        concept_amount:
+          type: number
+        concept_id:
+          type: string
+        counter_currency:
+          $ref: '#/components/schemas/github_com_melisource_fury_mpcs-preferences-api_internal_domain_model.CounterCurrency'
+        coupon_code:
+          type: string
+        coupon_labels:
+          type: array
+          items:
+            type: string
+        created_by_app:
+          type: string
+        created_source:
+          type: string
+        date_created:
+          type: string
+        date_of_expiration:
+          type: string
+        differential_pricing:
+          $ref: >-
+            #/components/schemas/github_com_melisource_fury_mpcs-preferences-api_internal_domain_model.DifferentialPricing
+        expiration_date_from:
+          type: string
+        expiration_date_to:
+          type: string
+        expires:
+          type: boolean
+        external_reference:
+          type: string
+        fee_details:
+          type: array
+          items:
+            $ref: '#/components/schemas/github_com_melisource_fury_mpcs-preferences-api_internal_domain_model.FeeDetail'
+        financing_group:
+          type: string
+        headers:
+          type: array
+          items:
+            $ref: '#/components/schemas/github_com_melisource_fury_mpcs-preferences-api_internal_domain_model.Header'
+        id:
+          type: string
+        init_point:
+          type: string
+        internal_metadata:
+          type: object
+          additionalProperties: true
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/github_com_melisource_fury_mpcs-preferences-api_internal_domain_model.Item'
+        last_updated:
+          type: string
+        live_mode:
+          type: boolean
+        marketplace:
+          type: string
+        marketplace_fee:
+          type: number
+        merchant_order_id:
+          type: number
+        metadata:
+          type: object
+          additionalProperties: true
+        modified_by_app:
+          type: string
+        modified_source:
+          type: string
+        notification_url:
+          type: string
+        operation_type:
+          type: string
+        order_id:
+          type: number
+        payer:
+          $ref: '#/components/schemas/github_com_melisource_fury_mpcs-preferences-api_internal_domain_model.Payer'
+        payment_methods:
+          $ref: '#/components/schemas/github_com_melisource_fury_mpcs-preferences-api_internal_domain_model.PaymentMethod'
+        preference_expired:
+          type: boolean
+        processing_modes:
+          type: array
+          items:
+            type: string
+        product_id:
+          type: string
+        purpose:
+          type: string
+        purpose_descriptor:
+          type: object
+        redirect_urls:
+          $ref: '#/components/schemas/github_com_melisource_fury_mpcs-preferences-api_internal_domain_model.URLConfig'
+        sandbox_init_point:
+          type: string
+        sanitized_version:
+          type: integer
+        shipments:
+          $ref: '#/components/schemas/github_com_melisource_fury_mpcs-preferences-api_internal_domain_model.Shipment'
+        site_id:
+          type: string
+        sponsor_id:
+          type: number
+        statement_descriptor:
+          type: string
+        taxes:
+          type: array
+          items:
+            $ref: '#/components/schemas/github_com_melisource_fury_mpcs-preferences-api_internal_domain_model.Tax'
+        total_amount:
+          type: number
+        tracks:
+          type: array
+          items:
+            $ref: '#/components/schemas/github_com_melisource_fury_mpcs-preferences-api_internal_domain_model.Track'
+        version:
+          type: integer
+    github_com_melisource_fury_mpcs-preferences-api_internal_domain_model.PrefError:
+      type: object
+      properties:
+        cause:
+          type: array
+          items:
+            type: string
+        error:
+          type: string
+        message:
+          type: string
+        status:
+          type: integer
+    github_com_melisource_fury_mpcs-preferences-api_internal_domain_model.ReceiverAddress:
+      type: object
+      properties:
+        apartment:
+          type: string
+        city_name:
+          type: string
+        country_name:
+          type: string
+        floor:
+          type: string
+        id:
+          type: string
+        state_name:
+          type: string
+        street_name:
+          type: string
+        street_number:
+          type: string
+        zip_code:
+          type: string
+    github_com_melisource_fury_mpcs-preferences-api_internal_domain_model.Shipment:
+      type: object
+      properties:
+        cost:
+          type: number
+        default_shipping_method:
+          type: integer
+        dimensions:
+          type: string
+        express_shipment:
+          type: boolean
+        free_methods:
+          type: array
+          items:
+            type: number
+        free_methods_types:
+          type: array
+          items:
+            type: string
+        free_shipping:
+          type: boolean
+        local_pickup:
+          type: boolean
+        mode:
+          type: string
+        receiver_address:
+          $ref: '#/components/schemas/github_com_melisource_fury_mpcs-preferences-api_internal_domain_model.ReceiverAddress'
+    github_com_melisource_fury_mpcs-preferences-api_internal_domain_model.Tax:
+      type: object
+      properties:
+        percentage:
+          type: number
+        type:
+          type: string
+        value:
+          type: string
+    github_com_melisource_fury_mpcs-preferences-api_internal_domain_model.Track:
+      type: object
+      properties:
+        type:
+          type: string
+        values:
+          type: object
+          additionalProperties:
+            type: string
+    github_com_melisource_fury_mpcs-preferences-api_internal_domain_model.URLConfig:
+      type: object
+      properties:
+        failure:
+          type: string
+        pending:
+          type: string
+        success:
+          type: string
+    github_com_mercadolibre_fury_platsec-oauth-api_cmd_internal_dtos_clients.JwksKeyResponse:
+      type: object
+      properties:
+        alg:
+          type: string
+        e:
+          type: string
+        kid:
+          type: string
+        kty:
+          type: string
+        'n':
+          type: string
+        status:
+          type: string
+        use:
+          type: string
+    github_com_mercadolibre_fury_platsec-oauth-api_cmd_internal_dtos_clients.JwksResponse:
+      type: object
+      properties:
+        keys:
+          type: array
+          items:
+            $ref: >-
+              #/components/schemas/github_com_mercadolibre_fury_platsec-oauth-api_cmd_internal_dtos_clients.JwksKeyResponse
+    github_com_mercadolibre_fury_platsec-oauth-api_cmd_internal_dtos_clients.TemporalGrantCodeDTO:
+      type: object
+      properties:
+        temporal_grant_code:
+          type: string
+    github_com_mercadolibre_fury_platsec-oauth-api_cmd_internal_dtos_input.IntrospectInputDTO:
+      type: object
+      properties:
+        token:
+          type: string
+        token_type_hint:
+          type: string
+        tokenType:
+          $ref: '#/components/schemas/github_com_mercadolibre_fury_platsec-oauth-api_cmd_internal_enums.TokenType'
+        tokenTypeHint:
+          $ref: '#/components/schemas/github_com_mercadolibre_fury_platsec-oauth-api_cmd_internal_enums.TokenTypeHint'
+    github_com_mercadolibre_fury_platsec-oauth-api_cmd_internal_dtos.InputRequestDTO:
+      type: object
+      properties:
+        client_id:
+          type: string
+          example: '{123456}'
+        client_secret:
+          type: string
+          example: '{secret from application}'
+        code:
+          type: string
+          example: '{temporal grant}'
+        flow:
+          type: string
+        grant_type:
+          type: string
+          example: client_credentials
+        long_token:
+          type: string
+          example: 'false'
+        redirect_uri:
+          type: string
+          example: https://www.test.com/path
+        refresh_token:
+          type: string
+          example: '{temporal grant}'
+        scope:
+          type: string
+          example: read,write,offline_access
+        test_token:
+          type: string
+          example: 'false'
+    github_com_mercadolibre_fury_platsec-oauth-api_cmd_internal_dtos.InputRequestRevokeDTO:
+      type: object
+      properties:
+        client_id:
+          type: string
+        client_secret:
+          type: string
+        token:
+          type: string
+        token_type_hint:
+          type: string
+    github_com_mercadolibre_fury_platsec-oauth-api_cmd_internal_dtos.InputTemporalGrantDTO:
+      type: object
+      properties:
+        client_id:
+          type: integer
+        code_challenge:
+          type: string
+        code_challenge_method:
+          type: string
+        expire_time:
+          type: integer
+        grant_type:
+          type: string
+        redirect_uri:
+          type: string
+        scopes:
+          type: array
+          items:
+            type: string
+        user_id:
+          type: integer
+        user_session_id:
+          type: string
+    github_com_mercadolibre_fury_platsec-oauth-api_cmd_internal_dtos.MetadataTokenDTO:
+      type: object
+      properties:
+        Introspect_endpoint:
+          type: string
+        authorization_endpoint:
+          type: string
+        claims_supported:
+          type: array
+          items:
+            type: string
+        code_challenge_methods_supported:
+          type: array
+          items:
+            type: string
+        grant_types_supported:
+          type: array
+          items:
+            type: string
+        issuer:
+          type: string
+        jwks_uri:
+          type: string
+        request_object_signing_alg_values_supported:
+          type: array
+          items:
+            type: string
+        response_modes_supported:
+          type: array
+          items:
+            type: string
+        response_types_supported:
+          type: array
+          items:
+            type: string
+        revocation_endpoint:
+          type: string
+        revocation_endpoint_auth_methods_supported:
+          type: array
+          items:
+            type: string
+        scopes_supported:
+          type: array
+          items:
+            type: string
+        subject_types_supported:
+          type: array
+          items:
+            type: string
+        token_endpoint:
+          type: string
+        token_endpoint_auth_methods_supported:
+          type: array
+          items:
+            type: string
+    github_com_mercadolibre_fury_platsec-oauth-api_cmd_internal_dtos.OutputResponseDTO:
+      type: object
+      properties:
+        access_token:
+          type: string
+          example: '{Access token}'
+        creation_date:
+          type: string
+        expires_in:
+          type: integer
+          example: 21600
+        id_token:
+          type: string
+          description: Output open id
+          example: '{JWT token}'
+        live_mode:
+          type: boolean
+          example: true
+        public_key:
+          type: string
+          example: '{public key}'
+        refresh_token:
+          type: string
+          example: '{temporal grant}'
+        scope:
+          type: string
+          example: read write offline_access
+        token_type:
+          type: string
+          example: Bearer
+        user_id:
+          type: integer
+          example: 123456
+      description: oauth service response
+    github_com_mercadolibre_fury_platsec-oauth-api_cmd_internal_enums.TokenType:
+      type: integer
+      enum:
+        - 0
+        - 1
+        - 2
+        - 3
+        - 4
+        - 5
+        - 6
+      x-enum-varnames:
+        - TokenTypeApplicationAndUser
+        - TokenTypeTest
+        - TokenTypeApplication
+        - TokenTypeTemporalGrant
+        - TokenTypeAdmin
+        - TokenTypeJWT
+        - TokenTypeUnknown
+    github_com_mercadolibre_fury_platsec-oauth-api_cmd_internal_enums.TokenTypeHint:
+      type: integer
+      enum:
+        - 2
+        - 3
+        - 4
+      x-enum-varnames:
+        - TokenTypeHintRefreshToken
+        - TokenTypeHintAccessToken
+        - TokenTypeHintUnknown
+    github_com_mercadolibre_fury_platsec-oauth-api_cmd_internal_internalerrors.ErrorDescription:
+      type: object
+      properties:
+        cause:
+          type: array
+          items:
+            type: object
+        error:
+          type: string
+          example: invalid_client
+        error_description:
+          type: string
+          example: invalid client_id or client_secret
+        status:
+          type: integer
+          example: 400
+      description: Service error response.
+    http.Preference:
+      required:
+        - items
+      type: object
+      properties:
+        additional_info:
+          type: string
+        amounts:
+          $ref: '#/components/schemas/github_com_melisource_fury_mpcs-preferences-api_internal_domain_model.Amount'
+        auto_return:
+          type: string
+        back_urls:
+          $ref: '#/components/schemas/github_com_melisource_fury_mpcs-preferences-api_internal_domain_model.URLConfig'
+        binary_mode:
+          type: boolean
+        client_id:
+          type: string
+        collector:
+          $ref: '#/components/schemas/github_com_melisource_fury_mpcs-preferences-api_internal_domain_model.Collector'
+        collector_email:
+          type: string
+        collector_id:
+          type: integer
+        concept_amount:
+          type: number
+        concept_id:
+          type: string
+        counter_currency:
+          $ref: '#/components/schemas/github_com_melisource_fury_mpcs-preferences-api_internal_domain_model.CounterCurrency'
+        coupon_code:
+          type: string
+        coupon_labels:
+          type: array
+          items:
+            type: string
+        date_of_expiration:
+          type: string
+        differential_pricing:
+          $ref: >-
+            #/components/schemas/github_com_melisource_fury_mpcs-preferences-api_internal_domain_model.DifferentialPricing
+        expiration_date_from:
+          type: string
+        expiration_date_to:
+          type: string
+        expires:
+          type: boolean
+        external_reference:
+          type: string
+        fee_details:
+          type: array
+          items:
+            $ref: '#/components/schemas/github_com_melisource_fury_mpcs-preferences-api_internal_domain_model.FeeDetail'
+        financing_group:
+          type: string
+        internal_metadata:
+          type: object
+          additionalProperties: true
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/github_com_melisource_fury_mpcs-preferences-api_internal_domain_model.Item'
+        live_mode:
+          type: boolean
+        marketplace:
+          type: string
+        marketplace_fee:
+          type: number
+        merchant_order_id:
+          type: number
+        metadata:
+          type: object
+          additionalProperties: true
+        notification_url:
+          type: string
+        operation_type:
+          type: string
+        order_id:
+          type: number
+        payer:
+          $ref: '#/components/schemas/github_com_melisource_fury_mpcs-preferences-api_internal_domain_model.Payer'
+        payment_methods:
+          $ref: '#/components/schemas/github_com_melisource_fury_mpcs-preferences-api_internal_domain_model.PaymentMethod'
+        processing_modes:
+          type: array
+          items:
+            type: string
+        purpose:
+          type: string
+        purpose_descriptor:
+          type: object
+        redirect_urls:
+          $ref: '#/components/schemas/github_com_melisource_fury_mpcs-preferences-api_internal_domain_model.URLConfig'
+        shipments:
+          $ref: '#/components/schemas/github_com_melisource_fury_mpcs-preferences-api_internal_domain_model.Shipment'
+        sponsor_id:
+          type: number
+        statement_descriptor:
+          type: number
+        taxes:
+          type: array
+          items:
+            $ref: '#/components/schemas/github_com_melisource_fury_mpcs-preferences-api_internal_domain_model.Tax'
+        tracks:
+          type: array
+          items:
+            $ref: '#/components/schemas/github_com_melisource_fury_mpcs-preferences-api_internal_domain_model.Track'
+        version:
+          type: integer
     Identification:
       type: object
       description: Payer identification document. Valid types vary by country.
@@ -184,6 +2088,30 @@ components:
           type: string
           description: Identification number (no formatting — digits only)
           example: '12345678909'
+    Item:
+      type: object
+      description: Item information involved in the chargeback
+      properties:
+        id:
+          type: string
+          description: Item identifier
+          example: MLA123456789
+        name:
+          type: string
+          description: Item name or title
+          example: Smartphone Samsung Galaxy S23
+        image:
+          type: string
+          description: URL to item image
+          example: https://http2.mlstatic.com/D_123456-MLA.jpg
+        categoryId:
+          type: string
+          description: Category identifier
+          example: MLA1055
+        shippingAddress:
+          type: string
+          description: Shipping address for the item
+          example: Av. Libertador 1234, CABA, Argentina
     MediationResolution:
       type: object
       description: Expected resolution options at mediation stage
@@ -213,20 +2141,57 @@ components:
           $ref: '#/components/schemas/CurrencyId'
     Pagination:
       type: object
-      description: Pagination metadata returned in list/search responses
+      required:
+        - total
+        - limit
+        - offset
+        - has_more
+      properties:
+        has_more:
+          type: boolean
+          description: Whether there are more results available
+          example: true
+        total:
+          type: integer
+          description: Total number of payments matching the criteria
+          example: 250
+        offset:
+          type: integer
+          description: Current offset
+          example: 0
+        limit:
+          type: integer
+          description: Current limit
+          example: 20
+    Paging:
+      type: object
       properties:
         total:
           type: integer
-          description: Total number of results
-          example: 42
-        limit:
-          type: integer
-          description: Results per page
-          example: 30
         offset:
           type: integer
-          description: Offset of the current page
-          example: 0
+        limit:
+          type: integer
+    PagingResponse:
+      description: Pagination information
+      type: object
+      properties:
+        offset:
+          type: string
+          description: Number of items skipped
+          example: '0'
+        limit:
+          type: string
+          description: Maximum number of items returned
+          example: '20'
+        total:
+          type: string
+          description: Total number of items available
+          example: '100'
+        total_pages:
+          type: string
+          description: Total number of pages available
+          example: '5'
     Payer:
       type: object
       description: Payment payer information
@@ -257,6 +2222,38 @@ components:
           $ref: '#/components/schemas/Phone'
         address:
           $ref: '#/components/schemas/Address'
+    PayerChargebacks:
+      type: object
+      description: Collection of chargeback cases for a specific payer/user
+      properties:
+        open:
+          type: array
+          description: List of open chargeback cases
+          items:
+            $ref: '#/components/schemas/BuyerChargebackDetail'
+        closed:
+          type: array
+          description: List of closed chargeback cases
+          items:
+            $ref: '#/components/schemas/BuyerChargebackDetail'
+    PayerUser:
+      type: object
+      description: Payer/buyer user information
+      properties:
+        id:
+          type: integer
+          format: int64
+          description: User identifier
+          example: 987654321
+        email:
+          type: string
+          format: email
+          description: User email address
+          example: buyer@example.com
+        nickname:
+          type: string
+          description: User nickname
+          example: BUYER456
     Phone:
       type: object
       properties:
@@ -266,6 +2263,65 @@ components:
         number:
           type: string
           example: '987654321'
+    PointOfSale:
+      type: object
+      properties:
+        id:
+          type: integer
+        qr:
+          $ref: '#/components/schemas/Qr'
+        status:
+          type: string
+        date_created:
+          type: string
+        date_last_updated:
+          type: string
+        uuid:
+          type: string
+        default_enabler:
+          type: string
+        compatible_id:
+          type: string
+        user_id:
+          type: integer
+        name:
+          type: string
+        fixed_amount:
+          type: string
+        category:
+          type: integer
+        store_id:
+          type: string
+        external_store_id:
+          type: string
+        url:
+          type: string
+        external_id:
+          type: string
+        brand_id:
+          type: integer
+        site:
+          type: string
+        qr_code:
+          type: string
+    PointOfSaleUserConfiguration:
+      type: object
+      properties:
+        user_id:
+          type: integer
+          description: User identifier
+        category:
+          type: integer
+          description: Category identifier
+        fixed_amount:
+          type: boolean
+          description: Whether the point of sale has fixed amount
+        status:
+          type: string
+          enum:
+            - ACTIVE
+            - DELETED
+          description: Configuration status
     POS:
       allOf:
         - $ref: '#/components/schemas/POSRequest'
@@ -315,6 +2371,220 @@ components:
           type: string
           format: uri
           description: Webhook URL for this specific POS
+    Qr:
+      type: object
+      properties:
+        image:
+          type: string
+        templateDocument:
+          type: string
+        templateImage:
+          type: string
+    QrDataResponse:
+      title: QR response, represents a transaction
+      required:
+        - qr
+        - creationDate
+      type: object
+      properties:
+        qr:
+          type: string
+        creationDate:
+          type: string
+      example:
+        qr: null
+        creationDate: 2019-10-01T00:00:00.000+0000
+    QrResponse:
+      title: Contains the QR code that represents a transaction
+      required:
+        - qr
+      type: object
+      properties:
+        qr:
+          $ref: '#/components/schemas/QrDataResponse'
+    Search:
+      type: object
+      properties:
+        paging:
+          $ref: '#/components/schemas/Paging'
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/PointOfSale'
+    SearchOrdersResponse:
+      description: Search orders response
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            oneOf:
+              - $ref: '#/components/schemas/OrderOPResponse'
+              - $ref: '#/components/schemas/OrderPointResponse'
+              - $ref: '#/components/schemas/OrderQRResponse'
+        paging:
+          $ref: '#/components/schemas/PagingResponse'
+    SellerChargebackDetail:
+      type: object
+      description: Comprehensive details of a chargeback case from the seller's perspective
+      properties:
+        id:
+          type: integer
+          format: int64
+          description: Unique identifier of the chargeback case
+          example: 12345678
+        siteId:
+          type: string
+          description: Site identifier (e.g., MLA, MLB, MLM)
+          example: MLA
+        paymentId:
+          type: integer
+          format: int64
+          description: Associated payment identifier
+          example: 98765432101
+        transactionId:
+          type: integer
+          format: int64
+          description: Transaction identifier
+          example: 11122233344
+        paymentDate:
+          type: string
+          format: date-time
+          description: Date when the payment was made
+          example: '2026-05-10T15:30:00Z'
+        amount:
+          type: number
+          format: decimal
+          description: Chargeback amount
+          example: 1250.5
+        coveragePercentage:
+          type: number
+          format: decimal
+          description: Percentage of coverage applied
+          example: 80
+        orderId:
+          type: string
+          description: Associated order identifier
+          example: '2000123456789'
+        reason:
+          type: string
+          description: Reason for the chargeback
+          example: Unrecognized transaction
+        dateCreated:
+          type: string
+          format: date-time
+          description: Date when the chargeback was created
+          example: '2026-06-01T10:00:00Z'
+        dateClosed:
+          type:
+            - string
+            - 'null'
+          format: date-time
+          description: Date when the chargeback was closed
+          example: null
+        paymentDateCreated:
+          type: string
+          format: date-time
+          description: Date when the payment was created
+          example: '2026-05-10T15:30:00Z'
+        lastModified:
+          type: string
+          format: date-time
+          description: Date of last modification
+          example: '2026-06-15T14:22:00Z'
+        marketplace:
+          type: string
+          description: Marketplace identifier
+          example: MELI
+        itemId:
+          type: string
+          description: Item identifier involved in the chargeback
+          example: MLA123456789
+        itemThumbnail:
+          type: string
+          description: URL to item thumbnail image
+          example: https://http2.mlstatic.com/D_123456-MLA.jpg
+        currencyId:
+          type: string
+          description: Currency code
+          example: ARS
+        cartType:
+          type: string
+          description: Type of cart or purchase
+          example: cart
+        marketplaceOwnerId:
+          type: integer
+          format: int64
+          description: Marketplace owner identifier
+          example: 135790246
+        cartPurchaseId:
+          type: integer
+          format: int64
+          description: Cart purchase identifier
+          example: 11111222223
+        cartPackId:
+          type: integer
+          format: int64
+          description: Cart pack identifier
+          example: 99988877766
+        status:
+          type: string
+          description: Current status of the chargeback
+          enum:
+            - open
+            - documentation_pending
+            - under_review
+            - closed
+            - resolved
+          example: documentation_pending
+        statusDetail:
+          type: string
+          description: Detailed status information
+          example: Waiting for seller documentation
+        documentationDeadline:
+          type: string
+          format: date-time
+          description: Deadline for submitting documentation
+          example: '2026-06-20T23:59:59Z'
+        collector:
+          $ref: '#/components/schemas/SellerUser'
+        payer:
+          $ref: '#/components/schemas/PayerUser'
+        labels:
+          type: array
+          description: Labels or tags associated with the chargeback
+          items:
+            type: string
+          example:
+            - requires_attention
+            - high_value
+        flow:
+          type: string
+          description: The workflow or process flow
+          example: seller_documentation_flow
+    SellerUser:
+      type: object
+      description: Seller/collector user information
+      properties:
+        id:
+          type: integer
+          format: int64
+          description: User identifier
+          example: 123456789
+        email:
+          type: string
+          format: email
+          description: User email address
+          example: seller@example.com
+        nickname:
+          type: string
+          description: User nickname
+          example: SELLER123
+        collaborators:
+          type: array
+          description: List of collaborators associated with the seller
+          items:
+            $ref: '#/components/schemas/CollaboratorDetail'
     SendMessageRequest:
       type: object
       required:
@@ -329,6 +2599,45 @@ components:
           description: File IDs to attach (upload first via attachments endpoint)
           items:
             type: string
+    SimulateOrderEventRequest:
+      description: Order request for type point
+      type: object
+      required:
+        - status
+      properties:
+        status:
+          type: string
+          enum:
+            - processed
+            - expired
+            - canceled
+            - refunded
+            - failed
+        payment_method_type:
+          type: string
+          enum:
+            - credit_card
+            - debit_card
+            - qr
+            - voucher_card
+            - cash
+        installments:
+          type: integer
+    StandardResponse:
+      type: object
+      description: Standard API response format for errors and messages
+      properties:
+        status:
+          type: string
+          enum:
+            - success
+            - error
+          description: Response status
+          example: error
+        data:
+          type: string
+          description: Response message or error description
+          example: Internal Server Error
     Store:
       allOf:
         - $ref: '#/components/schemas/StoreRequest'
@@ -343,6 +2652,23 @@ components:
             date_last_updated:
               type: string
               format: date-time
+    StoreBigQMessage:
+      type: object
+      required:
+        - id
+      properties:
+        id:
+          type: integer
+          format: int64
+          description: The store ID
+        metadata:
+          type: object
+          properties:
+            modifiedFields:
+              type: array
+              items:
+                type: string
+              description: List of modified fields
     StoredPaymentMethodResponse:
       type: object
       required:
@@ -435,6 +2761,398 @@ components:
             longitude:
               type: number
               format: float
+    TipSellerConfiguration:
+      type: object
+      properties:
+        hasEverEnabledTips:
+          type: boolean
+          description: Indicates if the seller has ever configured tips (active or inactive)
+    TransactionOPRequest:
+      description: Transaction request for type=online
+      type: object
+      properties:
+        payments:
+          type: array
+          minItems: 1
+          maxItems: 2
+          items:
+            type: object
+            minProperties: 1
+            required:
+              - amount
+              - payment_method
+            properties:
+              amount:
+                type: string
+                minLength: 1
+                maxLength: 18
+                pattern: ^\d+(\.\d{1,2})?$
+                example: '123.45'
+              expiration_time:
+                type: string
+                format: duration
+                pattern: ^P(?:\d+Y)?(?:\d+M)?(?:\d+D)?(?:T(?:\d+H)?(?:\d+M)?(?:\d+S)?)?$
+                example: P3Y6M4DT12H30M5S
+                description: Duration in ISO 8601 format (e.g. 'P1D' for 1 day, 'PT1H' for 1 hour).
+              payment_method:
+                type: object
+                minProperties: 1
+                required:
+                  - id
+                properties:
+                  id:
+                    type: string
+                    enum:
+                      - abitab
+                      - account_money
+                      - amex
+                      - argencard
+                      - banesco
+                      - bolbradesco
+                      - boleto
+                      - cabal
+                      - cencosud
+                      - clabe
+                      - cmr
+                      - codensa
+                      - consumer_credits
+                      - creditel
+                      - debcabal
+                      - debelo
+                      - debin_transfer
+                      - debmaster
+                      - debvisa
+                      - diners
+                      - edenred
+                      - efecty
+                      - elo
+                      - hipercard
+                      - interop_transfer
+                      - kushki
+                      - lider
+                      - maestro
+                      - master
+                      - mercantil
+                      - naranja
+                      - oca
+                      - oxxo
+                      - pagoefectivo_atm
+                      - pagofacil
+                      - paycash
+                      - pix
+                      - pse
+                      - rapipago
+                      - redcompra
+                      - redpagos
+                      - serfin
+                      - sivale_despensa
+                      - sivale_restaurant
+                      - sucredito
+                      - visa
+                  type:
+                    type: string
+                  token:
+                    type: string
+                    minLength: 32
+                    maxLength: 32
+                  installments:
+                    type: integer
+                    minimum: 1
+                  statement_descriptor:
+                    type: string
+                    minLength: 1
+                    maxLength: 50
+                  financial_institution:
+                    type: string
+                    description: Financial institution code. Required for PSE bank_transfer payments in MCO.
+                    example: '1007'
+    TransactionOPResponse:
+      description: Transaction response for type=online
+      type: object
+      properties:
+        payments:
+          type: array
+          items:
+            type: object
+            properties:
+              id:
+                type: string
+                format: ulid
+              reference_id:
+                type: string
+              status:
+                type: string
+              status_detail:
+                type: string
+              amount:
+                type: string
+              date_of_expiration:
+                type: string
+                format: date-time
+              payment_method:
+                type: object
+                properties:
+                  id:
+                    type: string
+                    enum:
+                      - abitab
+                      - account_money
+                      - amex
+                      - argencard
+                      - banesco
+                      - bolbradesco
+                      - boleto
+                      - cabal
+                      - cencosud
+                      - clabe
+                      - cmr
+                      - codensa
+                      - consumer_credits
+                      - creditel
+                      - debcabal
+                      - debelo
+                      - debin_transfer
+                      - debmaster
+                      - debvisa
+                      - diners
+                      - edenred
+                      - efecty
+                      - elo
+                      - hipercard
+                      - interop_transfer
+                      - kushki
+                      - lider
+                      - maestro
+                      - master
+                      - mercantil
+                      - naranja
+                      - oca
+                      - oxxo
+                      - pagoefectivo_atm
+                      - pagofacil
+                      - paycash
+                      - pix
+                      - pse
+                      - rapipago
+                      - redcompra
+                      - redpagos
+                      - serfin
+                      - sivale_despensa
+                      - sivale_restaurant
+                      - smart_transfer
+                      - sucredito
+                      - visa
+                  type:
+                    type: string
+                  installments:
+                    type: integer
+                  statement_descriptor:
+                    type: string
+                  open_finance_account_id:
+                    type: string
+                    x-visibility: wip
+                    description: >-
+                      Open Finance account id. Returned only for `smart_transfer` payments — identifies the account that
+                      originated the transfer.
+    TransactionPointRequest:
+      description: Transaction request for type=point
+      type: object
+      properties:
+        transactions:
+          type: object
+          minProperties: 1
+          properties:
+            payments:
+              type: array
+              minItems: 1
+              maxItems: 2
+              items:
+                type: object
+                minProperties: 1
+                required:
+                  - amount
+                  - tip_amount
+                properties:
+                  amount:
+                    type: string
+                    minLength: 1
+                    maxLength: 18
+                    pattern: ^\d+(\.\d{1,2})?$
+                    example: '123.45'
+                  tip_amount:
+                    type: string
+                    minLength: 1
+                    maxLength: 18
+                    pattern: ^\d+(\.\d{1,2})?$
+                    example: '123.45'
+            cash_outs:
+              type: array
+              minItems: 1
+              items:
+                type: object
+                minProperties: 1
+                required:
+                  - amount
+                  - external_cashier_id
+                  - fixed_amount
+                  - agency_type
+                  - bank_service_code
+                properties:
+                  amount:
+                    type: string
+                    minLength: 1
+                    maxLength: 18
+                    pattern: ^\d+(\.\d{1,2})?$
+                    example: '123.45'
+                  additional_info:
+                    type: object
+                    properties:
+                      external_cashier_id:
+                        type: integer
+                      fixed_amount:
+                        type: boolean
+                      agency_type:
+                        type: string
+                        enum:
+                          - AGTEC
+                          - AGTOT
+                          - AGPSS
+                      bank_service_code:
+                        type: string
+    UnidentifiedPointOfSale:
+      type: object
+      properties:
+        compatible_id:
+          type: string
+        user_id:
+          type: integer
+        name:
+          type: string
+        fixed_amount:
+          type: boolean
+        category:
+          type: integer
+        store_id:
+          type: string
+        external_store_id:
+          type: string
+        url:
+          type: string
+        external_id:
+          type: string
+        brand_id:
+          type: integer
+        site:
+          type: string
+        qr_code:
+          type: string
+    UpdatePaymentTransaction:
+      description: Objects payment to update a transaction
+      type: object
+      properties:
+        payment_method:
+          type: object
+          minProperties: 1
+          properties:
+            id:
+              type: string
+              enum:
+                - abitab
+                - account_money
+                - amex
+                - argencard
+                - banesco
+                - bolbradesco
+                - boleto
+                - cabal
+                - cencosud
+                - clabe
+                - cmr
+                - codensa
+                - consumer_credits
+                - creditel
+                - debcabal
+                - debelo
+                - debin_transfer
+                - debmaster
+                - debvisa
+                - diners
+                - edenred
+                - efecty
+                - elo
+                - hipercard
+                - interop_transfer
+                - kushki
+                - lider
+                - maestro
+                - master
+                - mercantil
+                - naranja
+                - oca
+                - oxxo
+                - pagoefectivo_atm
+                - pagofacil
+                - paycash
+                - pix
+                - pse
+                - rapipago
+                - redcompra
+                - redpagos
+                - serfin
+                - sivale_despensa
+                - sivale_restaurant
+                - sucredito
+                - visa
+            type:
+              type: string
+            token:
+              type: string
+              minLength: 32
+              maxLength: 32
+            installments:
+              type: integer
+              minimum: 1
+            statement_descriptor:
+              type: string
+              minLength: 1
+              maxLength: 50
+            default_payment_due_date:
+              type: string
+              format: duration
+              pattern: ^P(?:\d+Y)?(?:\d+M)?(?:\d+D)?(?:T(?:\d+H)?(?:\d+M)?(?:\d+S)?)?$
+              example: P1D
+              description: Default ISO 8601 expiration duration applied to payments without an individual expiration_time.
+    UserFeedMsg:
+      type: object
+      required:
+        - id
+        - metadata
+      properties:
+        id:
+          type: string
+          description: The user ID
+        metadata:
+          type: object
+          required:
+            - modifiedTables
+            - modifiedFields
+          properties:
+            modifiedTables:
+              type: array
+              items:
+                type: string
+                enum:
+                  - USER_COMPANY
+              description: List of modified tables
+            modifiedFields:
+              type: array
+              items:
+                type: string
+                enum:
+                  - identification.number
+                  - identification.type
+                  - company.name
+              description: List of modified fields
     ValidationResponse:
       type: object
       required:

@@ -1366,159 +1366,232 @@ paths:
           description: Conflict — order cannot be refunded in its current status
   /checkout/preferences:
     post:
-      operationId: createPreference
-      summary: Create a preference
-      description: |-
-        Creates a Checkout Pro preference. The response contains `init_point` (production) and 
-        **Webhook events triggered:** payment, merchant_order
       tags:
-        - Preferences
-      security:
-        - bearerAuth: []
+        - Preference
+      summary: Create a Preference
+      parameters:
+        - name: callerID
+          in: query
+          description: Not necessary if Access Token is passed
+          required: false
+          style: form
+          explode: true
+          schema:
+            type: integer
+        - name: AccessToken
+          in: query
+          description: Not necessary if Caller ID is passed
+          required: false
+          style: form
+          explode: true
+          schema:
+            type: string
       requestBody:
-        required: true
+        description: Preference
         content:
-          application/json:
+          '*/*':
             schema:
-              $ref: '#/components/schemas/PreferenceRequest'
-            examples:
-              simple:
-                summary: Simple one-item preference
-                value:
-                  items:
-                    - title: Premium Plan
-                      quantity: 1
-                      unit_price: 99.9
-                  payer:
-                    email: customer@example.com
-                  back_urls:
-                    success: https://mystore.com/success
-                    failure: https://mystore.com/failure
-                    pending: https://mystore.com/pending
-                  auto_return: approved
+              $ref: '#/components/schemas/http.Preference'
+        required: true
       responses:
-        '200':
-          description: Preference created
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Preference'
         '201':
-          description: Preference created
+          description: Created
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Preference'
+                $ref: '#/components/schemas/http.Preference'
         '400':
-          $ref: '#/components/responses/BadRequest'
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/github_com_melisource_fury_mpcs-preferences-api_internal_domain_model.PrefError'
         '401':
-          $ref: '#/components/responses/Unauthorized'
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/github_com_melisource_fury_mpcs-preferences-api_internal_domain_model.PrefError'
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/github_com_melisource_fury_mpcs-preferences-api_internal_domain_model.PrefError'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/github_com_melisource_fury_mpcs-preferences-api_internal_domain_model.PrefError'
+      x-codegen-request-body-name: Pref
   /checkout/preferences/{id}:
     get:
-      operationId: getPreference
-      summary: Get preference by ID
       tags:
-        - Preferences
-      security:
-        - bearerAuth: []
+        - Preference
+      summary: Get a Preference
+      description: View all payment information for a product or service with the desired preference ID.
       parameters:
         - name: id
           in: path
+          description: Preference ID
           required: true
+          style: simple
+          explode: false
+          schema:
+            type: string
+        - name: callerID
+          in: query
+          description: Not necessary if Access Token is passed
+          required: false
+          style: form
+          explode: true
+          schema:
+            type: integer
+        - name: AccessToken
+          in: query
+          description: Not necessary if Caller ID is passed
+          required: false
+          style: form
+          explode: true
           schema:
             type: string
       responses:
         '200':
-          description: Preference found
+          description: OK
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Preference'
+                $ref: '#/components/schemas/github_com_melisource_fury_mpcs-preferences-api_internal_domain_model.Preference'
         '400':
-          $ref: '#/components/responses/BadRequest'
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/github_com_melisource_fury_mpcs-preferences-api_internal_domain_model.PrefError'
         '404':
-          $ref: '#/components/responses/NotFound'
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/github_com_melisource_fury_mpcs-preferences-api_internal_domain_model.PrefError'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/github_com_melisource_fury_mpcs-preferences-api_internal_domain_model.PrefError'
     put:
-      operationId: updatePreference
-      summary: Update a preference
       tags:
-        - Preferences
-      security:
-        - bearerAuth: []
+        - Preference
+      summary: Update a Preference
+      description: >-
+        Update the details of a payment preference. Enter the preference ID and submit the information you wish to
+        update.
       parameters:
         - name: id
           in: path
+          description: Preference ID
           required: true
+          style: simple
+          explode: false
+          schema:
+            type: integer
+        - name: callerID
+          in: query
+          description: Not necessary if Access Token is passed
+          required: false
+          style: form
+          explode: true
+          schema:
+            type: integer
+        - name: AccessToken
+          in: query
+          description: Not necessary if Caller ID is passed
+          required: false
+          style: form
+          explode: true
           schema:
             type: string
       requestBody:
-        required: true
+        description: Preference
         content:
-          application/json:
+          '*/*':
             schema:
-              $ref: '#/components/schemas/PreferenceRequest'
+              $ref: '#/components/schemas/http.Preference'
+        required: true
       responses:
         '200':
-          description: Preference updated
+          description: OK
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Preference'
+                $ref: '#/components/schemas/http.Preference'
         '400':
-          $ref: '#/components/responses/BadRequest'
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/github_com_melisource_fury_mpcs-preferences-api_internal_domain_model.PrefError'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/github_com_melisource_fury_mpcs-preferences-api_internal_domain_model.PrefError'
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/github_com_melisource_fury_mpcs-preferences-api_internal_domain_model.PrefError'
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/github_com_melisource_fury_mpcs-preferences-api_internal_domain_model.PrefError'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/github_com_melisource_fury_mpcs-preferences-api_internal_domain_model.PrefError'
+      x-codegen-request-body-name: Pref
   /checkout/preferences/search:
     get:
-      operationId: searchPreferences
-      summary: Search preferences
       tags:
-        - Preferences
-      security:
-        - bearerAuth: []
+        - Preference
+      summary: Search Preferences
+      description: Returns a list of preferences based on a search query.
       parameters:
-        - name: external_reference
-          in: query
+        - in: query
+          name: query
+          description: Query string to filter preferences.
+          required: false
           schema:
             type: string
-        - name: marketplace
-          in: query
-          schema:
-            type: string
-        - name: site_id
-          in: query
-          schema:
-            type: string
-        - name: sponsor_id
-          in: query
-          schema:
-            type: integer
-        - name: limit
-          in: query
-          schema:
-            type: integer
-            default: 30
-        - name: offset
-          in: query
-          schema:
-            type: integer
-            default: 0
       responses:
         '200':
-          description: Search results
+          description: A list of preferences matching the search query.
           content:
             application/json:
               schema:
-                type: object
-                properties:
-                  elements:
-                    type: array
-                    items:
-                      $ref: '#/components/schemas/Preference'
-                  paging:
-                    $ref: '#/components/schemas/Pagination'
-        '400':
-          $ref: '#/components/responses/BadRequest'
-        '401':
-          $ref: '#/components/responses/Unauthorized'
+                type: array
+                items:
+                  type: object
+    options:
+      tags:
+        - Preference
+      summary: Get the options
+      description: This will show an example of the responses of all the endpoints
+      responses:
+        '200':
+          description: This will get an example of the GET, CREATE and UPDATE methods
+          content:
+            application/json:
+              schema:
+                type: string
   /v1/customers:
     post:
       operationId: createCustomer
@@ -10219,6 +10292,542 @@ components:
             $ref: '#/components/schemas/WebhookEvent'
         pagination:
           $ref: '#/components/schemas/Pagination'
+    github_com_melisource_fury_mpcs-preferences-api_internal_domain_model.Address:
+      type: object
+      properties:
+        city:
+          type: string
+        federal_unit:
+          type: string
+        neighborhood:
+          type: string
+        street_name:
+          type: string
+        street_number:
+          type: string
+        zip_code:
+          type: string
+    github_com_melisource_fury_mpcs-preferences-api_internal_domain_model.Amount:
+      type: object
+      properties:
+        collector:
+          $ref: '#/components/schemas/github_com_melisource_fury_mpcs-preferences-api_internal_domain_model.AmountValues'
+        payer:
+          $ref: '#/components/schemas/github_com_melisource_fury_mpcs-preferences-api_internal_domain_model.AmountValues'
+    github_com_melisource_fury_mpcs-preferences-api_internal_domain_model.AmountValues:
+      type: object
+      properties:
+        currency_id:
+          type: string
+        transaction:
+          type: number
+    github_com_melisource_fury_mpcs-preferences-api_internal_domain_model.Collector:
+      type: object
+      properties:
+        operator_id:
+          type: number
+          description: Can be null
+        tags:
+          type: array
+          items:
+            type: string
+    github_com_melisource_fury_mpcs-preferences-api_internal_domain_model.CounterCurrency:
+      type: object
+      properties:
+        currency_id:
+          type: string
+    github_com_melisource_fury_mpcs-preferences-api_internal_domain_model.DeductionsByInstallment:
+      type: object
+      properties:
+        installments:
+          type: array
+          items:
+            type: integer
+    github_com_melisource_fury_mpcs-preferences-api_internal_domain_model.DifferentialPricing:
+      type: object
+      properties:
+        deductions_by_installment:
+          type: array
+          items:
+            $ref: >-
+              #/components/schemas/github_com_melisource_fury_mpcs-preferences-api_internal_domain_model.DeductionsByInstallment
+        id:
+          type: integer
+    github_com_melisource_fury_mpcs-preferences-api_internal_domain_model.Dimensions:
+      type: object
+      properties:
+        height:
+          type: number
+        length:
+          type: number
+        unit:
+          type: string
+        weight:
+          type: number
+        width:
+          type: number
+    github_com_melisource_fury_mpcs-preferences-api_internal_domain_model.FeeDetail:
+      type: object
+      properties:
+        amount:
+          type: number
+        fee_payer:
+          type: string
+        type:
+          type: string
+    github_com_melisource_fury_mpcs-preferences-api_internal_domain_model.FiscalData:
+      type: object
+      properties:
+        dangerous_material_id:
+          type: string
+        measurement_unit:
+          type: string
+        package_id:
+          type: string
+        sat:
+          type: string
+        sat_measurement_id:
+          type: string
+    github_com_melisource_fury_mpcs-preferences-api_internal_domain_model.Header:
+      type: object
+      properties:
+        name:
+          type: string
+        value:
+          type: string
+    github_com_melisource_fury_mpcs-preferences-api_internal_domain_model.Identification:
+      type: object
+      properties:
+        number:
+          type: string
+        type:
+          type: string
+    github_com_melisource_fury_mpcs-preferences-api_internal_domain_model.Item:
+      type: object
+      properties:
+        catalog_product_id:
+          type: string
+        category_descriptor:
+          type: object
+        category_id:
+          type: string
+        currency_id:
+          type: string
+        description:
+          type: string
+        dimensions:
+          $ref: '#/components/schemas/github_com_melisource_fury_mpcs-preferences-api_internal_domain_model.Dimensions'
+        fiscal_data:
+          $ref: '#/components/schemas/github_com_melisource_fury_mpcs-preferences-api_internal_domain_model.FiscalData'
+        id:
+          type: string
+        picture_id:
+          type: string
+        picture_url:
+          type: string
+        quantity:
+          type: number
+        title:
+          type: string
+        unit_price:
+          type: number
+        warranty:
+          type: boolean
+    github_com_melisource_fury_mpcs-preferences-api_internal_domain_model.Payer:
+      type: object
+      properties:
+        address:
+          $ref: '#/components/schemas/github_com_melisource_fury_mpcs-preferences-api_internal_domain_model.Address'
+        authentication_type:
+          type: string
+        date_created:
+          type: string
+        email:
+          type: string
+        guest_payer_id:
+          type: string
+        id:
+          type: number
+        identification:
+          $ref: '#/components/schemas/github_com_melisource_fury_mpcs-preferences-api_internal_domain_model.Identification'
+        is_first_purchase_online:
+          type: boolean
+        is_prime_user:
+          type: boolean
+        last_purchase:
+          type: string
+        name:
+          type: string
+        phone:
+          $ref: '#/components/schemas/github_com_melisource_fury_mpcs-preferences-api_internal_domain_model.Phone'
+        registered_payer_id:
+          type: string
+        surname:
+          type: string
+    github_com_melisource_fury_mpcs-preferences-api_internal_domain_model.PaymentMethod:
+      type: object
+      properties:
+        default_card_id:
+          type: string
+        default_installments:
+          type: integer
+        default_payment_method_id:
+          type: string
+        excluded_payment_methods:
+          type: array
+          items:
+            type: string
+        excluded_payment_types:
+          type: array
+          items:
+            type: string
+        installment_type:
+          type: string
+        installments:
+          type: integer
+    github_com_melisource_fury_mpcs-preferences-api_internal_domain_model.Phone:
+      type: object
+      properties:
+        area_code:
+          type: string
+        number:
+          type: string
+    github_com_melisource_fury_mpcs-preferences-api_internal_domain_model.PrefError:
+      type: object
+      properties:
+        cause:
+          type: array
+          items:
+            type: string
+        error:
+          type: string
+        message:
+          type: string
+        status:
+          type: integer
+    github_com_melisource_fury_mpcs-preferences-api_internal_domain_model.Preference:
+      required:
+        - items
+      type: object
+      properties:
+        additional_info:
+          type: string
+        amounts:
+          $ref: '#/components/schemas/github_com_melisource_fury_mpcs-preferences-api_internal_domain_model.Amount'
+        auto_return:
+          type: string
+        back_urls:
+          $ref: '#/components/schemas/github_com_melisource_fury_mpcs-preferences-api_internal_domain_model.URLConfig'
+        binary_mode:
+          type: boolean
+        client_id:
+          type: string
+        collector:
+          $ref: '#/components/schemas/github_com_melisource_fury_mpcs-preferences-api_internal_domain_model.Collector'
+        collector_email:
+          type: string
+        collector_id:
+          type: integer
+        concept_amount:
+          type: number
+        concept_id:
+          type: string
+        counter_currency:
+          $ref: '#/components/schemas/github_com_melisource_fury_mpcs-preferences-api_internal_domain_model.CounterCurrency'
+        coupon_code:
+          type: string
+        coupon_labels:
+          type: array
+          items:
+            type: string
+        created_by_app:
+          type: string
+        created_source:
+          type: string
+        date_created:
+          type: string
+        date_of_expiration:
+          type: string
+        differential_pricing:
+          $ref: >-
+            #/components/schemas/github_com_melisource_fury_mpcs-preferences-api_internal_domain_model.DifferentialPricing
+        expiration_date_from:
+          type: string
+        expiration_date_to:
+          type: string
+        expires:
+          type: boolean
+        external_reference:
+          type: string
+        fee_details:
+          type: array
+          items:
+            $ref: '#/components/schemas/github_com_melisource_fury_mpcs-preferences-api_internal_domain_model.FeeDetail'
+        financing_group:
+          type: string
+        headers:
+          type: array
+          items:
+            $ref: '#/components/schemas/github_com_melisource_fury_mpcs-preferences-api_internal_domain_model.Header'
+        id:
+          type: string
+        init_point:
+          type: string
+        internal_metadata:
+          type: object
+          additionalProperties: true
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/github_com_melisource_fury_mpcs-preferences-api_internal_domain_model.Item'
+        last_updated:
+          type: string
+        live_mode:
+          type: boolean
+        marketplace:
+          type: string
+        marketplace_fee:
+          type: number
+        merchant_order_id:
+          type: number
+        metadata:
+          type: object
+          additionalProperties: true
+        modified_by_app:
+          type: string
+        modified_source:
+          type: string
+        notification_url:
+          type: string
+        operation_type:
+          type: string
+        order_id:
+          type: number
+        payer:
+          $ref: '#/components/schemas/github_com_melisource_fury_mpcs-preferences-api_internal_domain_model.Payer'
+        payment_methods:
+          $ref: '#/components/schemas/github_com_melisource_fury_mpcs-preferences-api_internal_domain_model.PaymentMethod'
+        preference_expired:
+          type: boolean
+        processing_modes:
+          type: array
+          items:
+            type: string
+        product_id:
+          type: string
+        purpose:
+          type: string
+        purpose_descriptor:
+          type: object
+        redirect_urls:
+          $ref: '#/components/schemas/github_com_melisource_fury_mpcs-preferences-api_internal_domain_model.URLConfig'
+        sandbox_init_point:
+          type: string
+        sanitized_version:
+          type: integer
+        shipments:
+          $ref: '#/components/schemas/github_com_melisource_fury_mpcs-preferences-api_internal_domain_model.Shipment'
+        site_id:
+          type: string
+        sponsor_id:
+          type: number
+        statement_descriptor:
+          type: string
+        taxes:
+          type: array
+          items:
+            $ref: '#/components/schemas/github_com_melisource_fury_mpcs-preferences-api_internal_domain_model.Tax'
+        total_amount:
+          type: number
+        tracks:
+          type: array
+          items:
+            $ref: '#/components/schemas/github_com_melisource_fury_mpcs-preferences-api_internal_domain_model.Track'
+        version:
+          type: integer
+    github_com_melisource_fury_mpcs-preferences-api_internal_domain_model.ReceiverAddress:
+      type: object
+      properties:
+        apartment:
+          type: string
+        city_name:
+          type: string
+        country_name:
+          type: string
+        floor:
+          type: string
+        id:
+          type: string
+        state_name:
+          type: string
+        street_name:
+          type: string
+        street_number:
+          type: string
+        zip_code:
+          type: string
+    github_com_melisource_fury_mpcs-preferences-api_internal_domain_model.Shipment:
+      type: object
+      properties:
+        cost:
+          type: number
+        default_shipping_method:
+          type: integer
+        dimensions:
+          type: string
+        express_shipment:
+          type: boolean
+        free_methods:
+          type: array
+          items:
+            type: number
+        free_methods_types:
+          type: array
+          items:
+            type: string
+        free_shipping:
+          type: boolean
+        local_pickup:
+          type: boolean
+        mode:
+          type: string
+        receiver_address:
+          $ref: '#/components/schemas/github_com_melisource_fury_mpcs-preferences-api_internal_domain_model.ReceiverAddress'
+    github_com_melisource_fury_mpcs-preferences-api_internal_domain_model.Tax:
+      type: object
+      properties:
+        percentage:
+          type: number
+        type:
+          type: string
+        value:
+          type: string
+    github_com_melisource_fury_mpcs-preferences-api_internal_domain_model.Track:
+      type: object
+      properties:
+        type:
+          type: string
+        values:
+          type: object
+          additionalProperties:
+            type: string
+    github_com_melisource_fury_mpcs-preferences-api_internal_domain_model.URLConfig:
+      type: object
+      properties:
+        failure:
+          type: string
+        pending:
+          type: string
+        success:
+          type: string
+    http.Preference:
+      required:
+        - items
+      type: object
+      properties:
+        additional_info:
+          type: string
+        amounts:
+          $ref: '#/components/schemas/github_com_melisource_fury_mpcs-preferences-api_internal_domain_model.Amount'
+        auto_return:
+          type: string
+        back_urls:
+          $ref: '#/components/schemas/github_com_melisource_fury_mpcs-preferences-api_internal_domain_model.URLConfig'
+        binary_mode:
+          type: boolean
+        client_id:
+          type: string
+        collector:
+          $ref: '#/components/schemas/github_com_melisource_fury_mpcs-preferences-api_internal_domain_model.Collector'
+        collector_email:
+          type: string
+        collector_id:
+          type: integer
+        concept_amount:
+          type: number
+        concept_id:
+          type: string
+        counter_currency:
+          $ref: '#/components/schemas/github_com_melisource_fury_mpcs-preferences-api_internal_domain_model.CounterCurrency'
+        coupon_code:
+          type: string
+        coupon_labels:
+          type: array
+          items:
+            type: string
+        date_of_expiration:
+          type: string
+        differential_pricing:
+          $ref: >-
+            #/components/schemas/github_com_melisource_fury_mpcs-preferences-api_internal_domain_model.DifferentialPricing
+        expiration_date_from:
+          type: string
+        expiration_date_to:
+          type: string
+        expires:
+          type: boolean
+        external_reference:
+          type: string
+        fee_details:
+          type: array
+          items:
+            $ref: '#/components/schemas/github_com_melisource_fury_mpcs-preferences-api_internal_domain_model.FeeDetail'
+        financing_group:
+          type: string
+        internal_metadata:
+          type: object
+          additionalProperties: true
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/github_com_melisource_fury_mpcs-preferences-api_internal_domain_model.Item'
+        live_mode:
+          type: boolean
+        marketplace:
+          type: string
+        marketplace_fee:
+          type: number
+        merchant_order_id:
+          type: number
+        metadata:
+          type: object
+          additionalProperties: true
+        notification_url:
+          type: string
+        operation_type:
+          type: string
+        order_id:
+          type: number
+        payer:
+          $ref: '#/components/schemas/github_com_melisource_fury_mpcs-preferences-api_internal_domain_model.Payer'
+        payment_methods:
+          $ref: '#/components/schemas/github_com_melisource_fury_mpcs-preferences-api_internal_domain_model.PaymentMethod'
+        processing_modes:
+          type: array
+          items:
+            type: string
+        purpose:
+          type: string
+        purpose_descriptor:
+          type: object
+        redirect_urls:
+          $ref: '#/components/schemas/github_com_melisource_fury_mpcs-preferences-api_internal_domain_model.URLConfig'
+        shipments:
+          $ref: '#/components/schemas/github_com_melisource_fury_mpcs-preferences-api_internal_domain_model.Shipment'
+        sponsor_id:
+          type: number
+        statement_descriptor:
+          type: number
+        taxes:
+          type: array
+          items:
+            $ref: '#/components/schemas/github_com_melisource_fury_mpcs-preferences-api_internal_domain_model.Tax'
+        tracks:
+          type: array
+          items:
+            $ref: '#/components/schemas/github_com_melisource_fury_mpcs-preferences-api_internal_domain_model.Track'
+        version:
+          type: integer
   x-mp-mlm-payment-methods:
     credit_cards:
       - visa

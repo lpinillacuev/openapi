@@ -81,7 +81,42 @@ jobs:
             echo "Derived specs pushed to main."
           fi
 
-      # ── Step 5: Push specs to external product API ────────────────────────
+      # ── Step 5: Finalize KVS decisions post-merge ────────────────────────
+      # Compares KVS pending paths with final spec3.yaml to determine:
+      # - Paths in spec3.yaml → KVS whitelist (were approved)
+      # - Paths NOT in spec3.yaml → KVS blacklist (were rejected)
+      # Clears KVS pending for each changed app.
+      - name: Sync KVS decisions from merged spec
+        continue-on-error: true
+        env:
+          BOT_URL: ${{ secrets.BOT_SYNC_SPECS_URL || 'https://beta-bot-sync-specs.melioffice.com' }}
+        run: |
+          COMMIT_SHA="${{ github.sha }}"
+
+          # Get apps that have pending paths from the changed spec
+          # For each app registered in apps.yaml, call sync-from-merge
+          python3 - <<'EOF'
+          import yaml, subprocess, json
+
+          with open('apps.yaml') as f:
+              apps = yaml.safe_load(f).get('apps', [])
+
+          for app in apps:
+              fury_app = app['fury_app']
+              print(f"Syncing KVS for {fury_app}...")
+              # Call bot to sync KVS decisions
+              import subprocess
+              result = subprocess.run([
+                  'curl', '-s', '-X', 'POST',
+                  f'${{ env.BOT_URL }}/openapi/policy/{fury_app}/sync-from-merge',
+                  '-H', 'Content-Type: application/json',
+                  '-H', 'X-github-token: ${{ secrets.GH_PAT }}',
+                  '-d', json.dumps({'commitSha': '${{ github.sha }}'})
+              ], capture_output=True, text=True, timeout=30)
+              print(result.stdout or 'no response')
+          EOF
+
+      # ── Step 6: Push specs to external product API ────────────────────────
       - name: Push to external product API
         continue-on-error: true
         env:

@@ -69,8 +69,9 @@ def jdump(obj) -> str:
 # ── Diff de parámetros ────────────────────────────────────────────────────────
 
 def diff_params(old_params: list, new_params: list) -> list[str]:
-    old_by = {p["name"]: p for p in (old_params or [])}
-    new_by = {p["name"]: p for p in (new_params or [])}
+    # Skip $ref parameters — they don't have 'name' directly
+    old_by = {p["name"]: p for p in (old_params or []) if "name" in p}
+    new_by = {p["name"]: p for p in (new_params or []) if "name" in p}
     lines = []
 
     for name in sorted(set(new_by) - set(old_by)):

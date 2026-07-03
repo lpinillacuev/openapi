@@ -74,23 +74,26 @@ jobs:
             --openapi-path openapi
         working-directory: ${{ github.workspace }}
 
-      # ── Step 2b: Fallback — notify bot-sync if direct call failed ───────────
-      # Bot-sync runs inside ML's network and can always reach spec-agent-generator.
-      # This step is a best-effort secondary trigger.
-      - name: Trigger SDK generation — via bot-sync (fallback)
-        if: steps.changed.outputs.has_changes == 'true' && steps.sdk_direct.outcome == 'failure'
+      # ── Step 2b: Notify bot-sync with the FINAL merged spec ─────────────────
+      # Bot-sync reads spec3.yaml at the merge commit SHA (final spec after review)
+      # and calls spec-agent-generator via melisystems.com (internal ML network).
+      # This ensures the SDK is generated from the spec the reviewer approved,
+      # not from the spec when the PR was created.
+      - name: Trigger SDK generation — via bot-sync with merged spec
+        if: steps.changed.outputs.has_changes == 'true'
         continue-on-error: true
         env:
           BOT_URL: ${{ secrets.BOT_SYNC_SPECS_URL || 'https://beta-bot-sync-specs.melioffice.com' }}
           CHANGED_PRODUCTS: ${{ steps.changed.outputs.products }}
         run: |
-          echo "Direct call failed — trying bot-sync fallback"
+          COMMIT_SHA="${{ github.sha }}"
+          echo "Notifying bot-sync with merge commit: $COMMIT_SHA"
           curl -s -o /tmp/sdk_response.json -w "HTTP: %{http_code}\n" \
-            -X POST "${BOT_URL}/openapi/sdk/trigger" \
+            -X POST "${BOT_URL}/openapi/sdk/on-merge" \
             -H "Content-Type: application/json" \
             -H "X-github-token: ${{ secrets.GH_PAT }}" \
             --max-time 300 \
-            -d "{\"apps\": \"$CHANGED_PRODUCTS\"}" || true
+            -d "{\"commitSha\": \"$COMMIT_SHA\", \"apps\": \"$CHANGED_PRODUCTS\"}" || true
           cat /tmp/sdk_response.json || true
 
       - name: Summary

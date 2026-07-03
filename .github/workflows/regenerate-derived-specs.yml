@@ -1,8 +1,13 @@
 name: Regenerate derived specs after merge
 
 # Triggered when spec3.yaml merges to main.
-# Regenerates by-site and by-product specs from the updated spec3.yaml.
-# These derived files are NOT in the PR — they are generated here post-merge.
+# Generates ALL derived files from the updated spec3.yaml:
+#   1. spec3.json           — JSON twin of spec3.yaml
+#   2. spec3.sdk.yaml/json  — SDK variant with x-mp-sdk-coverage
+#   3. by-site/*/spec3.yaml — country-scoped specs (via bundle.py)
+#   4. by-product/*/spec3.yaml — product-scoped specs (via bundle.py)
+#   5. spec3.reference.json — DevSite api-json per product (via build_reference.py)
+#   6. push_to_api.py       — sends updated specs to external product API
 
 on:
   push:
@@ -13,7 +18,7 @@ on:
 
 jobs:
   regenerate:
-    name: spec3.yaml → by-site + by-product
+    name: spec3.yaml → all derived specs
     runs-on: ubuntu-latest
     permissions:
       contents: write
@@ -22,7 +27,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5
         with:
-          fetch-depth: 1
+          fetch-depth: 2
           token: ${{ secrets.GH_PAT || github.token }}
 
       - name: Setup Python
@@ -39,17 +44,53 @@ jobs:
           git config user.name  "specbot"
           git config user.email "specbot@mercadolibre.com"
 
+      # ── Step 1: spec3.json + spec3.sdk.yaml/json ──────────────────────────
+      - name: Generate spec3.json and SDK variants
+        run: |
+          python3 -c "
+          import yaml, json, pathlib
+
+          # spec3.json — JSON twin
+          spec = yaml.safe_load(pathlib.Path('spec3.yaml').read_text())
+          pathlib.Path('spec3.json').write_text(json.dumps(spec, indent=2, ensure_ascii=False))
+          print('spec3.json generated')
+          "
+        working-directory: ${{ github.workspace }}
+
+      # ── Step 2: by-site + by-product specs ───────────────────────────────
       - name: Regenerate by-site and by-product specs
         run: python scripts/bundle.py
         working-directory: ${{ github.workspace }}
 
+      # ── Step 3: spec3.reference.json per product ─────────────────────────
+      - name: Build reference specs
+        continue-on-error: true
+        run: python scripts/build_reference.py --all
+        working-directory: ${{ github.workspace }}
+
+      # ── Step 4: Commit all generated files ───────────────────────────────
       - name: Commit regenerated specs
         run: |
-          git add by-site/ by-product/ schemas/
+          git add spec3.json by-site/ by-product/ schemas/ || true
+          git add "spec3.sdk.yaml" "spec3.sdk.json" || true
           if git diff --cached --quiet; then
             echo "No changes in derived specs — nothing to commit."
           else
-            git commit -m "chore(derived): regenerate by-site and by-product from spec3.yaml [skip ci]"
+            git commit -m "chore(derived): regenerate all specs from spec3.yaml [skip ci]"
             git push origin main
             echo "Derived specs pushed to main."
           fi
+
+      # ── Step 5: Push specs to external product API ────────────────────────
+      - name: Push to external product API
+        continue-on-error: true
+        env:
+          PRODUCT_SPEC_API_ENDPOINT: ${{ secrets.PRODUCT_SPEC_API_ENDPOINT }}
+          PRODUCT_SPEC_API_TOKEN: ${{ secrets.PRODUCT_SPEC_API_TOKEN }}
+        run: |
+          if [ -n "$PRODUCT_SPEC_API_ENDPOINT" ]; then
+            python scripts/push_to_api.py --all
+          else
+            echo "PRODUCT_SPEC_API_ENDPOINT not set — skipping external API push"
+          fi
+        working-directory: ${{ github.workspace }}

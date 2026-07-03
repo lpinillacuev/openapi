@@ -7404,21 +7404,27 @@ components:
             type: string
     Error:
       type: object
-      description: Error response format
+      required:
+        - error
+        - message
       properties:
+        error:
+          type: string
+          description: Error code
+          example: invalid_payment_method
         message:
           type: string
-          description: Error message
-          example: caller.id is missing
-        statusCode:
-          type: integer
-          description: HTTP status code
-          example: 400
+          description: Human-readable error message
+          example: The provided payment method is invalid or expired
+        details:
+          type: object
+          additionalProperties: true
+          description: Additional error details
         timestamp:
           type: string
           format: date-time
           description: Error timestamp
-          example: '2026-06-18T10:15:30Z'
+          example: '2024-01-15T10:30:00Z'
     ErrorCause:
       type: object
       properties:

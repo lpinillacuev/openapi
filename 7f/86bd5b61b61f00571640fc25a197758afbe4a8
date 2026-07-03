@@ -1,0 +1,19 @@
+.github/workflows/regenerate-derived-specs.yml
+  s_15d9f5d7d71822::t_d5b80c3f42b2d1 4-10,21,30,47-60,65-71,74-75,79,83-96
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.10",
+  "base_commit_sha": "7f86bd5b61b61f00571640fc25a197758afbe4a8",
+  "prompts": {},
+  "sessions": {
+    "s_15d9f5d7d71822": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "583322b2-4a06-4b5e-8eff-40b757de75f8",
+        "model": "claude-sonnet-4-6"
+      },
+      "human_author": "lpinillacuev <lina.pinillacuevas@mercadolibre.com.co>"
+    }
+  }
+}

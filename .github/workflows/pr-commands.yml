@@ -113,7 +113,7 @@ jobs:
           fi
 
           for PATH_VAL in "${APPROVED[@]}"; do
-            PAYLOAD="{\"path\":\"$PATH_VAL\",\"approvedBy\":\"$REVIEWER\",\"decidedBy\":\"$REVIEWER\",\"prNumber\":$PR_NUMBER,\"commitSha\":\"$COMMIT_SHA\",\"prBranch\":\"$BRANCH\"}"
+            PAYLOAD="{\"path\":\"$PATH_VAL\",\"approvedBy\":\"$REVIEWER\",\"decidedBy\":\"$REVIEWER\",\"prNumber\":$PR_NUMBER,\"commitSha\":\"$COMMIT_SHA\"}"
             curl -s -X POST "${BOT_URL}/openapi/policy/${APP}/approve" \
               -H "Content-Type: application/json" \
               -H "X-github-token: ${{ secrets.GH_PAT }}" \
@@ -123,7 +123,7 @@ jobs:
           done
 
           for PATH_VAL in "${REJECTED[@]}"; do
-            PAYLOAD="{\"path\":\"$PATH_VAL\",\"decidedBy\":\"$REVIEWER\",\"reason\":\"rejected via GitHub Review\",\"prNumber\":$PR_NUMBER,\"commitSha\":\"$COMMIT_SHA\",\"prBranch\":\"$BRANCH\"}"
+            PAYLOAD="{\"path\":\"$PATH_VAL\",\"decidedBy\":\"$REVIEWER\",\"reason\":\"rejected via GitHub Review\",\"prNumber\":$PR_NUMBER,\"commitSha\":\"$COMMIT_SHA\"}"
             curl -s -X POST "${BOT_URL}/openapi/policy/${APP}/reject" \
               -H "Content-Type: application/json" \
               -H "X-github-token: ${{ secrets.GH_PAT }}" \
@@ -230,7 +230,6 @@ jobs:
             "reason": "$REASON",
             "prNumber": $PR_NUMBER,
             "commitSha": "$COMMIT_SHA",
-            "prBranch": "$BRANCH"
           }
           EOF
           )

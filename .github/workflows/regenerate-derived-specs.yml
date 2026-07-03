@@ -1,0 +1,55 @@
+name: Regenerate derived specs after merge
+
+# Triggered when spec3.yaml merges to main.
+# Regenerates by-site and by-product specs from the updated spec3.yaml.
+# These derived files are NOT in the PR — they are generated here post-merge.
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - spec3.yaml
+
+jobs:
+  regenerate:
+    name: spec3.yaml → by-site + by-product
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5
+        with:
+          fetch-depth: 1
+          token: ${{ secrets.GH_PAT || github.token }}
+
+      - name: Setup Python
+        uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        with:
+          python-version: '3.11'
+          cache: pip
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      - name: Configure git
+        run: |
+          git config user.name  "specbot"
+          git config user.email "specbot@mercadolibre.com"
+
+      - name: Regenerate by-site and by-product specs
+        run: python scripts/bundle.py
+        working-directory: ${{ github.workspace }}
+
+      - name: Commit regenerated specs
+        run: |
+          git add by-site/ by-product/ schemas/
+          if git diff --cached --quiet; then
+            echo "No changes in derived specs — nothing to commit."
+          else
+            git commit -m "chore(derived): regenerate by-site and by-product from spec3.yaml [skip ci]"
+            git push origin main
+            echo "Derived specs pushed to main."
+          fi

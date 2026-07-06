@@ -1,0 +1,20 @@
+.github/workflows/pr-on-push.yml
+  s_079412f763ffe7::t_04a7c1421af6d2 27
+  s_079412f763ffe7::t_782fcd742b4a46 130
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.5.6",
+  "base_commit_sha": "9ae8d78a975011a5d48f6212851aa59224f00e9e",
+  "prompts": {},
+  "sessions": {
+    "s_079412f763ffe7": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "0be1f815-76f8-43d2-88a1-ebffd0c4ce40",
+        "model": "claude-sonnet-4-6"
+      },
+      "human_author": "lpinillacuev <lina.pinillacuevas@mercadolibre.com.co>"
+    }
+  }
+}

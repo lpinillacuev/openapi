@@ -173,7 +173,62 @@ paths:
                     type: array
                     items:
                       $ref: '#/components/schemas/POS'
+    post:
+      operationId: createPOS
+      summary: Create a point of sale
+      description: Creates a point of sale in a store to receive payments for products or services. Each POS will have a unique
+        QR code linked to it.
+      tags:
+      - POS
+      security:
+      - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/POSRequest'
+            example:
+              name: Main POS
+              fixed_amount: false
+              store_id: '1234567'
+              external_store_id: SUC001
+              external_id: POS001
+      responses:
+        '201':
+          description: POS created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/POS'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
   /pos/{id}:
+    get:
+      operationId: getPOS
+      summary: Get a point of sale
+      tags:
+      - POS
+      security:
+      - bearerAuth: []
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+        description: POS identifier
+      responses:
+        '200':
+          description: POS found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/POS'
+        '404':
+          $ref: '#/components/responses/NotFound'
     put:
       operationId: updatePOS
       summary: Update a point of sale
@@ -200,6 +255,25 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/POS'
+        '404':
+          $ref: '#/components/responses/NotFound'
+    delete:
+      operationId: deletePOS
+      summary: Delete a point of sale
+      tags:
+      - POS
+      security:
+      - bearerAuth: []
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+        description: POS identifier to delete
+      responses:
+        '200':
+          description: POS deleted
         '404':
           $ref: '#/components/responses/NotFound'
   /post-purchase/v1/claims/{claim_id}:
@@ -903,17 +977,25 @@ components:
             format: date-time
     Pagination:
       type: object
-      description: Pagination metadata returned in list/search responses
+      required:
+      - total
+      - limit
+      - offset
+      - has_more
       properties:
+        has_more:
+          type: boolean
+          description: Whether there are more results available
+          example: true
         total:
           type: integer
-          description: Total number of results
-          example: 42
-        limit:
-          type: integer
-          description: Results per page
-          example: 30
+          description: Total number of payments matching the criteria
+          example: 250
         offset:
           type: integer
-          description: Offset of the current page
+          description: Current offset
           example: 0
+        limit:
+          type: integer
+          description: Current limit
+          example: 20

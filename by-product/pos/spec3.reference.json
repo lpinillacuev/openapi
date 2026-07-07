@@ -73,9 +73,178 @@
           "pt": "TODO",
           "es": "TODO"
         }
+      },
+      "post": {
+        "description": {
+          "en": "Creates a point of sale in a store to receive payments for products or services. Each POS will have a unique QR code linked to it.",
+          "pt": "TODO",
+          "es": "TODO"
+        },
+        "tags": [
+          "POS"
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/POSRequest"
+              },
+              "example": {
+                "name": "Main POS",
+                "fixed_amount": false,
+                "store_id": "1234567",
+                "external_store_id": "SUC001",
+                "external_id": "POS001"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": {
+              "en": "POS created",
+              "pt": "TODO",
+              "es": "TODO"
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/POS"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "errorKey": {
+                      "type": "string",
+                      "enum": [
+                        {
+                          "title": "TODO_error_code",
+                          "description": {
+                            "en": "TODO: describe this error",
+                            "pt": "TODO",
+                            "es": "TODO"
+                          }
+                        }
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "errorKey": {
+                      "type": "string",
+                      "enum": [
+                        {
+                          "title": "TODO_error_code",
+                          "description": {
+                            "en": "TODO: describe this error",
+                            "pt": "TODO",
+                            "es": "TODO"
+                          }
+                        }
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "title": {
+          "en": "Create a point of sale",
+          "pt": "TODO",
+          "es": "TODO"
+        }
       }
     },
     "/pos/{id}": {
+      "get": {
+        "tags": [
+          "POS"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": {
+              "en": "POS identifier",
+              "pt": "TODO",
+              "es": "TODO"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": {
+              "en": "POS found",
+              "pt": "TODO",
+              "es": "TODO"
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/POS"
+                }
+              }
+            }
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "errorKey": {
+                      "type": "string",
+                      "enum": [
+                        {
+                          "title": "TODO_error_code",
+                          "description": {
+                            "en": "TODO: describe this error",
+                            "pt": "TODO",
+                            "es": "TODO"
+                          }
+                        }
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "title": {
+          "en": "Get a point of sale",
+          "pt": "TODO",
+          "es": "TODO"
+        },
+        "description": {
+          "en": "Get a point of sale",
+          "pt": "TODO",
+          "es": "TODO"
+        }
+      },
       "put": {
         "tags": [
           "POS"
@@ -148,6 +317,70 @@
         },
         "description": {
           "en": "Update a point of sale",
+          "pt": "TODO",
+          "es": "TODO"
+        }
+      },
+      "delete": {
+        "tags": [
+          "POS"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": {
+              "en": "POS identifier to delete",
+              "pt": "TODO",
+              "es": "TODO"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": {
+              "en": "POS deleted",
+              "pt": "TODO",
+              "es": "TODO"
+            }
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "errorKey": {
+                      "type": "string",
+                      "enum": [
+                        {
+                          "title": "TODO_error_code",
+                          "description": {
+                            "en": "TODO: describe this error",
+                            "pt": "TODO",
+                            "es": "TODO"
+                          }
+                        }
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "title": {
+          "en": "Delete a point of sale",
+          "pt": "TODO",
+          "es": "TODO"
+        },
+        "description": {
+          "en": "Delete a point of sale",
           "pt": "TODO",
           "es": "TODO"
         }
@@ -1909,38 +2142,42 @@
       },
       "Pagination": {
         "type": "object",
-        "description": {
-          "en": "Pagination metadata returned in list/search responses",
-          "pt": "TODO",
-          "es": "TODO"
-        },
         "properties": {
+          "has_more": {
+            "type": "boolean",
+            "description": {
+              "en": "Whether there are more results available",
+              "pt": "TODO",
+              "es": "TODO"
+            },
+            "example": true
+          },
           "total": {
             "type": "integer",
             "description": {
-              "en": "Total number of results",
+              "en": "Total number of payments matching the criteria",
               "pt": "TODO",
               "es": "TODO"
             },
-            "example": 42
-          },
-          "limit": {
-            "type": "integer",
-            "description": {
-              "en": "Results per page",
-              "pt": "TODO",
-              "es": "TODO"
-            },
-            "example": 30
+            "example": 250
           },
           "offset": {
             "type": "integer",
             "description": {
-              "en": "Offset of the current page",
+              "en": "Current offset",
               "pt": "TODO",
               "es": "TODO"
             },
             "example": 0
+          },
+          "limit": {
+            "type": "integer",
+            "description": {
+              "en": "Current limit",
+              "pt": "TODO",
+              "es": "TODO"
+            },
+            "example": 20
           }
         }
       }

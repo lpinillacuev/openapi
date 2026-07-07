@@ -1675,38 +1675,42 @@
       },
       "Pagination": {
         "type": "object",
-        "description": {
-          "en": "Pagination metadata returned in list/search responses",
-          "pt": "TODO",
-          "es": "TODO"
-        },
         "properties": {
+          "has_more": {
+            "type": "boolean",
+            "description": {
+              "en": "Whether there are more results available",
+              "pt": "TODO",
+              "es": "TODO"
+            },
+            "example": true
+          },
           "total": {
             "type": "integer",
             "description": {
-              "en": "Total number of results",
+              "en": "Total number of payments matching the criteria",
               "pt": "TODO",
               "es": "TODO"
             },
-            "example": 42
-          },
-          "limit": {
-            "type": "integer",
-            "description": {
-              "en": "Results per page",
-              "pt": "TODO",
-              "es": "TODO"
-            },
-            "example": 30
+            "example": 250
           },
           "offset": {
             "type": "integer",
             "description": {
-              "en": "Offset of the current page",
+              "en": "Current offset",
               "pt": "TODO",
               "es": "TODO"
             },
             "example": 0
+          },
+          "limit": {
+            "type": "integer",
+            "description": {
+              "en": "Current limit",
+              "pt": "TODO",
+              "es": "TODO"
+            },
+            "example": 20
           }
         }
       },
@@ -1774,7 +1778,7 @@
           "frequency": {
             "type": "integer",
             "description": {
-              "en": "Billing interval (e.g., 1 for monthly, 7 for weekly)",
+              "en": "Billing interval (e.g., 1 for monthly, 7 for weekly).",
               "pt": "TODO",
               "es": "TODO"
             },
@@ -1801,7 +1805,7 @@
               }
             ],
             "description": {
-              "en": "Unit for the billing interval",
+              "en": "Unit for the billing interval.",
               "pt": "TODO",
               "es": "TODO"
             },
@@ -1811,7 +1815,7 @@
             "type": "number",
             "format": "float",
             "description": {
-              "en": "Amount to charge each cycle (decimal, not cents)",
+              "en": "Amount to charge each cycle (decimal, not cents).",
               "pt": "TODO",
               "es": "TODO"
             },
@@ -1823,7 +1827,7 @@
           "free_trial": {
             "type": "object",
             "description": {
-              "en": "Optional free trial period before billing starts",
+              "en": "Optional free trial period before billing starts.",
               "pt": "TODO",
               "es": "TODO"
             },
@@ -1859,7 +1863,7 @@
           "repetitions": {
             "type": "integer",
             "description": {
-              "en": "Total number of billing cycles (null = indefinite)",
+              "en": "Total number of billing cycles (null = indefinite).",
               "pt": "TODO",
               "es": "TODO"
             },

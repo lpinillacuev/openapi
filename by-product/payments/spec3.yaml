@@ -18,7 +18,7 @@ security:
 tags:
 - name: OAuth
   description: Authorization flows for marketplace on-behalf-of and Wallet Connect
-  x-mp-sites:
+  x-mp-sites: &id001
   - MLA
   - MLB
   - MLM
@@ -28,144 +28,46 @@ tags:
   - MLU
 - name: Preferences
   description: Checkout Pro — redirect-based hosted checkout via Preferences
-  x-mp-sites:
-  - MLA
-  - MLB
-  - MLM
-  - MLC
-  - MCO
-  - MPE
-  - MLU
+  x-mp-sites: *id001
 - name: Payments
   description: Create and manage payment transactions
-  x-mp-sites:
-  - MLA
-  - MLB
-  - MLM
-  - MLC
-  - MCO
-  - MPE
-  - MLU
+  x-mp-sites: *id001
 - name: Orders
   description: Checkout API via Orders — recommended for new custom checkout integrations
-  x-mp-sites:
-  - MLA
-  - MLB
-  - MLM
-  - MLC
-  - MCO
-  - MPE
-  - MLU
+  x-mp-sites: *id001
 - name: Merchant Orders
   description: Order containers that group payments for a single purchase
-  x-mp-sites:
-  - MLA
-  - MLB
-  - MLM
-  - MLC
-  - MCO
-  - MPE
-  - MLU
+  x-mp-sites: *id001
 - name: Customers
   description: Customer profiles and stored payment methods
-  x-mp-sites:
-  - MLA
-  - MLB
-  - MLM
-  - MLC
-  - MCO
-  - MPE
-  - MLU
+  x-mp-sites: *id001
 - name: Cards
   description: Saved cards and card tokenization
-  x-mp-sites:
-  - MLA
-  - MLB
-  - MLM
-  - MLC
-  - MCO
-  - MPE
-  - MLU
+  x-mp-sites: *id001
 - name: Addresses
   description: Customer shipping and billing addresses
-  x-mp-sites:
-  - MLA
-  - MLB
-  - MLM
-  - MLC
-  - MCO
-  - MPE
-  - MLU
+  x-mp-sites: *id001
 - name: Payment Methods
   description: Available payment methods and installment plans per country
-  x-mp-sites:
-  - MLA
-  - MLB
-  - MLM
-  - MLC
-  - MCO
-  - MPE
-  - MLU
+  x-mp-sites: *id001
 - name: Identification Types
   description: Country-specific identity document type catalog
-  x-mp-sites:
-  - MLA
-  - MLB
-  - MLM
-  - MLC
-  - MCO
-  - MPE
-  - MLU
+  x-mp-sites: *id001
 - name: Cancellations & Refunds
   description: Cancel payments and create full or partial refunds
-  x-mp-sites:
-  - MLA
-  - MLB
-  - MLM
-  - MLC
-  - MCO
-  - MPE
-  - MLU
+  x-mp-sites: *id001
 - name: Chargebacks
   description: Chargeback dispute management
-  x-mp-sites:
-  - MLA
-  - MLB
-  - MLM
-  - MLC
-  - MCO
-  - MPE
-  - MLU
+  x-mp-sites: *id001
 - name: Subscriptions
   description: Recurring payment subscriptions
-  x-mp-sites:
-  - MLA
-  - MLB
-  - MLM
-  - MLC
-  - MCO
-  - MPE
-  - MLU
+  x-mp-sites: *id001
 - name: Plans
   description: Subscription billing plans
-  x-mp-sites:
-  - MLA
-  - MLB
-  - MLM
-  - MLC
-  - MCO
-  - MPE
-  - MLU
+  x-mp-sites: *id001
 - name: Invoices
   description: Subscription billing invoices
-  x-mp-sites:
-  - MLA
-  - MLB
-  - MLM
-  - MLC
-  - MCO
-  - MPE
-  - MLU
+  x-mp-sites: *id001
 - name: Wallet Connect
   description: OAuth-based wallet agreement flows for Wallet Connect
   x-mp-sites:
@@ -174,24 +76,10 @@ tags:
   - MLM
 - name: Stores
   description: Physical store locations
-  x-mp-sites:
-  - MLA
-  - MLB
-  - MLM
-  - MLC
-  - MCO
-  - MPE
-  - MLU
+  x-mp-sites: *id001
 - name: POS
   description: Point of sale device management
-  x-mp-sites:
-  - MLA
-  - MLB
-  - MLM
-  - MLC
-  - MCO
-  - MPE
-  - MLU
+  x-mp-sites: *id001
 - name: Terminals
   description: Point hardware terminal management and print actions
   x-mp-sites:
@@ -216,84 +104,28 @@ tags:
   - MLU
 - name: QR Integrator
   description: Integrator configuration for QR in-store
-  x-mp-sites:
-  - MLA
-  - MLB
-  - MLM
-  - MLC
-  - MCO
-  - MPE
-  - MLU
+  x-mp-sites: *id001
 - name: QR Deprecated
   description: Deprecated in-store QR order endpoints (V1, V2, Dynamic QR)
-  x-mp-sites:
-  - MLA
-  - MLB
-  - MLM
-  - MLC
-  - MCO
-  - MPE
-  - MLU
+  x-mp-sites: *id001
 - name: Claims
   description: Post-sale claim details and search
-  x-mp-sites:
-  - MLA
-  - MLB
-  - MLM
-  - MLC
-  - MCO
-  - MPE
-  - MLU
+  x-mp-sites: *id001
 - name: Claim Messages
   description: Messages and file attachments within a claim
-  x-mp-sites:
-  - MLA
-  - MLB
-  - MLM
-  - MLC
-  - MCO
-  - MPE
-  - MLU
+  x-mp-sites: *id001
 - name: Claim Resolutions
   description: Mediation requests and expected resolutions
-  x-mp-sites:
-  - MLA
-  - MLB
-  - MLM
-  - MLC
-  - MCO
-  - MPE
-  - MLU
+  x-mp-sites: *id001
 - name: Claim Shipping
   description: Upload shipping evidence to support a claim
-  x-mp-sites:
-  - MLA
-  - MLB
-  - MLM
-  - MLC
-  - MCO
-  - MPE
-  - MLU
+  x-mp-sites: *id001
 - name: Releases Report
   description: Generate and schedule releases (settlement) reports
-  x-mp-sites:
-  - MLA
-  - MLB
-  - MLM
-  - MLC
-  - MCO
-  - MPE
-  - MLU
+  x-mp-sites: *id001
 - name: Settlements Report
   description: Generate and schedule all-transactions reports
-  x-mp-sites:
-  - MLA
-  - MLB
-  - MLM
-  - MLC
-  - MCO
-  - MPE
-  - MLU
+  x-mp-sites: *id001
 - name: Payouts
   description: Bank transfer and Pix payouts
   x-mp-sites:
@@ -374,7 +206,7 @@ paths:
               card_argentina:
                 summary: Credit card — Argentina (Visa)
                 value:
-                  transaction_amount: 5000
+                  transaction_amount: 5000.0
                   token: YOUR_ACCESS_TOKEN
                   description: 'Order #1234'
                   installments: 3
@@ -387,21 +219,15 @@ paths:
               oxxo_mexico:
                 summary: OXXO — Mexico
                 value:
-                  transaction_amount: 500
+                  transaction_amount: 500.0
                   payment_method_id: oxxo
                   date_of_expiration: '2024-12-31T23:59:59.000-06:00'
                   payer:
                     email: test@example.com
       responses:
-        '200':
-          description: Payment created
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Payment'
         '201':
           description: Payment created
-          content:
+          content: &id002
             application/json:
               schema:
                 $ref: '#/components/schemas/Payment'
@@ -413,6 +239,9 @@ paths:
           $ref: '#/components/responses/Forbidden'
         '422':
           $ref: '#/components/responses/UnprocessableEntity'
+        '200':
+          description: Payment created
+          content: *id002
   /v1/payments/{id}:
     get:
       operationId: getPayment
@@ -435,14 +264,14 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Payment'
-        '400':
-          $ref: '#/components/responses/BadRequest'
         '401':
           $ref: '#/components/responses/Unauthorized'
         '403':
           $ref: '#/components/responses/Forbidden'
         '404':
           $ref: '#/components/responses/NotFound'
+        '400':
+          $ref: '#/components/responses/BadRequest'
     put:
       operationId: updatePayment
       summary: Update or capture a payment
@@ -560,10 +389,10 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/PaymentSearchResult'
-        '400':
-          $ref: '#/components/responses/BadRequest'
         '401':
           $ref: '#/components/responses/Unauthorized'
+        '400':
+          $ref: '#/components/responses/BadRequest'
         '403':
           $ref: '#/components/responses/Forbidden'
   /v1/payments/{id}/refunds:
@@ -604,13 +433,13 @@ paths:
               partial_refund:
                 summary: Partial refund of R$50
                 value:
-                  amount: 50
+                  amount: 50.0
       responses:
         '201':
           description: Refund created
           content:
             application/json:
-              schema:
+              schema: &id003
                 type: object
                 properties:
                   id:
@@ -686,62 +515,11 @@ paths:
           description: Refund list
           content:
             application/json:
-              schema:
-                type: object
-                properties:
-                  id:
-                    type: integer
-                  payment_id:
-                    type: integer
-                  amount:
-                    type: number
-                    format: float
-                  metadata:
-                    type: object
-                    additionalProperties: true
-                  source:
-                    type: object
-                    properties:
-                      id:
-                        type: string
-                      name:
-                        type: string
-                      type:
-                        type: string
-                  date_created:
-                    type: string
-                    format: date-time
-                  unique_sequence_number:
-                    type: string
-                  refund_mode:
-                    type: string
-                    enum:
-                    - standard
-                    - instant
-                  adjustment_amount:
-                    type: number
-                    format: float
-                    nullable: true
-                  status:
-                    type: string
-                    enum:
-                    - approved
-                    - in_process
-                    - rejected
-                  reason:
-                    type: string
-                    nullable: true
-                  label:
-                    type: string
-                    nullable: true
-                  partition_details:
-                    type: array
-                    items:
-                      type: object
-        '400':
-          $ref: '#/components/responses/BadRequest'
+              schema: *id003
         '401':
           $ref: '#/components/responses/Unauthorized'
+        '400':
+          $ref: '#/components/responses/BadRequest'
         '404':
           $ref: '#/components/responses/NotFound'
   /v1/payments/{id}/refunds/{refund_id}:
@@ -768,62 +546,11 @@ paths:
           description: Refund found
           content:
             application/json:
-              schema:
-                type: object
-                properties:
-                  id:
-                    type: integer
-                  payment_id:
-                    type: integer
-                  amount:
-                    type: number
-                    format: float
-                  metadata:
-                    type: object
-                    additionalProperties: true
-                  source:
-                    type: object
-                    properties:
-                      id:
-                        type: string
-                      name:
-                        type: string
-                      type:
-                        type: string
-                  date_created:
-                    type: string
-                    format: date-time
-                  unique_sequence_number:
-                    type: string
-                  refund_mode:
-                    type: string
-                    enum:
-                    - standard
-                    - instant
-                  adjustment_amount:
-                    type: number
-                    format: float
-                    nullable: true
-                  status:
-                    type: string
-                    enum:
-                    - approved
-                    - in_process
-                    - rejected
-                  reason:
-                    type: string
-                    nullable: true
-                  label:
-                    type: string
-                    nullable: true
-                  partition_details:
-                    type: array
-                    items:
-                      type: object
-        '400':
-          $ref: '#/components/responses/BadRequest'
+              schema: *id003
         '404':
           $ref: '#/components/responses/NotFound'
+        '400':
+          $ref: '#/components/responses/BadRequest'
   /v1/payments/{id}/cancellations:
     put:
       operationId: cancelPayment
@@ -1104,60 +831,6 @@ components:
           type: string
           format: date-time
           description: New expiration date for cash payment methods.
-    PaymentMethod:
-      type: object
-      required:
-      - type
-      properties:
-        type:
-          type: string
-          enum:
-          - credit_card
-          - debit_card
-          - bank_transfer
-          - digital_wallet
-          - cryptocurrency
-          description: Type of payment method
-        card:
-          $ref: '#/components/schemas/CardDetails'
-        bank_account:
-          $ref: '#/components/schemas/BankAccount'
-        digital_wallet:
-          $ref: '#/components/schemas/DigitalWallet'
-    CardDetails:
-      type: object
-      required:
-      - number
-      - expiry_month
-      - expiry_year
-      - cvv
-      properties:
-        number:
-          type: string
-          pattern: ^[0-9]{13,19}$
-          description: Card number
-          example: '4111111111111111'
-        expiry_month:
-          type: integer
-          minimum: 1
-          maximum: 12
-          description: Card expiry month
-          example: 12
-        expiry_year:
-          type: integer
-          minimum: 2024
-          description: Card expiry year
-          example: 2026
-        cvv:
-          type: string
-          pattern: ^[0-9]{3,4}$
-          description: Card verification value
-          example: '123'
-        cardholder_name:
-          type: string
-          maxLength: 100
-          description: Name on the card
-          example: John Doe
     BankAccount:
       type: object
       required:
@@ -1193,3 +866,57 @@ components:
         wallet_id:
           type: string
           description: Wallet identifier or token
+    CardDetails:
+      type: object
+      required:
+      - number
+      - expiry_month
+      - expiry_year
+      - cvv
+      properties:
+        number:
+          type: string
+          pattern: ^[0-9]{13,19}$
+          description: Card number
+          example: '4111111111111111'
+        expiry_month:
+          type: integer
+          minimum: 1
+          maximum: 12
+          description: Card expiry month
+          example: 12
+        expiry_year:
+          type: integer
+          minimum: 2024
+          description: Card expiry year
+          example: 2026
+        cvv:
+          type: string
+          pattern: ^[0-9]{3,4}$
+          description: Card verification value
+          example: '123'
+        cardholder_name:
+          type: string
+          maxLength: 100
+          description: Name on the card
+          example: John Doe
+    PaymentMethod:
+      type: object
+      required:
+      - type
+      properties:
+        type:
+          type: string
+          enum:
+          - credit_card
+          - debit_card
+          - bank_transfer
+          - digital_wallet
+          - cryptocurrency
+          description: Type of payment method
+        card:
+          $ref: '#/components/schemas/CardDetails'
+        bank_account:
+          $ref: '#/components/schemas/BankAccount'
+        digital_wallet:
+          $ref: '#/components/schemas/DigitalWallet'

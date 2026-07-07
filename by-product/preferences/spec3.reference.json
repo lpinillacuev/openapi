@@ -45,20 +45,6 @@
           }
         },
         "responses": {
-          "200": {
-            "description": {
-              "en": "Preference created",
-              "pt": "TODO",
-              "es": "TODO"
-            },
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Preference"
-                }
-              }
-            }
-          },
           "201": {
             "description": {
               "en": "Preference created",
@@ -122,6 +108,20 @@
                 }
               }
             }
+          },
+          "200": {
+            "description": {
+              "en": "Preference created",
+              "pt": "TODO",
+              "es": "TODO"
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Preference"
+                }
+              }
+            }
           }
         },
         "title": {
@@ -161,8 +161,8 @@
               }
             }
           },
-          "400": {
-            "$ref": "#/components/responses/BadRequest",
+          "404": {
+            "$ref": "#/components/responses/NotFound",
             "content": {
               "application/json": {
                 "schema": {
@@ -186,8 +186,8 @@
               }
             }
           },
-          "404": {
-            "$ref": "#/components/responses/NotFound",
+          "400": {
+            "$ref": "#/components/responses/BadRequest",
             "content": {
               "application/json": {
                 "schema": {

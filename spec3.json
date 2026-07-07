@@ -486,7 +486,7 @@
                 "card_argentina": {
                   "summary": "Credit card — Argentina (Visa)",
                   "value": {
-                    "transaction_amount": 5000.0,
+                    "transaction_amount": 5000,
                     "token": "YOUR_ACCESS_TOKEN",
                     "description": "Order #1234",
                     "installments": 3,
@@ -503,7 +503,7 @@
                 "oxxo_mexico": {
                   "summary": "OXXO — Mexico",
                   "value": {
-                    "transaction_amount": 500.0,
+                    "transaction_amount": 500,
                     "payment_method_id": "oxxo",
                     "date_of_expiration": "2024-12-31T23:59:59.000-06:00",
                     "payer": {
@@ -516,6 +516,16 @@
           }
         },
         "responses": {
+          "200": {
+            "description": "Payment created",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Payment"
+                }
+              }
+            }
+          },
           "201": {
             "description": "Payment created",
             "content": {
@@ -537,16 +547,6 @@
           },
           "422": {
             "$ref": "#/components/responses/UnprocessableEntity"
-          },
-          "200": {
-            "description": "Payment created",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Payment"
-                }
-              }
-            }
           }
         }
       }
@@ -585,6 +585,9 @@
               }
             }
           },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
           "401": {
             "$ref": "#/components/responses/Unauthorized"
           },
@@ -593,9 +596,6 @@
           },
           "404": {
             "$ref": "#/components/responses/NotFound"
-          },
-          "400": {
-            "$ref": "#/components/responses/BadRequest"
           }
         }
       },
@@ -788,11 +788,11 @@
               }
             }
           },
-          "401": {
-            "$ref": "#/components/responses/Unauthorized"
-          },
           "400": {
             "$ref": "#/components/responses/BadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
           },
           "403": {
             "$ref": "#/components/responses/Forbidden"
@@ -848,7 +848,7 @@
                 "partial_refund": {
                   "summary": "Partial refund of R$50",
                   "value": {
-                    "amount": 50.0
+                    "amount": 50
                   }
                 }
               }
@@ -1051,11 +1051,11 @@
               }
             }
           },
-          "401": {
-            "$ref": "#/components/responses/Unauthorized"
-          },
           "400": {
             "$ref": "#/components/responses/BadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
           },
           "404": {
             "$ref": "#/components/responses/NotFound"
@@ -1175,11 +1175,11 @@
               }
             }
           },
-          "404": {
-            "$ref": "#/components/responses/NotFound"
-          },
           "400": {
             "$ref": "#/components/responses/BadRequest"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
           }
         }
       }
@@ -1872,254 +1872,307 @@
     },
     "/checkout/preferences": {
       "post": {
-        "operationId": "createPreference",
-        "summary": "Create a preference",
-        "description": "Creates a Checkout Pro preference. The response contains `init_point` (production) and \n**Webhook events triggered:** payment, merchant_order",
         "tags": [
-          "Preferences"
+          "Preference"
         ],
-        "security": [
-          {
-            "bearerAuth": []
-          }
-        ],
-        "requestBody": {
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/PreferenceRequest"
-              },
-              "examples": {
-                "simple": {
-                  "summary": "Simple one-item preference",
-                  "value": {
-                    "items": [
-                      {
-                        "title": "Premium Plan",
-                        "quantity": 1,
-                        "unit_price": 99.9
-                      }
-                    ],
-                    "payer": {
-                      "email": "customer@example.com"
-                    },
-                    "back_urls": {
-                      "success": "https://mystore.com/success",
-                      "failure": "https://mystore.com/failure",
-                      "pending": "https://mystore.com/pending"
-                    },
-                    "auto_return": "approved"
-                  }
-                }
-              }
-            }
-          }
-        },
-        "responses": {
-          "201": {
-            "description": "Preference created",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Preference"
-                }
-              }
-            }
-          },
-          "400": {
-            "$ref": "#/components/responses/BadRequest"
-          },
-          "401": {
-            "$ref": "#/components/responses/Unauthorized"
-          },
-          "200": {
-            "description": "Preference created",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Preference"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/checkout/preferences/{id}": {
-      "get": {
-        "operationId": "getPreference",
-        "summary": "Get preference by ID",
-        "tags": [
-          "Preferences"
-        ],
-        "security": [
-          {
-            "bearerAuth": []
-          }
-        ],
+        "summary": "Create a Preference",
         "parameters": [
           {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Preference found",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Preference"
-                }
-              }
-            }
-          },
-          "404": {
-            "$ref": "#/components/responses/NotFound"
-          },
-          "400": {
-            "$ref": "#/components/responses/BadRequest"
-          }
-        }
-      },
-      "put": {
-        "operationId": "updatePreference",
-        "summary": "Update a preference",
-        "tags": [
-          "Preferences"
-        ],
-        "security": [
-          {
-            "bearerAuth": []
-          }
-        ],
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "requestBody": {
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/PreferenceRequest"
-              }
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": "Preference updated",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Preference"
-                }
-              }
-            }
-          },
-          "400": {
-            "$ref": "#/components/responses/BadRequest"
-          }
-        }
-      }
-    },
-    "/checkout/preferences/search": {
-      "get": {
-        "operationId": "searchPreferences",
-        "summary": "Search preferences",
-        "tags": [
-          "Preferences"
-        ],
-        "security": [
-          {
-            "bearerAuth": []
-          }
-        ],
-        "parameters": [
-          {
-            "name": "external_reference",
+            "name": "callerID",
             "in": "query",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "marketplace",
-            "in": "query",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "site_id",
-            "in": "query",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "sponsor_id",
-            "in": "query",
+            "description": "Not necessary if Access Token is passed",
+            "required": false,
+            "style": "form",
+            "explode": true,
             "schema": {
               "type": "integer"
             }
           },
           {
-            "name": "limit",
+            "name": "AccessToken",
             "in": "query",
+            "description": "Not necessary if Caller ID is passed",
+            "required": false,
+            "style": "form",
+            "explode": true,
             "schema": {
-              "type": "integer",
-              "default": 30
-            }
-          },
-          {
-            "name": "offset",
-            "in": "query",
-            "schema": {
-              "type": "integer",
-              "default": 0
+              "type": "string"
             }
           }
         ],
+        "requestBody": {
+          "description": "Preference",
+          "content": {
+            "*/*": {
+              "schema": {
+                "$ref": "#/components/schemas/http.Preference"
+              }
+            }
+          },
+          "required": true
+        },
         "responses": {
-          "200": {
-            "description": "Search results",
+          "201": {
+            "description": "Created",
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "object",
-                  "properties": {
-                    "elements": {
-                      "type": "array",
-                      "items": {
-                        "$ref": "#/components/schemas/Preference"
-                      }
-                    },
-                    "paging": {
-                      "$ref": "#/components/schemas/Pagination"
-                    }
-                  }
+                  "$ref": "#/components/schemas/http.Preference"
                 }
               }
             }
           },
           "400": {
-            "$ref": "#/components/responses/BadRequest"
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
           },
           "401": {
-            "$ref": "#/components/responses/Unauthorized"
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          }
+        },
+        "x-codegen-request-body-name": "Pref"
+      }
+    },
+    "/checkout/preferences/{id}": {
+      "get": {
+        "tags": [
+          "Preference"
+        ],
+        "summary": "Get a Preference",
+        "description": "View all payment information for a product or service with the desired preference ID.",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Preference ID",
+            "required": true,
+            "style": "simple",
+            "explode": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "callerID",
+            "in": "query",
+            "description": "Not necessary if Access Token is passed",
+            "required": false,
+            "style": "form",
+            "explode": true,
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
+            "name": "AccessToken",
+            "in": "query",
+            "description": "Not necessary if Caller ID is passed",
+            "required": false,
+            "style": "form",
+            "explode": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "Preference"
+        ],
+        "summary": "Update a Preference",
+        "description": "Update the details of a payment preference. Enter the preference ID and submit the information you wish to update.",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Preference ID",
+            "required": true,
+            "style": "simple",
+            "explode": false,
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
+            "name": "callerID",
+            "in": "query",
+            "description": "Not necessary if Access Token is passed",
+            "required": false,
+            "style": "form",
+            "explode": true,
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
+            "name": "AccessToken",
+            "in": "query",
+            "description": "Not necessary if Caller ID is passed",
+            "required": false,
+            "style": "form",
+            "explode": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "Preference",
+          "content": {
+            "*/*": {
+              "schema": {
+                "$ref": "#/components/schemas/http.Preference"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/http.Preference"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          }
+        },
+        "x-codegen-request-body-name": "Pref"
+      }
+    },
+    "/checkout/preferences/search": {
+      "get": {
+        "tags": [
+          "Preference"
+        ],
+        "summary": "Search Preferences",
+        "description": "Returns a list of preferences based on a search query.",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "query",
+            "description": "Query string to filter preferences.",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "A list of preferences matching the search query.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "object"
+                  }
+                }
+              }
+            }
           }
         }
       }
@@ -2258,14 +2311,14 @@
               }
             }
           },
-          "404": {
-            "$ref": "#/components/responses/NotFound"
-          },
           "400": {
             "$ref": "#/components/responses/BadRequest"
           },
           "401": {
             "$ref": "#/components/responses/Unauthorized"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
           }
         }
       },
@@ -2460,14 +2513,14 @@
               }
             }
           },
-          "404": {
-            "$ref": "#/components/responses/NotFound"
-          },
           "400": {
             "$ref": "#/components/responses/BadRequest"
           },
           "401": {
             "$ref": "#/components/responses/Unauthorized"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
           }
         }
       },
@@ -3785,14 +3838,14 @@
               }
             }
           },
-          "404": {
-            "$ref": "#/components/responses/NotFound"
-          },
           "400": {
             "$ref": "#/components/responses/BadRequest"
           },
           "401": {
             "$ref": "#/components/responses/Unauthorized"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
           }
         }
       },
@@ -4477,7 +4530,7 @@
               "type": "number",
               "format": "float"
             },
-            "example": 1000.0
+            "example": 1000
           },
           {
             "name": "issuer_id",
@@ -5189,7 +5242,7 @@
                       "type": "PIX"
                     },
                     "transaction": {
-                      "amount": 100.0,
+                      "amount": 100,
                       "currency_id": "BRL"
                     }
                   }
@@ -11467,7 +11520,7 @@
             "type": "number",
             "format": "float",
             "description": "Amount to refund. Omit for a full refund.",
-            "example": 50.0
+            "example": 50
           }
         }
       },
@@ -12986,6 +13039,140 @@
             "items": {
               "$ref": "#/components/schemas/AuthorizedPayment"
             }
+          }
+        }
+      },
+      "http.Preference": {
+        "required": [
+          "items"
+        ],
+        "type": "object",
+        "properties": {
+          "additional_info": {
+            "type": "string"
+          },
+          "amounts": {},
+          "auto_return": {
+            "type": "string"
+          },
+          "back_urls": {},
+          "binary_mode": {
+            "type": "boolean"
+          },
+          "client_id": {
+            "type": "string"
+          },
+          "collector": {},
+          "collector_email": {
+            "type": "string"
+          },
+          "collector_id": {
+            "type": "integer"
+          },
+          "concept_amount": {
+            "type": "number"
+          },
+          "concept_id": {
+            "type": "string"
+          },
+          "counter_currency": {},
+          "coupon_code": {
+            "type": "string"
+          },
+          "coupon_labels": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "date_of_expiration": {
+            "type": "string"
+          },
+          "differential_pricing": {},
+          "expiration_date_from": {
+            "type": "string"
+          },
+          "expiration_date_to": {
+            "type": "string"
+          },
+          "expires": {
+            "type": "boolean"
+          },
+          "external_reference": {
+            "type": "string"
+          },
+          "fee_details": {
+            "type": "array",
+            "items": {}
+          },
+          "financing_group": {
+            "type": "string"
+          },
+          "internal_metadata": {
+            "type": "object",
+            "additionalProperties": true
+          },
+          "items": {
+            "type": "array",
+            "items": {}
+          },
+          "live_mode": {
+            "type": "boolean"
+          },
+          "marketplace": {
+            "type": "string"
+          },
+          "marketplace_fee": {
+            "type": "number"
+          },
+          "merchant_order_id": {
+            "type": "number"
+          },
+          "metadata": {
+            "type": "object",
+            "additionalProperties": true
+          },
+          "notification_url": {
+            "type": "string"
+          },
+          "operation_type": {
+            "type": "string"
+          },
+          "order_id": {
+            "type": "number"
+          },
+          "payer": {},
+          "payment_methods": {},
+          "processing_modes": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "purpose": {
+            "type": "string"
+          },
+          "purpose_descriptor": {
+            "type": "object"
+          },
+          "redirect_urls": {},
+          "shipments": {},
+          "sponsor_id": {
+            "type": "number"
+          },
+          "statement_descriptor": {
+            "type": "number"
+          },
+          "taxes": {
+            "type": "array",
+            "items": {}
+          },
+          "tracks": {
+            "type": "array",
+            "items": {}
+          },
+          "version": {
+            "type": "integer"
           }
         }
       }

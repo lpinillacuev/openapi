@@ -206,7 +206,7 @@ paths:
               card_argentina:
                 summary: Credit card — Argentina (Visa)
                 value:
-                  transaction_amount: 5000.0
+                  transaction_amount: 5000
                   token: YOUR_ACCESS_TOKEN
                   description: 'Order #1234'
                   installments: 3
@@ -219,18 +219,21 @@ paths:
               oxxo_mexico:
                 summary: OXXO — Mexico
                 value:
-                  transaction_amount: 500.0
+                  transaction_amount: 500
                   payment_method_id: oxxo
                   date_of_expiration: '2024-12-31T23:59:59.000-06:00'
                   payer:
                     email: test@example.com
       responses:
-        '201':
+        '200':
           description: Payment created
           content: &id002
             application/json:
               schema:
                 $ref: '#/components/schemas/Payment'
+        '201':
+          description: Payment created
+          content: *id002
         '400':
           $ref: '#/components/responses/BadRequest'
         '401':
@@ -239,9 +242,6 @@ paths:
           $ref: '#/components/responses/Forbidden'
         '422':
           $ref: '#/components/responses/UnprocessableEntity'
-        '200':
-          description: Payment created
-          content: *id002
   /v1/payments/{id}:
     get:
       operationId: getPayment
@@ -264,14 +264,14 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Payment'
+        '400':
+          $ref: '#/components/responses/BadRequest'
         '401':
           $ref: '#/components/responses/Unauthorized'
         '403':
           $ref: '#/components/responses/Forbidden'
         '404':
           $ref: '#/components/responses/NotFound'
-        '400':
-          $ref: '#/components/responses/BadRequest'
     put:
       operationId: updatePayment
       summary: Update or capture a payment
@@ -389,10 +389,10 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/PaymentSearchResult'
-        '401':
-          $ref: '#/components/responses/Unauthorized'
         '400':
           $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
         '403':
           $ref: '#/components/responses/Forbidden'
   /v1/payments/{id}/refunds:
@@ -433,7 +433,7 @@ paths:
               partial_refund:
                 summary: Partial refund of R$50
                 value:
-                  amount: 50.0
+                  amount: 50
       responses:
         '201':
           description: Refund created
@@ -516,10 +516,10 @@ paths:
           content:
             application/json:
               schema: *id003
-        '401':
-          $ref: '#/components/responses/Unauthorized'
         '400':
           $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
         '404':
           $ref: '#/components/responses/NotFound'
   /v1/payments/{id}/refunds/{refund_id}:
@@ -547,10 +547,10 @@ paths:
           content:
             application/json:
               schema: *id003
-        '404':
-          $ref: '#/components/responses/NotFound'
         '400':
           $ref: '#/components/responses/BadRequest'
+        '404':
+          $ref: '#/components/responses/NotFound'
   /v1/payments/{id}/cancellations:
     put:
       operationId: cancelPayment

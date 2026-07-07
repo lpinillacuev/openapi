@@ -227,7 +227,7 @@ paths:
               card_argentina:
                 summary: Credit card — Argentina (Visa)
                 value:
-                  transaction_amount: 5000.0
+                  transaction_amount: 5000
                   token: YOUR_ACCESS_TOKEN
                   description: 'Order #1234'
                   installments: 3
@@ -240,7 +240,7 @@ paths:
               oxxo_mexico:
                 summary: OXXO — Mexico
                 value:
-                  transaction_amount: 500.0
+                  transaction_amount: 500
                   payment_method_id: oxxo
                   date_of_expiration: '2024-12-31T23:59:59.000-06:00'
                   payer:
@@ -259,12 +259,15 @@ paths:
                       type: DNI
                       number: '12345678'
       responses:
-        '201':
+        '200':
           description: Payment created
           content: &id002
             application/json:
               schema:
                 $ref: '#/components/schemas/Payment'
+        '201':
+          description: Payment created
+          content: *id002
         '400':
           $ref: '#/components/responses/BadRequest'
         '401':
@@ -273,9 +276,6 @@ paths:
           $ref: '#/components/responses/Forbidden'
         '422':
           $ref: '#/components/responses/UnprocessableEntity'
-        '200':
-          description: Payment created
-          content: *id002
   /v1/payments/{id}:
     get:
       operationId: getPayment
@@ -298,14 +298,14 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Payment'
+        '400':
+          $ref: '#/components/responses/BadRequest'
         '401':
           $ref: '#/components/responses/Unauthorized'
         '403':
           $ref: '#/components/responses/Forbidden'
         '404':
           $ref: '#/components/responses/NotFound'
-        '400':
-          $ref: '#/components/responses/BadRequest'
     put:
       operationId: updatePayment
       summary: Update or capture a payment
@@ -423,10 +423,10 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/PaymentSearchResult'
-        '401':
-          $ref: '#/components/responses/Unauthorized'
         '400':
           $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
         '403':
           $ref: '#/components/responses/Forbidden'
   /v1/payments/{id}/refunds:
@@ -467,7 +467,7 @@ paths:
               partial_refund:
                 summary: Partial refund of R$50
                 value:
-                  amount: 50.0
+                  amount: 50
       responses:
         '201':
           description: Refund created
@@ -550,10 +550,10 @@ paths:
           content:
             application/json:
               schema: *id003
-        '401':
-          $ref: '#/components/responses/Unauthorized'
         '400':
           $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
         '404':
           $ref: '#/components/responses/NotFound'
   /v1/payments/{id}/refunds/{refund_id}:
@@ -581,10 +581,10 @@ paths:
           content:
             application/json:
               schema: *id003
-        '404':
-          $ref: '#/components/responses/NotFound'
         '400':
           $ref: '#/components/responses/BadRequest'
+        '404':
+          $ref: '#/components/responses/NotFound'
   /v1/orders:
     post:
       operationId: createOrder
@@ -1053,155 +1053,206 @@ paths:
           description: Conflict — order cannot be refunded in its current status
   /checkout/preferences:
     post:
-      operationId: createPreference
-      summary: Create a preference
-      description: "Creates a Checkout Pro preference. The response contains `init_point` (production) and \n**Webhook events\
-        \ triggered:** payment, merchant_order"
       tags:
-      - Preferences
-      security:
-      - bearerAuth: []
+      - Preference
+      summary: Create a Preference
+      parameters:
+      - name: callerID
+        in: query
+        description: Not necessary if Access Token is passed
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: integer
+      - name: AccessToken
+        in: query
+        description: Not necessary if Caller ID is passed
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: string
       requestBody:
-        required: true
+        description: Preference
         content:
-          application/json:
+          '*/*':
             schema:
-              $ref: '#/components/schemas/PreferenceRequest'
-            examples:
-              simple:
-                summary: Simple one-item preference
-                value:
-                  items:
-                  - title: Premium Plan
-                    quantity: 1
-                    unit_price: 99.9
-                  payer:
-                    email: customer@example.com
-                  back_urls:
-                    success: https://mystore.com/success
-                    failure: https://mystore.com/failure
-                    pending: https://mystore.com/pending
-                  auto_return: approved
+              $ref: '#/components/schemas/http.Preference'
+        required: true
       responses:
         '201':
-          description: Preference created
-          content: &id004
+          description: Created
+          content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Preference'
+                $ref: '#/components/schemas/http.Preference'
         '400':
-          $ref: '#/components/responses/BadRequest'
+          description: Bad Request
+          content:
+            application/json:
+              schema: {}
         '401':
-          $ref: '#/components/responses/Unauthorized'
-        '200':
-          description: Preference created
-          content: *id004
+          description: Unauthorized
+          content:
+            application/json:
+              schema: {}
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema: {}
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema: {}
+      x-codegen-request-body-name: Pref
   /checkout/preferences/{id}:
     get:
-      operationId: getPreference
-      summary: Get preference by ID
       tags:
-      - Preferences
-      security:
-      - bearerAuth: []
+      - Preference
+      summary: Get a Preference
+      description: View all payment information for a product or service with the desired preference ID.
       parameters:
       - name: id
         in: path
+        description: Preference ID
         required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      - name: callerID
+        in: query
+        description: Not necessary if Access Token is passed
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: integer
+      - name: AccessToken
+        in: query
+        description: Not necessary if Caller ID is passed
+        required: false
+        style: form
+        explode: true
         schema:
           type: string
       responses:
         '200':
-          description: Preference found
+          description: OK
           content:
             application/json:
-              schema:
-                $ref: '#/components/schemas/Preference'
-        '404':
-          $ref: '#/components/responses/NotFound'
+              schema: {}
         '400':
-          $ref: '#/components/responses/BadRequest'
+          description: Bad Request
+          content:
+            application/json:
+              schema: {}
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema: {}
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema: {}
     put:
-      operationId: updatePreference
-      summary: Update a preference
       tags:
-      - Preferences
-      security:
-      - bearerAuth: []
+      - Preference
+      summary: Update a Preference
+      description: Update the details of a payment preference. Enter the preference ID and submit the information you wish
+        to update.
       parameters:
       - name: id
         in: path
+        description: Preference ID
         required: true
+        style: simple
+        explode: false
+        schema:
+          type: integer
+      - name: callerID
+        in: query
+        description: Not necessary if Access Token is passed
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: integer
+      - name: AccessToken
+        in: query
+        description: Not necessary if Caller ID is passed
+        required: false
+        style: form
+        explode: true
         schema:
           type: string
       requestBody:
-        required: true
+        description: Preference
         content:
-          application/json:
+          '*/*':
             schema:
-              $ref: '#/components/schemas/PreferenceRequest'
+              $ref: '#/components/schemas/http.Preference'
+        required: true
       responses:
         '200':
-          description: Preference updated
+          description: OK
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Preference'
+                $ref: '#/components/schemas/http.Preference'
         '400':
-          $ref: '#/components/responses/BadRequest'
+          description: Bad Request
+          content:
+            application/json:
+              schema: {}
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema: {}
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema: {}
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema: {}
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema: {}
+      x-codegen-request-body-name: Pref
   /checkout/preferences/search:
     get:
-      operationId: searchPreferences
-      summary: Search preferences
       tags:
-      - Preferences
-      security:
-      - bearerAuth: []
+      - Preference
+      summary: Search Preferences
+      description: Returns a list of preferences based on a search query.
       parameters:
-      - name: external_reference
-        in: query
+      - in: query
+        name: query
+        description: Query string to filter preferences.
+        required: false
         schema:
           type: string
-      - name: marketplace
-        in: query
-        schema:
-          type: string
-      - name: site_id
-        in: query
-        schema:
-          type: string
-      - name: sponsor_id
-        in: query
-        schema:
-          type: integer
-      - name: limit
-        in: query
-        schema:
-          type: integer
-          default: 30
-      - name: offset
-        in: query
-        schema:
-          type: integer
-          default: 0
       responses:
         '200':
-          description: Search results
+          description: A list of preferences matching the search query.
           content:
             application/json:
               schema:
-                type: object
-                properties:
-                  elements:
-                    type: array
-                    items:
-                      $ref: '#/components/schemas/Preference'
-                  paging:
-                    $ref: '#/components/schemas/Pagination'
-        '400':
-          $ref: '#/components/responses/BadRequest'
-        '401':
-          $ref: '#/components/responses/Unauthorized'
+                type: array
+                items:
+                  type: object
   /v1/customers:
     post:
       operationId: createCustomer
@@ -1284,12 +1335,12 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Customer'
-        '404':
-          $ref: '#/components/responses/NotFound'
         '400':
           $ref: '#/components/responses/BadRequest'
         '401':
           $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
     put:
       operationId: updateCustomer
       summary: Update a customer
@@ -1409,12 +1460,12 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Card'
-        '404':
-          $ref: '#/components/responses/NotFound'
         '400':
           $ref: '#/components/responses/BadRequest'
         '401':
           $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
     put:
       operationId: updateCard
       summary: Update a saved card
@@ -1988,7 +2039,7 @@ paths:
         required: true
         content:
           application/json:
-            schema: &id006
+            schema: &id005
               type: object
               properties:
                 external_reference:
@@ -2034,7 +2085,7 @@ paths:
           description: Merchant order created
           content:
             application/json:
-              schema: &id005
+              schema: &id004
                 type: object
                 properties:
                   id:
@@ -2160,13 +2211,13 @@ paths:
           description: Merchant order found
           content:
             application/json:
-              schema: *id005
-        '404':
-          $ref: '#/components/responses/NotFound'
+              schema: *id004
         '400':
           $ref: '#/components/responses/BadRequest'
         '401':
           $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
     put:
       operationId: updateMerchantOrder
       summary: Update merchant order
@@ -2184,7 +2235,7 @@ paths:
         required: true
         content:
           application/json:
-            schema: *id006
+            schema: *id005
       responses:
         '200':
           description: Merchant order updated
@@ -2280,7 +2331,7 @@ paths:
           description: Search results
           content:
             application/json:
-              schema: *id005
+              schema: *id004
         '400':
           $ref: '#/components/responses/BadRequest'
         '401':
@@ -2495,7 +2546,7 @@ paths:
         schema:
           type: number
           format: float
-        example: 1000.0
+        example: 1000
       - name: issuer_id
         in: query
         schema:
@@ -2959,7 +3010,7 @@ paths:
                   point_of_interaction:
                     type: PIX
                   transaction:
-                    amount: 100.0
+                    amount: 100
                     currency_id: BRL
       responses:
         '201':
@@ -5417,7 +5468,7 @@ paths:
           description: Advanced payment created
           content:
             application/json:
-              schema: &id007
+              schema: &id006
                 type: object
                 properties:
                   id:
@@ -5481,7 +5532,7 @@ paths:
           description: Advanced payment found
           content:
             application/json:
-              schema: *id007
+              schema: *id006
         '400':
           $ref: '#/components/responses/BadRequest'
         '401':
@@ -5533,7 +5584,7 @@ paths:
           description: Advanced payment updated
           content:
             application/json:
-              schema: *id007
+              schema: *id006
         '400':
           $ref: '#/components/responses/BadRequest'
         '401':
@@ -7987,6 +8038,113 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/AuthorizedPayment'
+    http.Preference:
+      required:
+      - items
+      type: object
+      properties:
+        additional_info:
+          type: string
+        amounts:
+          $ref: '#/components/schemas/github_com_melisource_fury_mpcs-preferences-api_internal_domain_model.Amount'
+        auto_return:
+          type: string
+        back_urls:
+          $ref: '#/components/schemas/github_com_melisource_fury_mpcs-preferences-api_internal_domain_model.URLConfig'
+        binary_mode:
+          type: boolean
+        client_id:
+          type: string
+        collector:
+          $ref: '#/components/schemas/github_com_melisource_fury_mpcs-preferences-api_internal_domain_model.Collector'
+        collector_email:
+          type: string
+        collector_id:
+          type: integer
+        concept_amount:
+          type: number
+        concept_id:
+          type: string
+        counter_currency:
+          $ref: '#/components/schemas/github_com_melisource_fury_mpcs-preferences-api_internal_domain_model.CounterCurrency'
+        coupon_code:
+          type: string
+        coupon_labels:
+          type: array
+          items:
+            type: string
+        date_of_expiration:
+          type: string
+        differential_pricing:
+          $ref: '#/components/schemas/github_com_melisource_fury_mpcs-preferences-api_internal_domain_model.DifferentialPricing'
+        expiration_date_from:
+          type: string
+        expiration_date_to:
+          type: string
+        expires:
+          type: boolean
+        external_reference:
+          type: string
+        fee_details:
+          type: array
+          items:
+            $ref: '#/components/schemas/github_com_melisource_fury_mpcs-preferences-api_internal_domain_model.FeeDetail'
+        financing_group:
+          type: string
+        internal_metadata:
+          type: object
+          additionalProperties: true
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/github_com_melisource_fury_mpcs-preferences-api_internal_domain_model.Item'
+        live_mode:
+          type: boolean
+        marketplace:
+          type: string
+        marketplace_fee:
+          type: number
+        merchant_order_id:
+          type: number
+        metadata:
+          type: object
+          additionalProperties: true
+        notification_url:
+          type: string
+        operation_type:
+          type: string
+        order_id:
+          type: number
+        payer:
+          $ref: '#/components/schemas/github_com_melisource_fury_mpcs-preferences-api_internal_domain_model.Payer'
+        payment_methods:
+          $ref: '#/components/schemas/github_com_melisource_fury_mpcs-preferences-api_internal_domain_model.PaymentMethod'
+        processing_modes:
+          type: array
+          items:
+            type: string
+        purpose:
+          type: string
+        purpose_descriptor:
+          type: object
+        redirect_urls:
+          $ref: '#/components/schemas/github_com_melisource_fury_mpcs-preferences-api_internal_domain_model.URLConfig'
+        shipments:
+          $ref: '#/components/schemas/github_com_melisource_fury_mpcs-preferences-api_internal_domain_model.Shipment'
+        sponsor_id:
+          type: number
+        statement_descriptor:
+          type: number
+        taxes:
+          type: array
+          items:
+            $ref: '#/components/schemas/github_com_melisource_fury_mpcs-preferences-api_internal_domain_model.Tax'
+        tracks:
+          type: array
+          items:
+            $ref: '#/components/schemas/github_com_melisource_fury_mpcs-preferences-api_internal_domain_model.Track'
+        version:
+          type: integer
     Activity:
       type: object
       description: Activity or communication entry in a chargeback case
@@ -8770,113 +8928,6 @@ components:
           type: string
         success:
           type: string
-    http.Preference:
-      required:
-      - items
-      type: object
-      properties:
-        additional_info:
-          type: string
-        amounts:
-          $ref: '#/components/schemas/github_com_melisource_fury_mpcs-preferences-api_internal_domain_model.Amount'
-        auto_return:
-          type: string
-        back_urls:
-          $ref: '#/components/schemas/github_com_melisource_fury_mpcs-preferences-api_internal_domain_model.URLConfig'
-        binary_mode:
-          type: boolean
-        client_id:
-          type: string
-        collector:
-          $ref: '#/components/schemas/github_com_melisource_fury_mpcs-preferences-api_internal_domain_model.Collector'
-        collector_email:
-          type: string
-        collector_id:
-          type: integer
-        concept_amount:
-          type: number
-        concept_id:
-          type: string
-        counter_currency:
-          $ref: '#/components/schemas/github_com_melisource_fury_mpcs-preferences-api_internal_domain_model.CounterCurrency'
-        coupon_code:
-          type: string
-        coupon_labels:
-          type: array
-          items:
-            type: string
-        date_of_expiration:
-          type: string
-        differential_pricing:
-          $ref: '#/components/schemas/github_com_melisource_fury_mpcs-preferences-api_internal_domain_model.DifferentialPricing'
-        expiration_date_from:
-          type: string
-        expiration_date_to:
-          type: string
-        expires:
-          type: boolean
-        external_reference:
-          type: string
-        fee_details:
-          type: array
-          items:
-            $ref: '#/components/schemas/github_com_melisource_fury_mpcs-preferences-api_internal_domain_model.FeeDetail'
-        financing_group:
-          type: string
-        internal_metadata:
-          type: object
-          additionalProperties: true
-        items:
-          type: array
-          items:
-            $ref: '#/components/schemas/github_com_melisource_fury_mpcs-preferences-api_internal_domain_model.Item'
-        live_mode:
-          type: boolean
-        marketplace:
-          type: string
-        marketplace_fee:
-          type: number
-        merchant_order_id:
-          type: number
-        metadata:
-          type: object
-          additionalProperties: true
-        notification_url:
-          type: string
-        operation_type:
-          type: string
-        order_id:
-          type: number
-        payer:
-          $ref: '#/components/schemas/github_com_melisource_fury_mpcs-preferences-api_internal_domain_model.Payer'
-        payment_methods:
-          $ref: '#/components/schemas/github_com_melisource_fury_mpcs-preferences-api_internal_domain_model.PaymentMethod'
-        processing_modes:
-          type: array
-          items:
-            type: string
-        purpose:
-          type: string
-        purpose_descriptor:
-          type: object
-        redirect_urls:
-          $ref: '#/components/schemas/github_com_melisource_fury_mpcs-preferences-api_internal_domain_model.URLConfig'
-        shipments:
-          $ref: '#/components/schemas/github_com_melisource_fury_mpcs-preferences-api_internal_domain_model.Shipment'
-        sponsor_id:
-          type: number
-        statement_descriptor:
-          type: number
-        taxes:
-          type: array
-          items:
-            $ref: '#/components/schemas/github_com_melisource_fury_mpcs-preferences-api_internal_domain_model.Tax'
-        tracks:
-          type: array
-          items:
-            $ref: '#/components/schemas/github_com_melisource_fury_mpcs-preferences-api_internal_domain_model.Track'
-        version:
-          type: integer
     Item:
       type: object
       description: Item information involved in the chargeback

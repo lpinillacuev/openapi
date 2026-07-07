@@ -233,31 +233,6 @@
               }
             }
           },
-          "404": {
-            "$ref": "#/components/responses/NotFound",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "errorKey": {
-                      "type": "string",
-                      "enum": [
-                        {
-                          "title": "TODO_error_code",
-                          "description": {
-                            "en": "TODO: describe this error",
-                            "pt": "TODO",
-                            "es": "TODO"
-                          }
-                        }
-                      ]
-                    }
-                  }
-                }
-              }
-            }
-          },
           "400": {
             "$ref": "#/components/responses/BadRequest",
             "content": {
@@ -285,6 +260,31 @@
           },
           "401": {
             "$ref": "#/components/responses/Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "errorKey": {
+                      "type": "string",
+                      "enum": [
+                        {
+                          "title": "TODO_error_code",
+                          "description": {
+                            "en": "TODO: describe this error",
+                            "pt": "TODO",
+                            "es": "TODO"
+                          }
+                        }
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound",
             "content": {
               "application/json": {
                 "schema": {
@@ -682,31 +682,6 @@
               }
             }
           },
-          "404": {
-            "$ref": "#/components/responses/NotFound",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "errorKey": {
-                      "type": "string",
-                      "enum": [
-                        {
-                          "title": "TODO_error_code",
-                          "description": {
-                            "en": "TODO: describe this error",
-                            "pt": "TODO",
-                            "es": "TODO"
-                          }
-                        }
-                      ]
-                    }
-                  }
-                }
-              }
-            }
-          },
           "400": {
             "$ref": "#/components/responses/BadRequest",
             "content": {
@@ -734,6 +709,31 @@
           },
           "401": {
             "$ref": "#/components/responses/Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "errorKey": {
+                      "type": "string",
+                      "enum": [
+                        {
+                          "title": "TODO_error_code",
+                          "description": {
+                            "en": "TODO: describe this error",
+                            "pt": "TODO",
+                            "es": "TODO"
+                          }
+                        }
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound",
             "content": {
               "application/json": {
                 "schema": {

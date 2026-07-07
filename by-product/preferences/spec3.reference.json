@@ -3,68 +3,76 @@
   "paths": {
     "/checkout/preferences": {
       "post": {
-        "description": {
-          "en": "Creates a Checkout Pro preference. The response contains `init_point` (production) and \n**Webhook events triggered:** payment, merchant_order",
-          "pt": "TODO",
-          "es": "TODO"
-        },
         "tags": [
-          "Preferences"
+          "Preference"
         ],
-        "requestBody": {
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/PreferenceRequest"
-              },
-              "examples": {
-                "simple": {
-                  "summary": "Simple one-item preference",
-                  "value": {
-                    "items": [
-                      {
-                        "title": "Premium Plan",
-                        "quantity": 1,
-                        "unit_price": 99.9
-                      }
-                    ],
-                    "payer": {
-                      "email": "customer@example.com"
-                    },
-                    "back_urls": {
-                      "success": "https://mystore.com/success",
-                      "failure": "https://mystore.com/failure",
-                      "pending": "https://mystore.com/pending"
-                    },
-                    "auto_return": "approved"
-                  }
-                }
-              }
+        "parameters": [
+          {
+            "name": "callerID",
+            "in": "query",
+            "description": {
+              "en": "Not necessary if Access Token is passed",
+              "pt": "TODO",
+              "es": "TODO"
+            },
+            "required": false,
+            "style": "form",
+            "explode": true,
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
+            "name": "AccessToken",
+            "in": "query",
+            "description": {
+              "en": "Not necessary if Caller ID is passed",
+              "pt": "TODO",
+              "es": "TODO"
+            },
+            "required": false,
+            "style": "form",
+            "explode": true,
+            "schema": {
+              "type": "string"
             }
           }
+        ],
+        "requestBody": {
+          "description": "Preference",
+          "content": {
+            "*/*": {
+              "schema": {
+                "$ref": "#/components/schemas/http.Preference"
+              }
+            }
+          },
+          "required": true
         },
         "responses": {
           "201": {
             "description": {
-              "en": "Preference created",
+              "en": "Created",
               "pt": "TODO",
               "es": "TODO"
             },
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Preference"
+                  "$ref": "#/components/schemas/http.Preference"
                 }
               }
             }
           },
           "400": {
-            "$ref": "#/components/responses/BadRequest",
+            "description": {
+              "en": "Bad Request",
+              "pt": "TODO",
+              "es": "TODO"
+            },
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "object",
                   "properties": {
                     "errorKey": {
                       "type": "string",
@@ -85,11 +93,14 @@
             }
           },
           "401": {
-            "$ref": "#/components/responses/Unauthorized",
+            "description": {
+              "en": "Unauthorized",
+              "pt": "TODO",
+              "es": "TODO"
+            },
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "object",
                   "properties": {
                     "errorKey": {
                       "type": "string",
@@ -109,23 +120,71 @@
               }
             }
           },
-          "200": {
+          "403": {
             "description": {
-              "en": "Preference created",
+              "en": "Forbidden",
               "pt": "TODO",
               "es": "TODO"
             },
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Preference"
+                  "properties": {
+                    "errorKey": {
+                      "type": "string",
+                      "enum": [
+                        {
+                          "title": "TODO_error_code",
+                          "description": {
+                            "en": "TODO: describe this error",
+                            "pt": "TODO",
+                            "es": "TODO"
+                          }
+                        }
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": {
+              "en": "Internal Server Error",
+              "pt": "TODO",
+              "es": "TODO"
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "errorKey": {
+                      "type": "string",
+                      "enum": [
+                        {
+                          "title": "TODO_error_code",
+                          "description": {
+                            "en": "TODO: describe this error",
+                            "pt": "TODO",
+                            "es": "TODO"
+                          }
+                        }
+                      ]
+                    }
+                  }
                 }
               }
             }
           }
         },
+        "x-codegen-request-body-name": "Pref",
         "title": {
-          "en": "Create a preference",
+          "en": "Create a Preference",
+          "pt": "TODO",
+          "es": "TODO"
+        },
+        "description": {
+          "en": "Create a Preference",
           "pt": "TODO",
           "es": "TODO"
         }
@@ -134,13 +193,55 @@
     "/checkout/preferences/{id}": {
       "get": {
         "tags": [
-          "Preferences"
+          "Preference"
         ],
+        "description": {
+          "en": "View all payment information for a product or service with the desired preference ID.",
+          "pt": "TODO",
+          "es": "TODO"
+        },
         "parameters": [
           {
             "name": "id",
             "in": "path",
+            "description": {
+              "en": "Preference ID",
+              "pt": "TODO",
+              "es": "TODO"
+            },
             "required": true,
+            "style": "simple",
+            "explode": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "callerID",
+            "in": "query",
+            "description": {
+              "en": "Not necessary if Access Token is passed",
+              "pt": "TODO",
+              "es": "TODO"
+            },
+            "required": false,
+            "style": "form",
+            "explode": true,
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
+            "name": "AccessToken",
+            "in": "query",
+            "description": {
+              "en": "Not necessary if Caller ID is passed",
+              "pt": "TODO",
+              "es": "TODO"
+            },
+            "required": false,
+            "style": "form",
+            "explode": true,
             "schema": {
               "type": "string"
             }
@@ -149,24 +250,25 @@
         "responses": {
           "200": {
             "description": {
-              "en": "Preference found",
+              "en": "OK",
+              "pt": "TODO",
+              "es": "TODO"
+            },
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "400": {
+            "description": {
+              "en": "Bad Request",
               "pt": "TODO",
               "es": "TODO"
             },
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Preference"
-                }
-              }
-            }
-          },
-          "404": {
-            "$ref": "#/components/responses/NotFound",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
                   "properties": {
                     "errorKey": {
                       "type": "string",
@@ -186,12 +288,43 @@
               }
             }
           },
-          "400": {
-            "$ref": "#/components/responses/BadRequest",
+          "404": {
+            "description": {
+              "en": "Not Found",
+              "pt": "TODO",
+              "es": "TODO"
+            },
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "object",
+                  "properties": {
+                    "errorKey": {
+                      "type": "string",
+                      "enum": [
+                        {
+                          "title": "TODO_error_code",
+                          "description": {
+                            "en": "TODO: describe this error",
+                            "pt": "TODO",
+                            "es": "TODO"
+                          }
+                        }
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": {
+              "en": "Internal Server Error",
+              "pt": "TODO",
+              "es": "TODO"
+            },
+            "content": {
+              "application/json": {
+                "schema": {
                   "properties": {
                     "errorKey": {
                       "type": "string",
@@ -213,176 +346,102 @@
           }
         },
         "title": {
-          "en": "Get preference by ID",
-          "pt": "TODO",
-          "es": "TODO"
-        },
-        "description": {
-          "en": "Get preference by ID",
+          "en": "Get a Preference",
           "pt": "TODO",
           "es": "TODO"
         }
       },
       "put": {
         "tags": [
-          "Preferences"
+          "Preference"
         ],
+        "description": {
+          "en": "Update the details of a payment preference. Enter the preference ID and submit the information you wish to update.",
+          "pt": "TODO",
+          "es": "TODO"
+        },
         "parameters": [
           {
             "name": "id",
             "in": "path",
+            "description": {
+              "en": "Preference ID",
+              "pt": "TODO",
+              "es": "TODO"
+            },
             "required": true,
+            "style": "simple",
+            "explode": false,
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
+            "name": "callerID",
+            "in": "query",
+            "description": {
+              "en": "Not necessary if Access Token is passed",
+              "pt": "TODO",
+              "es": "TODO"
+            },
+            "required": false,
+            "style": "form",
+            "explode": true,
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
+            "name": "AccessToken",
+            "in": "query",
+            "description": {
+              "en": "Not necessary if Caller ID is passed",
+              "pt": "TODO",
+              "es": "TODO"
+            },
+            "required": false,
+            "style": "form",
+            "explode": true,
             "schema": {
               "type": "string"
             }
           }
         ],
         "requestBody": {
-          "required": true,
+          "description": "Preference",
           "content": {
-            "application/json": {
+            "*/*": {
               "schema": {
-                "$ref": "#/components/schemas/PreferenceRequest"
+                "$ref": "#/components/schemas/http.Preference"
               }
             }
-          }
+          },
+          "required": true
         },
         "responses": {
           "200": {
             "description": {
-              "en": "Preference updated",
+              "en": "OK",
               "pt": "TODO",
               "es": "TODO"
             },
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Preference"
+                  "$ref": "#/components/schemas/http.Preference"
                 }
               }
             }
           },
           "400": {
-            "$ref": "#/components/responses/BadRequest",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "errorKey": {
-                      "type": "string",
-                      "enum": [
-                        {
-                          "title": "TODO_error_code",
-                          "description": {
-                            "en": "TODO: describe this error",
-                            "pt": "TODO",
-                            "es": "TODO"
-                          }
-                        }
-                      ]
-                    }
-                  }
-                }
-              }
-            }
-          }
-        },
-        "title": {
-          "en": "Update a preference",
-          "pt": "TODO",
-          "es": "TODO"
-        },
-        "description": {
-          "en": "Update a preference",
-          "pt": "TODO",
-          "es": "TODO"
-        }
-      }
-    },
-    "/checkout/preferences/search": {
-      "get": {
-        "tags": [
-          "Preferences"
-        ],
-        "parameters": [
-          {
-            "name": "external_reference",
-            "in": "query",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "marketplace",
-            "in": "query",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "site_id",
-            "in": "query",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "sponsor_id",
-            "in": "query",
-            "schema": {
-              "type": "integer"
-            }
-          },
-          {
-            "name": "limit",
-            "in": "query",
-            "schema": {
-              "type": "integer",
-              "default": 30
-            }
-          },
-          {
-            "name": "offset",
-            "in": "query",
-            "schema": {
-              "type": "integer",
-              "default": 0
-            }
-          }
-        ],
-        "responses": {
-          "200": {
             "description": {
-              "en": "Search results",
+              "en": "Bad Request",
               "pt": "TODO",
               "es": "TODO"
             },
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "object",
-                  "properties": {
-                    "elements": {
-                      "type": "array",
-                      "items": {
-                        "$ref": "#/components/schemas/Preference"
-                      }
-                    },
-                    "paging": {
-                      "$ref": "#/components/schemas/Pagination"
-                    }
-                  }
-                }
-              }
-            }
-          },
-          "400": {
-            "$ref": "#/components/responses/BadRequest",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
                   "properties": {
                     "errorKey": {
                       "type": "string",
@@ -403,11 +462,98 @@
             }
           },
           "401": {
-            "$ref": "#/components/responses/Unauthorized",
+            "description": {
+              "en": "Unauthorized",
+              "pt": "TODO",
+              "es": "TODO"
+            },
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "object",
+                  "properties": {
+                    "errorKey": {
+                      "type": "string",
+                      "enum": [
+                        {
+                          "title": "TODO_error_code",
+                          "description": {
+                            "en": "TODO: describe this error",
+                            "pt": "TODO",
+                            "es": "TODO"
+                          }
+                        }
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "403": {
+            "description": {
+              "en": "Forbidden",
+              "pt": "TODO",
+              "es": "TODO"
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "errorKey": {
+                      "type": "string",
+                      "enum": [
+                        {
+                          "title": "TODO_error_code",
+                          "description": {
+                            "en": "TODO: describe this error",
+                            "pt": "TODO",
+                            "es": "TODO"
+                          }
+                        }
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": {
+              "en": "Not Found",
+              "pt": "TODO",
+              "es": "TODO"
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "errorKey": {
+                      "type": "string",
+                      "enum": [
+                        {
+                          "title": "TODO_error_code",
+                          "description": {
+                            "en": "TODO: describe this error",
+                            "pt": "TODO",
+                            "es": "TODO"
+                          }
+                        }
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": {
+              "en": "Internal Server Error",
+              "pt": "TODO",
+              "es": "TODO"
+            },
+            "content": {
+              "application/json": {
+                "schema": {
                   "properties": {
                     "errorKey": {
                       "type": "string",
@@ -428,13 +574,60 @@
             }
           }
         },
+        "x-codegen-request-body-name": "Pref",
         "title": {
-          "en": "Search preferences",
+          "en": "Update a Preference",
+          "pt": "TODO",
+          "es": "TODO"
+        }
+      }
+    },
+    "/checkout/preferences/search": {
+      "get": {
+        "tags": [
+          "Preference"
+        ],
+        "description": {
+          "en": "Returns a list of preferences based on a search query.",
           "pt": "TODO",
           "es": "TODO"
         },
-        "description": {
-          "en": "Search preferences",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "query",
+            "description": {
+              "en": "Query string to filter preferences.",
+              "pt": "TODO",
+              "es": "TODO"
+            },
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": {
+              "en": "A list of preferences matching the search query.",
+              "pt": "TODO",
+              "es": "TODO"
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "object"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "title": {
+          "en": "Search Preferences",
           "pt": "TODO",
           "es": "TODO"
         }
@@ -443,714 +636,574 @@
   },
   "components": {
     "schemas": {
-      "PreferenceRequest": {
+      "http.Preference": {
         "type": "object",
-        "description": {
-          "en": "Request body to create a Checkout Pro preference. The preference generates a hosted checkout URL (init_point) where the payer is redirected to complete payment on MP's UI. Use this for simple integrations; use Orders API for custom checkout experiences.",
-          "pt": "TODO",
-          "es": "TODO"
-        },
         "properties": {
-          "items": {
-            "type": "array",
-            "description": {
-              "en": "List of products/services being purchased",
-              "pt": "TODO",
-              "es": "TODO"
-            },
-            "items": {
-              "$ref": "#/components/schemas/PreferenceItem"
-            },
-            "minItems": 1
-          },
-          "payer": {
-            "$ref": "#/components/schemas/PreferencePayer"
-          },
-          "payment_methods": {
-            "$ref": "#/components/schemas/PreferencePaymentMethods"
-          },
-          "shipments": {
-            "$ref": "#/components/schemas/PreferenceShipments"
-          },
-          "back_urls": {
-            "$ref": "#/components/schemas/PreferenceBackUrls"
-          },
-          "notification_url": {
-            "type": "string",
-            "format": "uri",
-            "description": {
-              "en": "URL for IPN notifications. DEPRECATED — use Webhooks instead.",
-              "pt": "TODO",
-              "es": "TODO"
-            },
-            "deprecated": true
-          },
-          "statement_descriptor": {
-            "type": "string",
-            "description": {
-              "en": "Text on the payer's card statement. Max 22 chars.",
-              "pt": "TODO",
-              "es": "TODO"
-            },
-            "maxLength": 22
-          },
           "additional_info": {
-            "type": "string",
-            "description": {
-              "en": "Free-text additional info (returned in webhook notifications)",
-              "pt": "TODO",
-              "es": "TODO"
-            }
+            "type": "string"
+          },
+          "amounts": {
+            "$ref": "#/components/schemas/github_com_melisource_fury_mpcs-preferences-api_internal_domain_model.Amount"
           },
           "auto_return": {
-            "type": "string",
-            "enum": [
-              {
-                "title": "approved",
-                "description": {
-                  "en": "approved",
-                  "pt": "TODO",
-                  "es": "TODO"
-                }
-              },
-              {
-                "title": "all",
-                "description": {
-                  "en": "all",
-                  "pt": "TODO",
-                  "es": "TODO"
-                }
-              }
-            ],
-            "description": {
-              "en": "approved — auto-redirect to success URL on approved payments; all — auto-redirect for any final status.",
-              "pt": "TODO",
-              "es": "TODO"
-            }
-          },
-          "external_reference": {
-            "type": "string",
-            "description": {
-              "en": "Your internal order reference. Returned in webhook payloads.",
-              "pt": "TODO",
-              "es": "TODO"
-            },
-            "example": "ORDER-2024-001234"
-          },
-          "expires": {
-            "type": "boolean",
-            "description": {
-              "en": "Whether this preference has an expiry window",
-              "pt": "TODO",
-              "es": "TODO"
-            },
-            "default": false
-          },
-          "expiration_date_from": {
-            "type": "string",
-            "format": "date-time",
-            "description": {
-              "en": "Preference activation start time (ISO 8601)",
-              "pt": "TODO",
-              "es": "TODO"
-            }
-          },
-          "expiration_date_to": {
-            "type": "string",
-            "format": "date-time",
-            "description": {
-              "en": "Preference expiration time (ISO 8601)",
-              "pt": "TODO",
-              "es": "TODO"
-            }
-          },
-          "marketplace": {
-            "type": "string",
-            "description": {
-              "en": "Marketplace identifier",
-              "pt": "TODO",
-              "es": "TODO"
-            }
-          },
-          "marketplace_fee": {
-            "type": "number",
-            "format": "float",
-            "description": {
-              "en": "Marketplace fee charged to the seller",
-              "pt": "TODO",
-              "es": "TODO"
-            }
-          },
-          "differential_pricing": {
-            "type": "object",
-            "properties": {
-              "id": {
-                "type": "integer"
-              }
-            }
-          },
-          "binary_mode": {
-            "type": "boolean",
-            "default": false
-          }
-        }
-      },
-      "PreferenceItem": {
-        "type": "object",
-        "properties": {
-          "id": {
             "type": "string"
-          },
-          "title": {
-            "type": "string",
-            "example": "Premium Plan"
-          },
-          "description": {
-            "type": "string"
-          },
-          "picture_url": {
-            "type": "string",
-            "format": "uri"
-          },
-          "category_id": {
-            "type": "string"
-          },
-          "quantity": {
-            "type": "integer",
-            "minimum": 1,
-            "example": 1
-          },
-          "currency_id": {
-            "$ref": "#/components/schemas/CurrencyId"
-          },
-          "unit_price": {
-            "type": "number",
-            "format": "float",
-            "description": {
-              "en": "Unit price as a decimal (not integer cents)",
-              "pt": "TODO",
-              "es": "TODO"
-            },
-            "example": 99.9
-          }
-        }
-      },
-      "PreferencePayer": {
-        "type": "object",
-        "properties": {
-          "name": {
-            "type": "string"
-          },
-          "surname": {
-            "type": "string"
-          },
-          "email": {
-            "type": "string",
-            "format": "email"
-          },
-          "phone": {
-            "$ref": "#/components/schemas/Phone"
-          },
-          "identification": {
-            "$ref": "#/components/schemas/Identification"
-          },
-          "address": {
-            "$ref": "#/components/schemas/Address"
-          },
-          "date_created": {
-            "type": "string",
-            "format": "date-time"
-          }
-        }
-      },
-      "PreferencePaymentMethods": {
-        "type": "object",
-        "properties": {
-          "excluded_payment_methods": {
-            "type": "array",
-            "description": {
-              "en": "Payment methods to hide from checkout UI",
-              "pt": "TODO",
-              "es": "TODO"
-            },
-            "items": {
-              "type": "object",
-              "properties": {
-                "id": {
-                  "type": "string"
-                }
-              }
-            }
-          },
-          "excluded_payment_types": {
-            "type": "array",
-            "description": {
-              "en": "Payment type groups to exclude",
-              "pt": "TODO",
-              "es": "TODO"
-            },
-            "items": {
-              "type": "object",
-              "properties": {
-                "id": {
-                  "type": "string"
-                }
-              }
-            }
-          },
-          "installments": {
-            "type": "integer",
-            "description": {
-              "en": "Maximum number of installments to offer",
-              "pt": "TODO",
-              "es": "TODO"
-            },
-            "example": 12
-          },
-          "default_installments": {
-            "type": "integer",
-            "description": {
-              "en": "Pre-selected installments in the UI",
-              "pt": "TODO",
-              "es": "TODO"
-            }
-          }
-        }
-      },
-      "PreferenceShipments": {
-        "type": "object",
-        "properties": {
-          "mode": {
-            "type": "string",
-            "enum": [
-              {
-                "title": "custom",
-                "description": {
-                  "en": "custom",
-                  "pt": "TODO",
-                  "es": "TODO"
-                }
-              },
-              {
-                "title": "me2",
-                "description": {
-                  "en": "me2",
-                  "pt": "TODO",
-                  "es": "TODO"
-                }
-              },
-              {
-                "title": "not_specified",
-                "description": {
-                  "en": "not_specified",
-                  "pt": "TODO",
-                  "es": "TODO"
-                }
-              }
-            ]
-          },
-          "free_shipping": {
-            "type": "boolean",
-            "default": false
-          },
-          "receiver_address": {
-            "$ref": "#/components/schemas/Address"
-          },
-          "cost": {
-            "type": "number",
-            "format": "float"
-          }
-        }
-      },
-      "PreferenceBackUrls": {
-        "type": "object",
-        "description": {
-          "en": "Redirect URLs after checkout completion. Configure auto_return to control when automatic redirects happen.",
-          "pt": "TODO",
-          "es": "TODO"
-        },
-        "properties": {
-          "success": {
-            "type": "string",
-            "format": "uri",
-            "description": {
-              "en": "Redirect after approved payment",
-              "pt": "TODO",
-              "es": "TODO"
-            }
-          },
-          "pending": {
-            "type": "string",
-            "format": "uri",
-            "description": {
-              "en": "Redirect for pending payments (e.g., Boleto)",
-              "pt": "TODO",
-              "es": "TODO"
-            }
-          },
-          "failure": {
-            "type": "string",
-            "format": "uri",
-            "description": {
-              "en": "Redirect after rejected payment",
-              "pt": "TODO",
-              "es": "TODO"
-            }
-          }
-        }
-      },
-      "Preference": {
-        "type": "object",
-        "description": {
-          "en": "A created Checkout Pro preference",
-          "pt": "TODO",
-          "es": "TODO"
-        },
-        "properties": {
-          "id": {
-            "type": "string",
-            "description": {
-              "en": "Preference unique identifier",
-              "pt": "TODO",
-              "es": "TODO"
-            },
-            "example": "123456789-abcd1234-ef56-7890-abcd-ef1234567890"
-          },
-          "init_point": {
-            "type": "string",
-            "format": "uri",
-            "description": {
-              "en": "Production checkout URL. Redirect your payer here to complete payment.",
-              "pt": "TODO",
-              "es": "TODO"
-            },
-            "example": "https://www.mercadopago.com.br/checkout/v1/redirect?pref_id=..."
-          },
-          "items": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/PreferenceItem"
-            }
-          },
-          "payer": {
-            "$ref": "#/components/schemas/PreferencePayer"
-          },
-          "payment_methods": {
-            "$ref": "#/components/schemas/PreferencePaymentMethods"
           },
           "back_urls": {
-            "$ref": "#/components/schemas/PreferenceBackUrls"
+            "$ref": "#/components/schemas/github_com_melisource_fury_mpcs-preferences-api_internal_domain_model.URLConfig"
           },
-          "external_reference": {
-            "type": "string"
-          },
-          "date_created": {
-            "type": "string",
-            "format": "date-time"
-          },
-          "last_updated": {
-            "type": "string",
-            "format": "date-time"
-          },
-          "total_amount": {
-            "type": "number",
-            "format": "float"
-          },
-          "expires": {
+          "binary_mode": {
             "type": "boolean"
-          },
-          "expiration_date_from": {
-            "type": "string",
-            "format": "date-time"
-          },
-          "expiration_date_to": {
-            "type": "string",
-            "format": "date-time"
-          },
-          "collector_id": {
-            "type": "integer"
           },
           "client_id": {
             "type": "string"
           },
+          "collector": {
+            "$ref": "#/components/schemas/github_com_melisource_fury_mpcs-preferences-api_internal_domain_model.Collector"
+          },
+          "collector_email": {
+            "type": "string"
+          },
+          "collector_id": {
+            "type": "integer"
+          },
+          "concept_amount": {
+            "type": "number"
+          },
+          "concept_id": {
+            "type": "string"
+          },
+          "counter_currency": {
+            "$ref": "#/components/schemas/github_com_melisource_fury_mpcs-preferences-api_internal_domain_model.CounterCurrency"
+          },
+          "coupon_code": {
+            "type": "string"
+          },
+          "coupon_labels": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "date_of_expiration": {
+            "type": "string"
+          },
+          "differential_pricing": {
+            "$ref": "#/components/schemas/github_com_melisource_fury_mpcs-preferences-api_internal_domain_model.DifferentialPricing"
+          },
+          "expiration_date_from": {
+            "type": "string"
+          },
+          "expiration_date_to": {
+            "type": "string"
+          },
+          "expires": {
+            "type": "boolean"
+          },
+          "external_reference": {
+            "type": "string"
+          },
+          "fee_details": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/github_com_melisource_fury_mpcs-preferences-api_internal_domain_model.FeeDetail"
+            }
+          },
+          "financing_group": {
+            "type": "string"
+          },
+          "internal_metadata": {
+            "type": "object",
+            "additionalProperties": true
+          },
+          "items": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/github_com_melisource_fury_mpcs-preferences-api_internal_domain_model.Item"
+            }
+          },
+          "live_mode": {
+            "type": "boolean"
+          },
           "marketplace": {
             "type": "string"
           },
           "marketplace_fee": {
-            "type": "number",
-            "format": "float"
+            "type": "number"
+          },
+          "merchant_order_id": {
+            "type": "number"
+          },
+          "metadata": {
+            "type": "object",
+            "additionalProperties": true
+          },
+          "notification_url": {
+            "type": "string"
+          },
+          "operation_type": {
+            "type": "string"
+          },
+          "order_id": {
+            "type": "number"
+          },
+          "payer": {
+            "$ref": "#/components/schemas/github_com_melisource_fury_mpcs-preferences-api_internal_domain_model.Payer"
+          },
+          "payment_methods": {
+            "$ref": "#/components/schemas/github_com_melisource_fury_mpcs-preferences-api_internal_domain_model.PaymentMethod"
+          },
+          "processing_modes": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "purpose": {
+            "type": "string"
+          },
+          "purpose_descriptor": {
+            "type": "object"
+          },
+          "redirect_urls": {
+            "$ref": "#/components/schemas/github_com_melisource_fury_mpcs-preferences-api_internal_domain_model.URLConfig"
+          },
+          "shipments": {
+            "$ref": "#/components/schemas/github_com_melisource_fury_mpcs-preferences-api_internal_domain_model.Shipment"
+          },
+          "sponsor_id": {
+            "type": "number"
+          },
+          "statement_descriptor": {
+            "type": "number"
+          },
+          "taxes": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/github_com_melisource_fury_mpcs-preferences-api_internal_domain_model.Tax"
+            }
+          },
+          "tracks": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/github_com_melisource_fury_mpcs-preferences-api_internal_domain_model.Track"
+            }
+          },
+          "version": {
+            "type": "integer"
           }
         }
       },
-      "CurrencyId": {
-        "type": "string",
-        "description": {
-          "en": "ISO 4217 currency code for the applicable site",
-          "pt": "TODO",
-          "es": "TODO"
-        },
-        "enum": [
-          {
-            "title": "ARS",
-            "description": {
-              "en": "ARS",
-              "pt": "TODO",
-              "es": "TODO"
-            }
-          },
-          {
-            "title": "BRL",
-            "description": {
-              "en": "BRL",
-              "pt": "TODO",
-              "es": "TODO"
-            }
-          },
-          {
-            "title": "MXN",
-            "description": {
-              "en": "MXN",
-              "pt": "TODO",
-              "es": "TODO"
-            }
-          },
-          {
-            "title": "CLP",
-            "description": {
-              "en": "CLP",
-              "pt": "TODO",
-              "es": "TODO"
-            }
-          },
-          {
-            "title": "COP",
-            "description": {
-              "en": "COP",
-              "pt": "TODO",
-              "es": "TODO"
-            }
-          },
-          {
-            "title": "PEN",
-            "description": {
-              "en": "PEN",
-              "pt": "TODO",
-              "es": "TODO"
-            }
-          },
-          {
-            "title": "UYU",
-            "description": {
-              "en": "UYU",
-              "pt": "TODO",
-              "es": "TODO"
-            }
-          },
-          {
-            "title": "BOB",
-            "description": {
-              "en": "BOB",
-              "pt": "TODO",
-              "es": "TODO"
-            }
-          },
-          {
-            "title": "PYG",
-            "description": {
-              "en": "PYG",
-              "pt": "TODO",
-              "es": "TODO"
-            }
-          },
-          {
-            "title": "USD",
-            "description": {
-              "en": "USD",
-              "pt": "TODO",
-              "es": "TODO"
-            }
-          },
-          {
-            "title": "CRC",
-            "description": {
-              "en": "CRC",
-              "pt": "TODO",
-              "es": "TODO"
-            }
-          },
-          {
-            "title": "DOP",
-            "description": {
-              "en": "DOP",
-              "pt": "TODO",
-              "es": "TODO"
-            }
-          },
-          {
-            "title": "HNL",
-            "description": {
-              "en": "HNL",
-              "pt": "TODO",
-              "es": "TODO"
-            }
-          },
-          {
-            "title": "NIO",
-            "description": {
-              "en": "NIO",
-              "pt": "TODO",
-              "es": "TODO"
-            }
-          },
-          {
-            "title": "GTQ",
-            "description": {
-              "en": "GTQ",
-              "pt": "TODO",
-              "es": "TODO"
-            }
-          },
-          {
-            "title": "VES",
-            "description": {
-              "en": "VES",
-              "pt": "TODO",
-              "es": "TODO"
-            }
-          }
-        ],
-        "example": "BRL"
-      },
-      "Identification": {
+      "github_com_melisource_fury_mpcs-preferences-api_internal_domain_model.Address": {
         "type": "object",
-        "description": {
-          "en": "Payer identification document. Valid types vary by country.",
-          "pt": "TODO",
-          "es": "TODO"
-        },
         "properties": {
-          "type": {
-            "type": "string",
-            "description": {
-              "en": "Identification type (e.g., CPF, CNPJ for Brazil; DNI for Argentina; RFC for Mexico)",
-              "pt": "TODO",
-              "es": "TODO"
-            },
-            "example": "CPF"
+          "city": {
+            "type": "string"
           },
-          "number": {
-            "type": "string",
-            "description": {
-              "en": "Identification number (no formatting — digits only)",
-              "pt": "TODO",
-              "es": "TODO"
-            },
-            "example": "12345678909"
+          "federal_unit": {
+            "type": "string"
+          },
+          "neighborhood": {
+            "type": "string"
+          },
+          "street_name": {
+            "type": "string"
+          },
+          "street_number": {
+            "type": "string"
+          },
+          "zip_code": {
+            "type": "string"
           }
         }
       },
-      "Phone": {
+      "github_com_melisource_fury_mpcs-preferences-api_internal_domain_model.Amount": {
+        "type": "object",
+        "properties": {
+          "collector": {
+            "$ref": "#/components/schemas/github_com_melisource_fury_mpcs-preferences-api_internal_domain_model.AmountValues"
+          },
+          "payer": {
+            "$ref": "#/components/schemas/github_com_melisource_fury_mpcs-preferences-api_internal_domain_model.AmountValues"
+          }
+        }
+      },
+      "github_com_melisource_fury_mpcs-preferences-api_internal_domain_model.AmountValues": {
+        "type": "object",
+        "properties": {
+          "currency_id": {
+            "type": "string"
+          },
+          "transaction": {
+            "type": "number"
+          }
+        }
+      },
+      "github_com_melisource_fury_mpcs-preferences-api_internal_domain_model.Collector": {
+        "type": "object",
+        "properties": {
+          "operator_id": {
+            "type": "number",
+            "description": {
+              "en": "Can be null",
+              "pt": "TODO",
+              "es": "TODO"
+            }
+          },
+          "tags": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        }
+      },
+      "github_com_melisource_fury_mpcs-preferences-api_internal_domain_model.CounterCurrency": {
+        "type": "object",
+        "properties": {
+          "currency_id": {
+            "type": "string"
+          }
+        }
+      },
+      "github_com_melisource_fury_mpcs-preferences-api_internal_domain_model.DeductionsByInstallment": {
+        "type": "object",
+        "properties": {
+          "installments": {
+            "type": "array",
+            "items": {
+              "type": "integer"
+            }
+          }
+        }
+      },
+      "github_com_melisource_fury_mpcs-preferences-api_internal_domain_model.DifferentialPricing": {
+        "type": "object",
+        "properties": {
+          "deductions_by_installment": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/github_com_melisource_fury_mpcs-preferences-api_internal_domain_model.DeductionsByInstallment"
+            }
+          },
+          "id": {
+            "type": "integer"
+          }
+        }
+      },
+      "github_com_melisource_fury_mpcs-preferences-api_internal_domain_model.Dimensions": {
+        "type": "object",
+        "properties": {
+          "height": {
+            "type": "number"
+          },
+          "length": {
+            "type": "number"
+          },
+          "unit": {
+            "type": "string"
+          },
+          "weight": {
+            "type": "number"
+          },
+          "width": {
+            "type": "number"
+          }
+        }
+      },
+      "github_com_melisource_fury_mpcs-preferences-api_internal_domain_model.FeeDetail": {
+        "type": "object",
+        "properties": {
+          "amount": {
+            "type": "number"
+          },
+          "fee_payer": {
+            "type": "string"
+          },
+          "type": {
+            "type": "string"
+          }
+        }
+      },
+      "github_com_melisource_fury_mpcs-preferences-api_internal_domain_model.FiscalData": {
+        "type": "object",
+        "properties": {
+          "dangerous_material_id": {
+            "type": "string"
+          },
+          "measurement_unit": {
+            "type": "string"
+          },
+          "package_id": {
+            "type": "string"
+          },
+          "sat": {
+            "type": "string"
+          },
+          "sat_measurement_id": {
+            "type": "string"
+          }
+        }
+      },
+      "github_com_melisource_fury_mpcs-preferences-api_internal_domain_model.Identification": {
+        "type": "object",
+        "properties": {
+          "number": {
+            "type": "string"
+          },
+          "type": {
+            "type": "string"
+          }
+        }
+      },
+      "github_com_melisource_fury_mpcs-preferences-api_internal_domain_model.Item": {
+        "type": "object",
+        "properties": {
+          "catalog_product_id": {
+            "type": "string"
+          },
+          "category_descriptor": {
+            "type": "object"
+          },
+          "category_id": {
+            "type": "string"
+          },
+          "currency_id": {
+            "type": "string"
+          },
+          "description": {
+            "type": "string"
+          },
+          "dimensions": {
+            "$ref": "#/components/schemas/github_com_melisource_fury_mpcs-preferences-api_internal_domain_model.Dimensions"
+          },
+          "fiscal_data": {
+            "$ref": "#/components/schemas/github_com_melisource_fury_mpcs-preferences-api_internal_domain_model.FiscalData"
+          },
+          "id": {
+            "type": "string"
+          },
+          "picture_id": {
+            "type": "string"
+          },
+          "picture_url": {
+            "type": "string"
+          },
+          "quantity": {
+            "type": "number"
+          },
+          "title": {
+            "type": "string"
+          },
+          "unit_price": {
+            "type": "number"
+          },
+          "warranty": {
+            "type": "boolean"
+          }
+        }
+      },
+      "github_com_melisource_fury_mpcs-preferences-api_internal_domain_model.Payer": {
+        "type": "object",
+        "properties": {
+          "address": {
+            "$ref": "#/components/schemas/github_com_melisource_fury_mpcs-preferences-api_internal_domain_model.Address"
+          },
+          "authentication_type": {
+            "type": "string"
+          },
+          "date_created": {
+            "type": "string"
+          },
+          "email": {
+            "type": "string"
+          },
+          "guest_payer_id": {
+            "type": "string"
+          },
+          "id": {
+            "type": "number"
+          },
+          "identification": {
+            "$ref": "#/components/schemas/github_com_melisource_fury_mpcs-preferences-api_internal_domain_model.Identification"
+          },
+          "is_first_purchase_online": {
+            "type": "boolean"
+          },
+          "is_prime_user": {
+            "type": "boolean"
+          },
+          "last_purchase": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "phone": {
+            "$ref": "#/components/schemas/github_com_melisource_fury_mpcs-preferences-api_internal_domain_model.Phone"
+          },
+          "registered_payer_id": {
+            "type": "string"
+          },
+          "surname": {
+            "type": "string"
+          }
+        }
+      },
+      "github_com_melisource_fury_mpcs-preferences-api_internal_domain_model.PaymentMethod": {
+        "type": "object",
+        "properties": {
+          "default_card_id": {
+            "type": "string"
+          },
+          "default_installments": {
+            "type": "integer"
+          },
+          "default_payment_method_id": {
+            "type": "string"
+          },
+          "excluded_payment_methods": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "excluded_payment_types": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "installment_type": {
+            "type": "string"
+          },
+          "installments": {
+            "type": "integer"
+          }
+        }
+      },
+      "github_com_melisource_fury_mpcs-preferences-api_internal_domain_model.Phone": {
         "type": "object",
         "properties": {
           "area_code": {
-            "type": "string",
-            "example": "11"
+            "type": "string"
           },
           "number": {
-            "type": "string",
-            "example": "987654321"
+            "type": "string"
           }
         }
       },
-      "Address": {
+      "github_com_melisource_fury_mpcs-preferences-api_internal_domain_model.ReceiverAddress": {
         "type": "object",
         "properties": {
-          "street": {
-            "type": "string",
-            "description": {
-              "en": "Street address",
-              "pt": "TODO",
-              "es": "TODO"
-            },
-            "example": "123 Main St"
+          "apartment": {
+            "type": "string"
           },
-          "city": {
-            "type": "string",
-            "description": {
-              "en": "City name",
-              "pt": "TODO",
-              "es": "TODO"
-            },
-            "example": "New York"
+          "city_name": {
+            "type": "string"
           },
-          "country": {
-            "pattern": "^[A-Z]{2}$",
-            "description": {
-              "en": "ISO 3166-1 alpha-2 country code",
-              "pt": "TODO",
-              "es": "TODO"
-            },
-            "type": "string",
-            "example": "US"
+          "country_name": {
+            "type": "string"
           },
-          "state": {
-            "type": "string",
-            "description": {
-              "en": "State or province",
-              "pt": "TODO",
-              "es": "TODO"
-            },
-            "example": "NY"
+          "floor": {
+            "type": "string"
           },
-          "postal_code": {
-            "type": "string",
-            "description": {
-              "en": "Postal or ZIP code",
-              "pt": "TODO",
-              "es": "TODO"
-            },
-            "example": "10001"
+          "id": {
+            "type": "string"
+          },
+          "state_name": {
+            "type": "string"
+          },
+          "street_name": {
+            "type": "string"
+          },
+          "street_number": {
+            "type": "string"
+          },
+          "zip_code": {
+            "type": "string"
           }
         }
       },
-      "Pagination": {
+      "github_com_melisource_fury_mpcs-preferences-api_internal_domain_model.Shipment": {
         "type": "object",
         "properties": {
-          "has_more": {
-            "type": "boolean",
-            "description": {
-              "en": "Whether there are more results available",
-              "pt": "TODO",
-              "es": "TODO"
-            },
-            "example": true
+          "cost": {
+            "type": "number"
           },
-          "total": {
-            "type": "integer",
-            "description": {
-              "en": "Total number of payments matching the criteria",
-              "pt": "TODO",
-              "es": "TODO"
-            },
-            "example": 250
+          "default_shipping_method": {
+            "type": "integer"
           },
-          "offset": {
-            "type": "integer",
-            "description": {
-              "en": "Current offset",
-              "pt": "TODO",
-              "es": "TODO"
-            },
-            "example": 0
+          "dimensions": {
+            "type": "string"
           },
-          "limit": {
-            "type": "integer",
-            "description": {
-              "en": "Current limit",
-              "pt": "TODO",
-              "es": "TODO"
-            },
-            "example": 20
+          "express_shipment": {
+            "type": "boolean"
+          },
+          "free_methods": {
+            "type": "array",
+            "items": {
+              "type": "number"
+            }
+          },
+          "free_methods_types": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "free_shipping": {
+            "type": "boolean"
+          },
+          "local_pickup": {
+            "type": "boolean"
+          },
+          "mode": {
+            "type": "string"
+          },
+          "receiver_address": {
+            "$ref": "#/components/schemas/github_com_melisource_fury_mpcs-preferences-api_internal_domain_model.ReceiverAddress"
+          }
+        }
+      },
+      "github_com_melisource_fury_mpcs-preferences-api_internal_domain_model.Tax": {
+        "type": "object",
+        "properties": {
+          "percentage": {
+            "type": "number"
+          },
+          "type": {
+            "type": "string"
+          },
+          "value": {
+            "type": "string"
+          }
+        }
+      },
+      "github_com_melisource_fury_mpcs-preferences-api_internal_domain_model.Track": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "type": "string"
+          },
+          "values": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "string"
+            }
+          }
+        }
+      },
+      "github_com_melisource_fury_mpcs-preferences-api_internal_domain_model.URLConfig": {
+        "type": "object",
+        "properties": {
+          "failure": {
+            "type": "string"
+          },
+          "pending": {
+            "type": "string"
+          },
+          "success": {
+            "type": "string"
           }
         }
       }

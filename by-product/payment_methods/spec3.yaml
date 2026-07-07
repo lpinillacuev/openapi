@@ -238,7 +238,7 @@ paths:
         schema:
           type: number
           format: float
-        example: 1000.0
+        example: 1000
       - name: issuer_id
         in: query
         schema:

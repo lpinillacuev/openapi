@@ -407,17 +407,25 @@ components:
             format: date-time
     Pagination:
       type: object
-      description: Pagination metadata returned in list/search responses
+      required:
+      - total
+      - limit
+      - offset
+      - has_more
       properties:
+        has_more:
+          type: boolean
+          description: Whether there are more results available
+          example: true
         total:
           type: integer
-          description: Total number of results
-          example: 42
-        limit:
-          type: integer
-          description: Results per page
-          example: 30
+          description: Total number of payments matching the criteria
+          example: 250
         offset:
           type: integer
-          description: Offset of the current page
+          description: Current offset
           example: 0
+        limit:
+          type: integer
+          description: Current limit
+          example: 20

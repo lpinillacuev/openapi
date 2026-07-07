@@ -1604,63 +1604,92 @@
       "Address": {
         "type": "object",
         "properties": {
-          "zip_code": {
+          "street": {
             "type": "string",
-            "example": "01310-100"
-          },
-          "street_name": {
-            "type": "string",
-            "example": "Av. Paulista"
-          },
-          "street_number": {
-            "type": "string",
-            "example": "1000"
+            "description": {
+              "en": "Street address",
+              "pt": "TODO",
+              "es": "TODO"
+            },
+            "example": "123 Main St"
           },
           "city": {
-            "type": "string"
-          },
-          "state": {
-            "type": "string"
+            "type": "string",
+            "description": {
+              "en": "City name",
+              "pt": "TODO",
+              "es": "TODO"
+            },
+            "example": "New York"
           },
           "country": {
-            "type": "string"
+            "pattern": "^[A-Z]{2}$",
+            "description": {
+              "en": "ISO 3166-1 alpha-2 country code",
+              "pt": "TODO",
+              "es": "TODO"
+            },
+            "type": "string",
+            "example": "US"
+          },
+          "state": {
+            "type": "string",
+            "description": {
+              "en": "State or province",
+              "pt": "TODO",
+              "es": "TODO"
+            },
+            "example": "NY"
+          },
+          "postal_code": {
+            "type": "string",
+            "description": {
+              "en": "Postal or ZIP code",
+              "pt": "TODO",
+              "es": "TODO"
+            },
+            "example": "10001"
           }
         }
       },
       "Pagination": {
         "type": "object",
-        "description": {
-          "en": "Pagination metadata returned in list/search responses",
-          "pt": "TODO",
-          "es": "TODO"
-        },
         "properties": {
+          "has_more": {
+            "type": "boolean",
+            "description": {
+              "en": "Whether there are more results available",
+              "pt": "TODO",
+              "es": "TODO"
+            },
+            "example": true
+          },
           "total": {
             "type": "integer",
             "description": {
-              "en": "Total number of results",
+              "en": "Total number of payments matching the criteria",
               "pt": "TODO",
               "es": "TODO"
             },
-            "example": 42
-          },
-          "limit": {
-            "type": "integer",
-            "description": {
-              "en": "Results per page",
-              "pt": "TODO",
-              "es": "TODO"
-            },
-            "example": 30
+            "example": 250
           },
           "offset": {
             "type": "integer",
             "description": {
-              "en": "Offset of the current page",
+              "en": "Current offset",
               "pt": "TODO",
               "es": "TODO"
             },
             "example": 0
+          },
+          "limit": {
+            "type": "integer",
+            "description": {
+              "en": "Current limit",
+              "pt": "TODO",
+              "es": "TODO"
+            },
+            "example": 20
           }
         }
       },

@@ -669,6 +669,95 @@ components:
             error: too_many_requests
             message: Rate limit exceeded. Retry after the indicated number of seconds.
   schemas:
+    BankAccount:
+      type: object
+      required:
+      - account_number
+      - routing_number
+      properties:
+        account_number:
+          type: string
+          description: Bank account number
+        routing_number:
+          type: string
+          description: Bank routing number
+        account_type:
+          type: string
+          enum:
+          - checking
+          - savings
+          description: Type of bank account
+    CardDetails:
+      type: object
+      required:
+      - number
+      - expiry_month
+      - expiry_year
+      - cvv
+      properties:
+        number:
+          type: string
+          pattern: ^[0-9]{13,19}$
+          description: Card number
+          example: '4111111111111111'
+        expiry_month:
+          type: integer
+          minimum: 1
+          maximum: 12
+          description: Card expiry month
+          example: 12
+        expiry_year:
+          type: integer
+          minimum: 2024
+          description: Card expiry year
+          example: 2026
+        cvv:
+          type: string
+          pattern: ^[0-9]{3,4}$
+          description: Card verification value
+          example: '123'
+        cardholder_name:
+          type: string
+          maxLength: 100
+          description: Name on the card
+          example: John Doe
+    DigitalWallet:
+      type: object
+      required:
+      - provider
+      - wallet_id
+      properties:
+        provider:
+          type: string
+          enum:
+          - paypal
+          - apple_pay
+          - google_pay
+          - venmo
+          description: Digital wallet provider
+        wallet_id:
+          type: string
+          description: Wallet identifier or token
+    PaymentMethod:
+      type: object
+      required:
+      - type
+      properties:
+        type:
+          type: string
+          enum:
+          - credit_card
+          - debit_card
+          - bank_transfer
+          - digital_wallet
+          - cryptocurrency
+          description: Type of payment method
+        card:
+          $ref: '#/components/schemas/CardDetails'
+        bank_account:
+          $ref: '#/components/schemas/BankAccount'
+        digital_wallet:
+          $ref: '#/components/schemas/DigitalWallet'
     Pagination:
       type: object
       required:
@@ -831,92 +920,3 @@ components:
           type: string
           format: date-time
           description: New expiration date for cash payment methods.
-    BankAccount:
-      type: object
-      required:
-      - account_number
-      - routing_number
-      properties:
-        account_number:
-          type: string
-          description: Bank account number
-        routing_number:
-          type: string
-          description: Bank routing number
-        account_type:
-          type: string
-          enum:
-          - checking
-          - savings
-          description: Type of bank account
-    DigitalWallet:
-      type: object
-      required:
-      - provider
-      - wallet_id
-      properties:
-        provider:
-          type: string
-          enum:
-          - paypal
-          - apple_pay
-          - google_pay
-          - venmo
-          description: Digital wallet provider
-        wallet_id:
-          type: string
-          description: Wallet identifier or token
-    CardDetails:
-      type: object
-      required:
-      - number
-      - expiry_month
-      - expiry_year
-      - cvv
-      properties:
-        number:
-          type: string
-          pattern: ^[0-9]{13,19}$
-          description: Card number
-          example: '4111111111111111'
-        expiry_month:
-          type: integer
-          minimum: 1
-          maximum: 12
-          description: Card expiry month
-          example: 12
-        expiry_year:
-          type: integer
-          minimum: 2024
-          description: Card expiry year
-          example: 2026
-        cvv:
-          type: string
-          pattern: ^[0-9]{3,4}$
-          description: Card verification value
-          example: '123'
-        cardholder_name:
-          type: string
-          maxLength: 100
-          description: Name on the card
-          example: John Doe
-    PaymentMethod:
-      type: object
-      required:
-      - type
-      properties:
-        type:
-          type: string
-          enum:
-          - credit_card
-          - debit_card
-          - bank_transfer
-          - digital_wallet
-          - cryptocurrency
-          description: Type of payment method
-        card:
-          $ref: '#/components/schemas/CardDetails'
-        bank_account:
-          $ref: '#/components/schemas/BankAccount'
-        digital_wallet:
-          $ref: '#/components/schemas/DigitalWallet'

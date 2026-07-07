@@ -1696,6 +1696,228 @@
   },
   "components": {
     "schemas": {
+      "BankAccount": {
+        "type": "object",
+        "properties": {
+          "account_number": {
+            "type": "string",
+            "description": {
+              "en": "Bank account number",
+              "pt": "TODO",
+              "es": "TODO"
+            }
+          },
+          "routing_number": {
+            "type": "string",
+            "description": {
+              "en": "Bank routing number",
+              "pt": "TODO",
+              "es": "TODO"
+            }
+          },
+          "account_type": {
+            "type": "string",
+            "enum": [
+              {
+                "title": "checking",
+                "description": {
+                  "en": "checking",
+                  "pt": "TODO",
+                  "es": "TODO"
+                }
+              },
+              {
+                "title": "savings",
+                "description": {
+                  "en": "savings",
+                  "pt": "TODO",
+                  "es": "TODO"
+                }
+              }
+            ],
+            "description": {
+              "en": "Type of bank account",
+              "pt": "TODO",
+              "es": "TODO"
+            }
+          }
+        }
+      },
+      "CardDetails": {
+        "type": "object",
+        "properties": {
+          "number": {
+            "type": "string",
+            "pattern": "^[0-9]{13,19}$",
+            "description": {
+              "en": "Card number",
+              "pt": "TODO",
+              "es": "TODO"
+            },
+            "example": "4111111111111111"
+          },
+          "expiry_month": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 12,
+            "description": {
+              "en": "Card expiry month",
+              "pt": "TODO",
+              "es": "TODO"
+            },
+            "example": 12
+          },
+          "expiry_year": {
+            "type": "integer",
+            "minimum": 2024,
+            "description": {
+              "en": "Card expiry year",
+              "pt": "TODO",
+              "es": "TODO"
+            },
+            "example": 2026
+          },
+          "cvv": {
+            "type": "string",
+            "pattern": "^[0-9]{3,4}$",
+            "description": {
+              "en": "Card verification value",
+              "pt": "TODO",
+              "es": "TODO"
+            },
+            "example": "123"
+          },
+          "cardholder_name": {
+            "type": "string",
+            "maxLength": 100,
+            "description": {
+              "en": "Name on the card",
+              "pt": "TODO",
+              "es": "TODO"
+            },
+            "example": "John Doe"
+          }
+        }
+      },
+      "DigitalWallet": {
+        "type": "object",
+        "properties": {
+          "provider": {
+            "type": "string",
+            "enum": [
+              {
+                "title": "paypal",
+                "description": {
+                  "en": "paypal",
+                  "pt": "TODO",
+                  "es": "TODO"
+                }
+              },
+              {
+                "title": "apple_pay",
+                "description": {
+                  "en": "apple_pay",
+                  "pt": "TODO",
+                  "es": "TODO"
+                }
+              },
+              {
+                "title": "google_pay",
+                "description": {
+                  "en": "google_pay",
+                  "pt": "TODO",
+                  "es": "TODO"
+                }
+              },
+              {
+                "title": "venmo",
+                "description": {
+                  "en": "venmo",
+                  "pt": "TODO",
+                  "es": "TODO"
+                }
+              }
+            ],
+            "description": {
+              "en": "Digital wallet provider",
+              "pt": "TODO",
+              "es": "TODO"
+            }
+          },
+          "wallet_id": {
+            "type": "string",
+            "description": {
+              "en": "Wallet identifier or token",
+              "pt": "TODO",
+              "es": "TODO"
+            }
+          }
+        }
+      },
+      "PaymentMethod": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "type": "string",
+            "enum": [
+              {
+                "title": "credit_card",
+                "description": {
+                  "en": "credit_card",
+                  "pt": "TODO",
+                  "es": "TODO"
+                }
+              },
+              {
+                "title": "debit_card",
+                "description": {
+                  "en": "debit_card",
+                  "pt": "TODO",
+                  "es": "TODO"
+                }
+              },
+              {
+                "title": "bank_transfer",
+                "description": {
+                  "en": "bank_transfer",
+                  "pt": "TODO",
+                  "es": "TODO"
+                }
+              },
+              {
+                "title": "digital_wallet",
+                "description": {
+                  "en": "digital_wallet",
+                  "pt": "TODO",
+                  "es": "TODO"
+                }
+              },
+              {
+                "title": "cryptocurrency",
+                "description": {
+                  "en": "cryptocurrency",
+                  "pt": "TODO",
+                  "es": "TODO"
+                }
+              }
+            ],
+            "description": {
+              "en": "Type of payment method",
+              "pt": "TODO",
+              "es": "TODO"
+            }
+          },
+          "card": {
+            "$ref": "#/components/schemas/CardDetails"
+          },
+          "bank_account": {
+            "$ref": "#/components/schemas/BankAccount"
+          },
+          "digital_wallet": {
+            "$ref": "#/components/schemas/DigitalWallet"
+          }
+        }
+      },
       "Pagination": {
         "type": "object",
         "properties": {
@@ -2014,228 +2236,6 @@
               "pt": "TODO",
               "es": "TODO"
             }
-          }
-        }
-      },
-      "BankAccount": {
-        "type": "object",
-        "properties": {
-          "account_number": {
-            "type": "string",
-            "description": {
-              "en": "Bank account number",
-              "pt": "TODO",
-              "es": "TODO"
-            }
-          },
-          "routing_number": {
-            "type": "string",
-            "description": {
-              "en": "Bank routing number",
-              "pt": "TODO",
-              "es": "TODO"
-            }
-          },
-          "account_type": {
-            "type": "string",
-            "enum": [
-              {
-                "title": "checking",
-                "description": {
-                  "en": "checking",
-                  "pt": "TODO",
-                  "es": "TODO"
-                }
-              },
-              {
-                "title": "savings",
-                "description": {
-                  "en": "savings",
-                  "pt": "TODO",
-                  "es": "TODO"
-                }
-              }
-            ],
-            "description": {
-              "en": "Type of bank account",
-              "pt": "TODO",
-              "es": "TODO"
-            }
-          }
-        }
-      },
-      "DigitalWallet": {
-        "type": "object",
-        "properties": {
-          "provider": {
-            "type": "string",
-            "enum": [
-              {
-                "title": "paypal",
-                "description": {
-                  "en": "paypal",
-                  "pt": "TODO",
-                  "es": "TODO"
-                }
-              },
-              {
-                "title": "apple_pay",
-                "description": {
-                  "en": "apple_pay",
-                  "pt": "TODO",
-                  "es": "TODO"
-                }
-              },
-              {
-                "title": "google_pay",
-                "description": {
-                  "en": "google_pay",
-                  "pt": "TODO",
-                  "es": "TODO"
-                }
-              },
-              {
-                "title": "venmo",
-                "description": {
-                  "en": "venmo",
-                  "pt": "TODO",
-                  "es": "TODO"
-                }
-              }
-            ],
-            "description": {
-              "en": "Digital wallet provider",
-              "pt": "TODO",
-              "es": "TODO"
-            }
-          },
-          "wallet_id": {
-            "type": "string",
-            "description": {
-              "en": "Wallet identifier or token",
-              "pt": "TODO",
-              "es": "TODO"
-            }
-          }
-        }
-      },
-      "CardDetails": {
-        "type": "object",
-        "properties": {
-          "number": {
-            "type": "string",
-            "pattern": "^[0-9]{13,19}$",
-            "description": {
-              "en": "Card number",
-              "pt": "TODO",
-              "es": "TODO"
-            },
-            "example": "4111111111111111"
-          },
-          "expiry_month": {
-            "type": "integer",
-            "minimum": 1,
-            "maximum": 12,
-            "description": {
-              "en": "Card expiry month",
-              "pt": "TODO",
-              "es": "TODO"
-            },
-            "example": 12
-          },
-          "expiry_year": {
-            "type": "integer",
-            "minimum": 2024,
-            "description": {
-              "en": "Card expiry year",
-              "pt": "TODO",
-              "es": "TODO"
-            },
-            "example": 2026
-          },
-          "cvv": {
-            "type": "string",
-            "pattern": "^[0-9]{3,4}$",
-            "description": {
-              "en": "Card verification value",
-              "pt": "TODO",
-              "es": "TODO"
-            },
-            "example": "123"
-          },
-          "cardholder_name": {
-            "type": "string",
-            "maxLength": 100,
-            "description": {
-              "en": "Name on the card",
-              "pt": "TODO",
-              "es": "TODO"
-            },
-            "example": "John Doe"
-          }
-        }
-      },
-      "PaymentMethod": {
-        "type": "object",
-        "properties": {
-          "type": {
-            "type": "string",
-            "enum": [
-              {
-                "title": "credit_card",
-                "description": {
-                  "en": "credit_card",
-                  "pt": "TODO",
-                  "es": "TODO"
-                }
-              },
-              {
-                "title": "debit_card",
-                "description": {
-                  "en": "debit_card",
-                  "pt": "TODO",
-                  "es": "TODO"
-                }
-              },
-              {
-                "title": "bank_transfer",
-                "description": {
-                  "en": "bank_transfer",
-                  "pt": "TODO",
-                  "es": "TODO"
-                }
-              },
-              {
-                "title": "digital_wallet",
-                "description": {
-                  "en": "digital_wallet",
-                  "pt": "TODO",
-                  "es": "TODO"
-                }
-              },
-              {
-                "title": "cryptocurrency",
-                "description": {
-                  "en": "cryptocurrency",
-                  "pt": "TODO",
-                  "es": "TODO"
-                }
-              }
-            ],
-            "description": {
-              "en": "Type of payment method",
-              "pt": "TODO",
-              "es": "TODO"
-            }
-          },
-          "card": {
-            "$ref": "#/components/schemas/CardDetails"
-          },
-          "bank_account": {
-            "$ref": "#/components/schemas/BankAccount"
-          },
-          "digital_wallet": {
-            "$ref": "#/components/schemas/DigitalWallet"
           }
         }
       }

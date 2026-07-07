@@ -2,12 +2,9 @@ name: Trigger SDK generation
 
 # Triggered when spec3.yaml merges to main.
 #
-# Flow (with fallback):
+# Flow:
 #   1. generate_product_diff.py → detects what changed per product
-#   2. push_to_sdk.py → tries to call spec-agent-generator directly (fast path)
-#      └─ If unreachable (no VPN from GitHub Actions) → continue-on-error: true
-#   3. Bot-sync fallback → already triggered SDK when it created the PR
-#      (runs inside ML's network, no VPN needed)
+#   2. spec-agent public API → async-generate (reachable from GitHub Actions)
 
 on:
   push:
@@ -88,28 +85,6 @@ jobs:
           fi
           echo "✅ SDK generation triggered successfully"
 
-      # ── Step 2b: Notify bot-sync with the FINAL merged spec ─────────────────
-      # Bot-sync reads spec3.yaml at the merge commit SHA (final spec after review)
-      # and calls spec-agent-generator via melisystems.com (internal ML network).
-      # This ensures the SDK is generated from the spec the reviewer approved,
-      # not from the spec when the PR was created.
-      - name: Trigger SDK generation — via bot-sync with merged spec
-        if: steps.changed.outputs.has_changes == 'true'
-        continue-on-error: true
-        env:
-          BOT_URL: ${{ secrets.BOT_SYNC_SPECS_URL || 'https://beta-bot-sync-specs.melioffice.com' }}
-          CHANGED_PRODUCTS: ${{ steps.changed.outputs.products }}
-        run: |
-          COMMIT_SHA="${{ github.sha }}"
-          echo "Notifying bot-sync with merge commit: $COMMIT_SHA"
-          curl -s -o /tmp/sdk_response.json -w "HTTP: %{http_code}\n" \
-            -X POST "${BOT_URL}/openapi/sdk/on-merge" \
-            -H "Content-Type: application/json" \
-            -H "X-github-token: ${{ secrets.GH_PAT }}" \
-            --max-time 300 \
-            -d "{\"commitSha\": \"$COMMIT_SHA\", \"apps\": \"$CHANGED_PRODUCTS\"}" || true
-          cat /tmp/sdk_response.json || true
-
       - name: Summary
         if: steps.changed.outputs.has_changes == 'true'
         run: |
@@ -119,7 +94,7 @@ jobs:
           if [ "$DIRECT" = "success" ]; then
             echo "✅ Triggered via spec-agent public API" >> $GITHUB_STEP_SUMMARY
           else
-            echo "⚠️ spec-agent call failed — bot-sync fallback triggered (or already handled when PR was created)" >> $GITHUB_STEP_SUMMARY
+            echo "⚠️ spec-agent call failed — see step log for details" >> $GITHUB_STEP_SUMMARY
           fi
 
       - name: No changes

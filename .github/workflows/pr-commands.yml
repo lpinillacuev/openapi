@@ -19,6 +19,10 @@ on:
   issue_comment:
     types: [created]
 
+permissions:
+  issues: write
+  pull-requests: write
+
 jobs:
   # ── Job 1: GitHub native review (Approve / Request changes) ─────────────────
   handle-review:

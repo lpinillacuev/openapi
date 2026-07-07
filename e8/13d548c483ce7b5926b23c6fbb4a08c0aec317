@@ -1,0 +1,19 @@
+.github/workflows/pr-commands.yml
+  s_c6fa9f5ec88947::t_553a56b683c05f 34-37
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.5.6",
+  "base_commit_sha": "e813d548c483ce7b5926b23c6fbb4a08c0aec317",
+  "prompts": {},
+  "sessions": {
+    "s_c6fa9f5ec88947": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "80d91040-c873-408f-87a1-099fcd382947",
+        "model": "claude-sonnet-4-6"
+      },
+      "human_author": "lpinillacuev <lina.pinillacuevas@mercadolibre.com.co>"
+    }
+  }
+}

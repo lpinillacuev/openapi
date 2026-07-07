@@ -136,206 +136,155 @@ tags:
 paths:
   /checkout/preferences:
     post:
+      operationId: createPreference
+      summary: Create a preference
+      description: "Creates a Checkout Pro preference. The response contains `init_point` (production) and \n**Webhook events\
+        \ triggered:** payment, merchant_order"
       tags:
-      - Preference
-      summary: Create a Preference
-      parameters:
-      - name: callerID
-        in: query
-        description: Not necessary if Access Token is passed
-        required: false
-        style: form
-        explode: true
-        schema:
-          type: integer
-      - name: AccessToken
-        in: query
-        description: Not necessary if Caller ID is passed
-        required: false
-        style: form
-        explode: true
-        schema:
-          type: string
+      - Preferences
+      security:
+      - bearerAuth: []
       requestBody:
-        description: Preference
-        content:
-          '*/*':
-            schema:
-              $ref: '#/components/schemas/http.Preference'
         required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PreferenceRequest'
+            examples:
+              simple:
+                summary: Simple one-item preference
+                value:
+                  items:
+                  - title: Premium Plan
+                    quantity: 1
+                    unit_price: 99.9
+                  payer:
+                    email: customer@example.com
+                  back_urls:
+                    success: https://mystore.com/success
+                    failure: https://mystore.com/failure
+                    pending: https://mystore.com/pending
+                  auto_return: approved
       responses:
         '201':
-          description: Created
-          content:
+          description: Preference created
+          content: &id002
             application/json:
               schema:
-                $ref: '#/components/schemas/http.Preference'
+                $ref: '#/components/schemas/Preference'
         '400':
-          description: Bad Request
-          content:
-            application/json:
-              schema: {}
+          $ref: '#/components/responses/BadRequest'
         '401':
-          description: Unauthorized
-          content:
-            application/json:
-              schema: {}
-        '403':
-          description: Forbidden
-          content:
-            application/json:
-              schema: {}
-        '500':
-          description: Internal Server Error
-          content:
-            application/json:
-              schema: {}
-      x-codegen-request-body-name: Pref
+          $ref: '#/components/responses/Unauthorized'
+        '200':
+          description: Preference created
+          content: *id002
   /checkout/preferences/{id}:
     get:
+      operationId: getPreference
+      summary: Get preference by ID
       tags:
-      - Preference
-      summary: Get a Preference
-      description: View all payment information for a product or service with the desired preference ID.
+      - Preferences
+      security:
+      - bearerAuth: []
       parameters:
       - name: id
         in: path
-        description: Preference ID
         required: true
-        style: simple
-        explode: false
-        schema:
-          type: string
-      - name: callerID
-        in: query
-        description: Not necessary if Access Token is passed
-        required: false
-        style: form
-        explode: true
-        schema:
-          type: integer
-      - name: AccessToken
-        in: query
-        description: Not necessary if Caller ID is passed
-        required: false
-        style: form
-        explode: true
         schema:
           type: string
       responses:
         '200':
-          description: OK
+          description: Preference found
           content:
             application/json:
-              schema: {}
-        '400':
-          description: Bad Request
-          content:
-            application/json:
-              schema: {}
+              schema:
+                $ref: '#/components/schemas/Preference'
         '404':
-          description: Not Found
-          content:
-            application/json:
-              schema: {}
-        '500':
-          description: Internal Server Error
-          content:
-            application/json:
-              schema: {}
+          $ref: '#/components/responses/NotFound'
+        '400':
+          $ref: '#/components/responses/BadRequest'
     put:
+      operationId: updatePreference
+      summary: Update a preference
       tags:
-      - Preference
-      summary: Update a Preference
-      description: Update the details of a payment preference. Enter the preference ID and submit the information you wish
-        to update.
+      - Preferences
+      security:
+      - bearerAuth: []
       parameters:
       - name: id
         in: path
-        description: Preference ID
         required: true
-        style: simple
-        explode: false
-        schema:
-          type: integer
-      - name: callerID
-        in: query
-        description: Not necessary if Access Token is passed
-        required: false
-        style: form
-        explode: true
-        schema:
-          type: integer
-      - name: AccessToken
-        in: query
-        description: Not necessary if Caller ID is passed
-        required: false
-        style: form
-        explode: true
         schema:
           type: string
       requestBody:
-        description: Preference
-        content:
-          '*/*':
-            schema:
-              $ref: '#/components/schemas/http.Preference'
         required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PreferenceRequest'
       responses:
         '200':
-          description: OK
+          description: Preference updated
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/http.Preference'
+                $ref: '#/components/schemas/Preference'
         '400':
-          description: Bad Request
-          content:
-            application/json:
-              schema: {}
-        '401':
-          description: Unauthorized
-          content:
-            application/json:
-              schema: {}
-        '403':
-          description: Forbidden
-          content:
-            application/json:
-              schema: {}
-        '404':
-          description: Not Found
-          content:
-            application/json:
-              schema: {}
-        '500':
-          description: Internal Server Error
-          content:
-            application/json:
-              schema: {}
-      x-codegen-request-body-name: Pref
+          $ref: '#/components/responses/BadRequest'
   /checkout/preferences/search:
     get:
+      operationId: searchPreferences
+      summary: Search preferences
       tags:
-      - Preference
-      summary: Search Preferences
-      description: Returns a list of preferences based on a search query.
+      - Preferences
+      security:
+      - bearerAuth: []
       parameters:
-      - in: query
-        name: query
-        description: Query string to filter preferences.
-        required: false
+      - name: external_reference
+        in: query
         schema:
           type: string
+      - name: marketplace
+        in: query
+        schema:
+          type: string
+      - name: site_id
+        in: query
+        schema:
+          type: string
+      - name: sponsor_id
+        in: query
+        schema:
+          type: integer
+      - name: limit
+        in: query
+        schema:
+          type: integer
+          default: 30
+      - name: offset
+        in: query
+        schema:
+          type: integer
+          default: 0
       responses:
         '200':
-          description: A list of preferences matching the search query.
+          description: Search results
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  type: object
+                type: object
+                properties:
+                  elements:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Preference'
+                  paging:
+                    $ref: '#/components/schemas/Pagination'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
 components:
   securitySchemes:
     bearerAuth:
@@ -406,377 +355,329 @@ components:
             error: too_many_requests
             message: Rate limit exceeded. Retry after the indicated number of seconds.
   schemas:
-    http.Preference:
+    PreferenceRequest:
+      type: object
       required:
       - items
-      type: object
+      description: Request body to create a Checkout Pro preference. The preference generates a hosted checkout URL (init_point)
+        where the payer is redirected to complete payment on MP's UI. Use this for simple integrations; use Orders API for
+        custom checkout experiences.
       properties:
+        items:
+          type: array
+          description: List of products/services being purchased
+          items:
+            $ref: '#/components/schemas/PreferenceItem'
+          minItems: 1
+        payer:
+          $ref: '#/components/schemas/PreferencePayer'
+        payment_methods:
+          $ref: '#/components/schemas/PreferencePaymentMethods'
+        shipments:
+          $ref: '#/components/schemas/PreferenceShipments'
+        back_urls:
+          $ref: '#/components/schemas/PreferenceBackUrls'
+        notification_url:
+          type: string
+          format: uri
+          description: URL for IPN notifications. DEPRECATED — use Webhooks instead.
+          deprecated: true
+        statement_descriptor:
+          type: string
+          description: Text on the payer's card statement. Max 22 chars.
+          maxLength: 22
         additional_info:
           type: string
-        amounts:
-          $ref: '#/components/schemas/github_com_melisource_fury_mpcs-preferences-api_internal_domain_model.Amount'
+          description: Free-text additional info (returned in webhook notifications)
         auto_return:
           type: string
-        back_urls:
-          $ref: '#/components/schemas/github_com_melisource_fury_mpcs-preferences-api_internal_domain_model.URLConfig'
-        binary_mode:
-          type: boolean
-        client_id:
-          type: string
-        collector:
-          $ref: '#/components/schemas/github_com_melisource_fury_mpcs-preferences-api_internal_domain_model.Collector'
-        collector_email:
-          type: string
-        collector_id:
-          type: integer
-        concept_amount:
-          type: number
-        concept_id:
-          type: string
-        counter_currency:
-          $ref: '#/components/schemas/github_com_melisource_fury_mpcs-preferences-api_internal_domain_model.CounterCurrency'
-        coupon_code:
-          type: string
-        coupon_labels:
-          type: array
-          items:
-            type: string
-        date_of_expiration:
-          type: string
-        differential_pricing:
-          $ref: '#/components/schemas/github_com_melisource_fury_mpcs-preferences-api_internal_domain_model.DifferentialPricing'
-        expiration_date_from:
-          type: string
-        expiration_date_to:
-          type: string
-        expires:
-          type: boolean
+          enum:
+          - approved
+          - all
+          description: approved — auto-redirect to success URL on approved payments; all — auto-redirect for any final status.
         external_reference:
           type: string
-        fee_details:
-          type: array
-          items:
-            $ref: '#/components/schemas/github_com_melisource_fury_mpcs-preferences-api_internal_domain_model.FeeDetail'
-        financing_group:
+          description: Your internal order reference. Returned in webhook payloads.
+          example: ORDER-2024-001234
+        expires:
+          type: boolean
+          description: Whether this preference has an expiry window
+          default: false
+        expiration_date_from:
           type: string
-        internal_metadata:
+          format: date-time
+          description: Preference activation start time (ISO 8601)
+        expiration_date_to:
+          type: string
+          format: date-time
+          description: Preference expiration time (ISO 8601)
+        marketplace:
+          type: string
+          description: Marketplace identifier
+        marketplace_fee:
+          type: number
+          format: float
+          description: Marketplace fee charged to the seller
+        differential_pricing:
           type: object
-          additionalProperties: true
+          properties:
+            id:
+              type: integer
+        binary_mode:
+          type: boolean
+          default: false
+    PreferenceItem:
+      type: object
+      required:
+      - title
+      - quantity
+      - unit_price
+      properties:
+        id:
+          type: string
+        title:
+          type: string
+          example: Premium Plan
+        description:
+          type: string
+        picture_url:
+          type: string
+          format: uri
+        category_id:
+          type: string
+        quantity:
+          type: integer
+          minimum: 1
+          example: 1
+        currency_id:
+          $ref: '#/components/schemas/CurrencyId'
+        unit_price:
+          type: number
+          format: float
+          description: Unit price as a decimal (not integer cents)
+          example: 99.9
+    PreferencePayer:
+      type: object
+      properties:
+        name:
+          type: string
+        surname:
+          type: string
+        email:
+          type: string
+          format: email
+        phone:
+          $ref: '#/components/schemas/Phone'
+        identification:
+          $ref: '#/components/schemas/Identification'
+        address:
+          $ref: '#/components/schemas/Address'
+        date_created:
+          type: string
+          format: date-time
+    PreferencePaymentMethods:
+      type: object
+      properties:
+        excluded_payment_methods:
+          type: array
+          description: Payment methods to hide from checkout UI
+          items:
+            type: object
+            properties:
+              id:
+                type: string
+        excluded_payment_types:
+          type: array
+          description: Payment type groups to exclude
+          items:
+            type: object
+            properties:
+              id:
+                type: string
+        installments:
+          type: integer
+          description: Maximum number of installments to offer
+          example: 12
+        default_installments:
+          type: integer
+          description: Pre-selected installments in the UI
+    PreferenceShipments:
+      type: object
+      properties:
+        mode:
+          type: string
+          enum:
+          - custom
+          - me2
+          - not_specified
+        free_shipping:
+          type: boolean
+          default: false
+        receiver_address:
+          $ref: '#/components/schemas/Address'
+        cost:
+          type: number
+          format: float
+    PreferenceBackUrls:
+      type: object
+      description: Redirect URLs after checkout completion. Configure auto_return to control when automatic redirects happen.
+      properties:
+        success:
+          type: string
+          format: uri
+          description: Redirect after approved payment
+        pending:
+          type: string
+          format: uri
+          description: Redirect for pending payments (e.g., Boleto)
+        failure:
+          type: string
+          format: uri
+          description: Redirect after rejected payment
+    Preference:
+      type: object
+      description: A created Checkout Pro preference
+      properties:
+        id:
+          type: string
+          description: Preference unique identifier
+          example: 123456789-abcd1234-ef56-7890-abcd-ef1234567890
+        init_point:
+          type: string
+          format: uri
+          description: Production checkout URL. Redirect your payer here to complete payment.
+          example: https://www.mercadopago.com.br/checkout/v1/redirect?pref_id=...
         items:
           type: array
           items:
-            $ref: '#/components/schemas/github_com_melisource_fury_mpcs-preferences-api_internal_domain_model.Item'
-        live_mode:
+            $ref: '#/components/schemas/PreferenceItem'
+        payer:
+          $ref: '#/components/schemas/PreferencePayer'
+        payment_methods:
+          $ref: '#/components/schemas/PreferencePaymentMethods'
+        back_urls:
+          $ref: '#/components/schemas/PreferenceBackUrls'
+        external_reference:
+          type: string
+        date_created:
+          type: string
+          format: date-time
+        last_updated:
+          type: string
+          format: date-time
+        total_amount:
+          type: number
+          format: float
+        expires:
           type: boolean
+        expiration_date_from:
+          type: string
+          format: date-time
+        expiration_date_to:
+          type: string
+          format: date-time
+        collector_id:
+          type: integer
+        client_id:
+          type: string
         marketplace:
           type: string
         marketplace_fee:
           type: number
-        merchant_order_id:
-          type: number
-        metadata:
-          type: object
-          additionalProperties: true
-        notification_url:
-          type: string
-        operation_type:
-          type: string
-        order_id:
-          type: number
-        payer:
-          $ref: '#/components/schemas/github_com_melisource_fury_mpcs-preferences-api_internal_domain_model.Payer'
-        payment_methods:
-          $ref: '#/components/schemas/github_com_melisource_fury_mpcs-preferences-api_internal_domain_model.PaymentMethod'
-        processing_modes:
-          type: array
-          items:
-            type: string
-        purpose:
-          type: string
-        purpose_descriptor:
-          type: object
-        redirect_urls:
-          $ref: '#/components/schemas/github_com_melisource_fury_mpcs-preferences-api_internal_domain_model.URLConfig'
-        shipments:
-          $ref: '#/components/schemas/github_com_melisource_fury_mpcs-preferences-api_internal_domain_model.Shipment'
-        sponsor_id:
-          type: number
-        statement_descriptor:
-          type: number
-        taxes:
-          type: array
-          items:
-            $ref: '#/components/schemas/github_com_melisource_fury_mpcs-preferences-api_internal_domain_model.Tax'
-        tracks:
-          type: array
-          items:
-            $ref: '#/components/schemas/github_com_melisource_fury_mpcs-preferences-api_internal_domain_model.Track'
-        version:
-          type: integer
-    github_com_melisource_fury_mpcs-preferences-api_internal_domain_model.Address:
+          format: float
+    CurrencyId:
+      type: string
+      description: ISO 4217 currency code for the applicable site
+      enum:
+      - ARS
+      - BRL
+      - MXN
+      - CLP
+      - COP
+      - PEN
+      - UYU
+      - BOB
+      - PYG
+      - USD
+      - CRC
+      - DOP
+      - HNL
+      - NIO
+      - GTQ
+      - VES
+      example: BRL
+    Identification:
       type: object
+      description: Payer identification document. Valid types vary by country.
       properties:
-        city:
-          type: string
-        federal_unit:
-          type: string
-        neighborhood:
-          type: string
-        street_name:
-          type: string
-        street_number:
-          type: string
-        zip_code:
-          type: string
-    github_com_melisource_fury_mpcs-preferences-api_internal_domain_model.Amount:
-      type: object
-      properties:
-        collector:
-          $ref: '#/components/schemas/github_com_melisource_fury_mpcs-preferences-api_internal_domain_model.AmountValues'
-        payer:
-          $ref: '#/components/schemas/github_com_melisource_fury_mpcs-preferences-api_internal_domain_model.AmountValues'
-    github_com_melisource_fury_mpcs-preferences-api_internal_domain_model.AmountValues:
-      type: object
-      properties:
-        currency_id:
-          type: string
-        transaction:
-          type: number
-    github_com_melisource_fury_mpcs-preferences-api_internal_domain_model.Collector:
-      type: object
-      properties:
-        operator_id:
-          type: number
-          description: Can be null
-        tags:
-          type: array
-          items:
-            type: string
-    github_com_melisource_fury_mpcs-preferences-api_internal_domain_model.CounterCurrency:
-      type: object
-      properties:
-        currency_id:
-          type: string
-    github_com_melisource_fury_mpcs-preferences-api_internal_domain_model.DeductionsByInstallment:
-      type: object
-      properties:
-        installments:
-          type: array
-          items:
-            type: integer
-    github_com_melisource_fury_mpcs-preferences-api_internal_domain_model.DifferentialPricing:
-      type: object
-      properties:
-        deductions_by_installment:
-          type: array
-          items:
-            $ref: '#/components/schemas/github_com_melisource_fury_mpcs-preferences-api_internal_domain_model.DeductionsByInstallment'
-        id:
-          type: integer
-    github_com_melisource_fury_mpcs-preferences-api_internal_domain_model.Dimensions:
-      type: object
-      properties:
-        height:
-          type: number
-        length:
-          type: number
-        unit:
-          type: string
-        weight:
-          type: number
-        width:
-          type: number
-    github_com_melisource_fury_mpcs-preferences-api_internal_domain_model.FeeDetail:
-      type: object
-      properties:
-        amount:
-          type: number
-        fee_payer:
-          type: string
         type:
           type: string
-    github_com_melisource_fury_mpcs-preferences-api_internal_domain_model.FiscalData:
-      type: object
-      properties:
-        dangerous_material_id:
-          type: string
-        measurement_unit:
-          type: string
-        package_id:
-          type: string
-        sat:
-          type: string
-        sat_measurement_id:
-          type: string
-    github_com_melisource_fury_mpcs-preferences-api_internal_domain_model.Identification:
-      type: object
-      properties:
+          description: Identification type (e.g., CPF, CNPJ for Brazil; DNI for Argentina; RFC for Mexico)
+          example: CPF
         number:
           type: string
-        type:
-          type: string
-    github_com_melisource_fury_mpcs-preferences-api_internal_domain_model.Item:
-      type: object
-      properties:
-        catalog_product_id:
-          type: string
-        category_descriptor:
-          type: object
-        category_id:
-          type: string
-        currency_id:
-          type: string
-        description:
-          type: string
-        dimensions:
-          $ref: '#/components/schemas/github_com_melisource_fury_mpcs-preferences-api_internal_domain_model.Dimensions'
-        fiscal_data:
-          $ref: '#/components/schemas/github_com_melisource_fury_mpcs-preferences-api_internal_domain_model.FiscalData'
-        id:
-          type: string
-        picture_id:
-          type: string
-        picture_url:
-          type: string
-        quantity:
-          type: number
-        title:
-          type: string
-        unit_price:
-          type: number
-        warranty:
-          type: boolean
-    github_com_melisource_fury_mpcs-preferences-api_internal_domain_model.Payer:
-      type: object
-      properties:
-        address:
-          $ref: '#/components/schemas/github_com_melisource_fury_mpcs-preferences-api_internal_domain_model.Address'
-        authentication_type:
-          type: string
-        date_created:
-          type: string
-        email:
-          type: string
-        guest_payer_id:
-          type: string
-        id:
-          type: number
-        identification:
-          $ref: '#/components/schemas/github_com_melisource_fury_mpcs-preferences-api_internal_domain_model.Identification'
-        is_first_purchase_online:
-          type: boolean
-        is_prime_user:
-          type: boolean
-        last_purchase:
-          type: string
-        name:
-          type: string
-        phone:
-          $ref: '#/components/schemas/github_com_melisource_fury_mpcs-preferences-api_internal_domain_model.Phone'
-        registered_payer_id:
-          type: string
-        surname:
-          type: string
-    github_com_melisource_fury_mpcs-preferences-api_internal_domain_model.PaymentMethod:
-      type: object
-      properties:
-        default_card_id:
-          type: string
-        default_installments:
-          type: integer
-        default_payment_method_id:
-          type: string
-        excluded_payment_methods:
-          type: array
-          items:
-            type: string
-        excluded_payment_types:
-          type: array
-          items:
-            type: string
-        installment_type:
-          type: string
-        installments:
-          type: integer
-    github_com_melisource_fury_mpcs-preferences-api_internal_domain_model.Phone:
+          description: Identification number (no formatting — digits only)
+          example: '12345678909'
+    Phone:
       type: object
       properties:
         area_code:
           type: string
+          example: '11'
         number:
           type: string
-    github_com_melisource_fury_mpcs-preferences-api_internal_domain_model.ReceiverAddress:
+          example: '987654321'
+    Address:
       type: object
+      required:
+      - street
+      - city
+      - state
+      - postal_code
+      - country
       properties:
-        apartment:
+        street:
           type: string
-        city_name:
+          description: Street address
+          example: 123 Main St
+        city:
           type: string
-        country_name:
+          description: City name
+          example: New York
+        country:
+          pattern: ^[A-Z]{2}$
+          description: ISO 3166-1 alpha-2 country code
           type: string
-        floor:
+          example: US
+        state:
           type: string
-        id:
+          description: State or province
+          example: NY
+        postal_code:
           type: string
-        state_name:
-          type: string
-        street_name:
-          type: string
-        street_number:
-          type: string
-        zip_code:
-          type: string
-    github_com_melisource_fury_mpcs-preferences-api_internal_domain_model.Shipment:
+          description: Postal or ZIP code
+          example: '10001'
+    Pagination:
       type: object
+      required:
+      - total
+      - limit
+      - offset
+      - has_more
       properties:
-        cost:
-          type: number
-        default_shipping_method:
+        has_more:
+          type: boolean
+          description: Whether there are more results available
+          example: true
+        total:
           type: integer
-        dimensions:
-          type: string
-        express_shipment:
-          type: boolean
-        free_methods:
-          type: array
-          items:
-            type: number
-        free_methods_types:
-          type: array
-          items:
-            type: string
-        free_shipping:
-          type: boolean
-        local_pickup:
-          type: boolean
-        mode:
-          type: string
-        receiver_address:
-          $ref: '#/components/schemas/github_com_melisource_fury_mpcs-preferences-api_internal_domain_model.ReceiverAddress'
-    github_com_melisource_fury_mpcs-preferences-api_internal_domain_model.Tax:
-      type: object
-      properties:
-        percentage:
-          type: number
-        type:
-          type: string
-        value:
-          type: string
-    github_com_melisource_fury_mpcs-preferences-api_internal_domain_model.Track:
-      type: object
-      properties:
-        type:
-          type: string
-        values:
-          type: object
-          additionalProperties:
-            type: string
-    github_com_melisource_fury_mpcs-preferences-api_internal_domain_model.URLConfig:
-      type: object
-      properties:
-        failure:
-          type: string
-        pending:
-          type: string
-        success:
-          type: string
+          description: Total number of payments matching the criteria
+          example: 250
+        offset:
+          type: integer
+          description: Current offset
+          example: 0
+        limit:
+          type: integer
+          description: Current limit
+          example: 20

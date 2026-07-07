@@ -1,0 +1,20 @@
+.github/workflows/trigger-sdk-generation.yml
+  s_c6fa9f5ec88947::t_bc6a510873d9a1 97
+  s_c6fa9f5ec88947::t_387c69a711f9e0 5,7
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.5.6",
+  "base_commit_sha": "665e2c995194e70ff067255e456e42e8ea144d30",
+  "prompts": {},
+  "sessions": {
+    "s_c6fa9f5ec88947": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "80d91040-c873-408f-87a1-099fcd382947",
+        "model": "claude-sonnet-4-6"
+      },
+      "human_author": "lpinillacuev <lina.pinillacuevas@mercadolibre.com.co>"
+    }
+  }
+}

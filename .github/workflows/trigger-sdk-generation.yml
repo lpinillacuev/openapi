@@ -56,23 +56,37 @@ jobs:
           echo "has_changes=$([ -n "$CHANGED" ] && echo true || echo false)" >> $GITHUB_OUTPUT
           echo "Changed products: ${CHANGED:-none}"
 
-      # ── Step 2a: Try spec-agent-generator directly (fast path) ──────────────
-      # If GitHub Actions can reach the endpoint → SDK generated immediately.
-      # If unreachable (no VPN) → continue-on-error skips to fallback.
-      # Fallback: bot-sync already triggered SDK when it created the PR.
-      - name: Trigger SDK generation — direct (fast path)
+      # ── Step 2a: Trigger spec-agent via public API ─────────────────────────────
+      # Calls the public async-generate endpoint — reachable from GitHub Actions.
+      # The `changes` field summarizes what changed (list of changed products).
+      - name: Trigger SDK generation — spec-agent public API
         id: sdk_direct
         if: steps.changed.outputs.has_changes == 'true'
         continue-on-error: true
         env:
-          SDK_GENERATOR_URL: ${{ secrets.SDK_GENERATOR_URL || 'https://spec-agent-generator-test.melioffice.com' }}
-          SDK_GENERATOR_TOKEN: ${{ secrets.SDK_GENERATOR_TOKEN }}
+          SDK_AGENT_API_KEY: ${{ secrets.SDK_AGENT_API_KEY }}
+          SDK_AGENT_COOKIE: ${{ secrets.SDK_AGENT_COOKIE }}
           CHANGED_PRODUCTS: ${{ steps.changed.outputs.products }}
         run: |
-          python openapi/scripts/push_to_sdk.py \
-            --apps "$CHANGED_PRODUCTS" \
-            --openapi-path openapi
-        working-directory: ${{ github.workspace }}
+          CHANGES_SUMMARY="spec changes in: ${CHANGED_PRODUCTS}"
+          echo "Triggering SDK generation for: ${CHANGED_PRODUCTS}"
+
+          HTTP_CODE=$(curl -s -o /tmp/sdk_response.json -w "%{http_code}" \
+            --location 'https://api.mercadolibre.com/spec-agent/public_test/async-generate' \
+            --header "X-Api-Key: ${SDK_AGENT_API_KEY}" \
+            --header 'Content-Type: application/json' \
+            --header "Cookie: _d2id=${SDK_AGENT_COOKIE}" \
+            --max-time 60 \
+            --data "{\"flow\":\"sdk_generation_test\",\"changes\":\"${CHANGES_SUMMARY}\"}")
+
+          echo "HTTP status: ${HTTP_CODE}"
+          cat /tmp/sdk_response.json || true
+
+          if [ "${HTTP_CODE}" != "200" ] && [ "${HTTP_CODE}" != "202" ]; then
+            echo "⚠️ spec-agent returned HTTP ${HTTP_CODE} — see response above"
+            exit 1
+          fi
+          echo "✅ SDK generation triggered successfully"
 
       # ── Step 2b: Notify bot-sync with the FINAL merged spec ─────────────────
       # Bot-sync reads spec3.yaml at the merge commit SHA (final spec after review)
@@ -103,9 +117,9 @@ jobs:
           echo "## SDK generation" >> $GITHUB_STEP_SUMMARY
           echo "**Changed products:** ${{ steps.changed.outputs.products }}" >> $GITHUB_STEP_SUMMARY
           if [ "$DIRECT" = "success" ]; then
-            echo "✅ Triggered directly from GitHub Actions" >> $GITHUB_STEP_SUMMARY
+            echo "✅ Triggered via spec-agent public API" >> $GITHUB_STEP_SUMMARY
           else
-            echo "⚠️ Direct call failed — bot-sync fallback triggered (or already handled when PR was created)" >> $GITHUB_STEP_SUMMARY
+            echo "⚠️ spec-agent call failed — bot-sync fallback triggered (or already handled when PR was created)" >> $GITHUB_STEP_SUMMARY
           fi
 
       - name: No changes

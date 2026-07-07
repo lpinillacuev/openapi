@@ -96,7 +96,7 @@ jobs:
           # Get apps that have pending paths from the changed spec
           # For each app registered in apps.yaml, call sync-from-merge
           python3 - <<'EOF'
-          import yaml, subprocess, json
+          import yaml, subprocess, json, sys
 
           with open('apps.yaml') as f:
               apps = yaml.safe_load(f).get('apps', [])
@@ -104,16 +104,19 @@ jobs:
           for app in apps:
               fury_app = app['fury_app']
               print(f"Syncing KVS for {fury_app}...")
-              # Call bot to sync KVS decisions
-              import subprocess
-              result = subprocess.run([
-                  'curl', '-s', '-X', 'POST',
-                  f'${{ env.BOT_URL }}/openapi/policy/{fury_app}/sync-from-merge',
-                  '-H', 'Content-Type: application/json',
-                  '-H', 'X-github-token: ${{ secrets.GH_PAT }}',
-                  '-d', json.dumps({'commitSha': '${{ github.sha }}'})
-              ], capture_output=True, text=True, timeout=30)
-              print(result.stdout or 'no response')
+              try:
+                  result = subprocess.run([
+                      'curl', '-s', '-X', 'POST',
+                      f'${{ env.BOT_URL }}/openapi/policy/{fury_app}/sync-from-merge',
+                      '-H', 'Content-Type: application/json',
+                      '-H', 'X-github-token: ${{ secrets.GH_PAT }}',
+                      '-d', json.dumps({'commitSha': '${{ github.sha }}'})
+                  ], capture_output=True, text=True, timeout=30)
+                  print(result.stdout or 'no response')
+              except Exception as e:
+                  print(f"Warning: could not sync KVS for {fury_app}: {e}")
+
+          sys.exit(0)
           EOF
 
       # ── Step 6: Push specs to external product API ────────────────────────

@@ -18,7 +18,7 @@ security:
 tags:
 - name: OAuth
   description: Authorization flows for marketplace on-behalf-of and Wallet Connect
-  x-mp-sites: &id001
+  x-mp-sites:
   - MLA
   - MLB
   - MLM
@@ -28,46 +28,144 @@ tags:
   - MLU
 - name: Preferences
   description: Checkout Pro — redirect-based hosted checkout via Preferences
-  x-mp-sites: *id001
+  x-mp-sites:
+  - MLA
+  - MLB
+  - MLM
+  - MLC
+  - MCO
+  - MPE
+  - MLU
 - name: Payments
   description: Create and manage payment transactions
-  x-mp-sites: *id001
+  x-mp-sites:
+  - MLA
+  - MLB
+  - MLM
+  - MLC
+  - MCO
+  - MPE
+  - MLU
 - name: Orders
   description: Checkout API via Orders — recommended for new custom checkout integrations
-  x-mp-sites: *id001
+  x-mp-sites:
+  - MLA
+  - MLB
+  - MLM
+  - MLC
+  - MCO
+  - MPE
+  - MLU
 - name: Merchant Orders
   description: Order containers that group payments for a single purchase
-  x-mp-sites: *id001
+  x-mp-sites:
+  - MLA
+  - MLB
+  - MLM
+  - MLC
+  - MCO
+  - MPE
+  - MLU
 - name: Customers
   description: Customer profiles and stored payment methods
-  x-mp-sites: *id001
+  x-mp-sites:
+  - MLA
+  - MLB
+  - MLM
+  - MLC
+  - MCO
+  - MPE
+  - MLU
 - name: Cards
   description: Saved cards and card tokenization
-  x-mp-sites: *id001
+  x-mp-sites:
+  - MLA
+  - MLB
+  - MLM
+  - MLC
+  - MCO
+  - MPE
+  - MLU
 - name: Addresses
   description: Customer shipping and billing addresses
-  x-mp-sites: *id001
+  x-mp-sites:
+  - MLA
+  - MLB
+  - MLM
+  - MLC
+  - MCO
+  - MPE
+  - MLU
 - name: Payment Methods
   description: Available payment methods and installment plans per country
-  x-mp-sites: *id001
+  x-mp-sites:
+  - MLA
+  - MLB
+  - MLM
+  - MLC
+  - MCO
+  - MPE
+  - MLU
 - name: Identification Types
   description: Country-specific identity document type catalog
-  x-mp-sites: *id001
+  x-mp-sites:
+  - MLA
+  - MLB
+  - MLM
+  - MLC
+  - MCO
+  - MPE
+  - MLU
 - name: Cancellations & Refunds
   description: Cancel payments and create full or partial refunds
-  x-mp-sites: *id001
+  x-mp-sites:
+  - MLA
+  - MLB
+  - MLM
+  - MLC
+  - MCO
+  - MPE
+  - MLU
 - name: Chargebacks
   description: Chargeback dispute management
-  x-mp-sites: *id001
+  x-mp-sites:
+  - MLA
+  - MLB
+  - MLM
+  - MLC
+  - MCO
+  - MPE
+  - MLU
 - name: Subscriptions
   description: Recurring payment subscriptions
-  x-mp-sites: *id001
+  x-mp-sites:
+  - MLA
+  - MLB
+  - MLM
+  - MLC
+  - MCO
+  - MPE
+  - MLU
 - name: Plans
   description: Subscription billing plans
-  x-mp-sites: *id001
+  x-mp-sites:
+  - MLA
+  - MLB
+  - MLM
+  - MLC
+  - MCO
+  - MPE
+  - MLU
 - name: Invoices
   description: Subscription billing invoices
-  x-mp-sites: *id001
+  x-mp-sites:
+  - MLA
+  - MLB
+  - MLM
+  - MLC
+  - MCO
+  - MPE
+  - MLU
 - name: Wallet Connect
   description: OAuth-based wallet agreement flows for Wallet Connect
   x-mp-sites:
@@ -76,10 +174,24 @@ tags:
   - MLM
 - name: Stores
   description: Physical store locations
-  x-mp-sites: *id001
+  x-mp-sites:
+  - MLA
+  - MLB
+  - MLM
+  - MLC
+  - MCO
+  - MPE
+  - MLU
 - name: POS
   description: Point of sale device management
-  x-mp-sites: *id001
+  x-mp-sites:
+  - MLA
+  - MLB
+  - MLM
+  - MLC
+  - MCO
+  - MPE
+  - MLU
 - name: Terminals
   description: Point hardware terminal management and print actions
   x-mp-sites:
@@ -104,28 +216,84 @@ tags:
   - MLU
 - name: QR Integrator
   description: Integrator configuration for QR in-store
-  x-mp-sites: *id001
+  x-mp-sites:
+  - MLA
+  - MLB
+  - MLM
+  - MLC
+  - MCO
+  - MPE
+  - MLU
 - name: QR Deprecated
   description: Deprecated in-store QR order endpoints (V1, V2, Dynamic QR)
-  x-mp-sites: *id001
+  x-mp-sites:
+  - MLA
+  - MLB
+  - MLM
+  - MLC
+  - MCO
+  - MPE
+  - MLU
 - name: Claims
   description: Post-sale claim details and search
-  x-mp-sites: *id001
+  x-mp-sites:
+  - MLA
+  - MLB
+  - MLM
+  - MLC
+  - MCO
+  - MPE
+  - MLU
 - name: Claim Messages
   description: Messages and file attachments within a claim
-  x-mp-sites: *id001
+  x-mp-sites:
+  - MLA
+  - MLB
+  - MLM
+  - MLC
+  - MCO
+  - MPE
+  - MLU
 - name: Claim Resolutions
   description: Mediation requests and expected resolutions
-  x-mp-sites: *id001
+  x-mp-sites:
+  - MLA
+  - MLB
+  - MLM
+  - MLC
+  - MCO
+  - MPE
+  - MLU
 - name: Claim Shipping
   description: Upload shipping evidence to support a claim
-  x-mp-sites: *id001
+  x-mp-sites:
+  - MLA
+  - MLB
+  - MLM
+  - MLC
+  - MCO
+  - MPE
+  - MLU
 - name: Releases Report
   description: Generate and schedule releases (settlement) reports
-  x-mp-sites: *id001
+  x-mp-sites:
+  - MLA
+  - MLB
+  - MLM
+  - MLC
+  - MCO
+  - MPE
+  - MLU
 - name: Settlements Report
   description: Generate and schedule all-transactions reports
-  x-mp-sites: *id001
+  x-mp-sites:
+  - MLA
+  - MLB
+  - MLM
+  - MLC
+  - MCO
+  - MPE
+  - MLU
 - name: Payouts
   description: Bank transfer and Pix payouts
   x-mp-sites:
@@ -146,7 +314,7 @@ paths:
         required: true
         content:
           application/json:
-            schema: &id003
+            schema:
               type: object
               properties:
                 external_reference:
@@ -192,7 +360,7 @@ paths:
           description: Merchant order created
           content:
             application/json:
-              schema: &id002
+              schema:
                 type: object
                 properties:
                   id:
@@ -318,13 +486,114 @@ paths:
           description: Merchant order found
           content:
             application/json:
-              schema: *id002
-        '404':
-          $ref: '#/components/responses/NotFound'
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: integer
+                  status:
+                    type: string
+                    enum:
+                    - opened
+                    - closed
+                    - expired
+                  order_status:
+                    type: string
+                    enum:
+                    - payment_required
+                    - payment_in_process
+                    - paid
+                    - partially_paid
+                    - partially_refunded
+                    - pending_cancel
+                    - cancelled
+                    - refunded
+                  external_reference:
+                    type: string
+                  preference_id:
+                    type: string
+                  marketplace:
+                    type: string
+                  application_id:
+                    type: string
+                  site_id:
+                    type: string
+                    enum:
+                    - MLA
+                    - MLB
+                    - MLM
+                    - MLC
+                    - MCO
+                    - MPE
+                    - MLU
+                  notification_url:
+                    type: string
+                    format: uri
+                    deprecated: true
+                  sponsor_id:
+                    type: integer
+                  collector:
+                    type: object
+                    properties:
+                      id:
+                        type: integer
+                      email:
+                        type: string
+                      nickname:
+                        type: string
+                  payer:
+                    type: object
+                    properties:
+                      id:
+                        type: integer
+                      email:
+                        type: string
+                      nickname:
+                        type: string
+                  payments:
+                    type: array
+                    items:
+                      type: object
+                  shipments:
+                    type: array
+                    items:
+                      type: object
+                  payouts:
+                    type: array
+                    items:
+                      type: object
+                  items:
+                    type: array
+                    items:
+                      type: object
+                  additional_info:
+                    type: string
+                  shipping_cost:
+                    type: number
+                    format: float
+                  total_amount:
+                    type: number
+                    format: float
+                  paid_amount:
+                    type: number
+                    format: float
+                  refunded_amount:
+                    type: number
+                    format: float
+                  date_created:
+                    type: string
+                    format: date-time
+                  last_updated:
+                    type: string
+                    format: date-time
+                  canceled:
+                    type: boolean
         '400':
           $ref: '#/components/responses/BadRequest'
         '401':
           $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
     put:
       operationId: updateMerchantOrder
       summary: Update merchant order
@@ -342,7 +611,47 @@ paths:
         required: true
         content:
           application/json:
-            schema: *id003
+            schema:
+              type: object
+              properties:
+                external_reference:
+                  type: string
+                preference_id:
+                  type: string
+                marketplace:
+                  type: string
+                notification_url:
+                  type: string
+                  format: uri
+                  deprecated: true
+                sponsor_id:
+                  type: integer
+                payer:
+                  type: object
+                  properties:
+                    id:
+                      type: integer
+                    email:
+                      type: string
+                      format: email
+                site_id:
+                  type: string
+                  enum:
+                  - MLA
+                  - MLB
+                  - MLM
+                  - MLC
+                  - MCO
+                  - MPE
+                  - MLU
+                items:
+                  type: array
+                  items:
+                    type: object
+                additional_info:
+                  type: string
+                application_id:
+                  type: string
       responses:
         '200':
           description: Merchant order updated
@@ -438,7 +747,108 @@ paths:
           description: Search results
           content:
             application/json:
-              schema: *id002
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: integer
+                  status:
+                    type: string
+                    enum:
+                    - opened
+                    - closed
+                    - expired
+                  order_status:
+                    type: string
+                    enum:
+                    - payment_required
+                    - payment_in_process
+                    - paid
+                    - partially_paid
+                    - partially_refunded
+                    - pending_cancel
+                    - cancelled
+                    - refunded
+                  external_reference:
+                    type: string
+                  preference_id:
+                    type: string
+                  marketplace:
+                    type: string
+                  application_id:
+                    type: string
+                  site_id:
+                    type: string
+                    enum:
+                    - MLA
+                    - MLB
+                    - MLM
+                    - MLC
+                    - MCO
+                    - MPE
+                    - MLU
+                  notification_url:
+                    type: string
+                    format: uri
+                    deprecated: true
+                  sponsor_id:
+                    type: integer
+                  collector:
+                    type: object
+                    properties:
+                      id:
+                        type: integer
+                      email:
+                        type: string
+                      nickname:
+                        type: string
+                  payer:
+                    type: object
+                    properties:
+                      id:
+                        type: integer
+                      email:
+                        type: string
+                      nickname:
+                        type: string
+                  payments:
+                    type: array
+                    items:
+                      type: object
+                  shipments:
+                    type: array
+                    items:
+                      type: object
+                  payouts:
+                    type: array
+                    items:
+                      type: object
+                  items:
+                    type: array
+                    items:
+                      type: object
+                  additional_info:
+                    type: string
+                  shipping_cost:
+                    type: number
+                    format: float
+                  total_amount:
+                    type: number
+                    format: float
+                  paid_amount:
+                    type: number
+                    format: float
+                  refunded_amount:
+                    type: number
+                    format: float
+                  date_created:
+                    type: string
+                    format: date-time
+                  last_updated:
+                    type: string
+                    format: date-time
+                  canceled:
+                    type: boolean
         '400':
           $ref: '#/components/responses/BadRequest'
         '401':

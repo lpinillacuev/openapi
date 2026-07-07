@@ -42,7 +42,7 @@ security:
 tags:
 - name: OAuth
   description: Authorization flows for marketplace on-behalf-of and Wallet Connect
-  x-mp-sites: &id001
+  x-mp-sites:
   - MLA
   - MLB
   - MLM
@@ -52,46 +52,144 @@ tags:
   - MLU
 - name: Preferences
   description: Checkout Pro — redirect-based hosted checkout via Preferences
-  x-mp-sites: *id001
+  x-mp-sites:
+  - MLA
+  - MLB
+  - MLM
+  - MLC
+  - MCO
+  - MPE
+  - MLU
 - name: Payments
   description: Create and manage payment transactions
-  x-mp-sites: *id001
+  x-mp-sites:
+  - MLA
+  - MLB
+  - MLM
+  - MLC
+  - MCO
+  - MPE
+  - MLU
 - name: Orders
   description: Checkout API via Orders — recommended for new custom checkout integrations
-  x-mp-sites: *id001
+  x-mp-sites:
+  - MLA
+  - MLB
+  - MLM
+  - MLC
+  - MCO
+  - MPE
+  - MLU
 - name: Merchant Orders
   description: Order containers that group payments for a single purchase
-  x-mp-sites: *id001
+  x-mp-sites:
+  - MLA
+  - MLB
+  - MLM
+  - MLC
+  - MCO
+  - MPE
+  - MLU
 - name: Customers
   description: Customer profiles and stored payment methods
-  x-mp-sites: *id001
+  x-mp-sites:
+  - MLA
+  - MLB
+  - MLM
+  - MLC
+  - MCO
+  - MPE
+  - MLU
 - name: Cards
   description: Saved cards and card tokenization
-  x-mp-sites: *id001
+  x-mp-sites:
+  - MLA
+  - MLB
+  - MLM
+  - MLC
+  - MCO
+  - MPE
+  - MLU
 - name: Addresses
   description: Customer shipping and billing addresses
-  x-mp-sites: *id001
+  x-mp-sites:
+  - MLA
+  - MLB
+  - MLM
+  - MLC
+  - MCO
+  - MPE
+  - MLU
 - name: Payment Methods
   description: Available payment methods and installment plans per country
-  x-mp-sites: *id001
+  x-mp-sites:
+  - MLA
+  - MLB
+  - MLM
+  - MLC
+  - MCO
+  - MPE
+  - MLU
 - name: Identification Types
   description: Country-specific identity document type catalog
-  x-mp-sites: *id001
+  x-mp-sites:
+  - MLA
+  - MLB
+  - MLM
+  - MLC
+  - MCO
+  - MPE
+  - MLU
 - name: Cancellations & Refunds
   description: Cancel payments and create full or partial refunds
-  x-mp-sites: *id001
+  x-mp-sites:
+  - MLA
+  - MLB
+  - MLM
+  - MLC
+  - MCO
+  - MPE
+  - MLU
 - name: Chargebacks
   description: Chargeback dispute management
-  x-mp-sites: *id001
+  x-mp-sites:
+  - MLA
+  - MLB
+  - MLM
+  - MLC
+  - MCO
+  - MPE
+  - MLU
 - name: Subscriptions
   description: Recurring payment subscriptions
-  x-mp-sites: *id001
+  x-mp-sites:
+  - MLA
+  - MLB
+  - MLM
+  - MLC
+  - MCO
+  - MPE
+  - MLU
 - name: Plans
   description: Subscription billing plans
-  x-mp-sites: *id001
+  x-mp-sites:
+  - MLA
+  - MLB
+  - MLM
+  - MLC
+  - MCO
+  - MPE
+  - MLU
 - name: Invoices
   description: Subscription billing invoices
-  x-mp-sites: *id001
+  x-mp-sites:
+  - MLA
+  - MLB
+  - MLM
+  - MLC
+  - MCO
+  - MPE
+  - MLU
 - name: Wallet Connect
   description: OAuth-based wallet agreement flows for Wallet Connect
   x-mp-sites:
@@ -100,10 +198,24 @@ tags:
   - MLM
 - name: Stores
   description: Physical store locations
-  x-mp-sites: *id001
+  x-mp-sites:
+  - MLA
+  - MLB
+  - MLM
+  - MLC
+  - MCO
+  - MPE
+  - MLU
 - name: POS
   description: Point of sale device management
-  x-mp-sites: *id001
+  x-mp-sites:
+  - MLA
+  - MLB
+  - MLM
+  - MLC
+  - MCO
+  - MPE
+  - MLU
 - name: Terminals
   description: Point hardware terminal management and print actions
   x-mp-sites:
@@ -128,28 +240,84 @@ tags:
   - MLU
 - name: QR Integrator
   description: Integrator configuration for QR in-store
-  x-mp-sites: *id001
+  x-mp-sites:
+  - MLA
+  - MLB
+  - MLM
+  - MLC
+  - MCO
+  - MPE
+  - MLU
 - name: QR Deprecated
   description: Deprecated in-store QR order endpoints (V1, V2, Dynamic QR)
-  x-mp-sites: *id001
+  x-mp-sites:
+  - MLA
+  - MLB
+  - MLM
+  - MLC
+  - MCO
+  - MPE
+  - MLU
 - name: Claims
   description: Post-sale claim details and search
-  x-mp-sites: *id001
+  x-mp-sites:
+  - MLA
+  - MLB
+  - MLM
+  - MLC
+  - MCO
+  - MPE
+  - MLU
 - name: Claim Messages
   description: Messages and file attachments within a claim
-  x-mp-sites: *id001
+  x-mp-sites:
+  - MLA
+  - MLB
+  - MLM
+  - MLC
+  - MCO
+  - MPE
+  - MLU
 - name: Claim Resolutions
   description: Mediation requests and expected resolutions
-  x-mp-sites: *id001
+  x-mp-sites:
+  - MLA
+  - MLB
+  - MLM
+  - MLC
+  - MCO
+  - MPE
+  - MLU
 - name: Claim Shipping
   description: Upload shipping evidence to support a claim
-  x-mp-sites: *id001
+  x-mp-sites:
+  - MLA
+  - MLB
+  - MLM
+  - MLC
+  - MCO
+  - MPE
+  - MLU
 - name: Releases Report
   description: Generate and schedule releases (settlement) reports
-  x-mp-sites: *id001
+  x-mp-sites:
+  - MLA
+  - MLB
+  - MLM
+  - MLC
+  - MCO
+  - MPE
+  - MLU
 - name: Settlements Report
   description: Generate and schedule all-transactions reports
-  x-mp-sites: *id001
+  x-mp-sites:
+  - MLA
+  - MLB
+  - MLM
+  - MLC
+  - MCO
+  - MPE
+  - MLU
 - name: Payouts
   description: Bank transfer and Pix payouts
   x-mp-sites:
@@ -230,7 +398,7 @@ paths:
               card_argentina:
                 summary: Credit card — Argentina (Visa)
                 value:
-                  transaction_amount: 5000.0
+                  transaction_amount: 5000
                   token: YOUR_ACCESS_TOKEN
                   description: 'Order #1234'
                   installments: 3
@@ -243,7 +411,7 @@ paths:
               oxxo_mexico:
                 summary: OXXO — Mexico
                 value:
-                  transaction_amount: 500.0
+                  transaction_amount: 500
                   payment_method_id: oxxo
                   date_of_expiration: '2024-12-31T23:59:59.000-06:00'
                   payer:
@@ -284,9 +452,15 @@ paths:
                       type: RFC
                       number: XAXX010101000
       responses:
+        '200':
+          description: Payment created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Payment'
         '201':
           description: Payment created
-          content: &id002
+          content:
             application/json:
               schema:
                 $ref: '#/components/schemas/Payment'
@@ -298,9 +472,6 @@ paths:
           $ref: '#/components/responses/Forbidden'
         '422':
           $ref: '#/components/responses/UnprocessableEntity'
-        '200':
-          description: Payment created
-          content: *id002
   /v1/payments/{id}:
     get:
       operationId: getPayment
@@ -323,14 +494,14 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Payment'
+        '400':
+          $ref: '#/components/responses/BadRequest'
         '401':
           $ref: '#/components/responses/Unauthorized'
         '403':
           $ref: '#/components/responses/Forbidden'
         '404':
           $ref: '#/components/responses/NotFound'
-        '400':
-          $ref: '#/components/responses/BadRequest'
     put:
       operationId: updatePayment
       summary: Update or capture a payment
@@ -448,10 +619,10 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/PaymentSearchResult'
-        '401':
-          $ref: '#/components/responses/Unauthorized'
         '400':
           $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
         '403':
           $ref: '#/components/responses/Forbidden'
   /v1/payments/{id}/refunds:
@@ -492,13 +663,13 @@ paths:
               partial_refund:
                 summary: Partial refund of R$50
                 value:
-                  amount: 50.0
+                  amount: 50
       responses:
         '201':
           description: Refund created
           content:
             application/json:
-              schema: &id003
+              schema:
                 type: object
                 properties:
                   id:
@@ -574,11 +745,62 @@ paths:
           description: Refund list
           content:
             application/json:
-              schema: *id003
-        '401':
-          $ref: '#/components/responses/Unauthorized'
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: integer
+                  payment_id:
+                    type: integer
+                  amount:
+                    type: number
+                    format: float
+                  metadata:
+                    type: object
+                    additionalProperties: true
+                  source:
+                    type: object
+                    properties:
+                      id:
+                        type: string
+                      name:
+                        type: string
+                      type:
+                        type: string
+                  date_created:
+                    type: string
+                    format: date-time
+                  unique_sequence_number:
+                    type: string
+                  refund_mode:
+                    type: string
+                    enum:
+                    - standard
+                    - instant
+                  adjustment_amount:
+                    type: number
+                    format: float
+                    nullable: true
+                  status:
+                    type: string
+                    enum:
+                    - approved
+                    - in_process
+                    - rejected
+                  reason:
+                    type: string
+                    nullable: true
+                  label:
+                    type: string
+                    nullable: true
+                  partition_details:
+                    type: array
+                    items:
+                      type: object
         '400':
           $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
         '404':
           $ref: '#/components/responses/NotFound'
   /v1/payments/{id}/refunds/{refund_id}:
@@ -605,11 +827,62 @@ paths:
           description: Refund found
           content:
             application/json:
-              schema: *id003
-        '404':
-          $ref: '#/components/responses/NotFound'
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: integer
+                  payment_id:
+                    type: integer
+                  amount:
+                    type: number
+                    format: float
+                  metadata:
+                    type: object
+                    additionalProperties: true
+                  source:
+                    type: object
+                    properties:
+                      id:
+                        type: string
+                      name:
+                        type: string
+                      type:
+                        type: string
+                  date_created:
+                    type: string
+                    format: date-time
+                  unique_sequence_number:
+                    type: string
+                  refund_mode:
+                    type: string
+                    enum:
+                    - standard
+                    - instant
+                  adjustment_amount:
+                    type: number
+                    format: float
+                    nullable: true
+                  status:
+                    type: string
+                    enum:
+                    - approved
+                    - in_process
+                    - rejected
+                  reason:
+                    type: string
+                    nullable: true
+                  label:
+                    type: string
+                    nullable: true
+                  partition_details:
+                    type: array
+                    items:
+                      type: object
         '400':
           $ref: '#/components/responses/BadRequest'
+        '404':
+          $ref: '#/components/responses/NotFound'
   /v1/orders:
     post:
       operationId: createOrder
@@ -1124,9 +1397,15 @@ paths:
                     pending: https://mystore.com/pending
                   auto_return: approved
       responses:
+        '200':
+          description: Preference created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Preference'
         '201':
           description: Preference created
-          content: &id004
+          content:
             application/json:
               schema:
                 $ref: '#/components/schemas/Preference'
@@ -1134,9 +1413,6 @@ paths:
           $ref: '#/components/responses/BadRequest'
         '401':
           $ref: '#/components/responses/Unauthorized'
-        '200':
-          description: Preference created
-          content: *id004
   /checkout/preferences/{id}:
     get:
       operationId: getPreference
@@ -1158,10 +1434,10 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Preference'
-        '404':
-          $ref: '#/components/responses/NotFound'
         '400':
           $ref: '#/components/responses/BadRequest'
+        '404':
+          $ref: '#/components/responses/NotFound'
     put:
       operationId: updatePreference
       summary: Update a preference
@@ -1325,12 +1601,12 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Customer'
-        '404':
-          $ref: '#/components/responses/NotFound'
         '400':
           $ref: '#/components/responses/BadRequest'
         '401':
           $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
     put:
       operationId: updateCustomer
       summary: Update a customer
@@ -1450,12 +1726,12 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Card'
-        '404':
-          $ref: '#/components/responses/NotFound'
         '400':
           $ref: '#/components/responses/BadRequest'
         '401':
           $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
     put:
       operationId: updateCard
       summary: Update a saved card
@@ -2029,7 +2305,7 @@ paths:
         required: true
         content:
           application/json:
-            schema: &id006
+            schema:
               type: object
               properties:
                 external_reference:
@@ -2075,7 +2351,7 @@ paths:
           description: Merchant order created
           content:
             application/json:
-              schema: &id005
+              schema:
                 type: object
                 properties:
                   id:
@@ -2201,13 +2477,114 @@ paths:
           description: Merchant order found
           content:
             application/json:
-              schema: *id005
-        '404':
-          $ref: '#/components/responses/NotFound'
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: integer
+                  status:
+                    type: string
+                    enum:
+                    - opened
+                    - closed
+                    - expired
+                  order_status:
+                    type: string
+                    enum:
+                    - payment_required
+                    - payment_in_process
+                    - paid
+                    - partially_paid
+                    - partially_refunded
+                    - pending_cancel
+                    - cancelled
+                    - refunded
+                  external_reference:
+                    type: string
+                  preference_id:
+                    type: string
+                  marketplace:
+                    type: string
+                  application_id:
+                    type: string
+                  site_id:
+                    type: string
+                    enum:
+                    - MLA
+                    - MLB
+                    - MLM
+                    - MLC
+                    - MCO
+                    - MPE
+                    - MLU
+                  notification_url:
+                    type: string
+                    format: uri
+                    deprecated: true
+                  sponsor_id:
+                    type: integer
+                  collector:
+                    type: object
+                    properties:
+                      id:
+                        type: integer
+                      email:
+                        type: string
+                      nickname:
+                        type: string
+                  payer:
+                    type: object
+                    properties:
+                      id:
+                        type: integer
+                      email:
+                        type: string
+                      nickname:
+                        type: string
+                  payments:
+                    type: array
+                    items:
+                      type: object
+                  shipments:
+                    type: array
+                    items:
+                      type: object
+                  payouts:
+                    type: array
+                    items:
+                      type: object
+                  items:
+                    type: array
+                    items:
+                      type: object
+                  additional_info:
+                    type: string
+                  shipping_cost:
+                    type: number
+                    format: float
+                  total_amount:
+                    type: number
+                    format: float
+                  paid_amount:
+                    type: number
+                    format: float
+                  refunded_amount:
+                    type: number
+                    format: float
+                  date_created:
+                    type: string
+                    format: date-time
+                  last_updated:
+                    type: string
+                    format: date-time
+                  canceled:
+                    type: boolean
         '400':
           $ref: '#/components/responses/BadRequest'
         '401':
           $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
     put:
       operationId: updateMerchantOrder
       summary: Update merchant order
@@ -2225,7 +2602,47 @@ paths:
         required: true
         content:
           application/json:
-            schema: *id006
+            schema:
+              type: object
+              properties:
+                external_reference:
+                  type: string
+                preference_id:
+                  type: string
+                marketplace:
+                  type: string
+                notification_url:
+                  type: string
+                  format: uri
+                  deprecated: true
+                sponsor_id:
+                  type: integer
+                payer:
+                  type: object
+                  properties:
+                    id:
+                      type: integer
+                    email:
+                      type: string
+                      format: email
+                site_id:
+                  type: string
+                  enum:
+                  - MLA
+                  - MLB
+                  - MLM
+                  - MLC
+                  - MCO
+                  - MPE
+                  - MLU
+                items:
+                  type: array
+                  items:
+                    type: object
+                additional_info:
+                  type: string
+                application_id:
+                  type: string
       responses:
         '200':
           description: Merchant order updated
@@ -2321,7 +2738,108 @@ paths:
           description: Search results
           content:
             application/json:
-              schema: *id005
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: integer
+                  status:
+                    type: string
+                    enum:
+                    - opened
+                    - closed
+                    - expired
+                  order_status:
+                    type: string
+                    enum:
+                    - payment_required
+                    - payment_in_process
+                    - paid
+                    - partially_paid
+                    - partially_refunded
+                    - pending_cancel
+                    - cancelled
+                    - refunded
+                  external_reference:
+                    type: string
+                  preference_id:
+                    type: string
+                  marketplace:
+                    type: string
+                  application_id:
+                    type: string
+                  site_id:
+                    type: string
+                    enum:
+                    - MLA
+                    - MLB
+                    - MLM
+                    - MLC
+                    - MCO
+                    - MPE
+                    - MLU
+                  notification_url:
+                    type: string
+                    format: uri
+                    deprecated: true
+                  sponsor_id:
+                    type: integer
+                  collector:
+                    type: object
+                    properties:
+                      id:
+                        type: integer
+                      email:
+                        type: string
+                      nickname:
+                        type: string
+                  payer:
+                    type: object
+                    properties:
+                      id:
+                        type: integer
+                      email:
+                        type: string
+                      nickname:
+                        type: string
+                  payments:
+                    type: array
+                    items:
+                      type: object
+                  shipments:
+                    type: array
+                    items:
+                      type: object
+                  payouts:
+                    type: array
+                    items:
+                      type: object
+                  items:
+                    type: array
+                    items:
+                      type: object
+                  additional_info:
+                    type: string
+                  shipping_cost:
+                    type: number
+                    format: float
+                  total_amount:
+                    type: number
+                    format: float
+                  paid_amount:
+                    type: number
+                    format: float
+                  refunded_amount:
+                    type: number
+                    format: float
+                  date_created:
+                    type: string
+                    format: date-time
+                  last_updated:
+                    type: string
+                    format: date-time
+                  canceled:
+                    type: boolean
         '400':
           $ref: '#/components/responses/BadRequest'
         '401':
@@ -2536,7 +3054,7 @@ paths:
         schema:
           type: number
           format: float
-        example: 1000.0
+        example: 1000
       - name: issuer_id
         in: query
         schema:
@@ -3000,7 +3518,7 @@ paths:
                   point_of_interaction:
                     type: PIX
                   transaction:
-                    amount: 100.0
+                    amount: 100
                     currency_id: BRL
       responses:
         '201':
@@ -5466,7 +5984,7 @@ paths:
           description: Advanced payment created
           content:
             application/json:
-              schema: &id007
+              schema:
                 type: object
                 properties:
                   id:
@@ -5530,7 +6048,46 @@ paths:
           description: Advanced payment found
           content:
             application/json:
-              schema: *id007
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: integer
+                  payments:
+                    type: array
+                    items:
+                      type: object
+                  wallet_payment:
+                    type: object
+                    properties:
+                      transaction_amount:
+                        type: number
+                        format: float
+                      description:
+                        type: string
+                      external_reference:
+                        type: string
+                  disbursements:
+                    type: array
+                    items:
+                      type: object
+                  payer:
+                    type: object
+                    properties:
+                      token:
+                        type: string
+                      type_token:
+                        type: string
+                  site_id:
+                    type: string
+                  binary_mode:
+                    type: boolean
+                  date_created:
+                    type: string
+                    format: date-time
+                  date_last_updated:
+                    type: string
+                    format: date-time
         '400':
           $ref: '#/components/responses/BadRequest'
         '401':
@@ -5582,7 +6139,46 @@ paths:
           description: Advanced payment updated
           content:
             application/json:
-              schema: *id007
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: integer
+                  payments:
+                    type: array
+                    items:
+                      type: object
+                  wallet_payment:
+                    type: object
+                    properties:
+                      transaction_amount:
+                        type: number
+                        format: float
+                      description:
+                        type: string
+                      external_reference:
+                        type: string
+                  disbursements:
+                    type: array
+                    items:
+                      type: object
+                  payer:
+                    type: object
+                    properties:
+                      token:
+                        type: string
+                      type_token:
+                        type: string
+                  site_id:
+                    type: string
+                  binary_mode:
+                    type: boolean
+                  date_created:
+                    type: string
+                    format: date-time
+                  date_last_updated:
+                    type: string
+                    format: date-time
         '400':
           $ref: '#/components/responses/BadRequest'
         '401':
@@ -8036,6 +8632,830 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/AuthorizedPayment'
+    PaymentMethod:
+      type: object
+      required:
+      - type
+      properties:
+        type:
+          type: string
+          enum:
+          - credit_card
+          - debit_card
+          - bank_transfer
+          - digital_wallet
+          - cryptocurrency
+          description: Type of payment method
+        card:
+          $ref: '#/components/schemas/CardDetails'
+        bank_account:
+          $ref: '#/components/schemas/BankAccount'
+        digital_wallet:
+          $ref: '#/components/schemas/DigitalWallet'
+    CardDetails:
+      type: object
+      required:
+      - number
+      - expiry_month
+      - expiry_year
+      - cvv
+      properties:
+        number:
+          type: string
+          pattern: ^[0-9]{13,19}$
+          description: Card number
+          example: '4111111111111111'
+        expiry_month:
+          type: integer
+          minimum: 1
+          maximum: 12
+          description: Card expiry month
+          example: 12
+        expiry_year:
+          type: integer
+          minimum: 2024
+          description: Card expiry year
+          example: 2026
+        cvv:
+          type: string
+          pattern: ^[0-9]{3,4}$
+          description: Card verification value
+          example: '123'
+        cardholder_name:
+          type: string
+          maxLength: 100
+          description: Name on the card
+          example: John Doe
+    BankAccount:
+      type: object
+      required:
+      - account_number
+      - routing_number
+      properties:
+        account_number:
+          type: string
+          description: Bank account number
+        routing_number:
+          type: string
+          description: Bank routing number
+        account_type:
+          type: string
+          enum:
+          - checking
+          - savings
+          description: Type of bank account
+    DigitalWallet:
+      type: object
+      required:
+      - provider
+      - wallet_id
+      properties:
+        provider:
+          type: string
+          enum:
+          - paypal
+          - apple_pay
+          - google_pay
+          - venmo
+          description: Digital wallet provider
+        wallet_id:
+          type: string
+          description: Wallet identifier or token
+    PaymentResponse:
+      type: object
+      required:
+      - payment_id
+      - status
+      - amount
+      - currency
+      - created_at
+      properties:
+        payment_id:
+          type: string
+          format: uuid
+          description: Unique payment identifier
+          example: 987fcdeb-51a2-43d1-9c15-246531579012
+        status:
+          type: string
+          enum:
+          - pending
+          - processing
+          - completed
+          - failed
+          - cancelled
+          description: Current payment status
+          example: completed
+        amount:
+          type: number
+          format: decimal
+          description: Payment amount
+          example: 29.99
+        currency:
+          type: string
+          description: Payment currency
+          example: USD
+        transaction_id:
+          type: string
+          description: External transaction identifier from payment processor
+          example: txn_1234567890
+        created_at:
+          type: string
+          format: date-time
+          description: Payment creation timestamp
+          example: '2024-01-15T10:30:00Z'
+        updated_at:
+          type: string
+          format: date-time
+          description: Last update timestamp
+          example: '2024-01-15T10:30:15Z'
+        fees:
+          $ref: '#/components/schemas/PaymentFees'
+    PaymentFees:
+      type: object
+      properties:
+        processing_fee:
+          type: number
+          format: decimal
+          description: Processing fee charged
+          example: 0.89
+        platform_fee:
+          type: number
+          format: decimal
+          description: Platform fee charged
+          example: 1.5
+        total_fees:
+          type: number
+          format: decimal
+          description: Total fees charged
+          example: 2.39
+    PaymentListResponse:
+      type: object
+      required:
+      - data
+      - pagination
+      properties:
+        pagination:
+          $ref: '#/components/schemas/Pagination'
+        data:
+          type: array
+          description: List of payments
+          items:
+            $ref: '#/components/schemas/PaymentResponse'
+    RefundResponse:
+      type: object
+      required:
+      - refund_id
+      - payment_id
+      - amount
+      - status
+      - created_at
+      properties:
+        refund_id:
+          format: uuid
+          description: Unique refund identifier
+          type: string
+          example: ref_123e4567-e89b-12d3-a456-426614174000
+        updated_at:
+          format: date-time
+          description: Last update timestamp
+          type: string
+          example: '2024-01-15T11:30:15Z'
+        payment_id:
+          format: uuid
+          description: Original payment identifier
+          type: string
+          example: 987fcdeb-51a2-43d1-9c15-246531579012
+        created_at:
+          format: date-time
+          description: Refund creation timestamp
+          type: string
+          example: '2024-01-15T11:30:00Z'
+        amount:
+          format: decimal
+          description: Refunded amount
+          type: number
+          example: 15.99
+        status:
+          description: Current refund status
+          type: string
+          enum:
+          - pending
+          - processing
+          - completed
+          - failed
+          example: completed
+    RefundListResponse:
+      type: object
+      required:
+      - data
+      - pagination
+      properties:
+        data:
+          type: array
+          description: List of refunds for the payment
+          items:
+            $ref: '#/components/schemas/RefundResponse'
+        pagination:
+          $ref: '#/components/schemas/Pagination'
+    MerchantResponse:
+      type: object
+      required:
+      - merchant_id
+      - business_name
+      - email
+      - phone
+      - status
+      - created_at
+      properties:
+        business_name:
+          type: string
+          description: Business name
+          example: Acme Corporation
+        phone:
+          type: string
+          description: Business phone number
+          example: +1-555-123-4567
+        website:
+          format: uri
+          description: Business website URL
+          type: string
+          example: https://www.acme.com
+        updated_at:
+          format: date-time
+          description: Last update timestamp
+          type: string
+          example: '2024-01-15T09:30:15Z'
+        address:
+          $ref: '#/components/schemas/Address'
+        email:
+          format: email
+          description: Business email address
+          type: string
+          example: contact@acme.com
+        merchant_id:
+          format: uuid
+          description: Unique merchant identifier
+          type: string
+          example: 550e8400-e29b-41d4-a716-446655440000
+        created_at:
+          format: date-time
+          description: Merchant creation timestamp
+          type: string
+          example: '2024-01-15T09:30:00Z'
+        status:
+          description: Current merchant status
+          type: string
+          enum:
+          - pending
+          - active
+          - suspended
+          - inactive
+          example: active
+    MerchantCreateRequest:
+      type: object
+      required:
+      - business_name
+      - email
+      - phone
+      - address
+      properties:
+        business_name:
+          description: Name of the business
+          type: string
+          maxLength: 100
+          example: Acme Corporation
+        phone:
+          pattern: ^\+?[1-9]\d{1,14}$
+          description: Business phone number in E.164 format
+          type: string
+          example: +1-555-123-4567
+        website:
+          format: uri
+          description: Business website URL
+          type: string
+          example: https://www.acme.com
+        address:
+          $ref: '#/components/schemas/Address'
+        email:
+          format: email
+          description: Business email address
+          type: string
+          example: contact@acme.com
+    MerchantUpdateRequest:
+      type: object
+      properties:
+        business_name:
+          description: Name of the business
+          type: string
+          maxLength: 100
+          example: Acme Corporation Ltd
+        website:
+          format: uri
+          description: Business website URL
+          type: string
+          example: https://www.acme.com
+        address:
+          $ref: '#/components/schemas/Address'
+        phone:
+          pattern: ^\+?[1-9]\d{1,14}$
+          description: Business phone number in E.164 format
+          type: string
+          example: +1-555-123-4567
+        email:
+          format: email
+          description: Business email address
+          type: string
+          example: contact@acme.com
+    MerchantListResponse:
+      type: object
+      required:
+      - data
+      - pagination
+      properties:
+        data:
+          type: array
+          description: List of merchants
+          items:
+            $ref: '#/components/schemas/MerchantResponse'
+        pagination:
+          $ref: '#/components/schemas/Pagination'
+    CustomerResponse:
+      type: object
+      required:
+      - customer_id
+      - first_name
+      - last_name
+      - email
+      - status
+      - created_at
+      properties:
+        first_name:
+          type: string
+          description: Customer first name
+          example: John
+        address:
+          $ref: '#/components/schemas/Address'
+        updated_at:
+          format: date-time
+          description: Last update timestamp
+          type: string
+          example: '2024-01-15T08:30:15Z'
+        phone:
+          type: string
+          description: Customer phone number
+          example: +1-555-987-6543
+        created_at:
+          format: date-time
+          description: Customer creation timestamp
+          type: string
+          example: '2024-01-15T08:30:00Z'
+        customer_id:
+          format: uuid
+          description: Unique customer identifier
+          type: string
+          example: 123e4567-e89b-12d3-a456-426614174000
+        last_name:
+          type: string
+          description: Customer last name
+          example: Doe
+        email:
+          format: email
+          description: Customer email address
+          type: string
+          example: john.doe@example.com
+        status:
+          description: Current customer status
+          type: string
+          enum:
+          - active
+          - inactive
+          - suspended
+          example: active
+    CustomerCreateRequest:
+      type: object
+      required:
+      - first_name
+      - last_name
+      - email
+      properties:
+        first_name:
+          description: Customer first name
+          type: string
+          maxLength: 50
+          example: John
+        address:
+          $ref: '#/components/schemas/Address'
+        phone:
+          pattern: ^\+?[1-9]\d{1,14}$
+          description: Customer phone number in E.164 format
+          type: string
+          example: +1-555-987-6543
+        last_name:
+          description: Customer last name
+          type: string
+          maxLength: 50
+          example: Doe
+        email:
+          format: email
+          description: Customer email address
+          type: string
+          example: john.doe@example.com
+    PaymentMethodStoreRequest:
+      type: object
+      required:
+      - payment_method
+      - is_default
+      properties:
+        is_default:
+          description: Set as the default payment method for this customer
+          type: boolean
+          example: true
+        payment_method:
+          $ref: '#/components/schemas/PaymentMethod'
+    StoredPaymentMethodResponse:
+      type: object
+      required:
+      - payment_method_id
+      - customer_id
+      - type
+      - is_default
+      - created_at
+      properties:
+        is_default:
+          description: Whether this is the default payment method
+          type: boolean
+          example: true
+        updated_at:
+          format: date-time
+          description: Last update timestamp
+          type: string
+          example: '2024-01-15T07:30:15Z'
+        payment_method_id:
+          format: uuid
+          description: Unique payment method identifier
+          type: string
+          example: pm_456e7890-a12b-34c5-d678-901234567890
+        created_at:
+          format: date-time
+          description: Payment method creation timestamp
+          type: string
+          example: '2024-01-15T07:30:00Z'
+        customer_id:
+          format: uuid
+          description: Customer identifier
+          type: string
+          example: 123e4567-e89b-12d3-a456-426614174000
+        last_four:
+          type: string
+          description: Last four digits of card (for card payments only)
+          example: '1111'
+        type:
+          description: Type of payment method
+          type: string
+          enum:
+          - credit_card
+          - debit_card
+          - bank_transfer
+          - digital_wallet
+          - cryptocurrency
+          example: credit_card
+    PaymentMethodListResponse:
+      type: object
+      required:
+      - data
+      properties:
+        data:
+          type: array
+          description: List of stored payment methods
+          items:
+            $ref: '#/components/schemas/StoredPaymentMethodResponse'
+    PaymentAnalyticsResponse:
+      type: object
+      required:
+      - total_transactions
+      - total_volume
+      - success_rate
+      - period
+      properties:
+        average_transaction_amount:
+          format: decimal
+          description: Average transaction amount in the period
+          type: number
+          example: 127.45
+        total_volume:
+          format: decimal
+          description: Total payment volume in the specified currency
+          type: number
+          example: 125847.32
+        failed_transactions:
+          type: integer
+          description: Number of failed transactions
+          example: 23
+        currency:
+          type: string
+          description: Currency for monetary values
+          example: USD
+        total_transactions:
+          type: integer
+          description: Total number of transactions in the period
+          example: 1250
+        period:
+          type: object
+          required:
+          - start_date
+          - end_date
+          properties:
+            start_date:
+              format: date
+              description: Start date of the analytics period
+              type: string
+              example: '2024-01-01'
+            end_date:
+              format: date
+              description: End date of the analytics period
+              type: string
+              example: '2024-01-31'
+        success_rate:
+          format: percentage
+          description: Payment success rate as a percentage
+          type: number
+          minimum: 0
+          maximum: 100
+          example: 98.16
+        successful_transactions:
+          type: integer
+          description: Number of successful transactions
+          example: 1227
+    MerchantAnalyticsResponse:
+      type: object
+      required:
+      - merchant_id
+      - total_transactions
+      - total_volume
+      - total_fees_collected
+      - period
+      properties:
+        period:
+          type: object
+          required:
+          - start_date
+          - end_date
+          properties:
+            end_date:
+              format: date
+              description: End date of the analytics period
+              type: string
+              example: '2024-01-31'
+            start_date:
+              format: date
+              description: Start date of the analytics period
+              type: string
+              example: '2024-01-01'
+        total_fees_collected:
+          format: decimal
+          description: Total fees collected from this merchant
+          type: number
+          example: 1247.83
+        top_customers:
+          type: array
+          description: Top customers by transaction volume
+          items:
+            type: object
+            properties:
+              transaction_count:
+                type: integer
+                description: Number of transactions
+                example: 15
+              customer_id:
+                format: uuid
+                description: Customer identifier
+                type: string
+                example: 123e4567-e89b-12d3-a456-426614174000
+              total_volume:
+                format: decimal
+                description: Total volume from this customer
+                type: number
+                example: 2456.78
+        total_volume:
+          format: decimal
+          description: Total payment volume for this merchant
+          type: number
+          example: 87459.32
+        total_transactions:
+          type: integer
+          description: Total number of transactions for this merchant
+          example: 456
+        merchant_id:
+          format: uuid
+          description: Merchant identifier
+          type: string
+          example: 550e8400-e29b-41d4-a716-446655440000
+    ValidationResponse:
+      type: object
+      required:
+      - is_valid
+      properties:
+        is_valid:
+          type: boolean
+          description: Whether the payment method is valid
+          example: true
+        suggestions:
+          type: array
+          description: Suggestions for fixing validation issues
+          items:
+            type: string
+            example: Please check the expiry date
+        errors:
+          type: array
+          description: List of validation errors
+          items:
+            type: object
+            properties:
+              message:
+                type: string
+                description: Validation error message
+                example: Card has expired
+              field:
+                type: string
+                description: Field that failed validation
+                example: expiry_month
+    SubscriptionResponse:
+      type: object
+      required:
+      - subscription_id
+      - customer_id
+      - merchant_id
+      - amount
+      - currency
+      - frequency
+      - status
+      - next_payment_date
+      - created_at
+      properties:
+        merchant_id:
+          format: uuid
+          description: Merchant identifier
+          type: string
+          example: 550e8400-e29b-41d4-a716-446655440000
+        payment_method_id:
+          format: uuid
+          description: Payment method to use for recurring payments
+          type: string
+          example: pm_456e7890-a12b-34c5-d678-901234567890
+        amount:
+          format: decimal
+          description: Recurring payment amount
+          type: number
+          example: 29.99
+        updated_at:
+          format: date-time
+          description: Last update timestamp
+          type: string
+          example: '2024-01-15T06:30:15Z'
+        currency:
+          pattern: ^[A-Z]{3}$
+          description: ISO 4217 currency code
+          type: string
+          example: USD
+        frequency:
+          description: Payment frequency
+          type: string
+          enum:
+          - weekly
+          - monthly
+          - quarterly
+          - yearly
+          example: monthly
+        created_at:
+          format: date-time
+          description: Subscription creation timestamp
+          type: string
+          example: '2024-01-15T06:30:00Z'
+        next_payment_date:
+          format: date
+          description: Next scheduled payment date
+          type: string
+          example: '2024-02-15'
+        customer_id:
+          format: uuid
+          description: Customer identifier
+          type: string
+          example: 123e4567-e89b-12d3-a456-426614174000
+        subscription_id:
+          format: uuid
+          description: Unique subscription identifier
+          type: string
+          example: sub_789fcdeb-51a2-43d1-9c15-246531579012
+        status:
+          description: Current subscription status
+          type: string
+          enum:
+          - active
+          - paused
+          - cancelled
+          - expired
+          example: active
+    SubscriptionCreateRequest:
+      type: object
+      required:
+      - customer_id
+      - merchant_id
+      - amount
+      - currency
+      - frequency
+      - payment_method_id
+      properties:
+        merchant_id:
+          format: uuid
+          description: Merchant identifier
+          type: string
+          example: 550e8400-e29b-41d4-a716-446655440000
+        payment_method_id:
+          format: uuid
+          description: Payment method to use for recurring payments
+          type: string
+          example: pm_456e7890-a12b-34c5-d678-901234567890
+        amount:
+          format: decimal
+          description: Recurring payment amount
+          type: number
+          minimum: 0.01
+          example: 29.99
+        currency:
+          pattern: ^[A-Z]{3}$
+          description: ISO 4217 currency code
+          type: string
+          example: USD
+        frequency:
+          description: Payment frequency
+          type: string
+          enum:
+          - weekly
+          - monthly
+          - quarterly
+          - yearly
+          example: monthly
+        start_date:
+          format: date
+          description: Date to start the recurring payments
+          type: string
+          example: '2024-01-15'
+        customer_id:
+          format: uuid
+          description: Customer identifier
+          type: string
+          example: 123e4567-e89b-12d3-a456-426614174000
+    WebhookEvent:
+      type: object
+      required:
+      - event_id
+      - event_type
+      - resource_id
+      - created_at
+      - data
+      properties:
+        event_id:
+          format: uuid
+          description: Unique event identifier
+          type: string
+          example: evt_987fcdeb-51a2-43d1-9c15-246531579012
+        event_type:
+          description: Type of webhook event
+          type: string
+          enum:
+          - payment.completed
+          - payment.failed
+          - refund.processed
+          - subscription.created
+          - subscription.cancelled
+          example: payment.completed
+        resource_id:
+          format: uuid
+          description: ID of the resource that triggered the event
+          type: string
+          example: 987fcdeb-51a2-43d1-9c15-246531579012
+        created_at:
+          format: date-time
+          description: Event creation timestamp
+          type: string
+          example: '2024-01-15T05:30:00Z'
+        data:
+          type: object
+          description: Event payload data
+          additionalProperties: true
+    WebhookEventListResponse:
+      type: object
+      required:
+      - data
+      - pagination
+      properties:
+        data:
+          type: array
+          description: List of webhook events
+          items:
+            $ref: '#/components/schemas/WebhookEvent'
+        pagination:
+          $ref: '#/components/schemas/Pagination'
     Activity:
       type: object
       description: Activity or communication entry in a chargeback case
@@ -8105,24 +9525,6 @@ components:
           type: string
           description: Storage path of the file
           example: /storage/chargebacks/12345678/550e8400-e29b-41d4-a716-446655440000.pdf
-    BankAccount:
-      type: object
-      required:
-      - account_number
-      - routing_number
-      properties:
-        account_number:
-          type: string
-          description: Bank account number
-        routing_number:
-          type: string
-          description: Bank routing number
-        account_type:
-          type: string
-          enum:
-          - checking
-          - savings
-          description: Type of bank account
     BuyerChargebackDebtStatus:
       type: object
       description: Debt information associated with a chargeback case
@@ -8360,23 +9762,6 @@ components:
           description: List of activities performed by the collaborator
           items:
             $ref: '#/components/schemas/CollaboratorActivity'
-    DigitalWallet:
-      type: object
-      required:
-      - provider
-      - wallet_id
-      properties:
-        provider:
-          type: string
-          enum:
-          - paypal
-          - apple_pay
-          - google_pay
-          - venmo
-          description: Digital wallet provider
-        wallet_id:
-          type: string
-          description: Wallet identifier or token
     Documentation:
       type: object
       description: Documentation file associated with a chargeback case
@@ -9173,795 +10558,6 @@ components:
           type: string
           description: Response message or error description
           example: Internal Server Error
-    StoredPaymentMethodResponse:
-      type: object
-      required:
-      - payment_method_id
-      - customer_id
-      - type
-      - is_default
-      - created_at
-      properties:
-        is_default:
-          description: Whether this is the default payment method
-          type: boolean
-          example: true
-        updated_at:
-          format: date-time
-          description: Last update timestamp
-          type: string
-          example: '2024-01-15T07:30:15Z'
-        payment_method_id:
-          format: uuid
-          description: Unique payment method identifier
-          type: string
-          example: pm_456e7890-a12b-34c5-d678-901234567890
-        created_at:
-          format: date-time
-          description: Payment method creation timestamp
-          type: string
-          example: '2024-01-15T07:30:00Z'
-        customer_id:
-          format: uuid
-          description: Customer identifier
-          type: string
-          example: 123e4567-e89b-12d3-a456-426614174000
-        last_four:
-          type: string
-          description: Last four digits of card (for card payments only)
-          example: '1111'
-        type:
-          description: Type of payment method
-          type: string
-          enum:
-          - credit_card
-          - debit_card
-          - bank_transfer
-          - digital_wallet
-          - cryptocurrency
-          example: credit_card
-    ValidationResponse:
-      type: object
-      required:
-      - is_valid
-      properties:
-        is_valid:
-          type: boolean
-          description: Whether the payment method is valid
-          example: true
-        suggestions:
-          type: array
-          description: Suggestions for fixing validation issues
-          items:
-            type: string
-            example: Please check the expiry date
-        errors:
-          type: array
-          description: List of validation errors
-          items:
-            type: object
-            properties:
-              message:
-                type: string
-                description: Validation error message
-                example: Card has expired
-              field:
-                type: string
-                description: Field that failed validation
-                example: expiry_month
-    CardDetails:
-      type: object
-      required:
-      - number
-      - expiry_month
-      - expiry_year
-      - cvv
-      properties:
-        number:
-          type: string
-          pattern: ^[0-9]{13,19}$
-          description: Card number
-          example: '4111111111111111'
-        expiry_month:
-          type: integer
-          minimum: 1
-          maximum: 12
-          description: Card expiry month
-          example: 12
-        expiry_year:
-          type: integer
-          minimum: 2024
-          description: Card expiry year
-          example: 2026
-        cvv:
-          type: string
-          pattern: ^[0-9]{3,4}$
-          description: Card verification value
-          example: '123'
-        cardholder_name:
-          type: string
-          maxLength: 100
-          description: Name on the card
-          example: John Doe
-    CustomerCreateRequest:
-      type: object
-      required:
-      - first_name
-      - last_name
-      - email
-      properties:
-        first_name:
-          description: Customer first name
-          type: string
-          maxLength: 50
-          example: John
-        address:
-          $ref: '#/components/schemas/Address'
-        phone:
-          pattern: ^\+?[1-9]\d{1,14}$
-          description: Customer phone number in E.164 format
-          type: string
-          example: +1-555-987-6543
-        last_name:
-          description: Customer last name
-          type: string
-          maxLength: 50
-          example: Doe
-        email:
-          format: email
-          description: Customer email address
-          type: string
-          example: john.doe@example.com
-    CustomerResponse:
-      type: object
-      required:
-      - customer_id
-      - first_name
-      - last_name
-      - email
-      - status
-      - created_at
-      properties:
-        first_name:
-          type: string
-          description: Customer first name
-          example: John
-        address:
-          $ref: '#/components/schemas/Address'
-        updated_at:
-          format: date-time
-          description: Last update timestamp
-          type: string
-          example: '2024-01-15T08:30:15Z'
-        phone:
-          type: string
-          description: Customer phone number
-          example: +1-555-987-6543
-        created_at:
-          format: date-time
-          description: Customer creation timestamp
-          type: string
-          example: '2024-01-15T08:30:00Z'
-        customer_id:
-          format: uuid
-          description: Unique customer identifier
-          type: string
-          example: 123e4567-e89b-12d3-a456-426614174000
-        last_name:
-          type: string
-          description: Customer last name
-          example: Doe
-        email:
-          format: email
-          description: Customer email address
-          type: string
-          example: john.doe@example.com
-        status:
-          description: Current customer status
-          type: string
-          enum:
-          - active
-          - inactive
-          - suspended
-          example: active
-    PaymentAnalyticsResponse:
-      type: object
-      required:
-      - total_transactions
-      - total_volume
-      - success_rate
-      - period
-      properties:
-        average_transaction_amount:
-          format: decimal
-          description: Average transaction amount in the period
-          type: number
-          example: 127.45
-        total_volume:
-          format: decimal
-          description: Total payment volume in the specified currency
-          type: number
-          example: 125847.32
-        failed_transactions:
-          type: integer
-          description: Number of failed transactions
-          example: 23
-        currency:
-          type: string
-          description: Currency for monetary values
-          example: USD
-        total_transactions:
-          type: integer
-          description: Total number of transactions in the period
-          example: 1250
-        period:
-          type: object
-          required:
-          - start_date
-          - end_date
-          properties:
-            start_date:
-              format: date
-              description: Start date of the analytics period
-              type: string
-              example: '2024-01-01'
-            end_date:
-              format: date
-              description: End date of the analytics period
-              type: string
-              example: '2024-01-31'
-        success_rate:
-          format: percentage
-          description: Payment success rate as a percentage
-          type: number
-          minimum: 0
-          maximum: 100
-          example: 98.16
-        successful_transactions:
-          type: integer
-          description: Number of successful transactions
-          example: 1227
-    PaymentFees:
-      type: object
-      properties:
-        processing_fee:
-          type: number
-          format: decimal
-          description: Processing fee charged
-          example: 0.89
-        platform_fee:
-          type: number
-          format: decimal
-          description: Platform fee charged
-          example: 1.5
-        total_fees:
-          type: number
-          format: decimal
-          description: Total fees charged
-          example: 2.39
-    PaymentListResponse:
-      type: object
-      required:
-      - data
-      - pagination
-      properties:
-        pagination:
-          $ref: '#/components/schemas/Pagination'
-        data:
-          type: array
-          description: List of payments
-          items:
-            $ref: '#/components/schemas/PaymentResponse'
-    PaymentMethod:
-      type: object
-      required:
-      - type
-      properties:
-        type:
-          type: string
-          enum:
-          - credit_card
-          - debit_card
-          - bank_transfer
-          - digital_wallet
-          - cryptocurrency
-          description: Type of payment method
-        card:
-          $ref: '#/components/schemas/CardDetails'
-        bank_account:
-          $ref: '#/components/schemas/BankAccount'
-        digital_wallet:
-          $ref: '#/components/schemas/DigitalWallet'
-    PaymentMethodListResponse:
-      type: object
-      required:
-      - data
-      properties:
-        data:
-          type: array
-          description: List of stored payment methods
-          items:
-            $ref: '#/components/schemas/StoredPaymentMethodResponse'
-    PaymentMethodStoreRequest:
-      type: object
-      required:
-      - payment_method
-      - is_default
-      properties:
-        is_default:
-          description: Set as the default payment method for this customer
-          type: boolean
-          example: true
-        payment_method:
-          $ref: '#/components/schemas/PaymentMethod'
-    PaymentResponse:
-      type: object
-      required:
-      - payment_id
-      - status
-      - amount
-      - currency
-      - created_at
-      properties:
-        payment_id:
-          type: string
-          format: uuid
-          description: Unique payment identifier
-          example: 987fcdeb-51a2-43d1-9c15-246531579012
-        status:
-          type: string
-          enum:
-          - pending
-          - processing
-          - completed
-          - failed
-          - cancelled
-          description: Current payment status
-          example: completed
-        amount:
-          type: number
-          format: decimal
-          description: Payment amount
-          example: 29.99
-        currency:
-          type: string
-          description: Payment currency
-          example: USD
-        transaction_id:
-          type: string
-          description: External transaction identifier from payment processor
-          example: txn_1234567890
-        created_at:
-          type: string
-          format: date-time
-          description: Payment creation timestamp
-          example: '2024-01-15T10:30:00Z'
-        updated_at:
-          type: string
-          format: date-time
-          description: Last update timestamp
-          example: '2024-01-15T10:30:15Z'
-        fees:
-          $ref: '#/components/schemas/PaymentFees'
-    RefundListResponse:
-      type: object
-      required:
-      - data
-      - pagination
-      properties:
-        data:
-          type: array
-          description: List of refunds for the payment
-          items:
-            $ref: '#/components/schemas/RefundResponse'
-        pagination:
-          $ref: '#/components/schemas/Pagination'
-    RefundResponse:
-      type: object
-      required:
-      - refund_id
-      - payment_id
-      - amount
-      - status
-      - created_at
-      properties:
-        refund_id:
-          format: uuid
-          description: Unique refund identifier
-          type: string
-          example: ref_123e4567-e89b-12d3-a456-426614174000
-        updated_at:
-          format: date-time
-          description: Last update timestamp
-          type: string
-          example: '2024-01-15T11:30:15Z'
-        payment_id:
-          format: uuid
-          description: Original payment identifier
-          type: string
-          example: 987fcdeb-51a2-43d1-9c15-246531579012
-        created_at:
-          format: date-time
-          description: Refund creation timestamp
-          type: string
-          example: '2024-01-15T11:30:00Z'
-        amount:
-          format: decimal
-          description: Refunded amount
-          type: number
-          example: 15.99
-        status:
-          description: Current refund status
-          type: string
-          enum:
-          - pending
-          - processing
-          - completed
-          - failed
-          example: completed
-    SubscriptionCreateRequest:
-      type: object
-      required:
-      - customer_id
-      - merchant_id
-      - amount
-      - currency
-      - frequency
-      - payment_method_id
-      properties:
-        merchant_id:
-          format: uuid
-          description: Merchant identifier
-          type: string
-          example: 550e8400-e29b-41d4-a716-446655440000
-        payment_method_id:
-          format: uuid
-          description: Payment method to use for recurring payments
-          type: string
-          example: pm_456e7890-a12b-34c5-d678-901234567890
-        amount:
-          format: decimal
-          description: Recurring payment amount
-          type: number
-          minimum: 0.01
-          example: 29.99
-        currency:
-          pattern: ^[A-Z]{3}$
-          description: ISO 4217 currency code
-          type: string
-          example: USD
-        frequency:
-          description: Payment frequency
-          type: string
-          enum:
-          - weekly
-          - monthly
-          - quarterly
-          - yearly
-          example: monthly
-        start_date:
-          format: date
-          description: Date to start the recurring payments
-          type: string
-          example: '2024-01-15'
-        customer_id:
-          format: uuid
-          description: Customer identifier
-          type: string
-          example: 123e4567-e89b-12d3-a456-426614174000
-    SubscriptionResponse:
-      type: object
-      required:
-      - subscription_id
-      - customer_id
-      - merchant_id
-      - amount
-      - currency
-      - frequency
-      - status
-      - next_payment_date
-      - created_at
-      properties:
-        merchant_id:
-          format: uuid
-          description: Merchant identifier
-          type: string
-          example: 550e8400-e29b-41d4-a716-446655440000
-        payment_method_id:
-          format: uuid
-          description: Payment method to use for recurring payments
-          type: string
-          example: pm_456e7890-a12b-34c5-d678-901234567890
-        amount:
-          format: decimal
-          description: Recurring payment amount
-          type: number
-          example: 29.99
-        updated_at:
-          format: date-time
-          description: Last update timestamp
-          type: string
-          example: '2024-01-15T06:30:15Z'
-        currency:
-          pattern: ^[A-Z]{3}$
-          description: ISO 4217 currency code
-          type: string
-          example: USD
-        frequency:
-          description: Payment frequency
-          type: string
-          enum:
-          - weekly
-          - monthly
-          - quarterly
-          - yearly
-          example: monthly
-        created_at:
-          format: date-time
-          description: Subscription creation timestamp
-          type: string
-          example: '2024-01-15T06:30:00Z'
-        next_payment_date:
-          format: date
-          description: Next scheduled payment date
-          type: string
-          example: '2024-02-15'
-        customer_id:
-          format: uuid
-          description: Customer identifier
-          type: string
-          example: 123e4567-e89b-12d3-a456-426614174000
-        subscription_id:
-          format: uuid
-          description: Unique subscription identifier
-          type: string
-          example: sub_789fcdeb-51a2-43d1-9c15-246531579012
-        status:
-          description: Current subscription status
-          type: string
-          enum:
-          - active
-          - paused
-          - cancelled
-          - expired
-          example: active
-    MerchantAnalyticsResponse:
-      type: object
-      required:
-      - merchant_id
-      - total_transactions
-      - total_volume
-      - total_fees_collected
-      - period
-      properties:
-        period:
-          type: object
-          required:
-          - start_date
-          - end_date
-          properties:
-            end_date:
-              format: date
-              description: End date of the analytics period
-              type: string
-              example: '2024-01-31'
-            start_date:
-              format: date
-              description: Start date of the analytics period
-              type: string
-              example: '2024-01-01'
-        total_fees_collected:
-          format: decimal
-          description: Total fees collected from this merchant
-          type: number
-          example: 1247.83
-        top_customers:
-          type: array
-          description: Top customers by transaction volume
-          items:
-            type: object
-            properties:
-              transaction_count:
-                type: integer
-                description: Number of transactions
-                example: 15
-              customer_id:
-                format: uuid
-                description: Customer identifier
-                type: string
-                example: 123e4567-e89b-12d3-a456-426614174000
-              total_volume:
-                format: decimal
-                description: Total volume from this customer
-                type: number
-                example: 2456.78
-        total_volume:
-          format: decimal
-          description: Total payment volume for this merchant
-          type: number
-          example: 87459.32
-        total_transactions:
-          type: integer
-          description: Total number of transactions for this merchant
-          example: 456
-        merchant_id:
-          format: uuid
-          description: Merchant identifier
-          type: string
-          example: 550e8400-e29b-41d4-a716-446655440000
-    MerchantCreateRequest:
-      type: object
-      required:
-      - business_name
-      - email
-      - phone
-      - address
-      properties:
-        business_name:
-          description: Name of the business
-          type: string
-          maxLength: 100
-          example: Acme Corporation
-        phone:
-          pattern: ^\+?[1-9]\d{1,14}$
-          description: Business phone number in E.164 format
-          type: string
-          example: +1-555-123-4567
-        website:
-          format: uri
-          description: Business website URL
-          type: string
-          example: https://www.acme.com
-        address:
-          $ref: '#/components/schemas/Address'
-        email:
-          format: email
-          description: Business email address
-          type: string
-          example: contact@acme.com
-    MerchantListResponse:
-      type: object
-      required:
-      - data
-      - pagination
-      properties:
-        data:
-          type: array
-          description: List of merchants
-          items:
-            $ref: '#/components/schemas/MerchantResponse'
-        pagination:
-          $ref: '#/components/schemas/Pagination'
-    MerchantResponse:
-      type: object
-      required:
-      - merchant_id
-      - business_name
-      - email
-      - phone
-      - status
-      - created_at
-      properties:
-        business_name:
-          type: string
-          description: Business name
-          example: Acme Corporation
-        phone:
-          type: string
-          description: Business phone number
-          example: +1-555-123-4567
-        website:
-          format: uri
-          description: Business website URL
-          type: string
-          example: https://www.acme.com
-        updated_at:
-          format: date-time
-          description: Last update timestamp
-          type: string
-          example: '2024-01-15T09:30:15Z'
-        address:
-          $ref: '#/components/schemas/Address'
-        email:
-          format: email
-          description: Business email address
-          type: string
-          example: contact@acme.com
-        merchant_id:
-          format: uuid
-          description: Unique merchant identifier
-          type: string
-          example: 550e8400-e29b-41d4-a716-446655440000
-        created_at:
-          format: date-time
-          description: Merchant creation timestamp
-          type: string
-          example: '2024-01-15T09:30:00Z'
-        status:
-          description: Current merchant status
-          type: string
-          enum:
-          - pending
-          - active
-          - suspended
-          - inactive
-          example: active
-    MerchantUpdateRequest:
-      type: object
-      properties:
-        business_name:
-          description: Name of the business
-          type: string
-          maxLength: 100
-          example: Acme Corporation Ltd
-        website:
-          format: uri
-          description: Business website URL
-          type: string
-          example: https://www.acme.com
-        address:
-          $ref: '#/components/schemas/Address'
-        phone:
-          pattern: ^\+?[1-9]\d{1,14}$
-          description: Business phone number in E.164 format
-          type: string
-          example: +1-555-123-4567
-        email:
-          format: email
-          description: Business email address
-          type: string
-          example: contact@acme.com
-    WebhookEvent:
-      type: object
-      required:
-      - event_id
-      - event_type
-      - resource_id
-      - created_at
-      - data
-      properties:
-        event_id:
-          format: uuid
-          description: Unique event identifier
-          type: string
-          example: evt_987fcdeb-51a2-43d1-9c15-246531579012
-        event_type:
-          description: Type of webhook event
-          type: string
-          enum:
-          - payment.completed
-          - payment.failed
-          - refund.processed
-          - subscription.created
-          - subscription.cancelled
-          example: payment.completed
-        resource_id:
-          format: uuid
-          description: ID of the resource that triggered the event
-          type: string
-          example: 987fcdeb-51a2-43d1-9c15-246531579012
-        created_at:
-          format: date-time
-          description: Event creation timestamp
-          type: string
-          example: '2024-01-15T05:30:00Z'
-        data:
-          type: object
-          description: Event payload data
-          additionalProperties: true
-    WebhookEventListResponse:
-      type: object
-      required:
-      - data
-      - pagination
-      properties:
-        data:
-          type: array
-          description: List of webhook events
-          items:
-            $ref: '#/components/schemas/WebhookEvent'
-        pagination:
-          $ref: '#/components/schemas/Pagination'
   x-mp-mlm-payment-methods:
     credit_cards:
     - visa

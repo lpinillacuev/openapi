@@ -1,60 +1,52 @@
 apps:
   - fury_app: payments
-    product: payments
     tag: Payments
+    product: payments
     paths:
       - /v1/payments
-    sdk:
-      - language: python
-        site_id: MLB
   - fury_app: openplatform-customer-go
-    product: customers
     tag: Customers
+    product: customers
     paths:
       - /v1/customers
   - fury_app: mpcs-preferences-api
-    product: preferences
     tag: Preferences
+    product: preferences
     paths:
       - /checkout/preferences
   - fury_app: chargeback-frontend-wrapper
-    product: chargebacks
     tag: Chargebacks
+    product: chargebacks
     paths:
       - /v1/chargebacks
   - fury_app: mp-subscriptions
-    product: subscriptions
     tag: Subscriptions
+    product: subscriptions
     paths:
       - /preapproval
       - /preapproval_plan
   - fury_app: merchant-orders-api
-    product: merchant_orders
     tag: Merchant Orders
+    product: merchant_orders
     paths:
       - /merchant_orders
   - fury_app: platsec-oauth-api
-    product: oauth
     tag: OAuth
+    product: oauth
     paths:
       - /oauth/token
   - fury_app: payment-methods-write-v2
-    product: payment_methods
     tag: Payment Methods
+    product: payment_methods
     paths:
       - /v1/payment_methods
   - fury_app: stores-api
-    product: stores
     tag: Stores
+    product: stores
     paths:
       - /users/
   - fury_app: instore-api-pos
-    product: pos
     tag: POS
+    product: pos
     paths:
       - /pos
-  - fury_app: mp-public-order-api
-    product: orders
-    tag: Orders
-    paths:
-      - /v1/orders

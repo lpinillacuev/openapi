@@ -38,7 +38,10 @@ endpoint is GA and not an internal-only path.
 
 ### Adding a new endpoint
 
-1. Find the source file in `fury_devsite-docs/reference/api-json/` for the description and schema
+1. Consult the official MercadoPago developer portal for the endpoint description and schema:
+   - [developers.mercadopago.com](https://www.mercadopago.com/developers) (all countries)
+   - [mercadopago.com.ar/developers](https://www.mercadopago.com.ar/developers) (Argentina)
+   - [mercadopago.com.br/developers](https://www.mercadopago.com.br/developers) (Brazil)
 2. Add the path operation to the correct section of `spec3.yaml` under `paths:`
 3. Add required schemas to the matching `schemas/*.yaml` fragment
 4. Run `python3 openapi/scripts/bundle.py` to merge and fix refs

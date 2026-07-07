@@ -5461,6 +5461,195 @@
         "description": "**Available in:** Argentina, Brazil, Mexico (MLA, MLB, MLM)"
       }
     },
+    "/point/integration-api/devices/{deviceid}/refund": {
+      "post": {
+        "operationId": "createPointRefundIntent",
+        "summary": "Create a refund intent on a terminal",
+        "description": "Initiates a refund intent on a Point terminal device.",
+        "tags": [
+          "Terminals"
+        ],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "x-mp-sites": [
+          "MLA",
+          "MLB",
+          "MLM"
+        ],
+        "parameters": [
+          {
+            "name": "deviceid",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "Terminal device identifier"
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "payment_id"
+                ],
+                "properties": {
+                  "payment_id": {
+                    "type": "integer",
+                    "description": "ID of the payment to refund"
+                  },
+                  "amount": {
+                    "type": "number",
+                    "format": "double",
+                    "description": "Amount to refund (omit for full refund)"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Refund intent created",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "string",
+                      "description": "Refund intent ID"
+                    },
+                    "status": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          }
+        }
+      }
+    },
+    "/point/integration-api/devices/{deviceid}/refund/{refundintentid}": {
+      "delete": {
+        "operationId": "cancelPointRefundIntent",
+        "summary": "Cancel a refund intent on a terminal",
+        "tags": [
+          "Terminals"
+        ],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "x-mp-sites": [
+          "MLA",
+          "MLB",
+          "MLM"
+        ],
+        "parameters": [
+          {
+            "name": "deviceid",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "refundintentid",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Refund intent cancelled"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          }
+        }
+      }
+    },
+    "/point/integration-api/refund/{refundintentid}": {
+      "get": {
+        "operationId": "getPointRefundIntent",
+        "summary": "Get a refund intent status",
+        "tags": [
+          "Terminals"
+        ],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "x-mp-sites": [
+          "MLA",
+          "MLB",
+          "MLM"
+        ],
+        "parameters": [
+          {
+            "name": "refundintentid",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "Refund intent identifier"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Refund intent found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "string"
+                    },
+                    "status": {
+                      "type": "string"
+                    },
+                    "payment_id": {
+                      "type": "integer"
+                    },
+                    "amount": {
+                      "type": "number"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          }
+        }
+      }
+    },
     "/instore/qr/seller/collectors/{user_id}/pos/{external_pos_id}/orders": {
       "get": {
         "operationId": "getInstoreOrderV2",
@@ -5658,9 +5847,95 @@
             }
           }
         }
+      },
+      "post": {
+        "operationId": "createPOS",
+        "summary": "Create a point of sale",
+        "description": "Creates a point of sale in a store to receive payments for products or services. Each POS will have a unique QR code linked to it.",
+        "tags": [
+          "POS"
+        ],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/POSRequest"
+              },
+              "example": {
+                "name": "Main POS",
+                "fixed_amount": false,
+                "store_id": "1234567",
+                "external_store_id": "SUC001",
+                "external_id": "POS001"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "POS created",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/POS"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          }
+        }
       }
     },
     "/pos/{id}": {
+      "get": {
+        "operationId": "getPOS",
+        "summary": "Get a point of sale",
+        "tags": [
+          "POS"
+        ],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "POS identifier"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "POS found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/POS"
+                }
+              }
+            }
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          }
+        }
+      },
       "put": {
         "operationId": "updatePOS",
         "summary": "Update a point of sale",
@@ -5702,6 +5977,37 @@
                 }
               }
             }
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          }
+        }
+      },
+      "delete": {
+        "operationId": "deletePOS",
+        "summary": "Delete a point of sale",
+        "tags": [
+          "POS"
+        ],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "POS identifier to delete"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "POS deleted"
           },
           "404": {
             "$ref": "#/components/responses/NotFound"

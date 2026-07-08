@@ -1,0 +1,140 @@
+name: Spec Diff Comment
+
+# Genera automáticamente un comentario en el PR con un resumen estructurado
+# de los cambios en spec3.yaml (paths, parameters, schemas).
+#
+# El reviewer ve en GitHub qué cambió exactamente en cada endpoint
+# sin necesidad de leer el diff crudo del YAML.
+# El comentario se actualiza en cada push a la rama del PR.
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+    branches:
+      - main
+    paths:
+      - 'spec3.yaml'
+      - 'spec3.json'
+      - 'schemas/**'
+      - 'by-product/**'
+
+jobs:
+  spec-diff-comment:
+    name: Generar resumen de cambios en el spec
+    runs-on: ubuntu-latest
+    permissions:
+      pull-requests: write
+      contents: read
+
+    steps:
+      - name: Checkout (con historial completo)
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          fetch-depth: 0
+
+      - name: Instalar dependencias
+        run: pip install pyyaml --quiet
+
+      - name: Fetch rama base
+        run: git fetch origin ${{ github.base_ref }}
+
+      - name: Generar resumen Markdown y checkboxes de schemas
+        run: |
+          python3 .github/scripts/spec_diff_md.py \
+            --base "${{ github.base_ref }}" \
+            --output /tmp/spec-diff.md \
+            --schema-checkboxes /tmp/schema-checkboxes.md
+
+      - name: Agregar checkboxes de schemas al PR body
+        uses: actions/github-script@60a0d83039c74a4aee543508d2ffcb1c3799cdea
+        with:
+          script: |
+            const fs = require('fs');
+            const SCHEMA_MARKER_START = '<!-- PENDING_SCHEMAS_START -->';
+            const SCHEMA_MARKER_END   = '<!-- PENDING_SCHEMAS_END -->';
+
+            let schemaBlock = '';
+            try {
+              schemaBlock = fs.readFileSync('/tmp/schema-checkboxes.md', 'utf8').trim();
+            } catch (e) {}
+
+            if (!schemaBlock) {
+              console.log('Sin cambios en schemas, omitiendo actualización del PR body.');
+              return;
+            }
+
+            // Leer PR body actual
+            const { data: pr } = await github.rest.pulls.get({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              pull_number: context.issue.number,
+            });
+
+            let currentBody = pr.body || '';
+
+            // Reemplazar bloque existente o agregar al final
+            if (currentBody.includes(SCHEMA_MARKER_START)) {
+              const re = new RegExp(
+                /.*<!-- PENDING_SCHEMAS_START -->[\s\S]*<!-- PENDING_SCHEMAS_END -->.*\n?/
+              );
+              currentBody = currentBody.replace(re, schemaBlock + '\n');
+            } else {
+              currentBody = currentBody + '\n' + schemaBlock;
+            }
+
+            await github.rest.pulls.update({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              pull_number: context.issue.number,
+              body: currentBody,
+            });
+            console.log('PR body actualizado con checkboxes de schemas.');
+
+      - name: Publicar o actualizar comentario en el PR
+        uses: actions/github-script@60a0d83039c74a4aee543508d2ffcb1c3799cdea
+        with:
+          script: |
+            const fs = require('fs');
+            const MARKER = '<!-- spec-diff-summary-bot -->';
+
+            let body = '';
+            try {
+              body = fs.readFileSync('/tmp/spec-diff.md', 'utf8').trim();
+            } catch (e) {
+              console.log('No se generó archivo de diff, omitiendo comentario.');
+              return;
+            }
+
+            if (!body) {
+              console.log('Sin cambios en spec3.yaml detectados, omitiendo comentario.');
+              return;
+            }
+
+            const fullBody = `${MARKER}\n${body}`;
+
+            // Buscar comentario previo del bot para actualizarlo
+            const { data: comments } = await github.rest.issues.listComments({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: context.issue.number,
+            });
+
+            const existing = comments.find(c => c.body.startsWith(MARKER));
+
+            if (existing) {
+              await github.rest.issues.updateComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                comment_id: existing.id,
+                body: fullBody,
+              });
+              console.log(`Comentario actualizado: #${existing.id}`);
+            } else {
+              await github.rest.issues.createComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: context.issue.number,
+                body: fullBody,
+              });
+              console.log('Comentario creado en el PR.');
+            }

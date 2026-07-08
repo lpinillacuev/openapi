@@ -1,0 +1,45 @@
+.github/workflows/schema-decisions.yml
+  s_c6fa9f5ec88947::t_0c8cd7056f1cfa 1-193
+.github/scripts/spec_diff_md.py
+  s_c6fa9f5ec88947::t_0c8cd7056f1cfa 1-415
+.github/workflows/validate-policy.yml
+  s_c6fa9f5ec88947::t_0c8cd7056f1cfa 1-58
+scripts/bundle.py
+  s_c6fa9f5ec88947::t_0c8cd7056f1cfa 515-516,529-530,553,556,570,585,601-615
+.github/workflows/regenerate-derived-specs.yml
+  s_c6fa9f5ec88947::t_0c8cd7056f1cfa 1-134
+.github/workflows/spec-diff-comment.yml
+  s_c6fa9f5ec88947::t_0c8cd7056f1cfa 1-140
+.github/workflows/trigger-sdk-generation.yml
+  s_c6fa9f5ec88947::t_0c8cd7056f1cfa 1-102
+scripts/build_reference.py
+  s_c6fa9f5ec88947::t_0c8cd7056f1cfa 1-638
+.github/workflows/pr-commands.yml
+  s_c6fa9f5ec88947::t_0c8cd7056f1cfa 1-165
+scripts/validate-policy.py
+  s_c6fa9f5ec88947::t_0c8cd7056f1cfa 1-105
+apps.yaml
+  s_c6fa9f5ec88947::t_8c2bf67e971d08 69-74
+scripts/push_to_sdk.py
+  s_c6fa9f5ec88947::t_0c8cd7056f1cfa 1-493
+scripts/push_to_api.py
+  s_c6fa9f5ec88947::t_0c8cd7056f1cfa 1-266
+scripts/generate_product_diff.py
+  s_c6fa9f5ec88947::t_0c8cd7056f1cfa 1-442
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.5.6",
+  "base_commit_sha": "978e27ff4572d6a1a65302b1a68de9bc2ebfd0ac",
+  "prompts": {},
+  "sessions": {
+    "s_c6fa9f5ec88947": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "80d91040-c873-408f-87a1-099fcd382947",
+        "model": "claude-sonnet-4-6"
+      },
+      "human_author": "lpinillacuev <lina.pinillacuevas@mercadolibre.com.co>"
+    }
+  }
+}

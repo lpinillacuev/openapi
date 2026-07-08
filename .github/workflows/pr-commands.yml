@@ -85,31 +85,27 @@ jobs:
           fi
 
           APPROVED=()
-          REJECTED=()
+          SKIPPED=()
 
-          # Parse checked [x] and unchecked [ ] boxes
+          # Only checked [x] paths are approved — unchecked [ ] stay pending
           while IFS= read -r line; do
             if echo "$line" | grep -qE '^\- \[x\]'; then
               PATH_VAL=$(echo "$line" | sed "s/- \[x\] \`//;s/\`//")
               APPROVED+=("$PATH_VAL")
             elif echo "$line" | grep -qE '^\- \[ \]'; then
               PATH_VAL=$(echo "$line" | sed "s/- \[ \] \`//;s/\`//")
-              REJECTED+=("$PATH_VAL")
+              SKIPPED+=("$PATH_VAL")
             fi
           done <<< "$SECTION"
 
           echo "Approved paths: ${APPROVED[*]}"
-          echo "Rejected paths: ${REJECTED[*]}"
+          echo "Skipped (still pending): ${SKIPPED[*]}"
 
           TOTAL=0
 
-          # If reviewer clicked "Approve" — use checkbox state
-          # If reviewer clicked "Request changes" — reject ALL pending paths
+          # "Request changes" = no paths approved (reviewer explicitly rejected the PR)
           if [ "$ACTION" = "reject" ]; then
-            # Request changes = reject everything regardless of checkboxes
-            ALL_PATHS=("${APPROVED[@]}" "${REJECTED[@]}")
             APPROVED=()
-            REJECTED=("${ALL_PATHS[@]}")
           fi
 
           for PATH_VAL in "${APPROVED[@]}"; do
@@ -122,19 +118,9 @@ jobs:
             echo "✅ Approved: $PATH_VAL"
           done
 
-          for PATH_VAL in "${REJECTED[@]}"; do
-            PAYLOAD="{\"path\":\"$PATH_VAL\",\"decidedBy\":\"$REVIEWER\",\"reason\":\"rejected via GitHub Review\",\"prNumber\":$PR_NUMBER,\"commitSha\":\"$COMMIT_SHA\"}"
-            curl -s -X POST "${BOT_URL}/openapi/policy/${APP}/reject" \
-              -H "Content-Type: application/json" \
-              -H "X-github-token: ${{ secrets.GH_PAT }}" \
-              -d "$PAYLOAD" > /dev/null
-            TOTAL=$((TOTAL + 1))
-            echo "❌ Rejected: $PATH_VAL"
-          done
-
-          echo "decided_count=$TOTAL"        >> $GITHUB_OUTPUT
-          echo "approved_count=${#APPROVED[@]}" >> $GITHUB_OUTPUT
-          echo "rejected_count=${#REJECTED[@]}" >> $GITHUB_OUTPUT
+          echo "decided_count=$TOTAL"           >> $GITHUB_OUTPUT
+          echo "approved_count=${#APPROVED[@]}"  >> $GITHUB_OUTPUT
+          echo "skipped_count=${#SKIPPED[@]}"    >> $GITHUB_OUTPUT
 
       - name: Comment result on PR
         uses: actions/github-script@d746ffe35508b1917358783b479e04febd2b8f71
@@ -144,17 +130,15 @@ jobs:
             const reviewer     = '${{ steps.ctx.outputs.reviewer }}';
             const prNumber     = parseInt('${{ steps.ctx.outputs.pr_number }}', 10);
             const approved     = parseInt('${{ steps.decide.outputs.approved_count }}', 10);
-            const rejected     = parseInt('${{ steps.decide.outputs.rejected_count }}', 10);
-            const total        = approved + rejected;
+            const skipped      = parseInt('${{ steps.decide.outputs.skipped_count }}', 10);
 
-            if (total === 0) {
+            if (approved === 0 && skipped === 0) {
               return;
             }
 
             let body = `**@${reviewer}** revisó los paths pendientes:\n\n`;
             if (approved > 0) body += `✅ **${approved}** path(s) aprobados (whitelist)\n`;
-            if (rejected > 0) body += `❌ **${rejected}** path(s) rechazados (blacklist)\n`;
-            body += `\n🎉 PR desbloqueado y listo para mergear.`;
+            if (skipped > 0) body += `⏳ **${skipped}** path(s) sin marcar — quedan pendientes para la próxima revisión\n`;
 
             await github.rest.issues.createComment({
               owner: context.repo.owner,

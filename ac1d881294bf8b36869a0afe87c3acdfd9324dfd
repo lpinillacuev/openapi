@@ -1,0 +1,43 @@
+CHANGELOG.md
+  s_f3b9f3f111312c::t_11483cbfa44d6c 15-27,45-49,61-65,108-112,126,131
+CONTRIBUTING.md
+  s_f3b9f3f111312c::t_6b8462e4c45463 41-44
+README.md
+  s_f3b9f3f111312c::t_554e30b001a7d8 4,16,30,32-50,54-72,81,89-95,104,180-183,192
+spec3.yaml
+  s_f3b9f3f111312c::t_531ce7f41312b8 3341-3372,3374-3396,3425-3442
+  s_f3b9f3f111312c::t_1ab6343845d1fe 3101-3220
+  s_f3b9f3f111312c::t_9e52ea27523043 3443
+by-site/MCO/spec3.yaml
+  s_f3b9f3f111312c::t_2c0b1c0aabbe98 102-108,2933-3052,3173-3204,3206-3228,3257-3275,7498,7501-7502
+by-site/MLA/spec3.yaml
+  s_f3b9f3f111312c::t_01784b8897cfb8 3396-3515,3636-3667,3669-3691,3720-3738,8283,8286-8287
+by-site/MLB/spec3.yaml
+  s_f3b9f3f111312c::t_707054a116dafa 3390-3509,3630-3661,3663-3685,3714-3732,8277,8280-8281
+by-site/MLC/spec3.yaml
+  s_f3b9f3f111312c::t_06de472691d678 2932-3051,3172-3203,3205-3227,3256-3274,7632,7635-7636
+by-site/MLM/spec3.yaml
+  s_f3b9f3f111312c::t_ced1f32c1bb5d0 3391-3510,3631-3662,3664-3686,3715-3733,8242,8245-8246
+by-site/MLU/spec3.yaml
+  s_f3b9f3f111312c::t_559c8843e1bb4d 100-106,2931-3050,3171-3202,3204-3226,3255-3273,7496,7499-7500
+by-site/MPE/spec3.yaml
+  s_f3b9f3f111312c::t_bcebeb55135866 96-102,2927-3046,3167-3198,3200-3222,3251-3269,7492,7495-7496
+spec3.json
+  s_f3b9f3f111312c::t_f176969ba58c40 5464-5652,5850-5897,5901-5938,5983-6013
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.10",
+  "base_commit_sha": "ac1d881294bf8b36869a0afe87c3acdfd9324dfd",
+  "prompts": {},
+  "sessions": {
+    "s_f3b9f3f111312c": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "37e4f74e-710e-42a3-a3d7-87529ac9f328",
+        "model": "claude-sonnet-4-6"
+      },
+      "human_author": "Luis Sanchez <luismiguel.sanchezgarcia@mercadolibre.com.co>"
+    }
+  }
+}

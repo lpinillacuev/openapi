@@ -1,0 +1,23 @@
+spec-alignment-report.html
+  s_c6fa9f5ec88947::t_57640a10b7a2cd 47
+  s_c6fa9f5ec88947::t_726bab64b3d24e 356-357
+  s_c6fa9f5ec88947::t_b2ecffa83c9dbf 267-310
+  s_c6fa9f5ec88947::t_67f1293732882e 69-70
+  s_c6fa9f5ec88947::t_470eeb3a2545c8 313-316,318,320-330,342,345-348
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.5.6",
+  "base_commit_sha": "85b64c38b4e17f235d3dc732c8ea7ca09190d36b",
+  "prompts": {},
+  "sessions": {
+    "s_c6fa9f5ec88947": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "80d91040-c873-408f-87a1-099fcd382947",
+        "model": "claude-sonnet-4-6"
+      },
+      "human_author": "lpinillacuev <lina.pinillacuevas@mercadolibre.com.co>"
+    }
+  }
+}

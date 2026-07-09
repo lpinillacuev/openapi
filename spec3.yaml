@@ -134,6 +134,55 @@ tags:
   - MLM
   - MLC
 paths:
+  /v1/orders/{order_id}/confirm:
+    post:
+      tags:
+      - Public Order
+      summary: Confirm transactions in order
+      description: |
+        Confirms transaction amounts in an order. **This endpoint is only supported for instore QR payment type**.
+
+        This operation allows confirming the final amounts for transactions that were previously created in the order.
+      parameters:
+      - $ref: '#/components/parameters/OrderID'
+      - $ref: '#/components/parameters/XIdempotencyKey'
+      - $ref: '#/components/parameters/XProductID'
+      requestBody:
+        $ref: '#/components/requestBodies/ConfirmOrder'
+      responses:
+        '200':
+          $ref: '#/components/responses/ConfirmOrder'
+        '400':
+          $ref: '#/components/responses/ConfirmOrderBadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/ConfirmOrderNotFound'
+        '409':
+          $ref: '#/components/responses/ConfirmOrderConflict'
+
+  /v1/orders/{order_id}/events:
+    post:
+      tags:
+      - Public Order
+      summary: Simulate order events
+      description: >-
+        This resource allows you to simulate events on an order, and change its status. This resource is only enabled for
+        inStore point orders, at the moment.
+      parameters:
+      - $ref: '#/components/parameters/OrderID'
+      requestBody:
+        $ref: '#/components/requestBodies/SimulateOrderEvent'
+      responses:
+        '400':
+          $ref: '#/components/responses/SimulateOrderBadRequest'
+        '403':
+          $ref: '#/components/responses/ForbiddenError'
+        '404':
+          $ref: '#/components/responses/SimulateOrderEventNotFound'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+
   /v1/payments:
     post:
       operationId: createPayment

@@ -66,3 +66,9 @@ apps:
     product: pos
     paths:
       - /pos
+
+  - fury_app: mp-public-order-api
+    tag: Orders
+    product: orders
+    paths:
+      - /v1/orders

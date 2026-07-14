@@ -53,9 +53,61 @@ jobs:
           echo "has_changes=$([ -n "$CHANGED" ] && echo true || echo false)" >> $GITHUB_OUTPUT
           echo "Changed products: ${CHANGED:-none}"
 
-      # ── Step 2a: Trigger spec-agent via public API ─────────────────────────────
+      # ── Step 2a: Build rich changes summary from diff files ───────────────────
+      # Reads each product's diff.yaml (generated in Step 1) and builds a detailed
+      # summary of what actually changed: paths added/removed/modified + schemas.
+      - name: Build changes summary
+        id: build_summary
+        if: steps.changed.outputs.has_changes == 'true'
+        env:
+          CHANGED_PRODUCTS: ${{ steps.changed.outputs.products }}
+        run: |
+          CHANGES_SUMMARY=$(python3 - <<'PYEOF'
+import yaml, os, sys
+from pathlib import Path
+
+changed = os.environ.get("CHANGED_PRODUCTS", "")
+products = [p.strip() for p in changed.split(",") if p.strip()]
+by_product = Path("openapi/by-product")
+parts = []
+
+for product in products:
+    diff_path = by_product / product / "diff.yaml"
+    if not diff_path.exists():
+        parts.append(f"{product}: no diff file found")
+        continue
+
+    diff = yaml.safe_load(diff_path.read_text()) or {}
+    total = diff.get("total_changes", 0)
+    lines = [f"{product} ({total} change(s))"]
+
+    paths = diff.get("paths", {})
+    if paths.get("added"):
+        lines.append(f"paths added: {', '.join(paths['added'])}")
+    if paths.get("removed"):
+        lines.append(f"paths removed: {', '.join(paths['removed'])}")
+    if paths.get("modified"):
+        lines.append(f"paths modified: {', '.join(paths['modified'])}")
+
+    schemas = diff.get("schemas", {})
+    if schemas.get("added"):
+        lines.append(f"schemas added: {', '.join(schemas['added'])}")
+    if schemas.get("removed"):
+        lines.append(f"schemas removed: {', '.join(schemas['removed'])}")
+    if schemas.get("modified"):
+        lines.append(f"schemas modified: {', '.join(schemas['modified'])}")
+
+    parts.append("; ".join(lines))
+
+print(" | ".join(parts))
+PYEOF
+          )
+          echo "changes_summary=${CHANGES_SUMMARY}" >> $GITHUB_OUTPUT
+          echo "Changes summary: ${CHANGES_SUMMARY}"
+
+      # ── Step 2b: Trigger spec-agent via public API ─────────────────────────────
       # Calls the public async-generate endpoint — reachable from GitHub Actions.
-      # The `changes` field summarizes what changed (list of changed products).
+      # The `changes` field contains the full diff summary per product.
       - name: Trigger SDK generation — spec-agent public API
         id: sdk_direct
         if: steps.changed.outputs.has_changes == 'true'
@@ -63,10 +115,12 @@ jobs:
         env:
           SDK_AGENT_API_KEY: ${{ secrets.SDK_AGENT_API_KEY }}
           SDK_AGENT_COOKIE: ${{ secrets.SDK_AGENT_COOKIE }}
-          CHANGED_PRODUCTS: ${{ steps.changed.outputs.products }}
+          CHANGES_SUMMARY: ${{ steps.build_summary.outputs.changes_summary }}
         run: |
-          CHANGES_SUMMARY="spec changes in: ${CHANGED_PRODUCTS}"
-          echo "Triggering SDK generation for: ${CHANGED_PRODUCTS}"
+          echo "Triggering SDK generation with changes: ${CHANGES_SUMMARY}"
+
+          BODY=$(python3 -c "import json, os; print(json.dumps({'flow': 'sdk_generation_test', 'changes': os.environ['CHANGES_SUMMARY']}))")
+          echo "Request body: ${BODY}"
 
           HTTP_CODE=$(curl -s -o /tmp/sdk_response.json -w "%{http_code}" \
             --location 'https://api.mercadolibre.com/spec-agent/public_test/async-generate' \
@@ -74,7 +128,7 @@ jobs:
             --header 'Content-Type: application/json' \
             --header "Cookie: _d2id=${SDK_AGENT_COOKIE}" \
             --max-time 60 \
-            --data "{\"flow\":\"sdk_generation_test\",\"changes\":\"${CHANGES_SUMMARY}\"}")
+            --data "${BODY}")
 
           echo "HTTP status: ${HTTP_CODE}"
           cat /tmp/sdk_response.json || true

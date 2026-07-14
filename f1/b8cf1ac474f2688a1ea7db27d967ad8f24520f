@@ -1,0 +1,19 @@
+scripts/generate_product_diff.py
+  s_2adb1e3e7a573d::t_16dc22f8c5a232 262-273,279,285-303,310-311
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.5.6",
+  "base_commit_sha": "f1b8cf1ac474f2688a1ea7db27d967ad8f24520f",
+  "prompts": {},
+  "sessions": {
+    "s_2adb1e3e7a573d": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "5ca9739c-b9a5-40bb-8cc8-99d36839e20e",
+        "model": "claude-sonnet-4-6"
+      },
+      "human_author": "lpinillacuev <lina.pinillacuevas@mercadolibre.com.co>"
+    }
+  }
+}

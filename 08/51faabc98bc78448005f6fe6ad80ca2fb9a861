@@ -1,0 +1,50 @@
+by-product/.changed-products
+  s_2adb1e3e7a573d::t_04c761b0d3ab1a 1
+by-product/chargebacks/diff.yaml
+  s_2adb1e3e7a573d::t_04c761b0d3ab1a 1-24
+by-product/subscriptions/diff.yaml
+  s_2adb1e3e7a573d::t_04c761b0d3ab1a 1-28
+by-product/customers/diff.yaml
+  s_2adb1e3e7a573d::t_04c761b0d3ab1a 1-32
+.github/workflows/regenerate-derived-specs.yml
+  s_2adb1e3e7a573d::t_5b72219e0ba18b 125,127
+  s_2adb1e3e7a573d::t_cf6df5b5e2760a 66,68
+.github/workflows/trigger-sdk-generation.yml
+  s_2adb1e3e7a573d::t_cf73f00cecc099 59,66-68
+  s_2adb1e3e7a573d::t_58ef790c04cc6d 56-58,60-61,71-72,81-82,90
+by-product/payments/diff.yaml
+  s_2adb1e3e7a573d::t_04c761b0d3ab1a 1-40
+scripts/build_changes_summary.py
+  s_2adb1e3e7a573d::t_39b9498af68870 3,5-7,12-27,32,39-40,43-71,73,78,82-84,86-169
+  s_2adb1e3e7a573d::t_f9389868055da5 173,175-178,185-193
+by-product/preferences/diff.yaml
+  s_2adb1e3e7a573d::t_04c761b0d3ab1a 1-32
+by-product/orders/diff.yaml
+  s_2adb1e3e7a573d::t_04c761b0d3ab1a 1-24
+by-product/oauth/diff.yaml
+  s_2adb1e3e7a573d::t_04c761b0d3ab1a 1-24
+by-product/payment_methods/diff.yaml
+  s_2adb1e3e7a573d::t_04c761b0d3ab1a 1-24
+by-product/stores/diff.yaml
+  s_2adb1e3e7a573d::t_04c761b0d3ab1a 1-28
+by-product/pos/diff.yaml
+  s_2adb1e3e7a573d::t_04c761b0d3ab1a 1-61
+by-product/merchant_orders/diff.yaml
+  s_2adb1e3e7a573d::t_04c761b0d3ab1a 1-24
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.5.6",
+  "base_commit_sha": "0851faabc98bc78448005f6fe6ad80ca2fb9a861",
+  "prompts": {},
+  "sessions": {
+    "s_2adb1e3e7a573d": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "5ca9739c-b9a5-40bb-8cc8-99d36839e20e",
+        "model": "claude-sonnet-4-6"
+      },
+      "human_author": "lpinillacuev <lina.pinillacuevas@mercadolibre.com.co>"
+    }
+  }
+}

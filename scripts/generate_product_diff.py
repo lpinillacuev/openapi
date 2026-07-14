@@ -259,32 +259,56 @@ def compute_product_diff(
     old_schemas = spec_before.get("components", {}).get("schemas", {})
     new_schemas = spec_after.get("components", {}).get("schemas", {})
 
-    # Filter schemas to those referenced by this product's paths
-    def scoped_schemas(paths_obj: dict[str, Any], all_schemas: dict[str, Any]) -> dict[str, Any]:
+    # Filter schemas to those referenced by this product's paths.
+    # Follows $ref for schemas, requestBodies, and responses so that schemas
+    # referenced indirectly (e.g. via #/components/requestBodies/Foo) are included.
+    def scoped_schemas(
+        paths_obj: dict[str, Any],
+        all_schemas: dict[str, Any],
+        spec: dict[str, Any],
+    ) -> dict[str, Any]:
+        components = spec.get("components", {})
+        request_bodies = components.get("requestBodies", {})
+        responses = components.get("responses", {})
+
         scoped_paths = {
             p: v for p, v in paths_obj.items()
             if not allowed_prefixes or any(p.startswith(pref) for pref in allowed_prefixes)
         }
         refs: set[str] = set()
+        visited_components: set[str] = set()
         queue = [scoped_paths]
         while queue:
             obj = queue.pop()
             if isinstance(obj, dict):
                 ref = obj.get("$ref", "")
-                if isinstance(ref, str) and ref.startswith("#/components/schemas/"):
-                    name = ref.rsplit("/", 1)[-1]
-                    if name not in refs:
-                        refs.add(name)
-                        if name in all_schemas:
-                            queue.append(all_schemas[name])
+                if isinstance(ref, str) and ref.startswith("#/components/"):
+                    kind, _, name = ref[len("#/components/"):].partition("/")
+                    if kind == "schemas":
+                        if name not in refs:
+                            refs.add(name)
+                            if name in all_schemas:
+                                queue.append(all_schemas[name])
+                    elif kind == "requestBodies":
+                        key = f"requestBodies/{name}"
+                        if key not in visited_components and name in request_bodies:
+                            visited_components.add(key)
+                            queue.append(request_bodies[name])
+                    elif kind == "responses":
+                        key = f"responses/{name}"
+                        if key not in visited_components and name in responses:
+                            visited_components.add(key)
+                            queue.append(responses[name])
+                    else:
+                        queue.extend(obj.values())
                 else:
                     queue.extend(obj.values())
             elif isinstance(obj, list):
                 queue.extend(obj)
         return {k: v for k, v in all_schemas.items() if k in refs}
 
-    product_schemas_before = scoped_schemas(old_paths, old_schemas)
-    product_schemas_after = scoped_schemas(new_paths, new_schemas)
+    product_schemas_before = scoped_schemas(old_paths, old_schemas, spec_before)
+    product_schemas_after = scoped_schemas(new_paths, new_schemas, spec_after)
 
     paths_diff = diff_paths(old_paths, new_paths, allowed_prefixes)
     schemas_diff = diff_schemas(

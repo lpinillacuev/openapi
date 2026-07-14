@@ -184,10 +184,14 @@ if __name__ == "__main__":
 
     changes = build_payload(changed)
 
+    # The spec-agent API requires `changes` to be a string.
+    # We serialize the structured payload as a compact JSON string.
+    changes_str = json.dumps(changes, ensure_ascii=False, separators=(",", ":"))
+
     if args.output:
-        body = {"flow": args.flow, "changes": changes}
+        body = {"flow": args.flow, "changes": changes_str}
         with open(args.output, "w", encoding="utf-8") as f:
             json.dump(body, f, ensure_ascii=False)
         print(json.dumps(changes, ensure_ascii=False, indent=2))
     else:
-        print(json.dumps(changes, ensure_ascii=False, separators=(",", ":")))
+        print(changes_str)

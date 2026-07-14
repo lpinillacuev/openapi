@@ -1,0 +1,19 @@
+scripts/build_changes_summary.py
+  s_2adb1e3e7a573d::t_b78e11dc269463 187-190,192,197
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.5.6",
+  "base_commit_sha": "861cd7fc65d62683d28582ed22f98611df0645e6",
+  "prompts": {},
+  "sessions": {
+    "s_2adb1e3e7a573d": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "5ca9739c-b9a5-40bb-8cc8-99d36839e20e",
+        "model": "claude-sonnet-4-6"
+      },
+      "human_author": "lpinillacuev <lina.pinillacuevas@mercadolibre.com.co>"
+    }
+  }
+}

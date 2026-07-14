@@ -1,0 +1,25 @@
+.github/workflows/validate-spec.yml
+  s_2adb1e3e7a573d::t_3c559164c0934b 37
+scripts/validate.sh
+  s_2adb1e3e7a573d::t_57b59e060dd383 70-71
+.github/workflows/regenerate-derived-specs.yml
+  s_2adb1e3e7a573d::t_365cca68592a06 61-62,64-67
+scripts/check_external_refs.py
+  s_2adb1e3e7a573d::t_619fd4cd7e74b1 1-63
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.5.6",
+  "base_commit_sha": "d659b0692a712c5288fdf4cb69a4ca063d7cb132",
+  "prompts": {},
+  "sessions": {
+    "s_2adb1e3e7a573d": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "5ca9739c-b9a5-40bb-8cc8-99d36839e20e",
+        "model": "claude-sonnet-4-6"
+      },
+      "human_author": "lpinillacuev <lina.pinillacuevas@mercadolibre.com.co>"
+    }
+  }
+}

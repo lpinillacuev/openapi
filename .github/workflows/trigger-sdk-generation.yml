@@ -53,22 +53,23 @@ jobs:
           echo "has_changes=$([ -n "$CHANGED" ] && echo true || echo false)" >> $GITHUB_OUTPUT
           echo "Changed products: ${CHANGED:-none}"
 
-      # ── Step 2a: Build rich changes summary from diff files ───────────────────
-      # Reads each product's diff.yaml (generated in Step 1) and builds a detailed
-      # summary of what actually changed: paths added/removed/modified + schemas.
-      - name: Build changes summary
-        id: build_summary
+      # ── Step 2a: Build full spec payload ──────────────────────────────────────
+      # Reads each product's diff.yaml + spec3.yaml and builds a structured JSON
+      # body with the complete OpenAPI definitions for every changed path and schema.
+      # Writes the full request body to /tmp/sdk_body.json to avoid shell encoding issues.
+      - name: Build SDK request body
+        id: build_body
         if: steps.changed.outputs.has_changes == 'true'
         env:
           CHANGED_PRODUCTS: ${{ steps.changed.outputs.products }}
         run: |
-          CHANGES_SUMMARY=$(python3 openapi/scripts/build_changes_summary.py)
-          echo "changes_summary=${CHANGES_SUMMARY}" >> $GITHUB_OUTPUT
-          echo "Changes summary: ${CHANGES_SUMMARY}"
+          python3 openapi/scripts/build_changes_summary.py --output /tmp/sdk_body.json
+          echo "Changes payload (pretty):"
+          python3 -m json.tool /tmp/sdk_body.json
 
       # ── Step 2b: Trigger spec-agent via public API ─────────────────────────────
-      # Calls the public async-generate endpoint — reachable from GitHub Actions.
-      # The `changes` field contains the full diff summary per product.
+      # Sends the full structured spec payload so the SDK agent knows exactly
+      # what schemas/paths changed and can generate accurate SDK code.
       - name: Trigger SDK generation — spec-agent public API
         id: sdk_direct
         if: steps.changed.outputs.has_changes == 'true'
@@ -76,12 +77,9 @@ jobs:
         env:
           SDK_AGENT_API_KEY: ${{ secrets.SDK_AGENT_API_KEY }}
           SDK_AGENT_COOKIE: ${{ secrets.SDK_AGENT_COOKIE }}
-          CHANGES_SUMMARY: ${{ steps.build_summary.outputs.changes_summary }}
         run: |
-          echo "Triggering SDK generation with changes: ${CHANGES_SUMMARY}"
-
-          BODY=$(python3 -c "import json, os; print(json.dumps({'flow': 'sdk_generation_test', 'changes': os.environ['CHANGES_SUMMARY']}))")
-          echo "Request body: ${BODY}"
+          echo "Sending request body:"
+          cat /tmp/sdk_body.json | python3 -m json.tool
 
           HTTP_CODE=$(curl -s -o /tmp/sdk_response.json -w "%{http_code}" \
             --location 'https://api.mercadolibre.com/spec-agent/public_test/async-generate' \
@@ -89,7 +87,7 @@ jobs:
             --header 'Content-Type: application/json' \
             --header "Cookie: _d2id=${SDK_AGENT_COOKIE}" \
             --max-time 60 \
-            --data "${BODY}")
+            --data @/tmp/sdk_body.json)
 
           echo "HTTP status: ${HTTP_CODE}"
           cat /tmp/sdk_response.json || true

@@ -1,0 +1,40 @@
+product: payments
+fury_app: payments
+generated_at: '2026-07-14T21:52:00Z'
+total_changes: 5
+paths:
+  added: []
+  removed: []
+  modified: []
+  detail:
+    added: []
+    removed: []
+    modified: []
+schemas:
+  added: []
+  removed: []
+  modified:
+  - CardDetails
+  - Error
+  - Pagination
+  - PaymentRequest
+  - RefundRequest
+  detail:
+    added: []
+    removed: []
+    modified:
+    - name: CardDetails
+      properties_added: []
+      properties_removed: []
+    - name: Error
+      properties_added: []
+      properties_removed: []
+    - name: Pagination
+      properties_added: []
+      properties_removed: []
+    - name: PaymentRequest
+      properties_added: []
+      properties_removed: []
+    - name: RefundRequest
+      properties_added: []
+      properties_removed: []

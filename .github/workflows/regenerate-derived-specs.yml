@@ -58,8 +58,13 @@ jobs:
         working-directory: ${{ github.workspace }}
 
       # ── Step 2: by-site + by-product specs ───────────────────────────────
+      # Runs phases 1-3 individually to skip Phase 4 (build_reference.py / DevSite)
+      # which is disabled until the DevSite flow is ready.
       - name: Regenerate by-site and by-product specs
-        run: python scripts/bundle.py
+        run: |
+          python scripts/bundle.py --schemas-only
+          python scripts/bundle.py --sites-only
+          python scripts/bundle.py --products-only
         working-directory: ${{ github.workspace }}
 
       # ── Step 3: spec3.reference.json per product ─────────────────────────

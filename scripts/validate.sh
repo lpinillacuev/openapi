@@ -67,11 +67,9 @@ for SPEC in "${SPECS[@]}"; do
 
   # ── 3. Self-containment check: zero external \$ref ─────────────────────────
   echo "[3/3] self-containment check (no external \$ref)..."
-  EXTERNAL_REFS=$(grep -c '\$ref: "schemas/' "$SPEC" 2>/dev/null || true)
-  if [[ "$EXTERNAL_REFS" -eq 0 ]]; then
-    echo "  ✓ no external \$ref"
+  if python "$ROOT/scripts/check_external_refs.py" "$SPEC"; then
+    : # success message printed by the script
   else
-    echo "  ✗ found $EXTERNAL_REFS external \$ref(s) — run 'python scripts/bundle.py --schemas-only'"
     ERRORS=$((ERRORS + 1))
   fi
 

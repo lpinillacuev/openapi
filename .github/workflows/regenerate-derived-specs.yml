@@ -46,15 +46,7 @@ jobs:
 
       # ── Step 1: spec3.json + spec3.sdk.yaml/json ──────────────────────────
       - name: Generate spec3.json and SDK variants
-        run: |
-          python3 -c "
-          import yaml, json, pathlib
-
-          # spec3.json — JSON twin
-          spec = yaml.safe_load(pathlib.Path('spec3.yaml').read_text())
-          pathlib.Path('spec3.json').write_text(json.dumps(spec, indent=2, ensure_ascii=False))
-          print('spec3.json generated')
-          "
+        run: python scripts/generate_spec_json.py spec3.yaml spec3.json
         working-directory: ${{ github.workspace }}
 
       # ── Step 2: by-site + by-product specs ───────────────────────────────

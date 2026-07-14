@@ -63,7 +63,9 @@ jobs:
         working-directory: ${{ github.workspace }}
 
       # ── Step 3: spec3.reference.json per product ─────────────────────────
+      # TODO: habilitar cuando el flujo DevSite esté listo
       - name: Build reference specs
+        if: false
         continue-on-error: true
         run: python scripts/build_reference.py --all
         working-directory: ${{ github.workspace }}
@@ -120,7 +122,9 @@ jobs:
           EOF
 
       # ── Step 6: Push specs to external product API ────────────────────────
+      # TODO: habilitar cuando el flujo DevSite esté listo
       - name: Push to external product API
+        if: false
         continue-on-error: true
         env:
           PRODUCT_SPEC_API_ENDPOINT: ${{ secrets.PRODUCT_SPEC_API_ENDPOINT }}

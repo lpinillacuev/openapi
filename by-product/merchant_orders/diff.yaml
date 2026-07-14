@@ -1,0 +1,24 @@
+product: merchant_orders
+fury_app: merchant-orders-api
+generated_at: '2026-07-14T21:52:00Z'
+total_changes: 1
+paths:
+  added: []
+  removed: []
+  modified: []
+  detail:
+    added: []
+    removed: []
+    modified: []
+schemas:
+  added: []
+  removed: []
+  modified:
+  - Error
+  detail:
+    added: []
+    removed: []
+    modified:
+    - name: Error
+      properties_added: []
+      properties_removed: []

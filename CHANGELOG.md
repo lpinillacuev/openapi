@@ -12,6 +12,19 @@ Breaking changes are detected automatically via `oasdiff` on every PR.
 
 ---
 
+## [1.1.0] — 2026-07-06
+
+### Changed
+- README: Coverage table refactored to show each product name inline with its API tag (Issue #3)
+- README: Added product availability table per country / site_id (Issue #5)
+- README: Wallet Connect section now notes Assisted Portfolio requirement — direct engagement with the Mercado Pago team is mandatory (Issue #4)
+- README/CHANGELOG: "Checkout API" now explicitly shows "Checkout Transparente" as the Brazil (MLB) official product name (Issue #1)
+- CHANGELOG: Section renamed from "API Payments (Legacy)" to "Payments (Payments API — Legacy)" so the product name leads (Issue #2)
+- README: Payments API annotated as legacy in Coverage table with pointer to Orders API (Issue #6)
+- CONTRIBUTING.md: Internal `fury_devsite-docs` path references replaced with links to the public developer portal (Issue #7)
+
+---
+
 ## [1.0.0] — 2026-05-21
 
 ### Added — Initial public release
@@ -29,7 +42,11 @@ Breaking changes are detected automatically via `oasdiff` on every PR.
 - `POST /v1/payments/{id}/refunds`, `GET /v1/payments/{id}/refunds`, `GET .../refunds/{id}` — Refunds
 - `GET /v1/chargebacks/{id}`, `PUT /v1/chargebacks/{id}` — Chargebacks
 
-**Pagos Online — Checkout API (Orders)**
+**Pagos Online — Checkout API / Checkout Transparente (Orders API)**
+
+> **Brazil (MLB):** This product is officially called **Checkout Transparente** in Brazil.
+> All other countries: **Checkout API**. Both use the same Orders API endpoints below.
+
 - `POST /v1/orders` — Create order (Pix, Boleto, OXXO, SPEI, PSE, card)
 - `GET /v1/orders`, `GET /v1/orders/{id}` — Search and retrieve orders
 - `POST /v1/orders/{id}/capture`, `POST /v1/orders/{id}/process` — Order lifecycle
@@ -41,7 +58,11 @@ Breaking changes are detected automatically via `oasdiff` on every PR.
 - `GET /v1/payment_methods`, `GET /v1/payment_methods/installments`
 - `GET /v1/identification_types`
 
-**Pagos Online — API Payments (Legacy)**
+**Pagos Online — Payments (Payments API — Legacy)**
+
+> ⚠️ The Payments API (`POST /v1/payments`) is a legacy integration pattern.
+> Use the Orders API for all new integrations.
+
 - `POST /v1/payments` — Create payment (marked `x-mp-release-phase: legacy`)
 - `GET /v1/payments/{id}`, `PUT /v1/payments/{id}`, `GET /v1/payments/search`
 
@@ -84,7 +105,11 @@ Breaking changes are detected automatically via `oasdiff` on every PR.
 - Brazil Pix: `POST /v1/transaction-intents/process`, `GET /v1/transaction-intents/{id}`
 - Chile, Mexico SPEI: `POST /v1/transaction-intents/process`
 
-**Wallet Connect**
+**Wallet Connect (Assisted Portfolio)**
+
+> ⚠️ Wallet Connect is an **Assisted Portfolio** product. Direct engagement with the Mercado Pago team
+> is required before integrating. Contact your Mercado Pago account representative.
+
 - Agreement create, get, delete + payer token creation
 
 ### Spec architecture
@@ -98,12 +123,12 @@ Breaking changes are detected automatically via `oasdiff` on every PR.
 - `by-site/` — 7 pre-merged per-site specs
 
 ### Stats
-- **132 operations** across all products and countries
+- **136 operations** across all products and countries
 - **31 tags** aligned to the official developer portal navigation
 - **65 schemas** in `components/schemas`
 - **7 countries** covered via `x-mp-sites` annotations on every tag and endpoint (MLA, MLB, MLM, MLC, MCO, MPE, MLU)
 - **7 deprecated endpoints** marked with `x-mp-migration-guide`
-- **SDK coverage**: 38 ops supported by all 7 SDKs, 21 partial, 73 spec-only
+- **SDK coverage**: 38 ops supported by all 7 SDKs, 21 partial, 77 spec-only
 
 ---
 

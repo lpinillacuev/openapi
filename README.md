@@ -1,7 +1,7 @@
 # MercadoPago OpenAPI Specification
 
 [![Spec](https://img.shields.io/badge/OpenAPI-3.1-blue)](spec3.yaml)
-[![Endpoints](https://img.shields.io/badge/endpoints-132-green)]()
+[![Endpoints](https://img.shields.io/badge/endpoints-136-green)]()
 [![Sites](https://img.shields.io/badge/countries-7-orange)]()
 
 Machine-readable, standards-compliant OpenAPI 3.1 specification for all MercadoPago API endpoints
@@ -13,7 +13,7 @@ across 7 countries in Latin America: Argentina, Brazil, Mexico, Chile, Colombia,
 
 | File | Description |
 |---|---|
-| `spec3.yaml` | Public spec — 132 endpoints, 31 tags, 65 schemas, fully self-contained |
+| `spec3.yaml` | Public spec — 136 endpoints, 31 tags, 65 schemas, fully self-contained |
 | `spec3.json` | JSON twin of `spec3.yaml` (generated, never edited manually) |
 | `spec3.sdk.yaml` | SDK variant — same as `spec3.yaml` plus `x-mp-sdk-coverage` per operation |
 | `spec3.sdk.json` | JSON twin of `spec3.sdk.yaml` |
@@ -27,24 +27,48 @@ Never `$ref` them from `spec3.yaml` directly — the spec must remain self-conta
 
 ## Coverage
 
-### Endpoints (132 total)
+### Endpoints (136 total)
 
-| Section | Tag | Endpoints |
-|---|---|---|
-| Authentication | OAuth | 1 |
-| Online Payments | Preferences, Payments, Orders, Merchant Orders | 22 |
-| Customers & Cards | Customers, Cards, Addresses, Card Tokens | 19 |
-| Payment Methods | Payment Methods, Identification Types | 3 |
-| Cancellations & Refunds | Cancellations & Refunds, Chargebacks | 7 |
-| Subscriptions | Subscriptions, Plans, Invoices | 11 |
-| Wallet Connect | Wallet Connect | 4 |
-| In-Person — Point | Stores, POS, Terminals, Point Orders, Point Deprecated | 20 |
-| In-Person — QR | QR Orders, QR Integrator, QR Deprecated | 13 |
-| Post-Sale | Claims, Claim Messages, Claim Resolutions, Claim Shipping | 14 |
-| Reports | Releases Report, Settlements Report | 20 |
-| Payouts | Payouts | 5 |
+| Section | Product | API / Tag | Endpoints |
+|---|---|---|---|
+| Authentication | OAuth 2.0 | OAuth | 1 |
+| Online Payments | Checkout Pro | Preferences API | 5 |
+| Online Payments | Checkout Pro | Merchant Orders | 3 |
+| Online Payments | Checkout API / Checkout Transparente (Orders API) | Orders | 14 |
+| Online Payments | Payments API *(legacy — use Orders API for new integrations)* | Payments | 4 |
+| Customers & Cards | — | Customers, Cards, Addresses, Card Tokens | 19 |
+| Payment Methods | — | Payment Methods, Identification Types | 3 |
+| Cancellations & Refunds | — | Cancellations & Refunds, Chargebacks | 7 |
+| Subscriptions | — | Subscriptions, Plans, Invoices | 11 |
+| Wallet Connect | Wallet Connect *(Assisted Portfolio — requires direct engagement with the Mercado Pago team)* | Wallet Connect | 4 |
+| In-Person — Point | Mercado Pago Point | Stores, POS, Terminals, Point Orders, Point Deprecated | 20 |
+| In-Person — QR | QR Code | QR Orders, QR Integrator, QR Deprecated | 13 |
+| Post-Sale | — | Claims, Claim Messages, Claim Resolutions, Claim Shipping | 14 |
+| Reports | — | Releases Report, Settlements Report | 20 |
+| Payouts | — | Payouts | 5 |
+
+> **Brazil (MLB):** "Checkout API" is officially called **Checkout Transparente** in Brazil. Both names refer to the same Orders API integration.
 
 7 endpoints are marked `deprecated: true` with `x-mp-migration-guide` pointers to modern equivalents.
+
+### Product Availability by Country
+
+Not all products are available in every country. Use the table below before building an integration:
+
+| Product | MLA | MLB | MLM | MLC | MCO | MPE | MLU |
+|---|:---:|:---:|:---:|:---:|:---:|:---:|:---:|
+| Checkout Pro (Preferences API) | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ |
+| Checkout API / Checkout Transparente (Orders API) | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ |
+| Payments API *(legacy)* | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ |
+| Subscriptions | ✓ | ✓ | ✓ | — | — | — | — |
+| Wallet Connect *(Assisted Portfolio)* | ✓ | ✓ | ✓ | — | — | — | — |
+| Mercado Pago Point (Terminals) | ✓ | ✓ | ✓ | — | — | — | — |
+| QR Code | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | — |
+| Claims | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ |
+| Reports | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ |
+| Payouts | ✓ | ✓ | ✓ | ✓ | — | — | — |
+
+> Availability is annotated per-endpoint via the `x-mp-sites` extension. Per-country specs live in `by-site/<site_id>/spec3.yaml`.
 
 ### SDK Coverage (`spec3.sdk.yaml`)
 
@@ -54,7 +78,7 @@ Source: official SDKs — `php`, `nodejs`, `java`, `python`, `ruby`, `dotnet`, `
 |---|---|
 | All 7 SDKs | 38 |
 | Partial SDK support | 21 |
-| Spec-only (no SDK yet) | 73 |
+| Spec-only (no SDK yet) | 77 |
 
 ### Countries (`by-site/`)
 
@@ -62,13 +86,13 @@ Pre-merged per-site specs filtered to only the endpoints applicable to each coun
 
 | Site | Country | Currency | Endpoints |
 |---|---|---|---|
-| MLA | Argentina | ARS | 130 |
-| MLB | Brazil | BRL | 129 |
-| MLM | Mexico | MXN | 129 |
-| MLC | Chile | CLP | 113 |
-| MCO | Colombia | COP | 110 |
-| MPE | Peru | PEN | 110 |
-| MLU | Uruguay | UYU | 110 |
+| MLA | Argentina | ARS | 134 |
+| MLB | Brazil | BRL | 133 |
+| MLM | Mexico | MXN | 133 |
+| MLC | Chile | CLP | 117 |
+| MCO | Colombia | COP | 114 |
+| MPE | Peru | PEN | 114 |
+| MLU | Uruguay | UYU | 114 |
 
 ---
 
@@ -77,7 +101,7 @@ Pre-merged per-site specs filtered to only the endpoints applicable to each coun
 ### Import into Postman
 1. Open Postman → Import → Link
 2. Paste the raw URL of `spec3.yaml`
-3. Postman generates a full collection with all 132 endpoints and pre-filled examples
+3. Postman generates a full collection with all 136 endpoints and pre-filled examples
 
 ### Run a local mock server (Prism)
 ```bash
@@ -153,6 +177,10 @@ Country-specific examples and local payment method details are in `overlays/<sit
 
 | Extension | Where | Description |
 |---|---|---|
+| `x-mp-sites` | tag, endpoint | Applicable `site_id` codes |
+| `x-mp-release-phase` | endpoint | `legacy` for deprecated integration patterns |
+| `x-mp-pci-scope` | endpoint | `true` for card tokenization endpoints |
+| `x-mp-migration-guide` | endpoint | Link to recommended modern equivalent |
 | `x-mp-sdk-coverage` | endpoint (sdk spec only) | Which SDKs implement this endpoint |
 
 ---
@@ -161,7 +189,7 @@ Country-specific examples and local payment method details are in `overlays/<sit
 
 ```
 openapi/
-├── spec3.yaml          # self-contained public spec (132 endpoints, 31 tags, 65 schemas)
+├── spec3.yaml          # self-contained public spec (136 endpoints, 31 tags, 65 schemas)
 ├── spec3.json          # JSON twin (generated)
 ├── spec3.sdk.yaml      # SDK variant with x-mp-sdk-coverage per operation
 ├── spec3.sdk.json      # JSON twin (generated)

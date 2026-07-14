@@ -62,46 +62,7 @@ jobs:
         env:
           CHANGED_PRODUCTS: ${{ steps.changed.outputs.products }}
         run: |
-          CHANGES_SUMMARY=$(python3 - <<'PYEOF'
-import yaml, os, sys
-from pathlib import Path
-
-changed = os.environ.get("CHANGED_PRODUCTS", "")
-products = [p.strip() for p in changed.split(",") if p.strip()]
-by_product = Path("openapi/by-product")
-parts = []
-
-for product in products:
-    diff_path = by_product / product / "diff.yaml"
-    if not diff_path.exists():
-        parts.append(f"{product}: no diff file found")
-        continue
-
-    diff = yaml.safe_load(diff_path.read_text()) or {}
-    total = diff.get("total_changes", 0)
-    lines = [f"{product} ({total} change(s))"]
-
-    paths = diff.get("paths", {})
-    if paths.get("added"):
-        lines.append(f"paths added: {', '.join(paths['added'])}")
-    if paths.get("removed"):
-        lines.append(f"paths removed: {', '.join(paths['removed'])}")
-    if paths.get("modified"):
-        lines.append(f"paths modified: {', '.join(paths['modified'])}")
-
-    schemas = diff.get("schemas", {})
-    if schemas.get("added"):
-        lines.append(f"schemas added: {', '.join(schemas['added'])}")
-    if schemas.get("removed"):
-        lines.append(f"schemas removed: {', '.join(schemas['removed'])}")
-    if schemas.get("modified"):
-        lines.append(f"schemas modified: {', '.join(schemas['modified'])}")
-
-    parts.append("; ".join(lines))
-
-print(" | ".join(parts))
-PYEOF
-          )
+          CHANGES_SUMMARY=$(python3 openapi/scripts/build_changes_summary.py)
           echo "changes_summary=${CHANGES_SUMMARY}" >> $GITHUB_OUTPUT
           echo "Changes summary: ${CHANGES_SUMMARY}"
 

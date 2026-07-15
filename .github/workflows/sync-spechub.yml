@@ -14,11 +14,6 @@ on:
         type: boolean
         default: false
 
-  # Scheduled polling — weekdays at 6 AM UTC
-  # Adjust cadence to match how often Spec Hub specs are updated
-  schedule:
-    - cron: '0 6 * * 1-5'
-
   # Webhook trigger — call via GitHub API to sync immediately after a spec publish
   # POST /repos/{owner}/{repo}/dispatches  body: {"event_type":"spec-hub-updated","client_payload":{"app_name":"payments"}}
   repository_dispatch:

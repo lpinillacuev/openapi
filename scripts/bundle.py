@@ -42,110 +42,6 @@ BY_SITE     = ROOT / "by-site"
 BY_PRODUCT  = ROOT / "by-product"
 APPS_CONFIG = ROOT / "apps.yaml"
 
-# ---------------------------------------------------------------------------
-# Per-country metadata injected into info.title / info.description / contact
-# ---------------------------------------------------------------------------
-
-COUNTRY_META: dict[str, dict[str, str]] = {
-    "MLA": {
-        "name":        "Argentina",
-        "title":       "MercadoPago API — Argentina (MLA)",
-        "contact_url": "https://www.mercadopago.com.ar/developers",
-        "description": (
-            "MercadoPago API specification scoped to Argentina (site_id: MLA).\n\n"
-            "## Argentina-specific notes\n\n"
-            "- **Currency**: ARS — send amounts as decimals (e.g., `5000.00`)\n\n"
-            "- **Cash payments**: Rapipago and Pago Fácil are the main cash networks\n\n"
-            "- **Identification**: `DNI` (individuals), `CUIL` / `CUIT` (tax IDs)\n\n"
-            "- **Card brands**: Visa, Mastercard, Amex, Naranja, Cabal, Argencard\n\n"
-            "- **Installments**: Widely used — up to 24 cuotas on credit cards\n\n"
-            "- **Point**: Available in Argentina\n\n"
-            "- **Wallet Connect**: Available in Argentina\n"
-        ),
-    },
-    "MLB": {
-        "name":        "Brazil",
-        "title":       "MercadoPago API — Brazil (MLB)",
-        "contact_url": "https://www.mercadopago.com.br/developers",
-        "description": (
-            "MercadoPago API specification scoped to Brazil (site_id: MLB).\n\n"
-            "## Brazil-specific notes\n\n"
-            "- **Currency**: BRL — send amounts as decimals (e.g., `100.50` for R$100,50)\n\n"
-            "- **Pix**: Available 24/7, instant settlement — `payment_method_id: pix`\n\n"
-            "- **Boleto Bancário**: Cash payment, expires 1–3 days — `payment_method_id: bolbradesco`\n\n"
-            "- **Identification**: `CPF` for individuals (11 digits), `CNPJ` for companies (14 digits)\n\n"
-            "- **Card brands**: Visa, Mastercard, Elo (local), Hipercard (local), Amex\n\n"
-            "- **Point**: Available in Brazil\n\n"
-            "- **Wallet Connect**: Available in Brazil\n\n"
-            "- **Payouts**: Pix disbursements and bank transfers available\n"
-        ),
-    },
-    "MLM": {
-        "name":        "Mexico",
-        "title":       "MercadoPago API — Mexico (MLM)",
-        "contact_url": "https://www.mercadopago.com.mx/developers",
-        "description": (
-            "MercadoPago API specification scoped to Mexico (site_id: MLM).\n\n"
-            "## Mexico-specific notes\n\n"
-            "- **Currency**: MXN — send amounts as decimals (e.g., `500.00`)\n\n"
-            "- **OXXO**: Cash payment at OXXO stores — `payment_method_id: oxxo`\n\n"
-            "- **Identification**: `RFC` for tax purposes, `CURP` for individuals\n\n"
-            "- **Card brands**: Visa, Mastercard, Amex\n\n"
-            "- **Point**: Available in Mexico\n"
-        ),
-    },
-    "MLC": {
-        "name":        "Chile",
-        "title":       "MercadoPago API — Chile (MLC)",
-        "contact_url": "https://www.mercadopago.cl/developers",
-        "description": (
-            "MercadoPago API specification scoped to Chile (site_id: MLC).\n\n"
-            "## Chile-specific notes\n\n"
-            "- **Currency**: CLP — send amounts as integers (no decimals)\n\n"
-            "- **Identification**: `RUT` (Rol Único Tributario)\n\n"
-            "- **Card brands**: Visa, Mastercard, Amex, Redcompra (debit)\n\n"
-            "- **Payouts**: Bank transfers available\n"
-        ),
-    },
-    "MCO": {
-        "name":        "Colombia",
-        "title":       "MercadoPago API — Colombia (MCO)",
-        "contact_url": "https://www.mercadopago.com.co/developers",
-        "description": (
-            "MercadoPago API specification scoped to Colombia (site_id: MCO).\n\n"
-            "## Colombia-specific notes\n\n"
-            "- **Currency**: COP — send amounts as integers (no decimals)\n\n"
-            "- **Identification**: `CC` (Cédula de Ciudadanía), `NIT` (companies)\n\n"
-            "- **Card brands**: Visa, Mastercard, Amex, Codensa\n\n"
-            "- **PSE**: Bank transfer via PSE network\n"
-        ),
-    },
-    "MPE": {
-        "name":        "Peru",
-        "title":       "MercadoPago API — Peru (MPE)",
-        "contact_url": "https://www.mercadopago.com.pe/developers",
-        "description": (
-            "MercadoPago API specification scoped to Peru (site_id: MPE).\n\n"
-            "## Peru-specific notes\n\n"
-            "- **Currency**: PEN — send amounts as decimals (e.g., `50.00`)\n\n"
-            "- **Identification**: `DNI` (Documento Nacional de Identidad)\n\n"
-            "- **Card brands**: Visa, Mastercard, Amex, Diners\n\n"
-            "- **PagoEfectivo**: Cash payment network available\n"
-        ),
-    },
-    "MLU": {
-        "name":        "Uruguay",
-        "title":       "MercadoPago API — Uruguay (MLU)",
-        "contact_url": "https://www.mercadopago.com.uy/developers",
-        "description": (
-            "MercadoPago API specification scoped to Uruguay (site_id: MLU).\n\n"
-            "## Uruguay-specific notes\n\n"
-            "- **Currency**: UYU — send amounts as decimals (e.g., `500.00`)\n\n"
-            "- **Identification**: `CI` (Cédula de Identidad)\n\n"
-            "- **Card brands**: Visa, Mastercard, OCA (local), Cabal\n"
-        ),
-    },
-}
 
 # ---------------------------------------------------------------------------
 # JSONPath resolver (supports patterns used in overlays)
@@ -261,26 +157,6 @@ def apply_overlay(spec: dict[str, Any], overlay: dict[str, Any]) -> dict[str, An
 
 
 # ---------------------------------------------------------------------------
-# Country-specific info injection
-# ---------------------------------------------------------------------------
-
-def inject_country_info(spec: dict[str, Any], site: str) -> dict[str, Any]:
-    """Update info.title, info.description, and info.contact for *site*."""
-    meta = COUNTRY_META.get(site)
-    if not meta:
-        return spec
-
-    result = copy.deepcopy(spec)
-    result.setdefault("info", {})
-    result["info"]["title"]       = meta["title"]
-    result["info"]["description"] = meta["description"]
-    result["info"].setdefault("contact", {})
-    result["info"]["contact"]["name"] = "MercadoPago Developer Experience"
-    result["info"]["contact"]["url"]  = meta["contact_url"]
-    return result
-
-
-# ---------------------------------------------------------------------------
 # Main bundle logic
 # ---------------------------------------------------------------------------
 
@@ -362,7 +238,6 @@ def bundle_site(site: str, base_spec: dict[str, Any], dry_run: bool = False) -> 
 
     overlay = load_yaml(overlay_path)
     result  = apply_overlay(base_spec, overlay)
-    result  = inject_country_info(result, site)
 
     # Check if output changed
     existing_yaml = out_path.read_text() if out_path.exists() else ""
@@ -399,7 +274,6 @@ def check_mode(sites: list[str]) -> int:
 
         overlay  = load_yaml(overlay_path)
         result   = apply_overlay(base_spec, overlay)
-        result   = inject_country_info(result, site)
         new_yaml = yaml.dump(result, allow_unicode=True, sort_keys=False,
                              default_flow_style=False, width=120)
         existing = out_path.read_text() if out_path.exists() else ""
@@ -573,7 +447,7 @@ def main() -> None:
         changed = 0
 
         for site in sites:
-            if site not in COUNTRY_META and site not in all_sites:
+            if site not in all_sites:
                 print(f"  [{site}] Unknown site — skipping")
                 continue
             if bundle_site(site, base_spec, dry_run=args.dry_run):

@@ -25,7 +25,7 @@ Usage:
 
 Environment:
     Runs inside the openapi repo. No extra env vars needed.
-    Called by trigger-devsite-sync.yml after every merge to main.
+    Called by trigger-sdk-generation.yml after every merge to main.
 """
 
 from __future__ import annotations
@@ -106,7 +106,8 @@ def _operation_summary(op: dict[str, Any]) -> dict[str, Any]:
     if "summary" in op:
         summary["summary"] = op["summary"]
     if "description" in op:
-        summary["description"] = op["description"][:120] + "..." if len(op.get("description", "")) > 120 else op.get("description", "")
+        desc = op["description"]
+        summary["description"] = desc[:117] + "..." if len(desc) > 120 else desc
     if "parameters" in op:
         summary["parameters"] = [p.get("name") for p in op["parameters"]]
     if "requestBody" in op:
@@ -124,33 +125,11 @@ def _operation_summary(op: dict[str, Any]) -> dict[str, Any]:
 def diff_schemas(
     old_schemas: dict[str, Any],
     new_schemas: dict[str, Any],
-    product_paths: list[str],
-    all_schemas_before: dict[str, Any],
-    all_schemas_after: dict[str, Any],
 ) -> dict[str, list[dict[str, Any]]]:
     """
-    Compare old_schemas vs new_schemas for schemas referenced by product_paths.
+    Compare old_schemas vs new_schemas (already pre-filtered by scoped_schemas).
     Returns {"added": [...], "removed": [...], "modified": [...]}.
     """
-    # Collect schemas referenced by the product's paths (transitively)
-    def referenced(paths_obj: dict[str, Any], all_s: dict[str, Any]) -> set[str]:
-        refs: set[str] = set()
-        queue = [paths_obj]
-        while queue:
-            obj = queue.pop()
-            if isinstance(obj, dict):
-                ref = obj.get("$ref", "")
-                if isinstance(ref, str) and ref.startswith("#/components/schemas/"):
-                    name = ref.rsplit("/", 1)[-1]
-                    if name not in refs:
-                        refs.add(name)
-                        if name in all_s:
-                            queue.append(all_s[name])
-                else:
-                    queue.extend(obj.values())
-            elif isinstance(obj, list):
-                queue.extend(obj)
-        return refs
 
     added = []
     removed = []
@@ -314,9 +293,6 @@ def compute_product_diff(
     schemas_diff = diff_schemas(
         product_schemas_before,
         product_schemas_after,
-        allowed_prefixes,
-        old_schemas,
-        new_schemas,
     )
 
     # If nothing changed for this product, return None

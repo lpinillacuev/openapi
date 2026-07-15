@@ -17,6 +17,7 @@ jobs:
   trigger-sdk:
     name: spec3.yaml → SDK generation
     runs-on: ubuntu-latest
+    timeout-minutes: 15
 
     steps:
       - name: Checkout openapi
@@ -62,14 +63,23 @@ jobs:
         if: steps.changed.outputs.has_changes == 'true'
         env:
           CHANGED_PRODUCTS: ${{ steps.changed.outputs.products }}
+          SDK_AGENT_FLOW: ${{ secrets.SDK_AGENT_FLOW || 'sdk_generation_test' }}
+          # SDK_AGENT_FLOW controls test vs prod:
+          #   test (default): sdk_generation_test
+          #   prod:           sdk_generation
         run: |
-          python3 openapi/scripts/build_changes_summary.py --output /tmp/sdk_body.json
-          echo "Changes payload (pretty):"
-          python3 -m json.tool /tmp/sdk_body.json
+          python3 openapi/scripts/build_changes_summary.py \
+            --output /tmp/sdk_body.json \
+            --flow "${SDK_AGENT_FLOW}"
+          echo "Flow: ${SDK_AGENT_FLOW}"
+          echo "Request body size: $(wc -c < /tmp/sdk_body.json) bytes"
 
       # ── Step 2b: Trigger spec-agent via public API ─────────────────────────────
       # Sends the full structured spec payload so the SDK agent knows exactly
       # what schemas/paths changed and can generate accurate SDK code.
+      # SDK_AGENT_ENDPOINT controls test vs prod:
+      #   test: https://api.mercadolibre.com/spec-agent/public_test/async-generate
+      #   prod: https://api.mercadolibre.com/spec-agent/public/async-generate
       - name: Trigger SDK generation — spec-agent public API
         id: sdk_direct
         if: steps.changed.outputs.has_changes == 'true'
@@ -77,12 +87,13 @@ jobs:
         env:
           SDK_AGENT_API_KEY: ${{ secrets.SDK_AGENT_API_KEY }}
           SDK_AGENT_COOKIE: ${{ secrets.SDK_AGENT_COOKIE }}
+          SDK_AGENT_ENDPOINT: ${{ secrets.SDK_AGENT_ENDPOINT || 'https://api.mercadolibre.com/spec-agent/public_test/async-generate' }}
         run: |
-          echo "Sending request body:"
-          cat /tmp/sdk_body.json | python3 -m json.tool
+          echo "Endpoint: ${SDK_AGENT_ENDPOINT}"
+          echo "Request body size: $(wc -c < /tmp/sdk_body.json) bytes"
 
           HTTP_CODE=$(curl -s -o /tmp/sdk_response.json -w "%{http_code}" \
-            --location 'https://api.mercadolibre.com/spec-agent/public_test/async-generate' \
+            --location "${SDK_AGENT_ENDPOINT}" \
             --header "X-Api-Key: ${SDK_AGENT_API_KEY}" \
             --header 'Content-Type: application/json' \
             --header "Cookie: _d2id=${SDK_AGENT_COOKIE}" \

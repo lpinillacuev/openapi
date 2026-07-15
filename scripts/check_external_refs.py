@@ -45,7 +45,7 @@ def main() -> None:
         print(f"❌ File not found: {spec_path}", file=sys.stderr)
         sys.exit(1)
 
-    spec = yaml.safe_load(spec_path.read_text()) or {}
+    spec = yaml.safe_load(spec_path.read_text(encoding="utf-8")) or {}
     external = find_external_refs(spec)
 
     if external:

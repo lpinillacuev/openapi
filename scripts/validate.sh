@@ -67,7 +67,7 @@ for SPEC in "${SPECS[@]}"; do
 
   # ── 3. Self-containment check: zero external \$ref ─────────────────────────
   echo "[3/3] self-containment check (no external \$ref)..."
-  if python "$ROOT/scripts/check_external_refs.py" "$SPEC"; then
+  if python3 "$ROOT/scripts/check_external_refs.py" "$SPEC"; then
     : # success message printed by the script
   else
     ERRORS=$((ERRORS + 1))

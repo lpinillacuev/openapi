@@ -89,34 +89,13 @@ jobs:
         continue-on-error: true
         env:
           BOT_URL: ${{ secrets.BOT_SYNC_SPECS_URL || 'https://beta-bot-sync-specs.melioffice.com' }}
+          # BOT_SYNC_SPECS_URL controls test vs prod:
+          #   test (default): https://beta-bot-sync-specs.melioffice.com
+          #   prod:           https://prod-bot-sync-specs.melioffice.com
+          GH_PAT: ${{ secrets.GH_PAT }}
+          COMMIT_SHA: ${{ github.sha }}
         run: |
-          COMMIT_SHA="${{ github.sha }}"
-
-          # Get apps that have pending paths from the changed spec
-          # For each app registered in apps.yaml, call sync-from-merge
-          python3 - <<'EOF'
-          import yaml, subprocess, json, sys
-
-          with open('apps.yaml') as f:
-              apps = yaml.safe_load(f).get('apps', [])
-
-          for app in apps:
-              fury_app = app['fury_app']
-              print(f"Syncing KVS for {fury_app}...")
-              try:
-                  result = subprocess.run([
-                      'curl', '-s', '-X', 'POST',
-                      f'${{ env.BOT_URL }}/openapi/policy/{fury_app}/sync-from-merge',
-                      '-H', 'Content-Type: application/json',
-                      '-H', 'X-github-token: ${{ secrets.GH_PAT }}',
-                      '-d', json.dumps({'commitSha': '${{ github.sha }}'})
-                  ], capture_output=True, text=True, timeout=30)
-                  print(result.stdout or 'no response')
-              except Exception as e:
-                  print(f"Warning: could not sync KVS for {fury_app}: {e}")
-
-          sys.exit(0)
-          EOF
+          python3 scripts/sync_kvs_decisions.py
 
       # ── Step 6: Push specs to external product API ────────────────────────
       # TODO: habilitar cuando el flujo DevSite esté listo

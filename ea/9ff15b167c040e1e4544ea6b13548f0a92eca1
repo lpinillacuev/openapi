@@ -1,0 +1,42 @@
+.github/workflows/regenerate-derived-specs.yml
+  s_2adb1e3e7a573d::t_ab1a0d271a98e5 95-96,98
+  s_2adb1e3e7a573d::t_0c7f4b71d28a2c 92-94
+scripts/generate_product_diff.py
+  s_2adb1e3e7a573d::t_7df56cd7a8051c 28
+  s_2adb1e3e7a573d::t_293c87fd68e143 109-110
+  s_2adb1e3e7a573d::t_bf3f8dae8f5b6d 130
+scripts/check_external_refs.py
+  s_2adb1e3e7a573d::t_8dbb1e7e2ddd5f 48
+scripts/generate_spec_json.py
+  s_2adb1e3e7a573d::t_9eb9f397cdda31 35-43
+scripts/validate.sh
+  s_2adb1e3e7a573d::t_f29a03d59fd0f7 70
+scripts/sync_kvs_decisions.py
+  s_2adb1e3e7a573d::t_da3c412a4dcffe 1-68
+.github/workflows/trigger-sdk-generation.yml
+  s_2adb1e3e7a573d::t_97f028517994d9 66-69,71-75
+  s_2adb1e3e7a573d::t_7d8c402422de44 80-82,90,92,96
+  s_2adb1e3e7a573d::t_13fd97d888f7b0 20
+  s_2adb1e3e7a573d::t_4b29025ca30c9b 93
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.14",
+  "base_commit_sha": "ea9ff15b167c040e1e4544ea6b13548f0a92eca1",
+  "prompts": {},
+  "humans": {
+    "h_2fdb5dbaf86600": {
+      "author": "lpinillacuev <lina.pinillacuevas@mercadolibre.com.co>"
+    }
+  },
+  "sessions": {
+    "s_2adb1e3e7a573d": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "5ca9739c-b9a5-40bb-8cc8-99d36839e20e",
+        "model": "claude-sonnet-4-6"
+      },
+      "human_author": "lpinillacuev <lina.pinillacuevas@mercadolibre.com.co>"
+    }
+  }
+}

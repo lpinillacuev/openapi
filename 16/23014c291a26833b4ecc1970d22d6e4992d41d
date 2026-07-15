@@ -1,0 +1,19 @@
+.github/workflows/sync-spechub.yml
+  s_2adb1e3e7a573d::t_fe340ebe2ff1b6 104,110-111
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.5.6",
+  "base_commit_sha": "1623014c291a26833b4ecc1970d22d6e4992d41d",
+  "prompts": {},
+  "sessions": {
+    "s_2adb1e3e7a573d": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "5ca9739c-b9a5-40bb-8cc8-99d36839e20e",
+        "model": "claude-sonnet-4-6"
+      },
+      "human_author": "lpinillacuev <lina.pinillacuevas@mercadolibre.com.co>"
+    }
+  }
+}

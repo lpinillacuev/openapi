@@ -32,7 +32,15 @@ def main() -> None:
     src = Path(sys.argv[1]) if len(sys.argv) > 1 else Path("spec3.yaml")
     dst = Path(sys.argv[2]) if len(sys.argv) > 2 else src.with_suffix(".json")
 
-    spec = yaml.safe_load(src.read_text(encoding="utf-8")) or {}
+    try:
+        spec = yaml.safe_load(src.read_text(encoding="utf-8")) or {}
+    except FileNotFoundError:
+        print(f"❌ File not found: {src}", file=sys.stderr)
+        sys.exit(1)
+    except yaml.YAMLError as e:
+        print(f"❌ Failed to parse {src}: {e}", file=sys.stderr)
+        sys.exit(1)
+
     dst.write_text(
         json.dumps(spec, indent=2, ensure_ascii=False, cls=_SafeEncoder),
         encoding="utf-8",

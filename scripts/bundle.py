@@ -229,14 +229,23 @@ def bundle_schemas(spec: dict[str, Any], dry_run: bool = False) -> tuple[dict[st
 
 def bundle_site(site: str, base_spec: dict[str, Any], dry_run: bool = False) -> bool:
     """
-    Write by-site/{site}/spec3.yaml directly from base_spec (spec3.yaml is the source of truth).
+    Sync paths and components from base_spec into by-site/{site}/spec3.yaml.
+    Preserves existing info, servers, security, and tags from the by-site file.
     Returns True if the output changed.
     """
     out_path = BY_SITE / site / "spec3.yaml"
 
-    existing_yaml = out_path.read_text() if out_path.exists() else ""
+    if not out_path.exists():
+        print(f"  [{site}] No existing by-site file — skipping")
+        return False
+
+    result = load_yaml(out_path)
+    result["paths"] = copy.deepcopy(base_spec.get("paths", {}))
+    result["components"] = copy.deepcopy(base_spec.get("components", {}))
+
+    existing_yaml = out_path.read_text()
     new_yaml = yaml.dump(
-        base_spec, allow_unicode=True, sort_keys=False,
+        result, allow_unicode=True, sort_keys=False,
         default_flow_style=False, width=120,
     )
 
@@ -248,7 +257,7 @@ def bundle_site(site: str, base_spec: dict[str, Any], dry_run: bool = False) -> 
         print(f"  [{site}] Would update {out_path}")
         return True
 
-    save_yaml(out_path, base_spec)
+    save_yaml(out_path, result)
     print(f"  [{site}] Written → {out_path}")
     return True
 
@@ -259,14 +268,15 @@ def check_mode(sites: list[str]) -> int:
     """
     base_spec = load_yaml(SPEC3_PATH)
     stale: list[str] = []
-    base_yaml = yaml.dump(base_spec, allow_unicode=True, sort_keys=False,
-                          default_flow_style=False, width=120)
 
     for site in sites:
         out_path = BY_SITE / site / "spec3.yaml"
-        existing = out_path.read_text() if out_path.exists() else ""
+        if not out_path.exists():
+            continue
 
-        if base_yaml != existing:
+        current = load_yaml(out_path)
+        if (current.get("paths") != base_spec.get("paths") or
+                current.get("components") != base_spec.get("components")):
             stale.append(site)
             print(f"  STALE: {site}")
         else:

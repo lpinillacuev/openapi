@@ -1,15 +1,34 @@
 openapi: 3.1.0
 info:
-  title: MercadoPago API
-  description: The MercadoPago REST API. Please see https://www.mercadopago.com/developers for more details.
-  termsOfService: https://www.mercadopago.com/developers/es/docs/resources/legal/terms-and-conditions
+  title: MercadoPago API — Colombia (MCO)
+  version: 1.0.0
+  description: 'MercadoPago API specification scoped to Colombia (site_id: MCO).
+
+
+    ## Colombia-specific notes
+
+
+    - **Currency**: COP — send amounts as decimals
+
+    - **PSE**: Online banking transfer (requires payer bank redirect) — `payment_method_id: pse`
+
+    - **Efecty**: Cash payment network — `payment_method_id: efecty`
+
+    - **Baloto**: Cash payment network — `payment_method_id: baloto`
+
+    - **Identification**: `CC` (Cédula de Ciudadanía), `NIT`, `CE`
+
+    - **Card brands**: Visa, Mastercard, Amex, Diners, Codensa
+
+    - **PSE note**: Requires `callback_url` for bank redirect flow
+
+    '
   contact:
     name: MercadoPago Developer Experience
-    url: https://www.mercadopago.com/developers
+    url: https://www.mercadopago.com.co/developers
   license:
     name: Apache 2.0
     url: https://www.apache.org/licenses/LICENSE-2.0
-  version: 1.0.0
 servers:
 - url: https://api.mercadopago.com
   description: Production
@@ -93,15 +112,6 @@ tags:
   - MLA
   - MLB
   - MLM
-- name: QR Orders
-  description: In-store payment orders associated with QR codes
-  x-mp-sites:
-  - MLA
-  - MLB
-  - MLC
-  - MCO
-  - MPE
-  - MLU
 - name: QR Integrator
   description: Integrator configuration for QR in-store
   x-mp-sites: *id001
@@ -126,13 +136,6 @@ tags:
 - name: Settlements Report
   description: Generate and schedule all-transactions reports
   x-mp-sites: *id001
-- name: Payouts
-  description: Bank transfer and Pix payouts
-  x-mp-sites:
-  - MLA
-  - MLB
-  - MLM
-  - MLC
 paths:
   /v1/payments:
     post:

@@ -1,15 +1,36 @@
 openapi: 3.1.0
 info:
-  title: MercadoPago API
-  description: The MercadoPago REST API. Please see https://www.mercadopago.com/developers for more details.
-  termsOfService: https://www.mercadopago.com/developers/es/docs/resources/legal/terms-and-conditions
+  title: MercadoPago API — Brazil (MLB)
+  version: 1.0.0
+  description: 'MercadoPago API specification scoped to Brazil (site_id: MLB).
+
+
+    ## Brazil-specific notes
+
+
+    - **Currency**: BRL — send amounts as decimals (e.g., `100.50` for R$100,50)
+
+    - **Pix**: Available 24/7, instant settlement — `payment_method_id: pix`
+
+    - **Boleto Bancário**: Cash payment, expires 1–3 days — `payment_method_id: bolbradesco`
+
+    - **Identification**: `CPF` for individuals (11 digits), `CNPJ` for companies (14 digits)
+
+    - **Card brands**: Visa, Mastercard, Elo (local), Hipercard (local), Amex
+
+    - **Point**: Available in Brazil
+
+    - **Wallet Connect**: Available in Brazil
+
+    - **Payouts**: Pix disbursements and bank transfers available
+
+    '
   contact:
     name: MercadoPago Developer Experience
-    url: https://www.mercadopago.com/developers
+    url: https://www.mercadopago.com.br/developers
   license:
     name: Apache 2.0
     url: https://www.apache.org/licenses/LICENSE-2.0
-  version: 1.0.0
 servers:
 - url: https://api.mercadopago.com
   description: Production

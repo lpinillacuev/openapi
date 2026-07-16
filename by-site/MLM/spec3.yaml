@@ -1,15 +1,38 @@
 openapi: 3.1.0
 info:
-  title: MercadoPago API
-  description: The MercadoPago REST API. Please see https://www.mercadopago.com/developers for more details.
-  termsOfService: https://www.mercadopago.com/developers/es/docs/resources/legal/terms-and-conditions
+  title: MercadoPago API — Mexico (MLM)
+  version: 1.0.0
+  description: 'MercadoPago API specification scoped to Mexico (site_id: MLM).
+
+
+    ## Mexico-specific notes
+
+
+    - **Currency**: MXN — send amounts as decimals (e.g., `500.00`)
+
+    - **OXXO**: Cash payment at 100,000+ stores — `payment_method_id: oxxo`
+
+    - **SPEI**: Interbank electronic transfer — `payment_method_id: clabe`
+
+    - **Identification**: `RFC` (tax ID), `CURP` (personal ID)
+
+    - **Card brands**: Visa, Mastercard, Amex
+
+    - **Installments**: Meses sin intereses (MSI) widely available
+
+    - **Point**: Available in Mexico
+
+    - **Wallet Connect**: Available in Mexico
+
+    - **Payouts**: SPEI bank transfers available
+
+    '
   contact:
     name: MercadoPago Developer Experience
-    url: https://www.mercadopago.com/developers
+    url: https://www.mercadopago.com.mx/developers
   license:
     name: Apache 2.0
     url: https://www.apache.org/licenses/LICENSE-2.0
-  version: 1.0.0
 servers:
 - url: https://api.mercadopago.com
   description: Production
@@ -93,15 +116,6 @@ tags:
   - MLA
   - MLB
   - MLM
-- name: QR Orders
-  description: In-store payment orders associated with QR codes
-  x-mp-sites:
-  - MLA
-  - MLB
-  - MLC
-  - MCO
-  - MPE
-  - MLU
 - name: QR Integrator
   description: Integrator configuration for QR in-store
   x-mp-sites: *id001

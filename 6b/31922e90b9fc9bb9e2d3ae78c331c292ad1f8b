@@ -1,0 +1,39 @@
+by-site/MLM/spec3.yaml
+  s_f9176187f8b4ea::t_f64198f1d5bbb7 3-29,32
+by-site/MPE/spec3.yaml
+  s_f9176187f8b4ea::t_f64198f1d5bbb7 3-19,22
+by-site/MLB/spec3.yaml
+  s_f9176187f8b4ea::t_f64198f1d5bbb7 3-27,30
+scripts/bundle.py
+  s_f9176187f8b4ea::t_1f1f5515a72fb9 274-275,277-279
+  s_f9176187f8b4ea::t_9188debf66d9fc 232-233,238-246,248,260
+by-site/MLA/spec3.yaml
+  s_f9176187f8b4ea::t_f64198f1d5bbb7 3-25,28
+by-site/MLC/spec3.yaml
+  s_f9176187f8b4ea::t_f64198f1d5bbb7 3-24,27
+by-site/MLU/spec3.yaml
+  s_f9176187f8b4ea::t_f64198f1d5bbb7 3-23,26
+by-site/MCO/spec3.yaml
+  s_f9176187f8b4ea::t_f64198f1d5bbb7 3-25,28
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.5.6",
+  "base_commit_sha": "6b31922e90b9fc9bb9e2d3ae78c331c292ad1f8b",
+  "prompts": {},
+  "humans": {
+    "h_2fdb5dbaf86600": {
+      "author": "lpinillacuev <lina.pinillacuevas@mercadolibre.com.co>"
+    }
+  },
+  "sessions": {
+    "s_f9176187f8b4ea": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "172eda67-854a-49c6-8944-802bba163cf1",
+        "model": "claude-sonnet-4-6"
+      },
+      "human_author": "lpinillacuev <lina.pinillacuevas@mercadolibre.com.co>"
+    }
+  }
+}

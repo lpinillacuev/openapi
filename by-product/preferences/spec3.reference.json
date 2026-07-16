@@ -1,0 +1,1130 @@
+{
+  "url": "https://api.mercadopago.com",
+  "paths": {
+    "/checkout/preferences": {
+      "post": {
+        "description": {
+          "en": "Creates a Checkout Pro preference. The response contains `init_point` (production) and \n**Webhook events triggered:** payment, merchant_order",
+          "pt": "TODO",
+          "es": "TODO"
+        },
+        "tags": [
+          "Preferences"
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PreferenceRequest"
+              },
+              "examples": {
+                "simple": {
+                  "summary": "Simple one-item preference",
+                  "value": {
+                    "items": [
+                      {
+                        "title": "Premium Plan",
+                        "quantity": 1,
+                        "unit_price": 99.9
+                      }
+                    ],
+                    "payer": {
+                      "email": "customer@example.com"
+                    },
+                    "back_urls": {
+                      "success": "https://mystore.com/success",
+                      "failure": "https://mystore.com/failure",
+                      "pending": "https://mystore.com/pending"
+                    },
+                    "auto_return": "approved"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": {
+              "en": "Preference created",
+              "pt": "TODO",
+              "es": "TODO"
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Preference"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "errorKey": {
+                      "type": "string",
+                      "enum": [
+                        {
+                          "title": "TODO_error_code",
+                          "description": {
+                            "en": "TODO: describe this error",
+                            "pt": "TODO",
+                            "es": "TODO"
+                          }
+                        }
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "errorKey": {
+                      "type": "string",
+                      "enum": [
+                        {
+                          "title": "TODO_error_code",
+                          "description": {
+                            "en": "TODO: describe this error",
+                            "pt": "TODO",
+                            "es": "TODO"
+                          }
+                        }
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "200": {
+            "description": {
+              "en": "Preference created",
+              "pt": "TODO",
+              "es": "TODO"
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Preference"
+                }
+              }
+            }
+          }
+        },
+        "title": {
+          "en": "Create a preference",
+          "pt": "TODO",
+          "es": "TODO"
+        }
+      }
+    },
+    "/checkout/preferences/{id}": {
+      "get": {
+        "tags": [
+          "Preferences"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": {
+              "en": "Preference found",
+              "pt": "TODO",
+              "es": "TODO"
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Preference"
+                }
+              }
+            }
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "errorKey": {
+                      "type": "string",
+                      "enum": [
+                        {
+                          "title": "TODO_error_code",
+                          "description": {
+                            "en": "TODO: describe this error",
+                            "pt": "TODO",
+                            "es": "TODO"
+                          }
+                        }
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "errorKey": {
+                      "type": "string",
+                      "enum": [
+                        {
+                          "title": "TODO_error_code",
+                          "description": {
+                            "en": "TODO: describe this error",
+                            "pt": "TODO",
+                            "es": "TODO"
+                          }
+                        }
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "title": {
+          "en": "Get preference by ID",
+          "pt": "TODO",
+          "es": "TODO"
+        },
+        "description": {
+          "en": "Get preference by ID",
+          "pt": "TODO",
+          "es": "TODO"
+        }
+      },
+      "put": {
+        "tags": [
+          "Preferences"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PreferenceRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": {
+              "en": "Preference updated",
+              "pt": "TODO",
+              "es": "TODO"
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Preference"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "errorKey": {
+                      "type": "string",
+                      "enum": [
+                        {
+                          "title": "TODO_error_code",
+                          "description": {
+                            "en": "TODO: describe this error",
+                            "pt": "TODO",
+                            "es": "TODO"
+                          }
+                        }
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "title": {
+          "en": "Update a preference",
+          "pt": "TODO",
+          "es": "TODO"
+        },
+        "description": {
+          "en": "Update a preference",
+          "pt": "TODO",
+          "es": "TODO"
+        }
+      }
+    },
+    "/checkout/preferences/search": {
+      "get": {
+        "tags": [
+          "Preferences"
+        ],
+        "parameters": [
+          {
+            "name": "external_reference",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "marketplace",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "site_id",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "sponsor_id",
+            "in": "query",
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "default": 30
+            }
+          },
+          {
+            "name": "offset",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "default": 0
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": {
+              "en": "Search results",
+              "pt": "TODO",
+              "es": "TODO"
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "elements": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/Preference"
+                      }
+                    },
+                    "paging": {
+                      "$ref": "#/components/schemas/Pagination"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "errorKey": {
+                      "type": "string",
+                      "enum": [
+                        {
+                          "title": "TODO_error_code",
+                          "description": {
+                            "en": "TODO: describe this error",
+                            "pt": "TODO",
+                            "es": "TODO"
+                          }
+                        }
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "errorKey": {
+                      "type": "string",
+                      "enum": [
+                        {
+                          "title": "TODO_error_code",
+                          "description": {
+                            "en": "TODO: describe this error",
+                            "pt": "TODO",
+                            "es": "TODO"
+                          }
+                        }
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "title": {
+          "en": "Search preferences",
+          "pt": "TODO",
+          "es": "TODO"
+        },
+        "description": {
+          "en": "Search preferences",
+          "pt": "TODO",
+          "es": "TODO"
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "PreferenceRequest": {
+        "type": "object",
+        "description": {
+          "en": "Request body to create a Checkout Pro preference. The preference generates a hosted checkout URL (init_point) where the payer is redirected to complete payment on MP's UI. Use this for simple integrations; use Orders API for custom checkout experiences.",
+          "pt": "TODO",
+          "es": "TODO"
+        },
+        "properties": {
+          "items": {
+            "type": "array",
+            "description": {
+              "en": "List of products/services being purchased",
+              "pt": "TODO",
+              "es": "TODO"
+            },
+            "items": {
+              "$ref": "#/components/schemas/PreferenceItem"
+            },
+            "minItems": 1
+          },
+          "payer": {
+            "$ref": "#/components/schemas/PreferencePayer"
+          },
+          "payment_methods": {
+            "$ref": "#/components/schemas/PreferencePaymentMethods"
+          },
+          "shipments": {
+            "$ref": "#/components/schemas/PreferenceShipments"
+          },
+          "back_urls": {
+            "$ref": "#/components/schemas/PreferenceBackUrls"
+          },
+          "notification_url": {
+            "type": "string",
+            "format": "uri",
+            "description": {
+              "en": "URL for IPN notifications. DEPRECATED — use Webhooks instead.",
+              "pt": "TODO",
+              "es": "TODO"
+            },
+            "deprecated": true
+          },
+          "statement_descriptor": {
+            "type": "string",
+            "description": {
+              "en": "Text on the payer's card statement. Max 22 chars.",
+              "pt": "TODO",
+              "es": "TODO"
+            },
+            "maxLength": 22
+          },
+          "additional_info": {
+            "type": "string",
+            "description": {
+              "en": "Free-text additional info (returned in webhook notifications)",
+              "pt": "TODO",
+              "es": "TODO"
+            }
+          },
+          "auto_return": {
+            "type": "string",
+            "enum": [
+              {
+                "title": "approved",
+                "description": {
+                  "en": "approved",
+                  "pt": "TODO",
+                  "es": "TODO"
+                }
+              },
+              {
+                "title": "all",
+                "description": {
+                  "en": "all",
+                  "pt": "TODO",
+                  "es": "TODO"
+                }
+              }
+            ],
+            "description": {
+              "en": "approved — auto-redirect to success URL on approved payments; all — auto-redirect for any final status.",
+              "pt": "TODO",
+              "es": "TODO"
+            }
+          },
+          "external_reference": {
+            "type": "string",
+            "description": {
+              "en": "Your internal order reference. Returned in webhook payloads.",
+              "pt": "TODO",
+              "es": "TODO"
+            },
+            "example": "ORDER-2024-001234"
+          },
+          "expires": {
+            "type": "boolean",
+            "description": {
+              "en": "Whether this preference has an expiry window",
+              "pt": "TODO",
+              "es": "TODO"
+            },
+            "default": false
+          },
+          "expiration_date_from": {
+            "type": "string",
+            "format": "date-time",
+            "description": {
+              "en": "Preference activation start time (ISO 8601)",
+              "pt": "TODO",
+              "es": "TODO"
+            }
+          },
+          "expiration_date_to": {
+            "type": "string",
+            "format": "date-time",
+            "description": {
+              "en": "Preference expiration time (ISO 8601)",
+              "pt": "TODO",
+              "es": "TODO"
+            }
+          },
+          "marketplace": {
+            "type": "string",
+            "description": {
+              "en": "Marketplace identifier",
+              "pt": "TODO",
+              "es": "TODO"
+            }
+          },
+          "marketplace_fee": {
+            "type": "number",
+            "format": "float",
+            "description": {
+              "en": "Marketplace fee charged to the seller",
+              "pt": "TODO",
+              "es": "TODO"
+            }
+          },
+          "differential_pricing": {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "integer"
+              }
+            }
+          },
+          "binary_mode": {
+            "type": "boolean",
+            "default": false
+          }
+        }
+      },
+      "PreferenceItem": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "title": {
+            "type": "string",
+            "example": "Premium Plan"
+          },
+          "description": {
+            "type": "string"
+          },
+          "picture_url": {
+            "type": "string",
+            "format": "uri"
+          },
+          "category_id": {
+            "type": "string"
+          },
+          "quantity": {
+            "type": "integer",
+            "minimum": 1,
+            "example": 1
+          },
+          "currency_id": {
+            "$ref": "#/components/schemas/CurrencyId"
+          },
+          "unit_price": {
+            "type": "number",
+            "format": "float",
+            "description": {
+              "en": "Unit price as a decimal (not integer cents)",
+              "pt": "TODO",
+              "es": "TODO"
+            },
+            "example": 99.9
+          }
+        }
+      },
+      "PreferencePayer": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "surname": {
+            "type": "string"
+          },
+          "email": {
+            "type": "string",
+            "format": "email"
+          },
+          "phone": {
+            "$ref": "#/components/schemas/Phone"
+          },
+          "identification": {
+            "$ref": "#/components/schemas/Identification"
+          },
+          "address": {
+            "$ref": "#/components/schemas/Address"
+          },
+          "date_created": {
+            "type": "string",
+            "format": "date-time"
+          }
+        }
+      },
+      "PreferencePaymentMethods": {
+        "type": "object",
+        "properties": {
+          "excluded_payment_methods": {
+            "type": "array",
+            "description": {
+              "en": "Payment methods to hide from checkout UI",
+              "pt": "TODO",
+              "es": "TODO"
+            },
+            "items": {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "excluded_payment_types": {
+            "type": "array",
+            "description": {
+              "en": "Payment type groups to exclude",
+              "pt": "TODO",
+              "es": "TODO"
+            },
+            "items": {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "installments": {
+            "type": "integer",
+            "description": {
+              "en": "Maximum number of installments to offer",
+              "pt": "TODO",
+              "es": "TODO"
+            },
+            "example": 12
+          },
+          "default_installments": {
+            "type": "integer",
+            "description": {
+              "en": "Pre-selected installments in the UI",
+              "pt": "TODO",
+              "es": "TODO"
+            }
+          }
+        }
+      },
+      "PreferenceShipments": {
+        "type": "object",
+        "properties": {
+          "mode": {
+            "type": "string",
+            "enum": [
+              {
+                "title": "custom",
+                "description": {
+                  "en": "custom",
+                  "pt": "TODO",
+                  "es": "TODO"
+                }
+              },
+              {
+                "title": "me2",
+                "description": {
+                  "en": "me2",
+                  "pt": "TODO",
+                  "es": "TODO"
+                }
+              },
+              {
+                "title": "not_specified",
+                "description": {
+                  "en": "not_specified",
+                  "pt": "TODO",
+                  "es": "TODO"
+                }
+              }
+            ]
+          },
+          "free_shipping": {
+            "type": "boolean",
+            "default": false
+          },
+          "receiver_address": {
+            "$ref": "#/components/schemas/Address"
+          },
+          "cost": {
+            "type": "number",
+            "format": "float"
+          }
+        }
+      },
+      "PreferenceBackUrls": {
+        "type": "object",
+        "description": {
+          "en": "Redirect URLs after checkout completion. Configure auto_return to control when automatic redirects happen.",
+          "pt": "TODO",
+          "es": "TODO"
+        },
+        "properties": {
+          "success": {
+            "type": "string",
+            "format": "uri",
+            "description": {
+              "en": "Redirect after approved payment",
+              "pt": "TODO",
+              "es": "TODO"
+            }
+          },
+          "pending": {
+            "type": "string",
+            "format": "uri",
+            "description": {
+              "en": "Redirect for pending payments (e.g., Boleto)",
+              "pt": "TODO",
+              "es": "TODO"
+            }
+          },
+          "failure": {
+            "type": "string",
+            "format": "uri",
+            "description": {
+              "en": "Redirect after rejected payment",
+              "pt": "TODO",
+              "es": "TODO"
+            }
+          }
+        }
+      },
+      "Preference": {
+        "type": "object",
+        "description": {
+          "en": "A created Checkout Pro preference",
+          "pt": "TODO",
+          "es": "TODO"
+        },
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": {
+              "en": "Preference unique identifier",
+              "pt": "TODO",
+              "es": "TODO"
+            },
+            "example": "123456789-abcd1234-ef56-7890-abcd-ef1234567890"
+          },
+          "init_point": {
+            "type": "string",
+            "format": "uri",
+            "description": {
+              "en": "Production checkout URL. Redirect your payer here to complete payment.",
+              "pt": "TODO",
+              "es": "TODO"
+            },
+            "example": "https://www.mercadopago.com.br/checkout/v1/redirect?pref_id=..."
+          },
+          "items": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/PreferenceItem"
+            }
+          },
+          "payer": {
+            "$ref": "#/components/schemas/PreferencePayer"
+          },
+          "payment_methods": {
+            "$ref": "#/components/schemas/PreferencePaymentMethods"
+          },
+          "back_urls": {
+            "$ref": "#/components/schemas/PreferenceBackUrls"
+          },
+          "external_reference": {
+            "type": "string"
+          },
+          "date_created": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "last_updated": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "total_amount": {
+            "type": "number",
+            "format": "float"
+          },
+          "expires": {
+            "type": "boolean"
+          },
+          "expiration_date_from": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "expiration_date_to": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "collector_id": {
+            "type": "integer"
+          },
+          "client_id": {
+            "type": "string"
+          },
+          "marketplace": {
+            "type": "string"
+          },
+          "marketplace_fee": {
+            "type": "number",
+            "format": "float"
+          }
+        }
+      },
+      "CurrencyId": {
+        "type": "string",
+        "description": {
+          "en": "ISO 4217 currency code for the applicable site",
+          "pt": "TODO",
+          "es": "TODO"
+        },
+        "enum": [
+          {
+            "title": "ARS",
+            "description": {
+              "en": "ARS",
+              "pt": "TODO",
+              "es": "TODO"
+            }
+          },
+          {
+            "title": "BRL",
+            "description": {
+              "en": "BRL",
+              "pt": "TODO",
+              "es": "TODO"
+            }
+          },
+          {
+            "title": "MXN",
+            "description": {
+              "en": "MXN",
+              "pt": "TODO",
+              "es": "TODO"
+            }
+          },
+          {
+            "title": "CLP",
+            "description": {
+              "en": "CLP",
+              "pt": "TODO",
+              "es": "TODO"
+            }
+          },
+          {
+            "title": "COP",
+            "description": {
+              "en": "COP",
+              "pt": "TODO",
+              "es": "TODO"
+            }
+          },
+          {
+            "title": "PEN",
+            "description": {
+              "en": "PEN",
+              "pt": "TODO",
+              "es": "TODO"
+            }
+          },
+          {
+            "title": "UYU",
+            "description": {
+              "en": "UYU",
+              "pt": "TODO",
+              "es": "TODO"
+            }
+          },
+          {
+            "title": "BOB",
+            "description": {
+              "en": "BOB",
+              "pt": "TODO",
+              "es": "TODO"
+            }
+          },
+          {
+            "title": "PYG",
+            "description": {
+              "en": "PYG",
+              "pt": "TODO",
+              "es": "TODO"
+            }
+          },
+          {
+            "title": "USD",
+            "description": {
+              "en": "USD",
+              "pt": "TODO",
+              "es": "TODO"
+            }
+          },
+          {
+            "title": "CRC",
+            "description": {
+              "en": "CRC",
+              "pt": "TODO",
+              "es": "TODO"
+            }
+          },
+          {
+            "title": "DOP",
+            "description": {
+              "en": "DOP",
+              "pt": "TODO",
+              "es": "TODO"
+            }
+          },
+          {
+            "title": "HNL",
+            "description": {
+              "en": "HNL",
+              "pt": "TODO",
+              "es": "TODO"
+            }
+          },
+          {
+            "title": "NIO",
+            "description": {
+              "en": "NIO",
+              "pt": "TODO",
+              "es": "TODO"
+            }
+          },
+          {
+            "title": "GTQ",
+            "description": {
+              "en": "GTQ",
+              "pt": "TODO",
+              "es": "TODO"
+            }
+          },
+          {
+            "title": "VES",
+            "description": {
+              "en": "VES",
+              "pt": "TODO",
+              "es": "TODO"
+            }
+          }
+        ],
+        "example": "BRL"
+      },
+      "Identification": {
+        "type": "object",
+        "description": {
+          "en": "Payer identification document. Valid types vary by country.",
+          "pt": "TODO",
+          "es": "TODO"
+        },
+        "properties": {
+          "type": {
+            "type": "string",
+            "description": {
+              "en": "Identification type (e.g., CPF, CNPJ for Brazil; DNI for Argentina; RFC for Mexico)",
+              "pt": "TODO",
+              "es": "TODO"
+            },
+            "example": "CPF"
+          },
+          "number": {
+            "type": "string",
+            "description": {
+              "en": "Identification number (no formatting — digits only)",
+              "pt": "TODO",
+              "es": "TODO"
+            },
+            "example": "12345678909"
+          }
+        }
+      },
+      "Phone": {
+        "type": "object",
+        "properties": {
+          "area_code": {
+            "type": "string",
+            "example": "11"
+          },
+          "number": {
+            "type": "string",
+            "example": "987654321"
+          }
+        }
+      },
+      "Address": {
+        "type": "object",
+        "properties": {
+          "zip_code": {
+            "type": "string",
+            "example": "01310-100"
+          },
+          "street_name": {
+            "type": "string",
+            "example": "Av. Paulista"
+          },
+          "street_number": {
+            "type": "string",
+            "example": "1000"
+          },
+          "city": {
+            "type": "string"
+          },
+          "state": {
+            "type": "string"
+          },
+          "country": {
+            "type": "string"
+          }
+        }
+      },
+      "Pagination": {
+        "type": "object",
+        "description": {
+          "en": "Pagination metadata returned in list/search responses",
+          "pt": "TODO",
+          "es": "TODO"
+        },
+        "properties": {
+          "total": {
+            "type": "integer",
+            "description": {
+              "en": "Total number of results",
+              "pt": "TODO",
+              "es": "TODO"
+            },
+            "example": 42
+          },
+          "limit": {
+            "type": "integer",
+            "description": {
+              "en": "Results per page",
+              "pt": "TODO",
+              "es": "TODO"
+            },
+            "example": 30
+          },
+          "offset": {
+            "type": "integer",
+            "description": {
+              "en": "Offset of the current page",
+              "pt": "TODO",
+              "es": "TODO"
+            },
+            "example": 0
+          }
+        }
+      }
+    }
+  }
+}

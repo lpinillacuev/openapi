@@ -1,0 +1,2249 @@
+{
+  "url": "https://api.mercadopago.com",
+  "paths": {
+    "/preapproval_plan": {
+      "post": {
+        "description": {
+          "en": "Creates a recurring billing plan. Individual subscriptions reference this plan. The response includes `init_point` to send subscribers to authorize billing.",
+          "pt": "TODO",
+          "es": "TODO"
+        },
+        "tags": [
+          "Plans"
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SubscriptionPlanRequest"
+              },
+              "examples": {
+                "monthly_plan": {
+                  "summary": "Monthly plan — R$29.90",
+                  "value": {
+                    "reason": "Monthly Premium Subscription",
+                    "auto_recurring": {
+                      "frequency": 1,
+                      "frequency_type": "months",
+                      "transaction_amount": 29.9,
+                      "currency_id": "BRL"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": {
+              "en": "Plan created",
+              "pt": "TODO",
+              "es": "TODO"
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SubscriptionPlan"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "errorKey": {
+                      "type": "string",
+                      "enum": [
+                        {
+                          "title": "TODO_error_code",
+                          "description": {
+                            "en": "TODO: describe this error",
+                            "pt": "TODO",
+                            "es": "TODO"
+                          }
+                        }
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": {
+              "en": "Unauthorized",
+              "pt": "TODO",
+              "es": "TODO"
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "errorKey": {
+                      "type": "string",
+                      "enum": [
+                        {
+                          "title": "TODO_error_code",
+                          "description": {
+                            "en": "TODO: describe this error",
+                            "pt": "TODO",
+                            "es": "TODO"
+                          }
+                        }
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": {
+              "en": "Not found",
+              "pt": "TODO",
+              "es": "TODO"
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "errorKey": {
+                      "type": "string",
+                      "enum": [
+                        {
+                          "title": "TODO_error_code",
+                          "description": {
+                            "en": "TODO: describe this error",
+                            "pt": "TODO",
+                            "es": "TODO"
+                          }
+                        }
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": {
+              "en": "Internal server error",
+              "pt": "TODO",
+              "es": "TODO"
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "errorKey": {
+                      "type": "string",
+                      "enum": [
+                        {
+                          "title": "TODO_error_code",
+                          "description": {
+                            "en": "TODO: describe this error",
+                            "pt": "TODO",
+                            "es": "TODO"
+                          }
+                        }
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "title": {
+          "en": "Create a subscription plan",
+          "pt": "TODO",
+          "es": "TODO"
+        }
+      }
+    },
+    "/preapproval_plan/{id}": {
+      "get": {
+        "tags": [
+          "Plans"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": {
+              "en": "Plan found",
+              "pt": "TODO",
+              "es": "TODO"
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SubscriptionPlan"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": {
+              "en": "Unauthorized",
+              "pt": "TODO",
+              "es": "TODO"
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "errorKey": {
+                      "type": "string",
+                      "enum": [
+                        {
+                          "title": "TODO_error_code",
+                          "description": {
+                            "en": "TODO: describe this error",
+                            "pt": "TODO",
+                            "es": "TODO"
+                          }
+                        }
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": {
+              "en": "Not found",
+              "pt": "TODO",
+              "es": "TODO"
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "errorKey": {
+                      "type": "string",
+                      "enum": [
+                        {
+                          "title": "TODO_error_code",
+                          "description": {
+                            "en": "TODO: describe this error",
+                            "pt": "TODO",
+                            "es": "TODO"
+                          }
+                        }
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": {
+              "en": "Internal server error",
+              "pt": "TODO",
+              "es": "TODO"
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "errorKey": {
+                      "type": "string",
+                      "enum": [
+                        {
+                          "title": "TODO_error_code",
+                          "description": {
+                            "en": "TODO: describe this error",
+                            "pt": "TODO",
+                            "es": "TODO"
+                          }
+                        }
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "title": {
+          "en": "Get subscription plan",
+          "pt": "TODO",
+          "es": "TODO"
+        },
+        "description": {
+          "en": "Get subscription plan",
+          "pt": "TODO",
+          "es": "TODO"
+        }
+      },
+      "put": {
+        "tags": [
+          "Plans"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SubscriptionPlanRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": {
+              "en": "Plan updated",
+              "pt": "TODO",
+              "es": "TODO"
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SubscriptionPlan"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": {
+              "en": "Bad request",
+              "pt": "TODO",
+              "es": "TODO"
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "errorKey": {
+                      "type": "string",
+                      "enum": [
+                        {
+                          "title": "TODO_error_code",
+                          "description": {
+                            "en": "TODO: describe this error",
+                            "pt": "TODO",
+                            "es": "TODO"
+                          }
+                        }
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": {
+              "en": "Unauthorized",
+              "pt": "TODO",
+              "es": "TODO"
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "errorKey": {
+                      "type": "string",
+                      "enum": [
+                        {
+                          "title": "TODO_error_code",
+                          "description": {
+                            "en": "TODO: describe this error",
+                            "pt": "TODO",
+                            "es": "TODO"
+                          }
+                        }
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": {
+              "en": "Not found",
+              "pt": "TODO",
+              "es": "TODO"
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "errorKey": {
+                      "type": "string",
+                      "enum": [
+                        {
+                          "title": "TODO_error_code",
+                          "description": {
+                            "en": "TODO: describe this error",
+                            "pt": "TODO",
+                            "es": "TODO"
+                          }
+                        }
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": {
+              "en": "Internal server error",
+              "pt": "TODO",
+              "es": "TODO"
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "errorKey": {
+                      "type": "string",
+                      "enum": [
+                        {
+                          "title": "TODO_error_code",
+                          "description": {
+                            "en": "TODO: describe this error",
+                            "pt": "TODO",
+                            "es": "TODO"
+                          }
+                        }
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "title": {
+          "en": "Update a subscription plan",
+          "pt": "TODO",
+          "es": "TODO"
+        },
+        "description": {
+          "en": "Update a subscription plan",
+          "pt": "TODO",
+          "es": "TODO"
+        }
+      }
+    },
+    "/preapproval_plan/search": {
+      "get": {
+        "tags": [
+          "Plans"
+        ],
+        "parameters": [
+          {
+            "name": "status",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "enum": [
+                {
+                  "title": "active",
+                  "description": {
+                    "en": "active",
+                    "pt": "TODO",
+                    "es": "TODO"
+                  }
+                },
+                {
+                  "title": "inactive",
+                  "description": {
+                    "en": "inactive",
+                    "pt": "TODO",
+                    "es": "TODO"
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "name": "q",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "sort",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "criteria",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "enum": [
+                {
+                  "title": "asc",
+                  "description": {
+                    "en": "asc",
+                    "pt": "TODO",
+                    "es": "TODO"
+                  }
+                },
+                {
+                  "title": "desc",
+                  "description": {
+                    "en": "desc",
+                    "pt": "TODO",
+                    "es": "TODO"
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "default": 30
+            }
+          },
+          {
+            "name": "offset",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "default": 0
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": {
+              "en": "Search results",
+              "pt": "TODO",
+              "es": "TODO"
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SubscriptionSearchResult"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": {
+              "en": "Bad request",
+              "pt": "TODO",
+              "es": "TODO"
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "errorKey": {
+                      "type": "string",
+                      "enum": [
+                        {
+                          "title": "TODO_error_code",
+                          "description": {
+                            "en": "TODO: describe this error",
+                            "pt": "TODO",
+                            "es": "TODO"
+                          }
+                        }
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": {
+              "en": "Unauthorized",
+              "pt": "TODO",
+              "es": "TODO"
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "errorKey": {
+                      "type": "string",
+                      "enum": [
+                        {
+                          "title": "TODO_error_code",
+                          "description": {
+                            "en": "TODO: describe this error",
+                            "pt": "TODO",
+                            "es": "TODO"
+                          }
+                        }
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": {
+              "en": "Internal server error",
+              "pt": "TODO",
+              "es": "TODO"
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "errorKey": {
+                      "type": "string",
+                      "enum": [
+                        {
+                          "title": "TODO_error_code",
+                          "description": {
+                            "en": "TODO: describe this error",
+                            "pt": "TODO",
+                            "es": "TODO"
+                          }
+                        }
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "title": {
+          "en": "Search subscription plans",
+          "pt": "TODO",
+          "es": "TODO"
+        },
+        "description": {
+          "en": "Search subscription plans",
+          "pt": "TODO",
+          "es": "TODO"
+        }
+      }
+    },
+    "/preapproval": {
+      "post": {
+        "tags": [
+          "Subscriptions"
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SubscriptionRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": {
+              "en": "Subscription created",
+              "pt": "TODO",
+              "es": "TODO"
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Subscription"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "errorKey": {
+                      "type": "string",
+                      "enum": [
+                        {
+                          "title": "TODO_error_code",
+                          "description": {
+                            "en": "TODO: describe this error",
+                            "pt": "TODO",
+                            "es": "TODO"
+                          }
+                        }
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": {
+              "en": "Unauthorized",
+              "pt": "TODO",
+              "es": "TODO"
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "errorKey": {
+                      "type": "string",
+                      "enum": [
+                        {
+                          "title": "TODO_error_code",
+                          "description": {
+                            "en": "TODO: describe this error",
+                            "pt": "TODO",
+                            "es": "TODO"
+                          }
+                        }
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "403": {
+            "description": {
+              "en": "Forbidden",
+              "pt": "TODO",
+              "es": "TODO"
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "errorKey": {
+                      "type": "string",
+                      "enum": [
+                        {
+                          "title": "TODO_error_code",
+                          "description": {
+                            "en": "TODO: describe this error",
+                            "pt": "TODO",
+                            "es": "TODO"
+                          }
+                        }
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": {
+              "en": "Internal server error",
+              "pt": "TODO",
+              "es": "TODO"
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "errorKey": {
+                      "type": "string",
+                      "enum": [
+                        {
+                          "title": "TODO_error_code",
+                          "description": {
+                            "en": "TODO: describe this error",
+                            "pt": "TODO",
+                            "es": "TODO"
+                          }
+                        }
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "title": {
+          "en": "Create a subscription",
+          "pt": "TODO",
+          "es": "TODO"
+        },
+        "description": {
+          "en": "Create a subscription",
+          "pt": "TODO",
+          "es": "TODO"
+        }
+      }
+    },
+    "/preapproval/{id}": {
+      "get": {
+        "tags": [
+          "Subscriptions"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": {
+              "en": "Subscription found",
+              "pt": "TODO",
+              "es": "TODO"
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Subscription"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": {
+              "en": "Bad request",
+              "pt": "TODO",
+              "es": "TODO"
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "errorKey": {
+                      "type": "string",
+                      "enum": [
+                        {
+                          "title": "TODO_error_code",
+                          "description": {
+                            "en": "TODO: describe this error",
+                            "pt": "TODO",
+                            "es": "TODO"
+                          }
+                        }
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "403": {
+            "description": {
+              "en": "Forbidden",
+              "pt": "TODO",
+              "es": "TODO"
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "errorKey": {
+                      "type": "string",
+                      "enum": [
+                        {
+                          "title": "TODO_error_code",
+                          "description": {
+                            "en": "TODO: describe this error",
+                            "pt": "TODO",
+                            "es": "TODO"
+                          }
+                        }
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": {
+              "en": "Not found",
+              "pt": "TODO",
+              "es": "TODO"
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "errorKey": {
+                      "type": "string",
+                      "enum": [
+                        {
+                          "title": "TODO_error_code",
+                          "description": {
+                            "en": "TODO: describe this error",
+                            "pt": "TODO",
+                            "es": "TODO"
+                          }
+                        }
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": {
+              "en": "Internal server error",
+              "pt": "TODO",
+              "es": "TODO"
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "errorKey": {
+                      "type": "string",
+                      "enum": [
+                        {
+                          "title": "TODO_error_code",
+                          "description": {
+                            "en": "TODO: describe this error",
+                            "pt": "TODO",
+                            "es": "TODO"
+                          }
+                        }
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "title": {
+          "en": "Get subscription",
+          "pt": "TODO",
+          "es": "TODO"
+        },
+        "description": {
+          "en": "Get subscription",
+          "pt": "TODO",
+          "es": "TODO"
+        }
+      },
+      "put": {
+        "description": {
+          "en": "Update subscription status or billing details. Common use: `{\"status\": \"paused\"}` to pause, `{\"status\": \"authorized\"}` to resume, `{\"status\": \"cancelled\"}` to cancel.",
+          "pt": "TODO",
+          "es": "TODO"
+        },
+        "tags": [
+          "Subscriptions"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SubscriptionUpdateRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": {
+              "en": "Subscription updated",
+              "pt": "TODO",
+              "es": "TODO"
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Subscription"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": {
+              "en": "Bad request",
+              "pt": "TODO",
+              "es": "TODO"
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "errorKey": {
+                      "type": "string",
+                      "enum": [
+                        {
+                          "title": "TODO_error_code",
+                          "description": {
+                            "en": "TODO: describe this error",
+                            "pt": "TODO",
+                            "es": "TODO"
+                          }
+                        }
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": {
+              "en": "Unauthorized",
+              "pt": "TODO",
+              "es": "TODO"
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "errorKey": {
+                      "type": "string",
+                      "enum": [
+                        {
+                          "title": "TODO_error_code",
+                          "description": {
+                            "en": "TODO: describe this error",
+                            "pt": "TODO",
+                            "es": "TODO"
+                          }
+                        }
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": {
+              "en": "Internal server error",
+              "pt": "TODO",
+              "es": "TODO"
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "errorKey": {
+                      "type": "string",
+                      "enum": [
+                        {
+                          "title": "TODO_error_code",
+                          "description": {
+                            "en": "TODO: describe this error",
+                            "pt": "TODO",
+                            "es": "TODO"
+                          }
+                        }
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "title": {
+          "en": "Update subscription",
+          "pt": "TODO",
+          "es": "TODO"
+        }
+      }
+    },
+    "/preapproval/search": {
+      "get": {
+        "tags": [
+          "Subscriptions"
+        ],
+        "parameters": [
+          {
+            "name": "q",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "payer_id",
+            "in": "query",
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
+            "name": "payer_email",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "format": "email"
+            }
+          },
+          {
+            "name": "preapproval_plan_id",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "transaction_amount",
+            "in": "query",
+            "schema": {
+              "type": "number"
+            }
+          },
+          {
+            "name": "semaphore",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "status",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "enum": [
+                {
+                  "title": "pending",
+                  "description": {
+                    "en": "pending",
+                    "pt": "TODO",
+                    "es": "TODO"
+                  }
+                },
+                {
+                  "title": "authorized",
+                  "description": {
+                    "en": "authorized",
+                    "pt": "TODO",
+                    "es": "TODO"
+                  }
+                },
+                {
+                  "title": "paused",
+                  "description": {
+                    "en": "paused",
+                    "pt": "TODO",
+                    "es": "TODO"
+                  }
+                },
+                {
+                  "title": "cancelled",
+                  "description": {
+                    "en": "cancelled",
+                    "pt": "TODO",
+                    "es": "TODO"
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "name": "sort",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "default": 30
+            }
+          },
+          {
+            "name": "offset",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "default": 0
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": {
+              "en": "Search results",
+              "pt": "TODO",
+              "es": "TODO"
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SubscriptionSearchResult"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": {
+              "en": "Bad request",
+              "pt": "TODO",
+              "es": "TODO"
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "errorKey": {
+                      "type": "string",
+                      "enum": [
+                        {
+                          "title": "TODO_error_code",
+                          "description": {
+                            "en": "TODO: describe this error",
+                            "pt": "TODO",
+                            "es": "TODO"
+                          }
+                        }
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": {
+              "en": "Unauthorized",
+              "pt": "TODO",
+              "es": "TODO"
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "errorKey": {
+                      "type": "string",
+                      "enum": [
+                        {
+                          "title": "TODO_error_code",
+                          "description": {
+                            "en": "TODO: describe this error",
+                            "pt": "TODO",
+                            "es": "TODO"
+                          }
+                        }
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": {
+              "en": "Internal server error",
+              "pt": "TODO",
+              "es": "TODO"
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "errorKey": {
+                      "type": "string",
+                      "enum": [
+                        {
+                          "title": "TODO_error_code",
+                          "description": {
+                            "en": "TODO: describe this error",
+                            "pt": "TODO",
+                            "es": "TODO"
+                          }
+                        }
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "title": {
+          "en": "Search subscriptions",
+          "pt": "TODO",
+          "es": "TODO"
+        },
+        "description": {
+          "en": "Search subscriptions",
+          "pt": "TODO",
+          "es": "TODO"
+        }
+      }
+    },
+    "/preapproval/export": {
+      "get": {
+        "description": {
+          "en": "Exports a list of subscriptions for a collector as a downloadable file. Filter by plan ID, status, and sort order.",
+          "pt": "TODO",
+          "es": "TODO"
+        },
+        "tags": [
+          "Subscriptions"
+        ],
+        "parameters": [
+          {
+            "name": "collector_id",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            },
+            "description": {
+              "en": "Collector (seller) user ID",
+              "pt": "TODO",
+              "es": "TODO"
+            }
+          },
+          {
+            "name": "preapproval_plan_id",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "description": {
+              "en": "Filter by plan ID",
+              "pt": "TODO",
+              "es": "TODO"
+            }
+          },
+          {
+            "name": "status",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "enum": [
+                {
+                  "title": "pending",
+                  "description": {
+                    "en": "pending",
+                    "pt": "TODO",
+                    "es": "TODO"
+                  }
+                },
+                {
+                  "title": "authorized",
+                  "description": {
+                    "en": "authorized",
+                    "pt": "TODO",
+                    "es": "TODO"
+                  }
+                },
+                {
+                  "title": "paused",
+                  "description": {
+                    "en": "paused",
+                    "pt": "TODO",
+                    "es": "TODO"
+                  }
+                },
+                {
+                  "title": "cancelled",
+                  "description": {
+                    "en": "cancelled",
+                    "pt": "TODO",
+                    "es": "TODO"
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "name": "sort",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "enum": [
+                {
+                  "title": "date_created",
+                  "description": {
+                    "en": "date_created",
+                    "pt": "TODO",
+                    "es": "TODO"
+                  }
+                },
+                {
+                  "title": "last_modified",
+                  "description": {
+                    "en": "last_modified",
+                    "pt": "TODO",
+                    "es": "TODO"
+                  }
+                }
+              ],
+              "default": "date_created"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": {
+              "en": "Export file",
+              "pt": "TODO",
+              "es": "TODO"
+            },
+            "content": {
+              "text/csv": {
+                "schema": {
+                  "type": "string",
+                  "format": "binary"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "errorKey": {
+                      "type": "string",
+                      "enum": [
+                        {
+                          "title": "TODO_error_code",
+                          "description": {
+                            "en": "TODO: describe this error",
+                            "pt": "TODO",
+                            "es": "TODO"
+                          }
+                        }
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "errorKey": {
+                      "type": "string",
+                      "enum": [
+                        {
+                          "title": "TODO_error_code",
+                          "description": {
+                            "en": "TODO: describe this error",
+                            "pt": "TODO",
+                            "es": "TODO"
+                          }
+                        }
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "title": {
+          "en": "Export subscriptions",
+          "pt": "TODO",
+          "es": "TODO"
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "CurrencyId": {
+        "type": "string",
+        "description": {
+          "en": "ISO 4217 currency code for the applicable site",
+          "pt": "TODO",
+          "es": "TODO"
+        },
+        "enum": [
+          {
+            "title": "ARS",
+            "description": {
+              "en": "ARS",
+              "pt": "TODO",
+              "es": "TODO"
+            }
+          },
+          {
+            "title": "BRL",
+            "description": {
+              "en": "BRL",
+              "pt": "TODO",
+              "es": "TODO"
+            }
+          },
+          {
+            "title": "MXN",
+            "description": {
+              "en": "MXN",
+              "pt": "TODO",
+              "es": "TODO"
+            }
+          },
+          {
+            "title": "CLP",
+            "description": {
+              "en": "CLP",
+              "pt": "TODO",
+              "es": "TODO"
+            }
+          },
+          {
+            "title": "COP",
+            "description": {
+              "en": "COP",
+              "pt": "TODO",
+              "es": "TODO"
+            }
+          },
+          {
+            "title": "PEN",
+            "description": {
+              "en": "PEN",
+              "pt": "TODO",
+              "es": "TODO"
+            }
+          },
+          {
+            "title": "UYU",
+            "description": {
+              "en": "UYU",
+              "pt": "TODO",
+              "es": "TODO"
+            }
+          },
+          {
+            "title": "BOB",
+            "description": {
+              "en": "BOB",
+              "pt": "TODO",
+              "es": "TODO"
+            }
+          },
+          {
+            "title": "PYG",
+            "description": {
+              "en": "PYG",
+              "pt": "TODO",
+              "es": "TODO"
+            }
+          },
+          {
+            "title": "USD",
+            "description": {
+              "en": "USD",
+              "pt": "TODO",
+              "es": "TODO"
+            }
+          },
+          {
+            "title": "CRC",
+            "description": {
+              "en": "CRC",
+              "pt": "TODO",
+              "es": "TODO"
+            }
+          },
+          {
+            "title": "DOP",
+            "description": {
+              "en": "DOP",
+              "pt": "TODO",
+              "es": "TODO"
+            }
+          },
+          {
+            "title": "HNL",
+            "description": {
+              "en": "HNL",
+              "pt": "TODO",
+              "es": "TODO"
+            }
+          },
+          {
+            "title": "NIO",
+            "description": {
+              "en": "NIO",
+              "pt": "TODO",
+              "es": "TODO"
+            }
+          },
+          {
+            "title": "GTQ",
+            "description": {
+              "en": "GTQ",
+              "pt": "TODO",
+              "es": "TODO"
+            }
+          },
+          {
+            "title": "VES",
+            "description": {
+              "en": "VES",
+              "pt": "TODO",
+              "es": "TODO"
+            }
+          }
+        ],
+        "example": "BRL"
+      },
+      "Pagination": {
+        "type": "object",
+        "description": {
+          "en": "Pagination metadata returned in list/search responses",
+          "pt": "TODO",
+          "es": "TODO"
+        },
+        "properties": {
+          "total": {
+            "type": "integer",
+            "description": {
+              "en": "Total number of results",
+              "pt": "TODO",
+              "es": "TODO"
+            },
+            "example": 42
+          },
+          "limit": {
+            "type": "integer",
+            "description": {
+              "en": "Results per page",
+              "pt": "TODO",
+              "es": "TODO"
+            },
+            "example": 30
+          },
+          "offset": {
+            "type": "integer",
+            "description": {
+              "en": "Offset of the current page",
+              "pt": "TODO",
+              "es": "TODO"
+            },
+            "example": 0
+          }
+        }
+      },
+      "SubscriptionPlanRequest": {
+        "type": "object",
+        "description": {
+          "en": "Request body to create a subscription plan (preapproval_plan). A plan defines the recurring billing terms. Individual subscriptions (preapproval) are then created referencing this plan.",
+          "pt": "TODO",
+          "es": "TODO"
+        },
+        "properties": {
+          "reason": {
+            "type": "string",
+            "description": {
+              "en": "Plan description shown to the payer",
+              "pt": "TODO",
+              "es": "TODO"
+            },
+            "example": "Monthly Premium Subscription"
+          },
+          "auto_recurring": {
+            "$ref": "#/components/schemas/AutoRecurring"
+          },
+          "payment_methods_allowed": {
+            "type": "object",
+            "properties": {
+              "payment_types": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "string"
+                    }
+                  }
+                }
+              },
+              "payment_methods": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "back_url": {
+            "type": "string",
+            "format": "uri",
+            "description": {
+              "en": "Redirect URL after subscription setup",
+              "pt": "TODO",
+              "es": "TODO"
+            }
+          }
+        }
+      },
+      "AutoRecurring": {
+        "type": "object",
+        "properties": {
+          "frequency": {
+            "type": "integer",
+            "description": {
+              "en": "Billing interval (e.g., 1 for monthly, 7 for weekly)",
+              "pt": "TODO",
+              "es": "TODO"
+            },
+            "example": 1
+          },
+          "frequency_type": {
+            "type": "string",
+            "enum": [
+              {
+                "title": "months",
+                "description": {
+                  "en": "months",
+                  "pt": "TODO",
+                  "es": "TODO"
+                }
+              },
+              {
+                "title": "days",
+                "description": {
+                  "en": "days",
+                  "pt": "TODO",
+                  "es": "TODO"
+                }
+              }
+            ],
+            "description": {
+              "en": "Unit for the billing interval",
+              "pt": "TODO",
+              "es": "TODO"
+            },
+            "example": "months"
+          },
+          "transaction_amount": {
+            "type": "number",
+            "format": "float",
+            "description": {
+              "en": "Amount to charge each cycle (decimal, not cents)",
+              "pt": "TODO",
+              "es": "TODO"
+            },
+            "example": 29.9
+          },
+          "currency_id": {
+            "$ref": "#/components/schemas/CurrencyId"
+          },
+          "free_trial": {
+            "type": "object",
+            "description": {
+              "en": "Optional free trial period before billing starts",
+              "pt": "TODO",
+              "es": "TODO"
+            },
+            "properties": {
+              "frequency": {
+                "type": "integer",
+                "example": 14
+              },
+              "frequency_type": {
+                "type": "string",
+                "enum": [
+                  {
+                    "title": "months",
+                    "description": {
+                      "en": "months",
+                      "pt": "TODO",
+                      "es": "TODO"
+                    }
+                  },
+                  {
+                    "title": "days",
+                    "description": {
+                      "en": "days",
+                      "pt": "TODO",
+                      "es": "TODO"
+                    }
+                  }
+                ],
+                "example": "days"
+              }
+            }
+          },
+          "repetitions": {
+            "type": "integer",
+            "description": {
+              "en": "Total number of billing cycles (null = indefinite)",
+              "pt": "TODO",
+              "es": "TODO"
+            },
+            "nullable": true
+          }
+        }
+      },
+      "SubscriptionPlan": {
+        "type": "object",
+        "description": {
+          "en": "A subscription plan (preapproval_plan)",
+          "pt": "TODO",
+          "es": "TODO"
+        },
+        "properties": {
+          "id": {
+            "type": "string",
+            "example": "2c9380847e9c5058017ea64ea8260b60"
+          },
+          "reason": {
+            "type": "string"
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              {
+                "title": "active",
+                "description": {
+                  "en": "active",
+                  "pt": "TODO",
+                  "es": "TODO"
+                }
+              },
+              {
+                "title": "inactive",
+                "description": {
+                  "en": "inactive",
+                  "pt": "TODO",
+                  "es": "TODO"
+                }
+              }
+            ]
+          },
+          "auto_recurring": {
+            "$ref": "#/components/schemas/AutoRecurring"
+          },
+          "date_created": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "last_modified": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "init_point": {
+            "type": "string",
+            "format": "uri",
+            "description": {
+              "en": "URL to subscribe users to this plan",
+              "pt": "TODO",
+              "es": "TODO"
+            }
+          }
+        }
+      },
+      "SubscriptionRequest": {
+        "type": "object",
+        "description": {
+          "en": "Request body to create a subscription (preapproval). Either reference a preapproval_plan or define auto_recurring inline.",
+          "pt": "TODO",
+          "es": "TODO"
+        },
+        "properties": {
+          "preapproval_plan_id": {
+            "type": "string",
+            "description": {
+              "en": "Reference a previously created plan (recommended)",
+              "pt": "TODO",
+              "es": "TODO"
+            }
+          },
+          "reason": {
+            "type": "string",
+            "description": {
+              "en": "Subscription description shown to payer",
+              "pt": "TODO",
+              "es": "TODO"
+            },
+            "example": "Monthly Premium — Acme Inc."
+          },
+          "payer_email": {
+            "type": "string",
+            "format": "email",
+            "description": {
+              "en": "Payer's email address",
+              "pt": "TODO",
+              "es": "TODO"
+            }
+          },
+          "card_token_id": {
+            "type": "string",
+            "description": {
+              "en": "Card token for credit card subscriptions",
+              "pt": "TODO",
+              "es": "TODO"
+            }
+          },
+          "auto_recurring": {
+            "$ref": "#/components/schemas/AutoRecurring"
+          },
+          "back_url": {
+            "type": "string",
+            "format": "uri"
+          },
+          "external_reference": {
+            "type": "string",
+            "example": "CUSTOMER-ID-12345"
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              {
+                "title": "pending",
+                "description": {
+                  "en": "pending",
+                  "pt": "TODO",
+                  "es": "TODO"
+                }
+              },
+              {
+                "title": "authorized",
+                "description": {
+                  "en": "authorized",
+                  "pt": "TODO",
+                  "es": "TODO"
+                }
+              },
+              {
+                "title": "paused",
+                "description": {
+                  "en": "paused",
+                  "pt": "TODO",
+                  "es": "TODO"
+                }
+              },
+              {
+                "title": "cancelled",
+                "description": {
+                  "en": "cancelled",
+                  "pt": "TODO",
+                  "es": "TODO"
+                }
+              }
+            ],
+            "description": {
+              "en": "Initial status (default is pending until payer authorizes)",
+              "pt": "TODO",
+              "es": "TODO"
+            }
+          }
+        }
+      },
+      "Subscription": {
+        "type": "object",
+        "description": {
+          "en": "A MercadoPago subscription (preapproval)",
+          "pt": "TODO",
+          "es": "TODO"
+        },
+        "properties": {
+          "id": {
+            "type": "string",
+            "example": "2c9380847e9c5058017ea64ea8260b60"
+          },
+          "payer_id": {
+            "type": "integer"
+          },
+          "payer_email": {
+            "type": "string",
+            "format": "email"
+          },
+          "preapproval_plan_id": {
+            "type": "string"
+          },
+          "reason": {
+            "type": "string"
+          },
+          "external_reference": {
+            "type": "string"
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              {
+                "title": "pending",
+                "description": {
+                  "en": "pending",
+                  "pt": "TODO",
+                  "es": "TODO"
+                }
+              },
+              {
+                "title": "authorized",
+                "description": {
+                  "en": "authorized",
+                  "pt": "TODO",
+                  "es": "TODO"
+                }
+              },
+              {
+                "title": "paused",
+                "description": {
+                  "en": "paused",
+                  "pt": "TODO",
+                  "es": "TODO"
+                }
+              },
+              {
+                "title": "cancelled",
+                "description": {
+                  "en": "cancelled",
+                  "pt": "TODO",
+                  "es": "TODO"
+                }
+              }
+            ]
+          },
+          "date_created": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "last_modified": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "auto_recurring": {
+            "$ref": "#/components/schemas/AutoRecurring"
+          },
+          "summarized": {
+            "type": "object",
+            "description": {
+              "en": "Subscription billing summary",
+              "pt": "TODO",
+              "es": "TODO"
+            },
+            "properties": {
+              "quotas": {
+                "type": "integer"
+              },
+              "charged_quantity": {
+                "type": "integer"
+              },
+              "pending_charge_quantity": {
+                "type": "integer"
+              },
+              "charged_amount": {
+                "type": "number",
+                "format": "float"
+              },
+              "pending_charge_amount": {
+                "type": "number",
+                "format": "float"
+              }
+            }
+          },
+          "next_payment_date": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "payment_method_id": {
+            "type": "string"
+          },
+          "card_id": {
+            "type": "integer"
+          },
+          "init_point": {
+            "type": "string",
+            "format": "uri",
+            "description": {
+              "en": "Authorization URL — send payer here to confirm subscription",
+              "pt": "TODO",
+              "es": "TODO"
+            }
+          }
+        }
+      },
+      "SubscriptionSearchResult": {
+        "type": "object",
+        "properties": {
+          "paging": {
+            "$ref": "#/components/schemas/Pagination"
+          },
+          "results": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Subscription"
+            }
+          }
+        }
+      },
+      "SubscriptionUpdateRequest": {
+        "type": "object",
+        "description": {
+          "en": "Request body to update a subscription.",
+          "pt": "TODO",
+          "es": "TODO"
+        },
+        "properties": {
+          "reason": {
+            "type": "string"
+          },
+          "external_reference": {
+            "type": "string"
+          },
+          "back_url": {
+            "type": "string",
+            "format": "uri"
+          },
+          "auto_recurring": {
+            "$ref": "#/components/schemas/AutoRecurring"
+          },
+          "card_token_id": {
+            "type": "string",
+            "description": {
+              "en": "New card token to update the payment method.",
+              "pt": "TODO",
+              "es": "TODO"
+            }
+          },
+          "card_token_id_secondary": {
+            "type": "string",
+            "description": {
+              "en": "Token for secondary/fallback payment method card.",
+              "pt": "TODO",
+              "es": "TODO"
+            }
+          },
+          "payment_method_id_secondary": {
+            "type": "string",
+            "description": {
+              "en": "Secondary payment method identifier for fallback charges.",
+              "pt": "TODO",
+              "es": "TODO"
+            }
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              {
+                "title": "pending",
+                "description": {
+                  "en": "pending",
+                  "pt": "TODO",
+                  "es": "TODO"
+                }
+              },
+              {
+                "title": "authorized",
+                "description": {
+                  "en": "authorized",
+                  "pt": "TODO",
+                  "es": "TODO"
+                }
+              },
+              {
+                "title": "paused",
+                "description": {
+                  "en": "paused",
+                  "pt": "TODO",
+                  "es": "TODO"
+                }
+              },
+              {
+                "title": "cancelled",
+                "description": {
+                  "en": "cancelled",
+                  "pt": "TODO",
+                  "es": "TODO"
+                }
+              }
+            ]
+          }
+        }
+      }
+    }
+  }
+}

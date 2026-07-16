@@ -1,0 +1,289 @@
+{
+  "url": "https://api.mercadopago.com",
+  "paths": {
+    "/oauth/token": {
+      "post": {
+        "description": {
+          "en": "Exchanges authorization codes for access tokens, refreshes expired tokens, or requests client credentials tokens for machine-to-machine flows.\n**Security notes:** - The `state` parameter is mandatory for authorization_code flows to prevent CSRF. - Store refresh tokens in server-side encrypted storage — never in localStorage. - Rotate `client_secret` regularly and store in a secrets manager.",
+          "pt": "TODO",
+          "es": "TODO"
+        },
+        "tags": [
+          "OAuth"
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "client_id": {
+                    "type": "string",
+                    "description": {
+                      "en": "Your application's client ID",
+                      "pt": "TODO",
+                      "es": "TODO"
+                    }
+                  },
+                  "client_secret": {
+                    "type": "string",
+                    "description": {
+                      "en": "Your application's client secret. Never expose in client-side code. Store in a secrets manager.",
+                      "pt": "TODO",
+                      "es": "TODO"
+                    }
+                  },
+                  "grant_type": {
+                    "type": "string",
+                    "enum": [
+                      {
+                        "title": "authorization_code",
+                        "description": {
+                          "en": "authorization_code",
+                          "pt": "TODO",
+                          "es": "TODO"
+                        }
+                      },
+                      {
+                        "title": "refresh_token",
+                        "description": {
+                          "en": "refresh_token",
+                          "pt": "TODO",
+                          "es": "TODO"
+                        }
+                      },
+                      {
+                        "title": "client_credentials",
+                        "description": {
+                          "en": "client_credentials",
+                          "pt": "TODO",
+                          "es": "TODO"
+                        }
+                      }
+                    ],
+                    "description": {
+                      "en": "OAuth 2.0 grant type",
+                      "pt": "TODO",
+                      "es": "TODO"
+                    }
+                  },
+                  "code": {
+                    "type": "string",
+                    "description": {
+                      "en": "Authorization code from the OAuth redirect (authorization_code flow)",
+                      "pt": "TODO",
+                      "es": "TODO"
+                    }
+                  },
+                  "redirect_uri": {
+                    "type": "string",
+                    "format": "uri",
+                    "description": {
+                      "en": "Must match the registered redirect URI exactly",
+                      "pt": "TODO",
+                      "es": "TODO"
+                    }
+                  },
+                  "code_verifier": {
+                    "type": "string",
+                    "description": {
+                      "en": "PKCE code verifier (recommended for mobile/SPA)",
+                      "pt": "TODO",
+                      "es": "TODO"
+                    }
+                  },
+                  "refresh_token": {
+                    "type": "string",
+                    "description": {
+                      "en": "Refresh token for the refresh_token grant",
+                      "pt": "TODO",
+                      "es": "TODO"
+                    }
+                  }
+                }
+              },
+              "examples": {
+                "authorization_code": {
+                  "summary": "Exchange authorization code for tokens",
+                  "value": {
+                    "client_id": "1234567890",
+                    "client_secret": "YOUR_CLIENT_SECRET",
+                    "grant_type": "authorization_code",
+                    "code": "TG-abc123def456",
+                    "redirect_uri": "https://myapp.com/oauth/callback"
+                  }
+                },
+                "refresh_token": {
+                  "summary": "Refresh an expired access token",
+                  "value": {
+                    "client_id": "1234567890",
+                    "client_secret": "YOUR_CLIENT_SECRET",
+                    "grant_type": "refresh_token",
+                    "refresh_token": "TG-refresh-token-here"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": {
+              "en": "Tokens issued",
+              "pt": "TODO",
+              "es": "TODO"
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "access_token": {
+                      "type": "string",
+                      "description": {
+                        "en": "Bearer access token for API calls",
+                        "pt": "TODO",
+                        "es": "TODO"
+                      },
+                      "example": "APP_USR-1234-mmdd-abcd-xxxxxxxxxxxx"
+                    },
+                    "token_type": {
+                      "type": "string",
+                      "example": "bearer"
+                    },
+                    "expires_in": {
+                      "type": "integer",
+                      "description": {
+                        "en": "Access token TTL in seconds",
+                        "pt": "TODO",
+                        "es": "TODO"
+                      },
+                      "example": 15552000
+                    },
+                    "scope": {
+                      "type": "string",
+                      "example": "offline_access read write"
+                    },
+                    "refresh_token": {
+                      "type": "string",
+                      "description": {
+                        "en": "Long-lived token to refresh access_token",
+                        "pt": "TODO",
+                        "es": "TODO"
+                      }
+                    },
+                    "user_id": {
+                      "type": "integer",
+                      "description": {
+                        "en": "MP user ID of the authorized user",
+                        "pt": "TODO",
+                        "es": "TODO"
+                      }
+                    },
+                    "public_key": {
+                      "type": "string",
+                      "description": {
+                        "en": "Public key for client-side card tokenization",
+                        "pt": "TODO",
+                        "es": "TODO"
+                      }
+                    },
+                    "live_mode": {
+                      "type": "boolean",
+                      "description": {
+                        "en": "true = production token.",
+                        "pt": "TODO",
+                        "es": "TODO"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "errorKey": {
+                      "type": "string",
+                      "enum": [
+                        {
+                          "title": "TODO_error_code",
+                          "description": {
+                            "en": "TODO: describe this error",
+                            "pt": "TODO",
+                            "es": "TODO"
+                          }
+                        }
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "errorKey": {
+                      "type": "string",
+                      "enum": [
+                        {
+                          "title": "TODO_error_code",
+                          "description": {
+                            "en": "TODO: describe this error",
+                            "pt": "TODO",
+                            "es": "TODO"
+                          }
+                        }
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "429": {
+            "$ref": "#/components/responses/TooManyRequests",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "errorKey": {
+                      "type": "string",
+                      "enum": [
+                        {
+                          "title": "TODO_error_code",
+                          "description": {
+                            "en": "TODO: describe this error",
+                            "pt": "TODO",
+                            "es": "TODO"
+                          }
+                        }
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "title": {
+          "en": "Create OAuth token",
+          "pt": "TODO",
+          "es": "TODO"
+        }
+      }
+    }
+  }
+}

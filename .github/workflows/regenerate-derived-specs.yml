@@ -54,7 +54,6 @@ jobs:
       # which is disabled until the DevSite flow is ready.
       - name: Regenerate by-site and by-product specs
         run: |
-          python scripts/bundle.py --schemas-only
           python scripts/bundle.py --sites-only
           python scripts/bundle.py --products-only
         working-directory: ${{ github.workspace }}

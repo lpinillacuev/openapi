@@ -277,7 +277,6 @@ def check_mode(sites: list[str]) -> int:
 
         overlay  = load_yaml(overlay_path)
         result   = apply_overlay(base_spec, overlay)
-        result   = inject_country_info(result, site)
         new_yaml = yaml.dump(result, allow_unicode=True, sort_keys=False,
                              default_flow_style=False, width=120)
         existing = out_path.read_text() if out_path.exists() else ""
@@ -431,7 +430,9 @@ def main() -> None:
     only_one = args.schemas_only or args.sites_only or args.products_only or args.reference_only
 
     # ── Phase 1: schema bundle ────────────────────────────────────────────────
-    if not args.sites_only and not args.products_only and not args.reference_only:
+    # Phase 1 modifies spec3.yaml — only runs when explicitly requested via --schemas-only.
+    # It does NOT run by default to prevent accidental modifications to the source of truth.
+    if args.schemas_only:
         print("=== Phase 1: bundling schemas/*.yaml → spec3.yaml ===\n")
         spec = load_yaml(SPEC3_PATH)
         updated_spec, schema_changes = bundle_schemas(spec, dry_run=args.dry_run)
@@ -451,7 +452,7 @@ def main() -> None:
         changed = 0
 
         for site in sites:
-            if site not in COUNTRY_META and site not in all_sites:
+            if site not in all_sites:
                 print(f"  [{site}] Unknown site — skipping")
                 continue
             if bundle_site(site, base_spec, dry_run=args.dry_run):

@@ -1,33 +1,19 @@
 openapi: 3.1.0
 info:
-  title: MercadoPago API — Chile (MLC)
-  version: 1.0.0
-  description: 'MercadoPago API specification scoped to Chile (site_id: MLC).
-
-
-    ## Chile-specific notes
-
-
-    - **Currency**: CLP — amounts are **integers with NO decimal places** (e.g., `10000` for $10.000 CLP). Sending decimals
-    causes a 400 error.
-
-    - **Khipu**: Online bank transfer — `payment_method_id: khipu`
-
-    - **RedCompra**: Chilean debit network
-
-    - **Identification**: `RUT` (Rol Único Tributario)
-
-    - **Card brands**: Visa, Mastercard, Amex, Diners
-
-    - **Point / DTE printing**: Available in Chile
-
-    '
+  title: MercadoPago API
+  description: The MercadoPago REST API. Please see https://www.mercadopago.com/developers for more details.
+  termsOfService: https://www.mercadopago.com/developers/es/docs/resources/legal/terms-and-conditions
   contact:
     name: MercadoPago Developer Experience
-    url: https://www.mercadopago.cl/developers
+    url: https://www.mercadopago.com/developers
   license:
     name: Apache 2.0
     url: https://www.apache.org/licenses/LICENSE-2.0
+  version: 1.0.0
+  x-mp-country-note: 'Chile (MLC): Currency CLP — amounts are integers with NO decimal places (e.g., 10000 for $10.000 CLP).
+    Khipu is a popular bank transfer method. RedCompra is the Chilean debit network. RUT is the national ID.
+
+    '
 servers:
 - url: https://api.mercadopago.com
   description: Production
@@ -111,6 +97,15 @@ tags:
   - MLA
   - MLB
   - MLM
+- name: QR Orders
+  description: In-store payment orders associated with QR codes
+  x-mp-sites:
+  - MLA
+  - MLB
+  - MLC
+  - MCO
+  - MPE
+  - MLU
 - name: QR Integrator
   description: Integrator configuration for QR in-store
   x-mp-sites: *id001
@@ -135,6 +130,13 @@ tags:
 - name: Settlements Report
   description: Generate and schedule all-transactions reports
   x-mp-sites: *id001
+- name: Payouts
+  description: Bank transfer and Pix payouts
+  x-mp-sites:
+  - MLA
+  - MLB
+  - MLM
+  - MLC
 paths:
   /v1/payments:
     post:
@@ -226,6 +228,32 @@ paths:
                   date_of_expiration: '2024-12-31T23:59:59.000-06:00'
                   payer:
                     email: test@example.com
+              khipu_chile:
+                summary: Khipu bank transfer — Chile
+                x-mp-sites:
+                - MLC
+                value:
+                  transaction_amount: 10000
+                  payment_method_id: khipu
+                  payer:
+                    email: test@example.com
+                    identification:
+                      type: RUT
+                      number: 12.345.678-9
+              redcompra_chile:
+                summary: RedCompra debit — Chile
+                x-mp-sites:
+                - MLC
+                value:
+                  transaction_amount: 10000
+                  token: <CARD_TOKEN>
+                  payment_method_id: redcompra
+                  installments: 1
+                  payer:
+                    email: test@example.com
+                    identification:
+                      type: RUT
+                      number: 12.345.678-9
       responses:
         '201':
           description: Payment created
@@ -441,7 +469,7 @@ paths:
           description: Refund created
           content:
             application/json:
-              schema:
+              schema: &id003
                 type: object
                 properties:
                   id:
@@ -517,58 +545,7 @@ paths:
           description: Refund list
           content:
             application/json:
-              schema:
-                type: object
-                properties:
-                  id:
-                    type: integer
-                  payment_id:
-                    type: integer
-                  amount:
-                    type: number
-                    format: float
-                  metadata:
-                    type: object
-                    additionalProperties: true
-                  source:
-                    type: object
-                    properties:
-                      id:
-                        type: string
-                      name:
-                        type: string
-                      type:
-                        type: string
-                  date_created:
-                    type: string
-                    format: date-time
-                  unique_sequence_number:
-                    type: string
-                  refund_mode:
-                    type: string
-                    enum:
-                    - standard
-                    - instant
-                  adjustment_amount:
-                    type: number
-                    format: float
-                    nullable: true
-                  status:
-                    type: string
-                    enum:
-                    - approved
-                    - in_process
-                    - rejected
-                  reason:
-                    type: string
-                    nullable: true
-                  label:
-                    type: string
-                    nullable: true
-                  partition_details:
-                    type: array
-                    items:
-                      type: object
+              schema: *id003
         '401':
           $ref: '#/components/responses/Unauthorized'
         '400':
@@ -599,58 +576,7 @@ paths:
           description: Refund found
           content:
             application/json:
-              schema:
-                type: object
-                properties:
-                  id:
-                    type: integer
-                  payment_id:
-                    type: integer
-                  amount:
-                    type: number
-                    format: float
-                  metadata:
-                    type: object
-                    additionalProperties: true
-                  source:
-                    type: object
-                    properties:
-                      id:
-                        type: string
-                      name:
-                        type: string
-                      type:
-                        type: string
-                  date_created:
-                    type: string
-                    format: date-time
-                  unique_sequence_number:
-                    type: string
-                  refund_mode:
-                    type: string
-                    enum:
-                    - standard
-                    - instant
-                  adjustment_amount:
-                    type: number
-                    format: float
-                    nullable: true
-                  status:
-                    type: string
-                    enum:
-                    - approved
-                    - in_process
-                    - rejected
-                  reason:
-                    type: string
-                    nullable: true
-                  label:
-                    type: string
-                    nullable: true
-                  partition_details:
-                    type: array
-                    items:
-                      type: object
+              schema: *id003
         '404':
           $ref: '#/components/responses/NotFound'
         '400':
@@ -1155,7 +1081,7 @@ paths:
       responses:
         '201':
           description: Preference created
-          content: &id003
+          content: &id004
             application/json:
               schema:
                 $ref: '#/components/schemas/Preference'
@@ -1165,7 +1091,7 @@ paths:
           $ref: '#/components/responses/Unauthorized'
         '200':
           description: Preference created
-          content: *id003
+          content: *id004
   /checkout/preferences/{id}:
     get:
       operationId: getPreference
@@ -2058,7 +1984,7 @@ paths:
         required: true
         content:
           application/json:
-            schema:
+            schema: &id006
               type: object
               properties:
                 external_reference:
@@ -2104,7 +2030,7 @@ paths:
           description: Merchant order created
           content:
             application/json:
-              schema:
+              schema: &id005
                 type: object
                 properties:
                   id:
@@ -2230,108 +2156,7 @@ paths:
           description: Merchant order found
           content:
             application/json:
-              schema:
-                type: object
-                properties:
-                  id:
-                    type: integer
-                  status:
-                    type: string
-                    enum:
-                    - opened
-                    - closed
-                    - expired
-                  order_status:
-                    type: string
-                    enum:
-                    - payment_required
-                    - payment_in_process
-                    - paid
-                    - partially_paid
-                    - partially_refunded
-                    - pending_cancel
-                    - cancelled
-                    - refunded
-                  external_reference:
-                    type: string
-                  preference_id:
-                    type: string
-                  marketplace:
-                    type: string
-                  application_id:
-                    type: string
-                  site_id:
-                    type: string
-                    enum:
-                    - MLA
-                    - MLB
-                    - MLM
-                    - MLC
-                    - MCO
-                    - MPE
-                    - MLU
-                  notification_url:
-                    type: string
-                    format: uri
-                    deprecated: true
-                  sponsor_id:
-                    type: integer
-                  collector:
-                    type: object
-                    properties:
-                      id:
-                        type: integer
-                      email:
-                        type: string
-                      nickname:
-                        type: string
-                  payer:
-                    type: object
-                    properties:
-                      id:
-                        type: integer
-                      email:
-                        type: string
-                      nickname:
-                        type: string
-                  payments:
-                    type: array
-                    items:
-                      type: object
-                  shipments:
-                    type: array
-                    items:
-                      type: object
-                  payouts:
-                    type: array
-                    items:
-                      type: object
-                  items:
-                    type: array
-                    items:
-                      type: object
-                  additional_info:
-                    type: string
-                  shipping_cost:
-                    type: number
-                    format: float
-                  total_amount:
-                    type: number
-                    format: float
-                  paid_amount:
-                    type: number
-                    format: float
-                  refunded_amount:
-                    type: number
-                    format: float
-                  date_created:
-                    type: string
-                    format: date-time
-                  last_updated:
-                    type: string
-                    format: date-time
-                  canceled:
-                    type: boolean
+              schema: *id005
         '404':
           $ref: '#/components/responses/NotFound'
         '400':
@@ -2355,47 +2180,7 @@ paths:
         required: true
         content:
           application/json:
-            schema:
-              type: object
-              properties:
-                external_reference:
-                  type: string
-                preference_id:
-                  type: string
-                marketplace:
-                  type: string
-                notification_url:
-                  type: string
-                  format: uri
-                  deprecated: true
-                sponsor_id:
-                  type: integer
-                payer:
-                  type: object
-                  properties:
-                    id:
-                      type: integer
-                    email:
-                      type: string
-                      format: email
-                site_id:
-                  type: string
-                  enum:
-                  - MLA
-                  - MLB
-                  - MLM
-                  - MLC
-                  - MCO
-                  - MPE
-                  - MLU
-                items:
-                  type: array
-                  items:
-                    type: object
-                additional_info:
-                  type: string
-                application_id:
-                  type: string
+            schema: *id006
       responses:
         '200':
           description: Merchant order updated
@@ -2491,108 +2276,7 @@ paths:
           description: Search results
           content:
             application/json:
-              schema:
-                type: object
-                properties:
-                  id:
-                    type: integer
-                  status:
-                    type: string
-                    enum:
-                    - opened
-                    - closed
-                    - expired
-                  order_status:
-                    type: string
-                    enum:
-                    - payment_required
-                    - payment_in_process
-                    - paid
-                    - partially_paid
-                    - partially_refunded
-                    - pending_cancel
-                    - cancelled
-                    - refunded
-                  external_reference:
-                    type: string
-                  preference_id:
-                    type: string
-                  marketplace:
-                    type: string
-                  application_id:
-                    type: string
-                  site_id:
-                    type: string
-                    enum:
-                    - MLA
-                    - MLB
-                    - MLM
-                    - MLC
-                    - MCO
-                    - MPE
-                    - MLU
-                  notification_url:
-                    type: string
-                    format: uri
-                    deprecated: true
-                  sponsor_id:
-                    type: integer
-                  collector:
-                    type: object
-                    properties:
-                      id:
-                        type: integer
-                      email:
-                        type: string
-                      nickname:
-                        type: string
-                  payer:
-                    type: object
-                    properties:
-                      id:
-                        type: integer
-                      email:
-                        type: string
-                      nickname:
-                        type: string
-                  payments:
-                    type: array
-                    items:
-                      type: object
-                  shipments:
-                    type: array
-                    items:
-                      type: object
-                  payouts:
-                    type: array
-                    items:
-                      type: object
-                  items:
-                    type: array
-                    items:
-                      type: object
-                  additional_info:
-                    type: string
-                  shipping_cost:
-                    type: number
-                    format: float
-                  total_amount:
-                    type: number
-                    format: float
-                  paid_amount:
-                    type: number
-                    format: float
-                  refunded_amount:
-                    type: number
-                    format: float
-                  date_created:
-                    type: string
-                    format: date-time
-                  last_updated:
-                    type: string
-                    format: date-time
-                  canceled:
-                    type: boolean
+              schema: *id005
         '400':
           $ref: '#/components/responses/BadRequest'
         '401':
@@ -2906,6 +2590,503 @@ paths:
           $ref: '#/components/responses/Unauthorized'
         '404':
           $ref: '#/components/responses/NotFound'
+  /v2/wallet_connect/agreements:
+    post:
+      operationId: createWalletAgreement
+      summary: Create a Wallet Connect agreement
+      description: 'Creates an authorization agreement for Wallet Connect. Returns an agreement token to redirect the payer
+        to MP for wallet authorization.
+
+        **Available in:** Argentina, Brazil, Mexico (MLA, MLB, MLM)'
+      tags:
+      - Wallet Connect
+      security:
+      - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+              - return_uri
+              - external_flow_id
+              properties:
+                return_uri:
+                  type: string
+                  format: uri
+                  description: URL to redirect user back after authorization.
+                external_flow_id:
+                  type: string
+                  description: Seller-side flow state identifier.
+                external_user:
+                  type: object
+                  properties:
+                    id:
+                      type: string
+                    description:
+                      type: string
+                agreement_data:
+                  type: object
+                  properties:
+                    validation_amount:
+                      type: number
+                      format: float
+                    description:
+                      type: string
+      responses:
+        '200':
+          description: Agreement created
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  agreement_id:
+                    type: string
+                  agreement_uri:
+                    type: string
+                    format: uri
+                    description: Redirect payer to this URL to authorize the agreement
+        '400':
+          $ref: '#/components/responses/BadRequest'
+      parameters:
+      - name: client.id
+        in: query
+        required: false
+        schema:
+          type: string
+      - name: x-platform-id
+        in: header
+        required: false
+        schema:
+          type: string
+  /v2/wallet_connect/agreements/{agreement_id}:
+    get:
+      operationId: getWalletAgreement
+      summary: Get a Wallet Connect agreement
+      tags:
+      - Wallet Connect
+      security:
+      - bearerAuth: []
+      parameters:
+      - name: agreement_id
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: client.id
+        in: query
+        required: false
+        schema:
+          type: string
+      - name: x-platform-id
+        in: header
+        required: false
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Agreement found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: string
+                  status:
+                    type: string
+                    enum:
+                    - active
+                    - cancelled
+                    - expired
+                  date_created:
+                    type: string
+                    format: date-time
+                  date_canceled:
+                    type: string
+                    format: date-time
+                    nullable: true
+                  date_expire:
+                    type: string
+                    format: date-time
+                  validation_code:
+                    type: string
+                  approval_uri:
+                    type: string
+                    format: uri
+                  redirect_uri:
+                    type: string
+                    format: uri
+                  external_flow_id:
+                    type: string
+                  external_user:
+                    type: object
+                    properties:
+                      id:
+                        type: string
+                      description:
+                        type: string
+                  agreement_data:
+                    type: object
+                    properties:
+                      validation_amount:
+                        type: number
+                        format: float
+                      description:
+                        type: string
+                  site_id:
+                    type: string
+                    enum:
+                    - MLA
+                    - MLB
+                    - MLM
+                  application_id:
+                    type: string
+                  collector_id:
+                    type: integer
+                  model_version:
+                    type: integer
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '500':
+          description: Internal server error
+      description: '**Available in:** Argentina, Brazil, Mexico (MLA, MLB, MLM)'
+    delete:
+      operationId: deleteWalletAgreement
+      summary: Revoke a Wallet Connect agreement
+      tags:
+      - Wallet Connect
+      security:
+      - bearerAuth: []
+      parameters:
+      - name: agreement_id
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: client.id
+        in: query
+        required: false
+        schema:
+          type: string
+      - name: x-platform-id
+        in: header
+        required: false
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Agreement revoked
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '500':
+          description: Internal server error
+      description: '**Available in:** Argentina, Brazil, Mexico (MLA, MLB, MLM)'
+  /v2/wallet_connect/agreements/{agreement_id}/payer_token:
+    post:
+      operationId: createWalletPayerToken
+      summary: Create a payer token from agreement
+      tags:
+      - Wallet Connect
+      security:
+      - bearerAuth: []
+      parameters:
+      - name: agreement_id
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: x-platform-id
+        in: header
+        required: false
+        schema:
+          type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                code:
+                  type: string
+                  description: Authorization code from the Wallet Connect flow
+      responses:
+        '200':
+          description: Payer token created
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  payer_token:
+                    type: string
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '500':
+          description: Internal server error
+      description: '**Available in:** Argentina, Brazil, Mexico (MLA, MLB, MLM)'
+  /v1/payouts:
+    post:
+      operationId: createPayout
+      summary: Create a batch of payout transactions
+      tags:
+      - Payouts
+      security:
+      - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                external_reference:
+                  type: string
+                transactions:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      amount:
+                        type: number
+                        format: float
+                      currency_id:
+                        $ref: '#/components/schemas/CurrencyId'
+                      payment_method_id:
+                        type: string
+                      beneficiary:
+                        type: object
+      responses:
+        '201':
+          description: Payout batch created
+      description: '**Available in:** Argentina, Mexico (MLA, MLM)'
+  /v1/payouts/{payout_id}/transactions:
+    get:
+      operationId: listPayoutTransactions
+      summary: List payout transactions
+      tags:
+      - Payouts
+      security:
+      - bearerAuth: []
+      parameters:
+      - name: payout_id
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Transaction list
+      description: '**Available in:** Argentina, Mexico (MLA, MLM)'
+  /v1/payouts/{payout_id}/transactions/{transaction_id}/cancel:
+    put:
+      operationId: cancelPayoutTransaction
+      summary: Cancel a payout transaction
+      tags:
+      - Payouts
+      security:
+      - bearerAuth: []
+      parameters:
+      - name: payout_id
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: transaction_id
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Transaction cancelled
+      description: '**Available in:** Argentina, Mexico (MLA, MLM)'
+  /v1/transaction-intents/process:
+    post:
+      operationId: processTransactionIntent
+      summary: Create a disbursement (Pix or bank transfer)
+      description: 'Creates a Pix or bank transfer disbursement for Brazil. The `payment_method_id` determines the method:
+        - `pix` — instant Pix transfer (available 24/7) - `bank_transfer` — TED/DOC bank transfer
+
+        **Available in:** Brazil (MLB)'
+      tags:
+      - Payouts
+      security:
+      - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                external_reference:
+                  type: string
+                point_of_interaction:
+                  type: object
+                  properties:
+                    type:
+                      type: string
+                transaction:
+                  type: object
+                  properties:
+                    amount:
+                      type: number
+                      format: float
+                    currency_id:
+                      type: string
+                      example: BRL
+                    receiver:
+                      type: object
+            examples:
+              pix:
+                summary: Pix disbursement — Brazil
+                value:
+                  external_reference: PAYOUT-001
+                  point_of_interaction:
+                    type: PIX
+                  transaction:
+                    amount: 100.0
+                    currency_id: BRL
+      responses:
+        '201':
+          description: Transaction intent created
+  /v1/transaction-intents/{id}:
+    get:
+      operationId: getTransactionIntent
+      summary: Get disbursement status
+      tags:
+      - Payouts
+      security:
+      - bearerAuth: []
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Transaction intent found
+      description: '**Available in:** Brazil (MLB)'
+  /point/integration-api/devices:
+    get:
+      operationId: listPointDevices
+      summary: List Point devices
+      tags:
+      - Point Deprecated
+      security:
+      - bearerAuth: []
+      responses:
+        '200':
+          description: Device list
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  devices:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: string
+                        pos_id:
+                          type: integer
+                        store_id:
+                          type: string
+                        operating_mode:
+                          type: string
+                          enum:
+                          - PDV
+                          - STANDALONE
+      description: '**Available in:** Argentina, Brazil, Mexico (MLA, MLB, MLM)'
+  /point/integration-api/devices/{deviceid}/payment-intents:
+    post:
+      operationId: createPointPaymentIntent
+      summary: Create a payment intent on a Point device
+      description: 'Creates a payment intent that is sent to a Point POS device for the customer to tap/insert their card.
+        The device handles card capture.
+
+        **Available in:** Argentina, Brazil, Mexico (MLA, MLB, MLM)
+
+        **Idempotent:** Supports `X-Idempotency-Key` header to safely retry without duplicate charges.
+
+        **Webhook events triggered:** point_integration_wh'
+      tags:
+      - Point Deprecated
+      security:
+      - bearerAuth: []
+      parameters:
+      - name: deviceid
+        in: path
+        required: true
+        schema:
+          type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+              - amount
+              properties:
+                amount:
+                  type: integer
+                  description: Amount in cents (integer for Point devices)
+                  example: 1500
+                description:
+                  type: string
+                payment:
+                  type: object
+                  properties:
+                    installments:
+                      type: integer
+                    type:
+                      type: string
+                      enum:
+                      - credit_card
+                      - debit_card
+                print_on_terminal:
+                  type: boolean
+                  description: Print receipt on the device after payment
+      responses:
+        '201':
+          description: Payment intent created and sent to device
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: string
+                  device_id:
+                    type: string
+                  amount:
+                    type: integer
+                  status:
+                    type: string
+                    enum:
+                    - open
+                    - on_terminal
+                    - processing
+                    - processed
+                    - abandoned
+                    - cancelled
+                    - error
+        '400':
+          $ref: '#/components/responses/BadRequest'
   /point/integration-api/devices/{deviceid}/payment-intents/{paymentintentid}:
     delete:
       operationId: cancelPointPaymentIntent
@@ -2928,6 +3109,24 @@ paths:
       responses:
         '200':
           description: Payment intent cancelled
+      description: '**Available in:** Argentina, Brazil, Mexico (MLA, MLB, MLM)'
+  /point/integration-api/payment-intents/{paymentintentid}:
+    get:
+      operationId: getPointPaymentIntent
+      summary: Get payment intent details
+      tags:
+      - Point Deprecated
+      security:
+      - bearerAuth: []
+      parameters:
+      - name: paymentintentid
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Payment intent found
       description: '**Available in:** Argentina, Brazil, Mexico (MLA, MLB, MLM)'
   /point/integration-api/devices/{deviceid}/refund:
     post:
@@ -3619,6 +3818,94 @@ paths:
           $ref: '#/components/responses/Unauthorized'
         '500':
           description: Internal server error
+  /terminals/v1/list:
+    get:
+      operationId: listTerminals
+      summary: Get list of terminals
+      description: 'Returns all Point hardware terminals registered to the account.
+
+        **Available in:** Argentina, Brazil, Mexico (MLA, MLB, MLM)'
+      tags:
+      - Terminals
+      security:
+      - bearerAuth: []
+      responses:
+        '200':
+          description: Terminal list
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  terminals:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: string
+                        pos_id:
+                          type: integer
+                        store_id:
+                          type: string
+                        operating_mode:
+                          type: string
+                          enum:
+                          - PDV
+                          - STANDALONE
+                        status:
+                          type: string
+                          enum:
+                          - active
+                          - inactive
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+  /terminals/v1/setup:
+    patch:
+      operationId: updateTerminalOperationMode
+      summary: Update terminal operation mode
+      description: 'Changes the operating mode of one or more terminals. PDV — integrated POS mode (connected to your system);
+        STANDALONE — independent mode (no system integration).
+
+        **Available in:** Argentina, Brazil, Mexico (MLA, MLB, MLM)'
+      tags:
+      - Terminals
+      security:
+      - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+              - terminals
+              properties:
+                terminals:
+                  type: array
+                  items:
+                    type: object
+                    required:
+                    - id
+                    - operating_mode
+                    properties:
+                      id:
+                        type: string
+                        description: Terminal ID
+                      operating_mode:
+                        type: string
+                        enum:
+                        - PDV
+                        - STANDALONE
+      responses:
+        '200':
+          description: Operation mode updated
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '429':
+          $ref: '#/components/responses/TooManyRequests'
   /terminals/v1/actions:
     post:
       operationId: createTerminalAction
@@ -3920,6 +4207,42 @@ paths:
                     format: uri
         '401':
           $ref: '#/components/responses/Unauthorized'
+  /instore/orders/{merchant_order_id}/confirmation:
+    post:
+      operationId: confirmCashoutQR
+      summary: Confirm QR cashout status
+      description: 'Confirms the cashout status for a QR-based cash withdrawal order.
+
+        **Available in:** Argentina, Brazil (MLA, MLB)'
+      tags:
+      - QR Orders
+      security:
+      - bearerAuth: []
+      parameters:
+      - name: merchant_order_id
+        in: path
+        required: true
+        schema:
+          type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                status:
+                  type: string
+                  enum:
+                  - confirmed
+                  - cancelled
+      responses:
+        '200':
+          description: Cashout confirmed
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
   /mpmobile/instore/qr/{user_id}/{external_id}:
     put:
       operationId: createInstoreOrderV1
@@ -4008,6 +4331,69 @@ paths:
         '200':
           description: Order created (deprecated)
       description: '**Migration guide:** https://www.mercadopago.com/developers/en/docs/qr-code/orders/create-order'
+  /instore/orders/qr/seller/collectors/{user_id}/pos/{external_pos_id}/qrs:
+    post:
+      operationId: createQRTrammaDynamic
+      summary: Create a QR trama (deprecated Dynamic QR)
+      deprecated: true
+      tags:
+      - QR Deprecated
+      security:
+      - bearerAuth: []
+      parameters:
+      - name: user_id
+        in: path
+        required: true
+        schema:
+          type: integer
+      - name: external_pos_id
+        in: path
+        required: true
+        schema:
+          type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+      responses:
+        '200':
+          description: QR trama created (deprecated)
+      description: '**Available in:** Argentina, Brazil, Mexico (MLA, MLB, MLM)
+
+        **Migration guide:** https://www.mercadopago.com/developers/en/docs/qr-code/orders/create-order'
+    put:
+      operationId: createDynamicQROrder
+      summary: Create dynamic QR order (deprecated)
+      deprecated: true
+      tags:
+      - QR Deprecated
+      security:
+      - bearerAuth: []
+      parameters:
+      - name: user_id
+        in: path
+        required: true
+        schema:
+          type: integer
+      - name: external_pos_id
+        in: path
+        required: true
+        schema:
+          type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+      responses:
+        '200':
+          description: Dynamic QR order created (deprecated)
+      description: '**Available in:** Argentina, Brazil, Mexico (MLA, MLB, MLM)
+
+        **Migration guide:** https://www.mercadopago.com/developers/en/docs/qr-code/orders/create-order'
   /post-purchase/v1/claims/{claim_id}:
     get:
       operationId: getClaim
@@ -5027,7 +5413,7 @@ paths:
           description: Advanced payment created
           content:
             application/json:
-              schema:
+              schema: &id007
                 type: object
                 properties:
                   id:
@@ -5091,46 +5477,7 @@ paths:
           description: Advanced payment found
           content:
             application/json:
-              schema:
-                type: object
-                properties:
-                  id:
-                    type: integer
-                  payments:
-                    type: array
-                    items:
-                      type: object
-                  wallet_payment:
-                    type: object
-                    properties:
-                      transaction_amount:
-                        type: number
-                        format: float
-                      description:
-                        type: string
-                      external_reference:
-                        type: string
-                  disbursements:
-                    type: array
-                    items:
-                      type: object
-                  payer:
-                    type: object
-                    properties:
-                      token:
-                        type: string
-                      type_token:
-                        type: string
-                  site_id:
-                    type: string
-                  binary_mode:
-                    type: boolean
-                  date_created:
-                    type: string
-                    format: date-time
-                  date_last_updated:
-                    type: string
-                    format: date-time
+              schema: *id007
         '400':
           $ref: '#/components/responses/BadRequest'
         '401':
@@ -5182,46 +5529,7 @@ paths:
           description: Advanced payment updated
           content:
             application/json:
-              schema:
-                type: object
-                properties:
-                  id:
-                    type: integer
-                  payments:
-                    type: array
-                    items:
-                      type: object
-                  wallet_payment:
-                    type: object
-                    properties:
-                      transaction_amount:
-                        type: number
-                        format: float
-                      description:
-                        type: string
-                      external_reference:
-                        type: string
-                  disbursements:
-                    type: array
-                    items:
-                      type: object
-                  payer:
-                    type: object
-                    properties:
-                      token:
-                        type: string
-                      type_token:
-                        type: string
-                  site_id:
-                    type: string
-                  binary_mode:
-                    type: boolean
-                  date_created:
-                    type: string
-                    format: date-time
-                  date_last_updated:
-                    type: string
-                    format: date-time
+              schema: *id007
         '400':
           $ref: '#/components/responses/BadRequest'
         '401':
@@ -5347,6 +5655,74 @@ paths:
         '500':
           description: Internal server error
 components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      description: Access token. Send in Authorization header only — never as a URL query parameter.
+    publicKey:
+      type: apiKey
+      in: header
+      name: X-Public-Key
+      description: Public key for client-side card tokenization via MercadoPago.js only. Never use for server-side calls.
+    mercadopagoOAuth:
+      type: oauth2
+      description: OAuth 2.0 authorization_code flow for marketplace on-behalf-of and Wallet Connect integrations. For client_credentials
+        and refresh_token, use POST /oauth/token directly with the appropriate grant_type.
+      flows:
+        authorizationCode:
+          authorizationUrl: https://auth.mercadopago.com/authorization
+          tokenUrl: https://api.mercadopago.com/oauth/token
+          scopes:
+            read: Read access to account data
+            write: Write access (create payments, orders)
+            offline_access: Issue refresh tokens for long-lived access
+  responses:
+    BadRequest:
+      description: Bad request — validation error
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    Unauthorized:
+      description: Missing or invalid access token
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    Forbidden:
+      description: Insufficient permissions
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    NotFound:
+      description: Resource not found
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    UnprocessableEntity:
+      description: Business rule violation
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    TooManyRequests:
+      description: Rate limit exceeded — wait before retrying
+      headers:
+        Retry-After:
+          schema:
+            type: integer
+          description: Seconds to wait before retrying this request
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+          example:
+            status: 429
+            error: too_many_requests
+            message: Rate limit exceeded. Retry after the indicated number of seconds.
   schemas:
     PreferenceRequest:
       type: object
@@ -5792,6 +6168,17 @@ components:
         data:
           type: string
           nullable: true
+    Money:
+      type: object
+      description: 'Monetary amount. MercadoPago uses decimal amounts (e.g., 100.50 for R$100,50), NOT integer cents. Precision:
+        2 decimal places for most currencies; 0 for CLP.'
+      properties:
+        amount:
+          type: number
+          format: float
+          example: 100.5
+        currency_id:
+          $ref: '#/components/schemas/CurrencyId'
     CurrencyId:
       type: string
       description: ISO 4217 currency code for the applicable site
@@ -5852,6 +6239,36 @@ components:
           type: string
         country:
           type: string
+    Payer:
+      type: object
+      description: Payment payer information
+      properties:
+        id:
+          type: string
+          description: MP payer ID (registered users only)
+          example: '123456789'
+        email:
+          type: string
+          format: email
+          description: Payer email address
+          example: test@example.com
+        identification:
+          $ref: '#/components/schemas/Identification'
+        type:
+          type: string
+          enum:
+          - customer
+          - registered
+          - guest
+          description: Payer type
+        first_name:
+          type: string
+        last_name:
+          type: string
+        phone:
+          $ref: '#/components/schemas/Phone'
+        address:
+          $ref: '#/components/schemas/Address'
     StoreRequest:
       type: object
       required:
@@ -6548,6 +6965,42 @@ components:
           enum:
           - aggregator
           - gateway
+    Refund:
+      type: object
+      description: A payment refund (partial or full)
+      properties:
+        id:
+          type: integer
+          example: 987654321
+        payment_id:
+          type: integer
+        date_created:
+          type: string
+          format: date-time
+        amount:
+          type: number
+          format: float
+          description: Refunded amount (decimal)
+        source:
+          type: object
+          properties:
+            id:
+              type: string
+            name:
+              type: string
+            type:
+              type: string
+        refund_mode:
+          type: string
+          enum:
+          - standard
+          - instant
+        status:
+          type: string
+          enum:
+          - approved
+          - in_process
+          - rejected
     RefundRequest:
       type: object
       description: Request body for creating a refund. Omit amount for a full refund.
@@ -6965,6 +7418,145 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/Subscription'
+    WebhookNotification:
+      type: object
+      description: Webhook notification payload sent to your notification URL when a resource changes. Validate the x-signature
+        HMAC-SHA256 header before processing. After receiving, GET the resource URL to fetch the full updated object.
+      required:
+      - id
+      - type
+      - data
+      properties:
+        id:
+          type: integer
+          description: Notification unique ID (use for deduplication)
+          example: 12345678
+        type:
+          type: string
+          description: Resource type that triggered the notification
+          enum:
+          - payment
+          - merchant_order
+          - subscription_preapproval
+          - subscription_preapproval_plan
+          - subscription_authorized_payment
+          - point_integration_wh
+          - chargebacks
+          - delivery
+          example: payment
+        date_created:
+          type: string
+          format: date-time
+        user_id:
+          type: integer
+          description: MP user ID that owns the resource
+        api_version:
+          type: string
+          example: v1
+        action:
+          type: string
+          enum:
+          - payment.created
+          - payment.updated
+          - subscription.authorized
+          - subscription.cancelled
+          - order.created
+          - order.updated
+          - point_integration_wh
+          example: payment.updated
+        data:
+          type: object
+          required:
+          - id
+          properties:
+            id:
+              type: string
+              description: Resource ID. Fetch this via GET at the resource URL to get full details. Do not rely on the webhook
+                payload alone — always GET the resource.
+              example: '1234567890'
+    WebhookSignatureHeader:
+      type: object
+      description: 'The x-signature header value format: ts=<timestamp>,v1=<hmac_sha256_signature>. Validate using HMAC-SHA256
+        with your webhook secret key. See: https://www.mercadopago.com/developers/en/docs/your-integrations/notifications/webhooks'
+      properties:
+        ts:
+          type: string
+          description: Unix timestamp of the notification
+        v1:
+          type: string
+          description: HMAC-SHA256 signature of "id:[notif_id];request-id:[req_id];ts:[ts];"
+    MerchantOrder:
+      type: object
+      description: A merchant order groups multiple payments for a single purchase. Updated when any associated payment changes
+        status.
+      properties:
+        id:
+          type: integer
+        status:
+          type: string
+          enum:
+          - opened
+          - closed
+          - expired
+        external_reference:
+          type: string
+        preference_id:
+          type: string
+        payments:
+          type: array
+          items:
+            type: object
+            properties:
+              id:
+                type: integer
+              transaction_amount:
+                type: number
+                format: float
+              total_paid_amount:
+                type: number
+                format: float
+              shipping_cost:
+                type: number
+                format: float
+              currency_id:
+                $ref: '#/components/schemas/CurrencyId'
+              status:
+                type: string
+              status_detail:
+                type: string
+              operation_type:
+                type: string
+              date_created:
+                type: string
+                format: date-time
+              date_approved:
+                type: string
+                format: date-time
+        items:
+          type: array
+          items:
+            type: object
+        date_created:
+          type: string
+          format: date-time
+        last_updated:
+          type: string
+          format: date-time
+        total_amount:
+          type: number
+          format: float
+        paid_amount:
+          type: number
+          format: float
+        refunded_amount:
+          type: number
+          format: float
+        shipping:
+          type: object
+        notification_url:
+          type: string
+          format: uri
+          deprecated: true
     OrderRequest:
       type: object
       required:
@@ -7574,71 +8166,29 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/AuthorizedPayment'
-  responses:
-    BadRequest:
-      description: Bad request — validation error
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
-    Unauthorized:
-      description: Missing or invalid access token
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
-    Forbidden:
-      description: Insufficient permissions
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
-    NotFound:
-      description: Resource not found
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
-    UnprocessableEntity:
-      description: Business rule violation
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
-    TooManyRequests:
-      description: Rate limit exceeded — wait before retrying
-      headers:
-        Retry-After:
-          schema:
-            type: integer
-          description: Seconds to wait before retrying this request
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
-          example:
-            status: 429
-            error: too_many_requests
-            message: Rate limit exceeded. Retry after the indicated number of seconds.
-  securitySchemes:
-    bearerAuth:
-      type: http
-      scheme: bearer
-      description: Access token. Send in Authorization header only — never as a URL query parameter.
-    publicKey:
-      type: apiKey
-      in: header
-      name: X-Public-Key
-      description: Public key for client-side card tokenization via MercadoPago.js only. Never use for server-side calls.
-    mercadopagoOAuth:
-      type: oauth2
-      description: OAuth 2.0 authorization_code flow for marketplace on-behalf-of and Wallet Connect integrations. For client_credentials
-        and refresh_token, use POST /oauth/token directly with the appropriate grant_type.
-      flows:
-        authorizationCode:
-          authorizationUrl: https://auth.mercadopago.com/authorization
-          tokenUrl: https://api.mercadopago.com/oauth/token
-          scopes:
-            read: Read access to account data
-            write: Write access (create payments, orders)
-            offline_access: Issue refresh tokens for long-lived access
+  x-mp-mlc-payment-methods:
+    credit_cards:
+    - visa
+    - master
+    - amex
+    - diners
+    debit_cards:
+    - redcompra
+    - debvisa
+    - maestro
+    bank_transfer:
+    - khipu
+    - webpay
+    digital_wallets:
+    - account_money
+  x-mp-mlc-identification-types:
+  - id: RUT
+    name: Rol Único Tributario
+    type: letter
+    min_length: 8
+    max_length: 9
+    description: Chilean national ID (format XX.XXX.XXX-X or XXXXXXXX-X)
+  x-mp-mlc-amounts-note: 'CLP uses 0 decimal places. Always send integer amounts (e.g., 10000 not 10000.00). Sending decimal
+    values will cause a 400 validation error.
+
+    '

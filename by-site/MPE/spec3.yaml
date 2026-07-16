@@ -1,15 +1,28 @@
 openapi: 3.1.0
 info:
-  title: MercadoPago API
-  description: The MercadoPago REST API. Please see https://www.mercadopago.com/developers for more details.
-  termsOfService: https://www.mercadopago.com/developers/es/docs/resources/legal/terms-and-conditions
+  title: MercadoPago API — Peru (MPE)
+  version: 1.0.0
+  description: 'MercadoPago API specification scoped to Peru (site_id: MPE).
+
+
+    ## Peru-specific notes
+
+
+    - **Currency**: PEN — send amounts as decimals
+
+    - **PagoEfectivo**: Multi-bank cash/transfer network (BCP, BBVA, Interbank) — `payment_method_id: pagoefectivo_atm`
+
+    - **Identification**: `DNI` (8 digits), `CE`, `RUC`
+
+    - **Card brands**: Visa, Mastercard, Amex, Diners
+
+    '
   contact:
     name: MercadoPago Developer Experience
-    url: https://www.mercadopago.com/developers
+    url: https://www.mercadopago.com.pe/developers
   license:
     name: Apache 2.0
     url: https://www.apache.org/licenses/LICENSE-2.0
-  version: 1.0.0
 servers:
 - url: https://api.mercadopago.com
   description: Production
@@ -93,15 +106,6 @@ tags:
   - MLA
   - MLB
   - MLM
-- name: QR Orders
-  description: In-store payment orders associated with QR codes
-  x-mp-sites:
-  - MLA
-  - MLB
-  - MLC
-  - MCO
-  - MPE
-  - MLU
 - name: QR Integrator
   description: Integrator configuration for QR in-store
   x-mp-sites: *id001
@@ -126,13 +130,6 @@ tags:
 - name: Settlements Report
   description: Generate and schedule all-transactions reports
   x-mp-sites: *id001
-- name: Payouts
-  description: Bank transfer and Pix payouts
-  x-mp-sites:
-  - MLA
-  - MLB
-  - MLM
-  - MLC
 paths:
   /v1/payments:
     post:

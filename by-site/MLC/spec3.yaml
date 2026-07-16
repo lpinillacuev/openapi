@@ -1,15 +1,33 @@
 openapi: 3.1.0
 info:
-  title: MercadoPago API
-  description: The MercadoPago REST API. Please see https://www.mercadopago.com/developers for more details.
-  termsOfService: https://www.mercadopago.com/developers/es/docs/resources/legal/terms-and-conditions
+  title: MercadoPago API — Chile (MLC)
+  version: 1.0.0
+  description: 'MercadoPago API specification scoped to Chile (site_id: MLC).
+
+
+    ## Chile-specific notes
+
+
+    - **Currency**: CLP — amounts are **integers with NO decimal places** (e.g., `10000` for $10.000 CLP). Sending decimals
+    causes a 400 error.
+
+    - **Khipu**: Online bank transfer — `payment_method_id: khipu`
+
+    - **RedCompra**: Chilean debit network
+
+    - **Identification**: `RUT` (Rol Único Tributario)
+
+    - **Card brands**: Visa, Mastercard, Amex, Diners
+
+    - **Point / DTE printing**: Available in Chile
+
+    '
   contact:
     name: MercadoPago Developer Experience
-    url: https://www.mercadopago.com/developers
+    url: https://www.mercadopago.cl/developers
   license:
     name: Apache 2.0
     url: https://www.apache.org/licenses/LICENSE-2.0
-  version: 1.0.0
 servers:
 - url: https://api.mercadopago.com
   description: Production
@@ -93,15 +111,6 @@ tags:
   - MLA
   - MLB
   - MLM
-- name: QR Orders
-  description: In-store payment orders associated with QR codes
-  x-mp-sites:
-  - MLA
-  - MLB
-  - MLC
-  - MCO
-  - MPE
-  - MLU
 - name: QR Integrator
   description: Integrator configuration for QR in-store
   x-mp-sites: *id001
@@ -126,13 +135,6 @@ tags:
 - name: Settlements Report
   description: Generate and schedule all-transactions reports
   x-mp-sites: *id001
-- name: Payouts
-  description: Bank transfer and Pix payouts
-  x-mp-sites:
-  - MLA
-  - MLB
-  - MLM
-  - MLC
 paths:
   /v1/payments:
     post:

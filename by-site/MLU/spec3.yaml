@@ -1,15 +1,32 @@
 openapi: 3.1.0
 info:
-  title: MercadoPago API
-  description: The MercadoPago REST API. Please see https://www.mercadopago.com/developers for more details.
-  termsOfService: https://www.mercadopago.com/developers/es/docs/resources/legal/terms-and-conditions
+  title: MercadoPago API — Uruguay (MLU)
+  version: 1.0.0
+  description: 'MercadoPago API specification scoped to Uruguay (site_id: MLU).
+
+
+    ## Uruguay-specific notes
+
+
+    - **Currency**: UYU — send amounts as decimals
+
+    - **OCA**: Local credit card brand — `payment_method_id: oca`
+
+    - **Redpagos**: Cash payment network — `payment_method_id: redpagos`
+
+    - **Abitab**: Cash payment network — `payment_method_id: abitab`
+
+    - **Identification**: `CI` (Cédula de Identidad, 7–8 digits)
+
+    - **Card brands**: Visa, Mastercard, OCA, Diners
+
+    '
   contact:
     name: MercadoPago Developer Experience
-    url: https://www.mercadopago.com/developers
+    url: https://www.mercadopago.com.uy/developers
   license:
     name: Apache 2.0
     url: https://www.apache.org/licenses/LICENSE-2.0
-  version: 1.0.0
 servers:
 - url: https://api.mercadopago.com
   description: Production
@@ -93,15 +110,6 @@ tags:
   - MLA
   - MLB
   - MLM
-- name: QR Orders
-  description: In-store payment orders associated with QR codes
-  x-mp-sites:
-  - MLA
-  - MLB
-  - MLC
-  - MCO
-  - MPE
-  - MLU
 - name: QR Integrator
   description: Integrator configuration for QR in-store
   x-mp-sites: *id001
@@ -126,13 +134,6 @@ tags:
 - name: Settlements Report
   description: Generate and schedule all-transactions reports
   x-mp-sites: *id001
-- name: Payouts
-  description: Bank transfer and Pix payouts
-  x-mp-sites:
-  - MLA
-  - MLB
-  - MLM
-  - MLC
 paths:
   /v1/payments:
     post:

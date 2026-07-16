@@ -596,14 +596,6 @@ components:
       - NIO
       - GTQ
       - VES
-      x-mp-sites:
-      - MLA
-      - MLB
-      - MLM
-      - MLC
-      - MCO
-      - MPE
-      - MLU
       example: BRL
     Pagination:
       type: object
@@ -623,11 +615,15 @@ components:
           example: 0
     SubscriptionPlanRequest:
       type: object
-      description: Request body to create a subscription plan.
+      required:
+      - reason
+      - auto_recurring
+      description: Request body to create a subscription plan (preapproval_plan). A plan defines the recurring billing terms.
+        Individual subscriptions (preapproval) are then created referencing this plan.
       properties:
         reason:
           type: string
-          description: Plan description shown to the payer.
+          description: Plan description shown to the payer
           example: Monthly Premium Subscription
         auto_recurring:
           $ref: '#/components/schemas/AutoRecurring'
@@ -651,10 +647,7 @@ components:
         back_url:
           type: string
           format: uri
-          description: Redirect URL after subscription setup.
-        external_reference:
-          type: string
-          description: Your internal reference for this plan.
+          description: Redirect URL after subscription setup
     AutoRecurring:
       type: object
       required:
@@ -665,25 +658,25 @@ components:
       properties:
         frequency:
           type: integer
-          description: Billing interval (e.g., 1 for monthly, 7 for weekly).
+          description: Billing interval (e.g., 1 for monthly, 7 for weekly)
           example: 1
         frequency_type:
           type: string
           enum:
           - months
           - days
-          description: Unit for the billing interval.
+          description: Unit for the billing interval
           example: months
         transaction_amount:
           type: number
           format: float
-          description: Amount to charge each cycle (decimal, not cents).
+          description: Amount to charge each cycle (decimal, not cents)
           example: 29.9
         currency_id:
           $ref: '#/components/schemas/CurrencyId'
         free_trial:
           type: object
-          description: Optional free trial period before billing starts.
+          description: Optional free trial period before billing starts
           properties:
             frequency:
               type: integer
@@ -696,21 +689,15 @@ components:
               example: days
         repetitions:
           type: integer
-          description: Total number of billing cycles (null = indefinite).
+          description: Total number of billing cycles (null = indefinite)
           nullable: true
     SubscriptionPlan:
       type: object
-      description: A subscription plan (preapproval_plan).
+      description: A subscription plan (preapproval_plan)
       properties:
         id:
           type: string
           example: 2c9380847e9c5058017ea64ea8260b60
-        application_id:
-          type: string
-          description: Application that created this plan.
-        collector_id:
-          type: integer
-          description: Seller's user ID.
         reason:
           type: string
         status:
@@ -720,13 +707,6 @@ components:
           - inactive
         auto_recurring:
           $ref: '#/components/schemas/AutoRecurring'
-        payment_methods_allowed:
-          type: object
-        back_url:
-          type: string
-          format: uri
-        external_reference:
-          type: string
         date_created:
           type: string
           format: date-time
@@ -736,25 +716,30 @@ components:
         init_point:
           type: string
           format: uri
-          description: URL to subscribe users to this plan.
+          description: URL to subscribe users to this plan
     SubscriptionRequest:
       type: object
-      description: Request body to create a subscription.
+      required:
+      - reason
+      - payer_email
+      - auto_recurring
+      description: Request body to create a subscription (preapproval). Either reference a preapproval_plan or define auto_recurring
+        inline.
       properties:
         preapproval_plan_id:
           type: string
-          description: Reference a previously created plan (recommended).
+          description: Reference a previously created plan (recommended)
         reason:
           type: string
-          description: Subscription description shown to payer.
+          description: Subscription description shown to payer
           example: Monthly Premium — Acme Inc.
         payer_email:
           type: string
           format: email
-          description: Payer's email address.
+          description: Payer's email address
         card_token_id:
           type: string
-          description: Card token for credit card subscriptions.
+          description: Card token for credit card subscriptions
         auto_recurring:
           $ref: '#/components/schemas/AutoRecurring'
         back_url:
@@ -770,22 +755,14 @@ components:
           - authorized
           - paused
           - cancelled
+          description: Initial status (default is pending until payer authorizes)
     Subscription:
       type: object
-      description: A MercadoPago subscription (preapproval).
+      description: A MercadoPago subscription (preapproval)
       properties:
         id:
           type: string
-          example: sub_abcdef1234567890
-        version:
-          type: integer
-          description: Schema version.
-        application_id:
-          type: string
-          description: Application that created this subscription.
-        collector_id:
-          type: integer
-          description: Seller's user ID.
+          example: 2c9380847e9c5058017ea64ea8260b60
         payer_id:
           type: integer
         payer_email:
@@ -797,9 +774,6 @@ components:
           type: string
         external_reference:
           type: string
-        back_url:
-          type: string
-          format: uri
         status:
           type: string
           enum:
@@ -817,6 +791,7 @@ components:
           $ref: '#/components/schemas/AutoRecurring'
         summarized:
           type: object
+          description: Subscription billing summary
           properties:
             quotas:
               type: integer
@@ -837,13 +812,10 @@ components:
           type: string
         card_id:
           type: integer
-        first_invoice_offset:
-          type: integer
-          description: Days offset for the first invoice relative to subscription creation.
         init_point:
           type: string
           format: uri
-          description: Authorization URL — send payer here to confirm subscription.
+          description: Authorization URL — send payer here to confirm subscription
     SubscriptionSearchResult:
       type: object
       properties:

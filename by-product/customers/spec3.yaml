@@ -718,12 +718,12 @@ components:
           example: 0
     CustomerRequest:
       type: object
-      description: Request body to create or update a customer
+      description: Request body to create or update a customer.
       properties:
         email:
           type: string
           format: email
-          description: Customer email address (unique identifier)
+          description: Customer email address (unique identifier).
           example: customer@example.com
         first_name:
           type: string
@@ -737,16 +737,23 @@ components:
           $ref: '#/components/schemas/Address'
         description:
           type: string
-        metadata:
-          type: object
-          additionalProperties: true
+        date_registered:
+          type: string
+          format: date-time
+          description: Date the customer registered with your platform.
+        default_address:
+          type: string
+          description: ID of the customer's default address.
+        default_card:
+          type: string
+          description: ID of the customer's default saved card.
     Customer:
       type: object
-      description: A stored MercadoPago customer
+      description: A stored MercadoPago customer.
       properties:
         id:
           type: string
-          description: Customer unique identifier
+          description: Customer unique identifier.
           example: 123456789-abcd
         email:
           type: string
@@ -761,6 +768,11 @@ components:
           $ref: '#/components/schemas/Identification'
         address:
           $ref: '#/components/schemas/Address'
+        addresses:
+          type: array
+          description: All addresses associated with this customer.
+          items:
+            $ref: '#/components/schemas/Address'
         date_registered:
           type: string
           format: date-time
@@ -772,17 +784,17 @@ components:
           format: date-time
         description:
           type: string
-        metadata:
-          type: object
-          additionalProperties: true
+        default_address:
+          type: string
+          description: ID of the customer's default address.
+        default_card:
+          type: string
+          description: ID of the customer's default saved card.
         cards:
           type: array
           items:
             $ref: '#/components/schemas/Card'
-          description: Saved cards for this customer
-        default_card:
-          type: string
-          description: ID of the customer's default card
+          description: Saved cards for this customer.
     CustomerSearchResult:
       type: object
       properties:
@@ -796,30 +808,35 @@ components:
       type: object
       required:
       - token
-      description: Request body to save a card to a customer. The card token must be created client-side via MercadoPago.js
-        / MP Secure Fields before calling this endpoint. Raw card data (PAN, CVV) must never be sent to your server.
+      description: 'Request body to save a card to a customer. The card token must be created client-side via MercadoPago.js
+        before calling this endpoint.
+
+        '
       properties:
         token:
           type: string
-          description: Single-use card token from MercadoPago.js
-          example: YOUR_ACCESS_TOKEN
+          description: Single-use card token from MercadoPago.js.
+          example: ff8080814c11e237014c1ff593b57b4d
     Card:
       type: object
-      description: A tokenized card saved to a customer (never contains full PAN or CVV)
+      description: A tokenized card saved to a customer (never contains full PAN or CVV).
       properties:
         id:
           type: string
-          description: Card unique identifier
+          description: Card unique identifier.
           example: '1234567890'
         customer_id:
           type: string
+        user_id:
+          type: string
+          description: User ID who owns this card.
         first_six_digits:
           type: string
-          description: First 6 digits of card (BIN — identifies issuer and type)
+          description: First 6 digits (BIN — identifies issuer and type).
           example: '411111'
         last_four_digits:
           type: string
-          description: Last 4 digits of card
+          description: Last 4 digits.
           example: '4321'
         expiration_month:
           type: integer
@@ -832,6 +849,10 @@ components:
         date_created:
           type: string
           format: date-time
+        date_registered:
+          type: string
+          format: date-time
+          description: Date the card was registered.
         date_last_updated:
           type: string
           format: date-time
@@ -840,7 +861,7 @@ components:
           properties:
             name:
               type: string
-              description: Name on card
+              description: Name on card.
             identification:
               $ref: '#/components/schemas/Identification'
         payment_method:

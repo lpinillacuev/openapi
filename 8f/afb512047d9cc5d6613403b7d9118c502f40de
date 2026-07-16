@@ -1,0 +1,41 @@
+by-site/MPE/spec3.yaml
+  s_2adb1e3e7a573d::t_85d9c9deecc72f 25
+by-site/MLC/spec3.yaml
+  s_2adb1e3e7a573d::t_85d9c9deecc72f 25
+by-product/subscriptions/spec3.yaml
+  s_2adb1e3e7a573d::t_85d9c9deecc72f 599-606,626,630,654-657,668,675,680,686,699,703,708-713,723-729,739,742,746,749,754,757,775,779-788,800-802,840-842,846
+by-product/payments/spec3.yaml
+  s_2adb1e3e7a573d::t_85d9c9deecc72f 692-699,758,760-761,766,768-769,774-775,778,782,788-790,794,800-803,807,816,820,826,830,832-844,848,852,856-862,874,885,928,932,969-980,1008-1011,1015-1050,1056-1075,1098,1102,1106-1112,1128,1136-1139,1146,1180-1191
+by-product/customers/spec3.yaml
+  s_2adb1e3e7a573d::t_85d9c9deecc72f 721,726,740-749,752,756,771-775,787-792,797,811-814,818-819,822,826,830-832,835,839,852-855,864
+by-site/MLA/spec3.yaml
+  s_2adb1e3e7a573d::t_85d9c9deecc72f 34
+by-site/MCO/spec3.yaml
+  s_2adb1e3e7a573d::t_85d9c9deecc72f 25
+by-site/MLU/spec3.yaml
+  s_2adb1e3e7a573d::t_85d9c9deecc72f 22
+by-product/pos/spec3.yaml
+  s_2adb1e3e7a573d::t_85d9c9deecc72f 861
+by-site/MLB/spec3.yaml
+  s_2adb1e3e7a573d::t_85d9c9deecc72f 37
+by-site/MLM/spec3.yaml
+  s_2adb1e3e7a573d::t_85d9c9deecc72f 28
+by-product/preferences/spec3.yaml
+  s_2adb1e3e7a573d::t_85d9c9deecc72f 360-363,367,379-386,390,398,405,410,414,417,421,430-448,477,503,511,519,523,543,548,552,556,559,563,579-583,586,588-596,616-620,641-648
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.5.6",
+  "base_commit_sha": "8fafb512047d9cc5d6613403b7d9118c502f40de",
+  "prompts": {},
+  "sessions": {
+    "s_2adb1e3e7a573d": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "5ca9739c-b9a5-40bb-8cc8-99d36839e20e",
+        "model": "claude-sonnet-4-6"
+      },
+      "human_author": "lpinillacuev <lina.pinillacuevas@mercadolibre.com.co>"
+    }
+  }
+}

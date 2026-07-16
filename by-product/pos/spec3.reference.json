@@ -1,0 +1,2182 @@
+{
+  "url": "https://api.mercadopago.com",
+  "paths": {
+    "/pos": {
+      "get": {
+        "tags": [
+          "POS"
+        ],
+        "parameters": [
+          {
+            "name": "external_id",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "external_store_id",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "store_id",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "category",
+            "in": "query",
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": {
+              "en": "POS search results",
+              "pt": "TODO",
+              "es": "TODO"
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "paging": {
+                      "$ref": "#/components/schemas/Pagination"
+                    },
+                    "results": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/POS"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "title": {
+          "en": "Search points of sale",
+          "pt": "TODO",
+          "es": "TODO"
+        },
+        "description": {
+          "en": "Search points of sale",
+          "pt": "TODO",
+          "es": "TODO"
+        }
+      },
+      "post": {
+        "description": {
+          "en": "Creates a point of sale in a store to receive payments for products or services. Each POS will have a unique QR code linked to it.",
+          "pt": "TODO",
+          "es": "TODO"
+        },
+        "tags": [
+          "POS"
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/POSRequest"
+              },
+              "example": {
+                "name": "Main POS",
+                "fixed_amount": false,
+                "store_id": "1234567",
+                "external_store_id": "SUC001",
+                "external_id": "POS001"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": {
+              "en": "POS created",
+              "pt": "TODO",
+              "es": "TODO"
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/POS"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "errorKey": {
+                      "type": "string",
+                      "enum": [
+                        {
+                          "title": "TODO_error_code",
+                          "description": {
+                            "en": "TODO: describe this error",
+                            "pt": "TODO",
+                            "es": "TODO"
+                          }
+                        }
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "errorKey": {
+                      "type": "string",
+                      "enum": [
+                        {
+                          "title": "TODO_error_code",
+                          "description": {
+                            "en": "TODO: describe this error",
+                            "pt": "TODO",
+                            "es": "TODO"
+                          }
+                        }
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "title": {
+          "en": "Create a point of sale",
+          "pt": "TODO",
+          "es": "TODO"
+        }
+      }
+    },
+    "/pos/{id}": {
+      "get": {
+        "tags": [
+          "POS"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": {
+              "en": "POS identifier",
+              "pt": "TODO",
+              "es": "TODO"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": {
+              "en": "POS found",
+              "pt": "TODO",
+              "es": "TODO"
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/POS"
+                }
+              }
+            }
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "errorKey": {
+                      "type": "string",
+                      "enum": [
+                        {
+                          "title": "TODO_error_code",
+                          "description": {
+                            "en": "TODO: describe this error",
+                            "pt": "TODO",
+                            "es": "TODO"
+                          }
+                        }
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "title": {
+          "en": "Get a point of sale",
+          "pt": "TODO",
+          "es": "TODO"
+        },
+        "description": {
+          "en": "Get a point of sale",
+          "pt": "TODO",
+          "es": "TODO"
+        }
+      },
+      "put": {
+        "tags": [
+          "POS"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/POSRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": {
+              "en": "POS updated",
+              "pt": "TODO",
+              "es": "TODO"
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/POS"
+                }
+              }
+            }
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "errorKey": {
+                      "type": "string",
+                      "enum": [
+                        {
+                          "title": "TODO_error_code",
+                          "description": {
+                            "en": "TODO: describe this error",
+                            "pt": "TODO",
+                            "es": "TODO"
+                          }
+                        }
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "title": {
+          "en": "Update a point of sale",
+          "pt": "TODO",
+          "es": "TODO"
+        },
+        "description": {
+          "en": "Update a point of sale",
+          "pt": "TODO",
+          "es": "TODO"
+        }
+      },
+      "delete": {
+        "tags": [
+          "POS"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": {
+              "en": "POS identifier to delete",
+              "pt": "TODO",
+              "es": "TODO"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": {
+              "en": "POS deleted",
+              "pt": "TODO",
+              "es": "TODO"
+            }
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "errorKey": {
+                      "type": "string",
+                      "enum": [
+                        {
+                          "title": "TODO_error_code",
+                          "description": {
+                            "en": "TODO: describe this error",
+                            "pt": "TODO",
+                            "es": "TODO"
+                          }
+                        }
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "title": {
+          "en": "Delete a point of sale",
+          "pt": "TODO",
+          "es": "TODO"
+        },
+        "description": {
+          "en": "Delete a point of sale",
+          "pt": "TODO",
+          "es": "TODO"
+        }
+      }
+    },
+    "/post-purchase/v1/claims/{claim_id}": {
+      "get": {
+        "description": {
+          "en": "Returns full details of a post-sale claim including status, stage, and players.",
+          "pt": "TODO",
+          "es": "TODO"
+        },
+        "tags": [
+          "Claims"
+        ],
+        "parameters": [
+          {
+            "name": "claim_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": {
+              "en": "Claim found",
+              "pt": "TODO",
+              "es": "TODO"
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Claim"
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "errorKey": {
+                      "type": "string",
+                      "enum": [
+                        {
+                          "title": "TODO_error_code",
+                          "description": {
+                            "en": "TODO: describe this error",
+                            "pt": "TODO",
+                            "es": "TODO"
+                          }
+                        }
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "errorKey": {
+                      "type": "string",
+                      "enum": [
+                        {
+                          "title": "TODO_error_code",
+                          "description": {
+                            "en": "TODO: describe this error",
+                            "pt": "TODO",
+                            "es": "TODO"
+                          }
+                        }
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "title": {
+          "en": "Get claim details",
+          "pt": "TODO",
+          "es": "TODO"
+        }
+      }
+    },
+    "/post-purchase/v1/claims/search": {
+      "get": {
+        "tags": [
+          "Claims"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "query",
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
+            "name": "type",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "enum": [
+                {
+                  "title": "mediations",
+                  "description": {
+                    "en": "mediations",
+                    "pt": "TODO",
+                    "es": "TODO"
+                  }
+                },
+                {
+                  "title": "claims",
+                  "description": {
+                    "en": "claims",
+                    "pt": "TODO",
+                    "es": "TODO"
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "name": "stage",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "enum": [
+                {
+                  "title": "claim",
+                  "description": {
+                    "en": "claim",
+                    "pt": "TODO",
+                    "es": "TODO"
+                  }
+                },
+                {
+                  "title": "dispute",
+                  "description": {
+                    "en": "dispute",
+                    "pt": "TODO",
+                    "es": "TODO"
+                  }
+                },
+                {
+                  "title": "resolution",
+                  "description": {
+                    "en": "resolution",
+                    "pt": "TODO",
+                    "es": "TODO"
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "name": "status",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "enum": [
+                {
+                  "title": "opened",
+                  "description": {
+                    "en": "opened",
+                    "pt": "TODO",
+                    "es": "TODO"
+                  }
+                },
+                {
+                  "title": "closed",
+                  "description": {
+                    "en": "closed",
+                    "pt": "TODO",
+                    "es": "TODO"
+                  }
+                },
+                {
+                  "title": "cancelled",
+                  "description": {
+                    "en": "cancelled",
+                    "pt": "TODO",
+                    "es": "TODO"
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "default": 30
+            }
+          },
+          {
+            "name": "offset",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "default": 0
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": {
+              "en": "Claims search results",
+              "pt": "TODO",
+              "es": "TODO"
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ClaimSearchResult"
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "errorKey": {
+                      "type": "string",
+                      "enum": [
+                        {
+                          "title": "TODO_error_code",
+                          "description": {
+                            "en": "TODO: describe this error",
+                            "pt": "TODO",
+                            "es": "TODO"
+                          }
+                        }
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "title": {
+          "en": "Search claims",
+          "pt": "TODO",
+          "es": "TODO"
+        },
+        "description": {
+          "en": "Search claims",
+          "pt": "TODO",
+          "es": "TODO"
+        }
+      }
+    },
+    "/post-purchase/v1/claims/reasons/{reason_id}": {
+      "get": {
+        "description": {
+          "en": "Returns the description and metadata for a specific claim reason code.",
+          "pt": "TODO",
+          "es": "TODO"
+        },
+        "tags": [
+          "Claims"
+        ],
+        "parameters": [
+          {
+            "name": "reason_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": {
+              "en": "Reason found",
+              "pt": "TODO",
+              "es": "TODO"
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ClaimReason"
+                }
+              }
+            }
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "errorKey": {
+                      "type": "string",
+                      "enum": [
+                        {
+                          "title": "TODO_error_code",
+                          "description": {
+                            "en": "TODO: describe this error",
+                            "pt": "TODO",
+                            "es": "TODO"
+                          }
+                        }
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "title": {
+          "en": "Get claim reason",
+          "pt": "TODO",
+          "es": "TODO"
+        }
+      }
+    },
+    "/post-purchase/v1/claims/{claim_id}/status_history": {
+      "get": {
+        "tags": [
+          "Claims"
+        ],
+        "parameters": [
+          {
+            "name": "claim_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": {
+              "en": "History entries",
+              "pt": "TODO",
+              "es": "TODO"
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ClaimHistoryEntry"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "title": {
+          "en": "Get claim status history",
+          "pt": "TODO",
+          "es": "TODO"
+        },
+        "description": {
+          "en": "Get claim status history",
+          "pt": "TODO",
+          "es": "TODO"
+        }
+      }
+    },
+    "/post-purchase/v1/claims/{claim_id}/evidences": {
+      "get": {
+        "tags": [
+          "Claims"
+        ],
+        "parameters": [
+          {
+            "name": "claim_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": {
+              "en": "Evidence list",
+              "pt": "TODO",
+              "es": "TODO"
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ClaimEvidence"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "title": {
+          "en": "Get claim evidence",
+          "pt": "TODO",
+          "es": "TODO"
+        },
+        "description": {
+          "en": "Get claim evidence",
+          "pt": "TODO",
+          "es": "TODO"
+        }
+      }
+    },
+    "/post-purchase/v1/claims/{claim_id}/messages": {
+      "get": {
+        "tags": [
+          "Claim Messages"
+        ],
+        "parameters": [
+          {
+            "name": "claim_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": {
+              "en": "Message thread",
+              "pt": "TODO",
+              "es": "TODO"
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ClaimMessage"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "title": {
+          "en": "Get claim messages",
+          "pt": "TODO",
+          "es": "TODO"
+        },
+        "description": {
+          "en": "Get claim messages",
+          "pt": "TODO",
+          "es": "TODO"
+        }
+      }
+    },
+    "/post-purchase/v1/claims/{claim_id}/actions/send-message": {
+      "post": {
+        "description": {
+          "en": "Sends a text message (with optional attachments) in the claim thread.",
+          "pt": "TODO",
+          "es": "TODO"
+        },
+        "tags": [
+          "Claim Messages"
+        ],
+        "parameters": [
+          {
+            "name": "claim_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
+            "name": "application_id",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SendMessageRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": {
+              "en": "Message sent",
+              "pt": "TODO",
+              "es": "TODO"
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "errorKey": {
+                      "type": "string",
+                      "enum": [
+                        {
+                          "title": "TODO_error_code",
+                          "description": {
+                            "en": "TODO: describe this error",
+                            "pt": "TODO",
+                            "es": "TODO"
+                          }
+                        }
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "errorKey": {
+                      "type": "string",
+                      "enum": [
+                        {
+                          "title": "TODO_error_code",
+                          "description": {
+                            "en": "TODO: describe this error",
+                            "pt": "TODO",
+                            "es": "TODO"
+                          }
+                        }
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "429": {
+            "$ref": "#/components/responses/TooManyRequests",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "errorKey": {
+                      "type": "string",
+                      "enum": [
+                        {
+                          "title": "TODO_error_code",
+                          "description": {
+                            "en": "TODO: describe this error",
+                            "pt": "TODO",
+                            "es": "TODO"
+                          }
+                        }
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "title": {
+          "en": "Send a message in a claim",
+          "pt": "TODO",
+          "es": "TODO"
+        }
+      }
+    },
+    "/post-purchase/v1/claims/{claim_id}/attachments": {
+      "post": {
+        "description": {
+          "en": "Uploads and attaches a file (image, PDF) to a claim. Supported formats: JPEG, PNG, PDF. Max size: 10 MB.",
+          "pt": "TODO",
+          "es": "TODO"
+        },
+        "tags": [
+          "Claim Messages"
+        ],
+        "parameters": [
+          {
+            "name": "claim_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "file": {
+                    "type": "string",
+                    "format": "binary",
+                    "description": {
+                      "en": "File to attach (JPEG, PNG, or PDF, max 10 MB)",
+                      "pt": "TODO",
+                      "es": "TODO"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": {
+              "en": "File attached",
+              "pt": "TODO",
+              "es": "TODO"
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "file_id": {
+                      "type": "string"
+                    },
+                    "file_name": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "errorKey": {
+                      "type": "string",
+                      "enum": [
+                        {
+                          "title": "TODO_error_code",
+                          "description": {
+                            "en": "TODO: describe this error",
+                            "pt": "TODO",
+                            "es": "TODO"
+                          }
+                        }
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "errorKey": {
+                      "type": "string",
+                      "enum": [
+                        {
+                          "title": "TODO_error_code",
+                          "description": {
+                            "en": "TODO: describe this error",
+                            "pt": "TODO",
+                            "es": "TODO"
+                          }
+                        }
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "title": {
+          "en": "Attach a file to a claim message",
+          "pt": "TODO",
+          "es": "TODO"
+        }
+      }
+    },
+    "/post-purchase/v1/claims/{claim_id}/attachments/{fileName}": {
+      "get": {
+        "tags": [
+          "Claim Messages"
+        ],
+        "parameters": [
+          {
+            "name": "claim_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
+            "name": "fileName",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": {
+              "en": "File metadata",
+              "pt": "TODO",
+              "es": "TODO"
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "file_name": {
+                      "type": "string"
+                    },
+                    "file_id": {
+                      "type": "string"
+                    },
+                    "content_type": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "errorKey": {
+                      "type": "string",
+                      "enum": [
+                        {
+                          "title": "TODO_error_code",
+                          "description": {
+                            "en": "TODO: describe this error",
+                            "pt": "TODO",
+                            "es": "TODO"
+                          }
+                        }
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "title": {
+          "en": "Get attached file metadata",
+          "pt": "TODO",
+          "es": "TODO"
+        },
+        "description": {
+          "en": "Get attached file metadata",
+          "pt": "TODO",
+          "es": "TODO"
+        }
+      }
+    },
+    "/post-purchase/v1/claims/{claim_id}/attachments/{fileName}/download": {
+      "get": {
+        "tags": [
+          "Claim Messages"
+        ],
+        "parameters": [
+          {
+            "name": "claim_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
+            "name": "fileName",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": {
+              "en": "File content",
+              "pt": "TODO",
+              "es": "TODO"
+            },
+            "content": {
+              "application/octet-stream": {
+                "schema": {
+                  "type": "string",
+                  "format": "binary"
+                }
+              }
+            }
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "errorKey": {
+                      "type": "string",
+                      "enum": [
+                        {
+                          "title": "TODO_error_code",
+                          "description": {
+                            "en": "TODO: describe this error",
+                            "pt": "TODO",
+                            "es": "TODO"
+                          }
+                        }
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "title": {
+          "en": "Download an attached file",
+          "pt": "TODO",
+          "es": "TODO"
+        },
+        "description": {
+          "en": "Download an attached file",
+          "pt": "TODO",
+          "es": "TODO"
+        }
+      }
+    },
+    "/post-purchase/v1/claims/{claim_id}/actions/open-dispute": {
+      "post": {
+        "description": {
+          "en": "Escalates a claim to mediation, requesting MP to intervene in the dispute.",
+          "pt": "TODO",
+          "es": "TODO"
+        },
+        "tags": [
+          "Claim Resolutions"
+        ],
+        "parameters": [
+          {
+            "name": "claim_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": {
+              "en": "Mediation requested",
+              "pt": "TODO",
+              "es": "TODO"
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "errorKey": {
+                      "type": "string",
+                      "enum": [
+                        {
+                          "title": "TODO_error_code",
+                          "description": {
+                            "en": "TODO: describe this error",
+                            "pt": "TODO",
+                            "es": "TODO"
+                          }
+                        }
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "errorKey": {
+                      "type": "string",
+                      "enum": [
+                        {
+                          "title": "TODO_error_code",
+                          "description": {
+                            "en": "TODO: describe this error",
+                            "pt": "TODO",
+                            "es": "TODO"
+                          }
+                        }
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "title": {
+          "en": "Request claim mediation",
+          "pt": "TODO",
+          "es": "TODO"
+        }
+      }
+    },
+    "/post-purchase/v1/claims/{claim_id}/expected-resolutions": {
+      "get": {
+        "description": {
+          "en": "Returns the possible resolution options for a claim at the mediation stage.",
+          "pt": "TODO",
+          "es": "TODO"
+        },
+        "tags": [
+          "Claim Resolutions"
+        ],
+        "parameters": [
+          {
+            "name": "claim_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": {
+              "en": "Expected resolutions",
+              "pt": "TODO",
+              "es": "TODO"
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/MediationResolution"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "title": {
+          "en": "Get expected mediation resolutions",
+          "pt": "TODO",
+          "es": "TODO"
+        }
+      }
+    },
+    "/post-purchase/v1/claims/{claim_id}/actions/evidences": {
+      "post": {
+        "description": {
+          "en": "Uploads shipping evidence (tracking code, proof of delivery) to support the seller's case in a claim. Accepted as part of the claims resolution process.",
+          "pt": "TODO",
+          "es": "TODO"
+        },
+        "tags": [
+          "Claim Shipping"
+        ],
+        "parameters": [
+          {
+            "name": "claim_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "type": {
+                    "type": "string",
+                    "enum": [
+                      {
+                        "title": "tracking_code",
+                        "description": {
+                          "en": "tracking_code",
+                          "pt": "TODO",
+                          "es": "TODO"
+                        }
+                      },
+                      {
+                        "title": "proof_of_delivery",
+                        "description": {
+                          "en": "proof_of_delivery",
+                          "pt": "TODO",
+                          "es": "TODO"
+                        }
+                      }
+                    ]
+                  },
+                  "value": {
+                    "type": "string",
+                    "description": {
+                      "en": "Tracking code or delivery confirmation reference",
+                      "pt": "TODO",
+                      "es": "TODO"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": {
+              "en": "Shipping evidence uploaded",
+              "pt": "TODO",
+              "es": "TODO"
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "errorKey": {
+                      "type": "string",
+                      "enum": [
+                        {
+                          "title": "TODO_error_code",
+                          "description": {
+                            "en": "TODO: describe this error",
+                            "pt": "TODO",
+                            "es": "TODO"
+                          }
+                        }
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "errorKey": {
+                      "type": "string",
+                      "enum": [
+                        {
+                          "title": "TODO_error_code",
+                          "description": {
+                            "en": "TODO: describe this error",
+                            "pt": "TODO",
+                            "es": "TODO"
+                          }
+                        }
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "title": {
+          "en": "Upload shipping evidence",
+          "pt": "TODO",
+          "es": "TODO"
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "Claim": {
+        "type": "object",
+        "description": {
+          "en": "A post-sale claim (dispute) between buyer and seller",
+          "pt": "TODO",
+          "es": "TODO"
+        },
+        "properties": {
+          "id": {
+            "type": "integer",
+            "description": {
+              "en": "Claim unique identifier",
+              "pt": "TODO",
+              "es": "TODO"
+            },
+            "example": 4567890123
+          },
+          "type": {
+            "type": "string",
+            "enum": [
+              {
+                "title": "mediations",
+                "description": {
+                  "en": "mediations",
+                  "pt": "TODO",
+                  "es": "TODO"
+                }
+              },
+              {
+                "title": "claims",
+                "description": {
+                  "en": "claims",
+                  "pt": "TODO",
+                  "es": "TODO"
+                }
+              }
+            ],
+            "description": {
+              "en": "mediations — buyer-initiated dispute requiring MP mediation; claims — seller-initiated claim",
+              "pt": "TODO",
+              "es": "TODO"
+            }
+          },
+          "stage": {
+            "type": "string",
+            "enum": [
+              {
+                "title": "claim",
+                "description": {
+                  "en": "claim",
+                  "pt": "TODO",
+                  "es": "TODO"
+                }
+              },
+              {
+                "title": "dispute",
+                "description": {
+                  "en": "dispute",
+                  "pt": "TODO",
+                  "es": "TODO"
+                }
+              },
+              {
+                "title": "resolution",
+                "description": {
+                  "en": "resolution",
+                  "pt": "TODO",
+                  "es": "TODO"
+                }
+              }
+            ],
+            "description": {
+              "en": "Current stage in the dispute lifecycle",
+              "pt": "TODO",
+              "es": "TODO"
+            }
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              {
+                "title": "opened",
+                "description": {
+                  "en": "opened",
+                  "pt": "TODO",
+                  "es": "TODO"
+                }
+              },
+              {
+                "title": "closed",
+                "description": {
+                  "en": "closed",
+                  "pt": "TODO",
+                  "es": "TODO"
+                }
+              },
+              {
+                "title": "cancelled",
+                "description": {
+                  "en": "cancelled",
+                  "pt": "TODO",
+                  "es": "TODO"
+                }
+              }
+            ]
+          },
+          "date_created": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "last_updated": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "resource": {
+            "type": "string",
+            "enum": [
+              {
+                "title": "payment",
+                "description": {
+                  "en": "payment",
+                  "pt": "TODO",
+                  "es": "TODO"
+                }
+              },
+              {
+                "title": "shipment",
+                "description": {
+                  "en": "shipment",
+                  "pt": "TODO",
+                  "es": "TODO"
+                }
+              },
+              {
+                "title": "order",
+                "description": {
+                  "en": "order",
+                  "pt": "TODO",
+                  "es": "TODO"
+                }
+              }
+            ],
+            "description": {
+              "en": "Resource type the claim is about",
+              "pt": "TODO",
+              "es": "TODO"
+            }
+          },
+          "reason_id": {
+            "type": "string",
+            "description": {
+              "en": "Reason code for the claim",
+              "pt": "TODO",
+              "es": "TODO"
+            }
+          },
+          "players": {
+            "type": "array",
+            "description": {
+              "en": "Parties involved (buyer, seller)",
+              "pt": "TODO",
+              "es": "TODO"
+            },
+            "items": {
+              "type": "object",
+              "properties": {
+                "role": {
+                  "type": "string",
+                  "enum": [
+                    {
+                      "title": "complainant",
+                      "description": {
+                        "en": "complainant",
+                        "pt": "TODO",
+                        "es": "TODO"
+                      }
+                    },
+                    {
+                      "title": "respondent",
+                      "description": {
+                        "en": "respondent",
+                        "pt": "TODO",
+                        "es": "TODO"
+                      }
+                    }
+                  ]
+                },
+                "user_id": {
+                  "type": "integer"
+                },
+                "available_actions": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "ClaimMessage": {
+        "type": "object",
+        "description": {
+          "en": "A message within a claim thread",
+          "pt": "TODO",
+          "es": "TODO"
+        },
+        "properties": {
+          "id": {
+            "type": "integer"
+          },
+          "date_created": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "from": {
+            "type": "object",
+            "properties": {
+              "user_id": {
+                "type": "integer"
+              },
+              "role": {
+                "type": "string",
+                "enum": [
+                  {
+                    "title": "complainant",
+                    "description": {
+                      "en": "complainant",
+                      "pt": "TODO",
+                      "es": "TODO"
+                    }
+                  },
+                  {
+                    "title": "respondent",
+                    "description": {
+                      "en": "respondent",
+                      "pt": "TODO",
+                      "es": "TODO"
+                    }
+                  },
+                  {
+                    "title": "mediator",
+                    "description": {
+                      "en": "mediator",
+                      "pt": "TODO",
+                      "es": "TODO"
+                    }
+                  }
+                ]
+              }
+            }
+          },
+          "message": {
+            "type": "string",
+            "description": {
+              "en": "Text content of the message",
+              "pt": "TODO",
+              "es": "TODO"
+            }
+          },
+          "attachments": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "file_name": {
+                  "type": "string"
+                },
+                "file_id": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      },
+      "ClaimReason": {
+        "type": "object",
+        "description": {
+          "en": "A reason code for opening a claim",
+          "pt": "TODO",
+          "es": "TODO"
+        },
+        "properties": {
+          "id": {
+            "type": "string",
+            "example": "PNR"
+          },
+          "description": {
+            "type": "string",
+            "example": "Product not received"
+          },
+          "type": {
+            "type": "string",
+            "enum": [
+              {
+                "title": "mediations",
+                "description": {
+                  "en": "mediations",
+                  "pt": "TODO",
+                  "es": "TODO"
+                }
+              },
+              {
+                "title": "claims",
+                "description": {
+                  "en": "claims",
+                  "pt": "TODO",
+                  "es": "TODO"
+                }
+              }
+            ]
+          }
+        }
+      },
+      "ClaimSearchResult": {
+        "type": "object",
+        "properties": {
+          "paging": {
+            "$ref": "#/components/schemas/Pagination"
+          },
+          "results": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Claim"
+            }
+          }
+        }
+      },
+      "ClaimHistoryEntry": {
+        "type": "object",
+        "properties": {
+          "date": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "status": {
+            "type": "string"
+          },
+          "stage": {
+            "type": "string"
+          },
+          "changed_by": {
+            "type": "string",
+            "enum": [
+              {
+                "title": "buyer",
+                "description": {
+                  "en": "buyer",
+                  "pt": "TODO",
+                  "es": "TODO"
+                }
+              },
+              {
+                "title": "seller",
+                "description": {
+                  "en": "seller",
+                  "pt": "TODO",
+                  "es": "TODO"
+                }
+              },
+              {
+                "title": "system",
+                "description": {
+                  "en": "system",
+                  "pt": "TODO",
+                  "es": "TODO"
+                }
+              },
+              {
+                "title": "mediator",
+                "description": {
+                  "en": "mediator",
+                  "pt": "TODO",
+                  "es": "TODO"
+                }
+              }
+            ]
+          }
+        }
+      },
+      "ClaimEvidence": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "type": {
+            "type": "string",
+            "enum": [
+              {
+                "title": "tracking_code",
+                "description": {
+                  "en": "tracking_code",
+                  "pt": "TODO",
+                  "es": "TODO"
+                }
+              },
+              {
+                "title": "photo",
+                "description": {
+                  "en": "photo",
+                  "pt": "TODO",
+                  "es": "TODO"
+                }
+              },
+              {
+                "title": "invoice",
+                "description": {
+                  "en": "invoice",
+                  "pt": "TODO",
+                  "es": "TODO"
+                }
+              },
+              {
+                "title": "other",
+                "description": {
+                  "en": "other",
+                  "pt": "TODO",
+                  "es": "TODO"
+                }
+              }
+            ]
+          },
+          "date_created": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "file_name": {
+            "type": "string"
+          }
+        }
+      },
+      "MediationResolution": {
+        "type": "object",
+        "description": {
+          "en": "Expected resolution options at mediation stage",
+          "pt": "TODO",
+          "es": "TODO"
+        },
+        "properties": {
+          "type": {
+            "type": "string",
+            "enum": [
+              {
+                "title": "refund",
+                "description": {
+                  "en": "refund",
+                  "pt": "TODO",
+                  "es": "TODO"
+                }
+              },
+              {
+                "title": "return",
+                "description": {
+                  "en": "return",
+                  "pt": "TODO",
+                  "es": "TODO"
+                }
+              },
+              {
+                "title": "partial_refund",
+                "description": {
+                  "en": "partial_refund",
+                  "pt": "TODO",
+                  "es": "TODO"
+                }
+              }
+            ]
+          },
+          "amount": {
+            "type": "number",
+            "format": "float"
+          },
+          "reason": {
+            "type": "string"
+          }
+        }
+      },
+      "SendMessageRequest": {
+        "type": "object",
+        "properties": {
+          "message": {
+            "type": "string",
+            "description": {
+              "en": "Text content of the message to send",
+              "pt": "TODO",
+              "es": "TODO"
+            },
+            "example": "I can provide the tracking code for the shipment."
+          },
+          "attachments": {
+            "type": "array",
+            "description": {
+              "en": "File IDs to attach (upload first via attachments endpoint)",
+              "pt": "TODO",
+              "es": "TODO"
+            },
+            "items": {
+              "type": "string"
+            }
+          }
+        }
+      },
+      "POSRequest": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": {
+              "en": "POS display name",
+              "pt": "TODO",
+              "es": "TODO"
+            },
+            "example": "Caixa 1"
+          },
+          "store_id": {
+            "type": "string",
+            "description": {
+              "en": "Parent store ID",
+              "pt": "TODO",
+              "es": "TODO"
+            }
+          },
+          "external_id": {
+            "type": "string",
+            "description": {
+              "en": "Your internal POS identifier",
+              "pt": "TODO",
+              "es": "TODO"
+            }
+          },
+          "external_store_id": {
+            "type": "string"
+          },
+          "category": {
+            "type": "integer",
+            "description": {
+              "en": "Business category code",
+              "pt": "TODO",
+              "es": "TODO"
+            }
+          },
+          "fixed_amount": {
+            "type": "boolean",
+            "description": {
+              "en": "When true the POS amount is fixed and cannot be changed by payer",
+              "pt": "TODO",
+              "es": "TODO"
+            },
+            "default": false
+          },
+          "url": {
+            "type": "string",
+            "format": "uri",
+            "description": {
+              "en": "Webhook URL for this specific POS",
+              "pt": "TODO",
+              "es": "TODO"
+            }
+          }
+        }
+      },
+      "POS": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/POSRequest"
+          },
+          {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "string"
+              },
+              "qr_code": {
+                "type": "string",
+                "description": {
+                  "en": "QR code data string for this POS",
+                  "pt": "TODO",
+                  "es": "TODO"
+                }
+              },
+              "qr_code_image": {
+                "type": "string",
+                "format": "uri",
+                "description": {
+                  "en": "URL of QR code image",
+                  "pt": "TODO",
+                  "es": "TODO"
+                }
+              },
+              "date_created": {
+                "type": "string",
+                "format": "date-time"
+              },
+              "date_last_updated": {
+                "type": "string",
+                "format": "date-time"
+              }
+            }
+          }
+        ]
+      },
+      "Pagination": {
+        "type": "object",
+        "description": {
+          "en": "Pagination metadata returned in list/search responses",
+          "pt": "TODO",
+          "es": "TODO"
+        },
+        "properties": {
+          "total": {
+            "type": "integer",
+            "description": {
+              "en": "Total number of results",
+              "pt": "TODO",
+              "es": "TODO"
+            },
+            "example": 42
+          },
+          "limit": {
+            "type": "integer",
+            "description": {
+              "en": "Results per page",
+              "pt": "TODO",
+              "es": "TODO"
+            },
+            "example": 30
+          },
+          "offset": {
+            "type": "integer",
+            "description": {
+              "en": "Offset of the current page",
+              "pt": "TODO",
+              "es": "TODO"
+            },
+            "example": 0
+          }
+        }
+      }
+    }
+  }
+}

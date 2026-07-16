@@ -1,0 +1,208 @@
+{
+  "url": "https://api.mercadopago.com",
+  "paths": {
+    "/v1/chargebacks/{id}": {
+      "get": {
+        "tags": [
+          "Chargebacks"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": {
+              "en": "Chargeback found",
+              "pt": "TODO",
+              "es": "TODO"
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "string"
+                    },
+                    "payments": {
+                      "type": "array",
+                      "items": {
+                        "type": "object"
+                      }
+                    },
+                    "currency": {
+                      "type": "string"
+                    },
+                    "amount": {
+                      "type": "number",
+                      "format": "float"
+                    },
+                    "coverage_applied": {
+                      "type": "boolean"
+                    },
+                    "coverage_elegible": {
+                      "type": "boolean"
+                    },
+                    "documentation_required": {
+                      "type": "boolean"
+                    },
+                    "documentation_status": {
+                      "type": "string",
+                      "enum": [
+                        {
+                          "title": "valid",
+                          "description": {
+                            "en": "valid",
+                            "pt": "TODO",
+                            "es": "TODO"
+                          }
+                        },
+                        {
+                          "title": "invalid",
+                          "description": {
+                            "en": "invalid",
+                            "pt": "TODO",
+                            "es": "TODO"
+                          }
+                        },
+                        {
+                          "title": "not_supplied",
+                          "description": {
+                            "en": "not_supplied",
+                            "pt": "TODO",
+                            "es": "TODO"
+                          }
+                        }
+                      ]
+                    },
+                    "documentation": {
+                      "type": "object"
+                    },
+                    "date_documentation_deadline": {
+                      "type": "string",
+                      "format": "date-time"
+                    },
+                    "date_created": {
+                      "type": "string",
+                      "format": "date-time"
+                    },
+                    "date_last_updated": {
+                      "type": "string",
+                      "format": "date-time"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "errorKey": {
+                      "type": "string",
+                      "enum": [
+                        {
+                          "title": "TODO_error_code",
+                          "description": {
+                            "en": "TODO: describe this error",
+                            "pt": "TODO",
+                            "es": "TODO"
+                          }
+                        }
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "title": {
+          "en": "Get chargeback by ID",
+          "pt": "TODO",
+          "es": "TODO"
+        },
+        "description": {
+          "en": "Get chargeback by ID",
+          "pt": "TODO",
+          "es": "TODO"
+        }
+      },
+      "put": {
+        "tags": [
+          "Chargebacks"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "files": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "name": {
+                          "type": "string"
+                        },
+                        "description": {
+                          "type": "string"
+                        },
+                        "url": {
+                          "type": "string",
+                          "format": "uri"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": {
+              "en": "Chargeback updated",
+              "pt": "TODO",
+              "es": "TODO"
+            }
+          }
+        },
+        "title": {
+          "en": "Upload chargeback documentation",
+          "pt": "TODO",
+          "es": "TODO"
+        },
+        "description": {
+          "en": "Upload chargeback documentation",
+          "pt": "TODO",
+          "es": "TODO"
+        }
+      }
+    }
+  }
+}

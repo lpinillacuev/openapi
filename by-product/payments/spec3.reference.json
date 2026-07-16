@@ -1,0 +1,2806 @@
+{
+  "url": "https://api.mercadopago.com",
+  "paths": {
+    "/v1/payments": {
+      "post": {
+        "description": {
+          "en": "Creates a payment. For card payments, generate a card token client-side via MercadoPago.js before calling this endpoint. For cash/offline methods (Boleto, OXXO, Pix), the response includes a payment URL in `transaction_details.external_resource_url`.\n**Idempotency**: Include `X-Idempotency-Key` to safely retry on network errors without risk of double charges.\n**Recommendation**: For new integrations, prefer the Orders API (`POST /v1/orders`).\n**Idempotent:** Supports `X-Idempotency-Key` header to safely retry without duplicate charges.\n**Webhook events triggered:** payment, merchant_order",
+          "pt": "TODO",
+          "es": "TODO"
+        },
+        "tags": [
+          "Payments"
+        ],
+        "parameters": [
+          {
+            "name": "X-Idempotency-Key",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "description": {
+              "en": "Unique key per payment attempt. If you retry with the same key and the original payment was processed, MP returns the original result without creating a duplicate.",
+              "pt": "TODO",
+              "es": "TODO"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PaymentRequest"
+              },
+              "examples": {
+                "card_brazil": {
+                  "summary": "Credit card — Brazil (Visa)",
+                  "value": {
+                    "transaction_amount": 100.5,
+                    "token": "YOUR_ACCESS_TOKEN",
+                    "description": "Premium subscription — 1 month",
+                    "installments": 1,
+                    "payment_method_id": "visa",
+                    "payer": {
+                      "email": "test@example.com",
+                      "identification": {
+                        "type": "CPF",
+                        "number": "12345678909"
+                      }
+                    }
+                  }
+                },
+                "pix_brazil": {
+                  "summary": "Pix — Brazil",
+                  "value": {
+                    "transaction_amount": 100.5,
+                    "payment_method_id": "pix",
+                    "payer": {
+                      "email": "test@example.com",
+                      "identification": {
+                        "type": "CPF",
+                        "number": "12345678909"
+                      }
+                    }
+                  }
+                },
+                "boleto_brazil": {
+                  "summary": "Boleto Bancário — Brazil",
+                  "value": {
+                    "transaction_amount": 100.5,
+                    "payment_method_id": "bolbradesco",
+                    "payer": {
+                      "email": "test@example.com",
+                      "first_name": "João",
+                      "last_name": "Silva",
+                      "identification": {
+                        "type": "CPF",
+                        "number": "12345678909"
+                      }
+                    }
+                  }
+                },
+                "card_argentina": {
+                  "summary": "Credit card — Argentina (Visa)",
+                  "value": {
+                    "transaction_amount": 5000.0,
+                    "token": "YOUR_ACCESS_TOKEN",
+                    "description": "Order #1234",
+                    "installments": 3,
+                    "payment_method_id": "visa",
+                    "payer": {
+                      "email": "test@example.com",
+                      "identification": {
+                        "type": "DNI",
+                        "number": "12345678"
+                      }
+                    }
+                  }
+                },
+                "oxxo_mexico": {
+                  "summary": "OXXO — Mexico",
+                  "value": {
+                    "transaction_amount": 500.0,
+                    "payment_method_id": "oxxo",
+                    "date_of_expiration": "2024-12-31T23:59:59.000-06:00",
+                    "payer": {
+                      "email": "test@example.com"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": {
+              "en": "Payment created",
+              "pt": "TODO",
+              "es": "TODO"
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Payment"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "errorKey": {
+                      "type": "string",
+                      "enum": [
+                        {
+                          "title": "TODO_error_code",
+                          "description": {
+                            "en": "TODO: describe this error",
+                            "pt": "TODO",
+                            "es": "TODO"
+                          }
+                        }
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "errorKey": {
+                      "type": "string",
+                      "enum": [
+                        {
+                          "title": "TODO_error_code",
+                          "description": {
+                            "en": "TODO: describe this error",
+                            "pt": "TODO",
+                            "es": "TODO"
+                          }
+                        }
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "403": {
+            "$ref": "#/components/responses/Forbidden",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "errorKey": {
+                      "type": "string",
+                      "enum": [
+                        {
+                          "title": "TODO_error_code",
+                          "description": {
+                            "en": "TODO: describe this error",
+                            "pt": "TODO",
+                            "es": "TODO"
+                          }
+                        }
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "422": {
+            "$ref": "#/components/responses/UnprocessableEntity",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "errorKey": {
+                      "type": "string",
+                      "enum": [
+                        {
+                          "title": "TODO_error_code",
+                          "description": {
+                            "en": "TODO: describe this error",
+                            "pt": "TODO",
+                            "es": "TODO"
+                          }
+                        }
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "200": {
+            "description": {
+              "en": "Payment created",
+              "pt": "TODO",
+              "es": "TODO"
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Payment"
+                }
+              }
+            }
+          }
+        },
+        "title": {
+          "en": "Create a payment",
+          "pt": "TODO",
+          "es": "TODO"
+        }
+      }
+    },
+    "/v1/payments/{id}": {
+      "get": {
+        "tags": [
+          "Payments"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            },
+            "description": {
+              "en": "Payment ID",
+              "pt": "TODO",
+              "es": "TODO"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": {
+              "en": "Payment found",
+              "pt": "TODO",
+              "es": "TODO"
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Payment"
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "errorKey": {
+                      "type": "string",
+                      "enum": [
+                        {
+                          "title": "TODO_error_code",
+                          "description": {
+                            "en": "TODO: describe this error",
+                            "pt": "TODO",
+                            "es": "TODO"
+                          }
+                        }
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "403": {
+            "$ref": "#/components/responses/Forbidden",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "errorKey": {
+                      "type": "string",
+                      "enum": [
+                        {
+                          "title": "TODO_error_code",
+                          "description": {
+                            "en": "TODO: describe this error",
+                            "pt": "TODO",
+                            "es": "TODO"
+                          }
+                        }
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "errorKey": {
+                      "type": "string",
+                      "enum": [
+                        {
+                          "title": "TODO_error_code",
+                          "description": {
+                            "en": "TODO: describe this error",
+                            "pt": "TODO",
+                            "es": "TODO"
+                          }
+                        }
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "errorKey": {
+                      "type": "string",
+                      "enum": [
+                        {
+                          "title": "TODO_error_code",
+                          "description": {
+                            "en": "TODO: describe this error",
+                            "pt": "TODO",
+                            "es": "TODO"
+                          }
+                        }
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "title": {
+          "en": "Get payment by ID",
+          "pt": "TODO",
+          "es": "TODO"
+        },
+        "description": {
+          "en": "Get payment by ID",
+          "pt": "TODO",
+          "es": "TODO"
+        }
+      },
+      "put": {
+        "description": {
+          "en": "Update payment fields or capture an authorized payment. To capture an authorized two-step payment: send `{\"capture\": true}`. To cancel an authorized payment: send `{\"status\": \"cancelled\"}`.",
+          "pt": "TODO",
+          "es": "TODO"
+        },
+        "tags": [
+          "Payments"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PaymentUpdateRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": {
+              "en": "Payment updated",
+              "pt": "TODO",
+              "es": "TODO"
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Payment"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "errorKey": {
+                      "type": "string",
+                      "enum": [
+                        {
+                          "title": "TODO_error_code",
+                          "description": {
+                            "en": "TODO: describe this error",
+                            "pt": "TODO",
+                            "es": "TODO"
+                          }
+                        }
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "errorKey": {
+                      "type": "string",
+                      "enum": [
+                        {
+                          "title": "TODO_error_code",
+                          "description": {
+                            "en": "TODO: describe this error",
+                            "pt": "TODO",
+                            "es": "TODO"
+                          }
+                        }
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "403": {
+            "$ref": "#/components/responses/Forbidden",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "errorKey": {
+                      "type": "string",
+                      "enum": [
+                        {
+                          "title": "TODO_error_code",
+                          "description": {
+                            "en": "TODO: describe this error",
+                            "pt": "TODO",
+                            "es": "TODO"
+                          }
+                        }
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "errorKey": {
+                      "type": "string",
+                      "enum": [
+                        {
+                          "title": "TODO_error_code",
+                          "description": {
+                            "en": "TODO: describe this error",
+                            "pt": "TODO",
+                            "es": "TODO"
+                          }
+                        }
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "title": {
+          "en": "Update or capture a payment",
+          "pt": "TODO",
+          "es": "TODO"
+        }
+      }
+    },
+    "/v1/payments/search": {
+      "get": {
+        "tags": [
+          "Payments"
+        ],
+        "parameters": [
+          {
+            "name": "sort",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "criteria",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "enum": [
+                {
+                  "title": "asc",
+                  "description": {
+                    "en": "asc",
+                    "pt": "TODO",
+                    "es": "TODO"
+                  }
+                },
+                {
+                  "title": "desc",
+                  "description": {
+                    "en": "desc",
+                    "pt": "TODO",
+                    "es": "TODO"
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "name": "external_reference",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "range",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "enum": [
+                {
+                  "title": "date_created",
+                  "description": {
+                    "en": "date_created",
+                    "pt": "TODO",
+                    "es": "TODO"
+                  }
+                },
+                {
+                  "title": "date_last_updated",
+                  "description": {
+                    "en": "date_last_updated",
+                    "pt": "TODO",
+                    "es": "TODO"
+                  }
+                },
+                {
+                  "title": "money_release_date",
+                  "description": {
+                    "en": "money_release_date",
+                    "pt": "TODO",
+                    "es": "TODO"
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "name": "begin_date",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "format": "date-time"
+            }
+          },
+          {
+            "name": "end_date",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "format": "date-time"
+            }
+          },
+          {
+            "name": "status",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "store_id",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "pos_id",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "collector.id",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "payer.id",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "default": 30
+            }
+          },
+          {
+            "name": "offset",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "default": 0
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": {
+              "en": "Search results",
+              "pt": "TODO",
+              "es": "TODO"
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PaymentSearchResult"
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "errorKey": {
+                      "type": "string",
+                      "enum": [
+                        {
+                          "title": "TODO_error_code",
+                          "description": {
+                            "en": "TODO: describe this error",
+                            "pt": "TODO",
+                            "es": "TODO"
+                          }
+                        }
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "errorKey": {
+                      "type": "string",
+                      "enum": [
+                        {
+                          "title": "TODO_error_code",
+                          "description": {
+                            "en": "TODO: describe this error",
+                            "pt": "TODO",
+                            "es": "TODO"
+                          }
+                        }
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "403": {
+            "$ref": "#/components/responses/Forbidden",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "errorKey": {
+                      "type": "string",
+                      "enum": [
+                        {
+                          "title": "TODO_error_code",
+                          "description": {
+                            "en": "TODO: describe this error",
+                            "pt": "TODO",
+                            "es": "TODO"
+                          }
+                        }
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "title": {
+          "en": "Search payments",
+          "pt": "TODO",
+          "es": "TODO"
+        },
+        "description": {
+          "en": "Search payments",
+          "pt": "TODO",
+          "es": "TODO"
+        }
+      }
+    },
+    "/v1/payments/{id}/refunds": {
+      "post": {
+        "description": {
+          "en": "Creates a full or partial refund for an approved payment. Omit the `amount` field for a full refund. Partial refunds are supported; multiple partials are allowed up to the original transaction amount.\n**Idempotent:** Supports `X-Idempotency-Key` header to safely retry without duplicate charges.",
+          "pt": "TODO",
+          "es": "TODO"
+        },
+        "tags": [
+          "Cancellations & Refunds"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            },
+            "description": {
+              "en": "Payment ID to refund",
+              "pt": "TODO",
+              "es": "TODO"
+            }
+          },
+          {
+            "name": "X-Idempotency-Key",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": false,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RefundRequest"
+              },
+              "examples": {
+                "full_refund": {
+                  "summary": "Full refund (omit amount)",
+                  "value": {}
+                },
+                "partial_refund": {
+                  "summary": "Partial refund of R$50",
+                  "value": {
+                    "amount": 50.0
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": {
+              "en": "Refund created",
+              "pt": "TODO",
+              "es": "TODO"
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "integer"
+                    },
+                    "payment_id": {
+                      "type": "integer"
+                    },
+                    "amount": {
+                      "type": "number",
+                      "format": "float"
+                    },
+                    "metadata": {
+                      "type": "object",
+                      "additionalProperties": true
+                    },
+                    "source": {
+                      "type": "object",
+                      "properties": {
+                        "id": {
+                          "type": "string"
+                        },
+                        "name": {
+                          "type": "string"
+                        },
+                        "type": {
+                          "type": "string"
+                        }
+                      }
+                    },
+                    "date_created": {
+                      "type": "string",
+                      "format": "date-time"
+                    },
+                    "unique_sequence_number": {
+                      "type": "string"
+                    },
+                    "refund_mode": {
+                      "type": "string",
+                      "enum": [
+                        {
+                          "title": "standard",
+                          "description": {
+                            "en": "standard",
+                            "pt": "TODO",
+                            "es": "TODO"
+                          }
+                        },
+                        {
+                          "title": "instant",
+                          "description": {
+                            "en": "instant",
+                            "pt": "TODO",
+                            "es": "TODO"
+                          }
+                        }
+                      ]
+                    },
+                    "adjustment_amount": {
+                      "type": "number",
+                      "format": "float",
+                      "nullable": true
+                    },
+                    "status": {
+                      "type": "string",
+                      "enum": [
+                        {
+                          "title": "approved",
+                          "description": {
+                            "en": "approved",
+                            "pt": "TODO",
+                            "es": "TODO"
+                          }
+                        },
+                        {
+                          "title": "in_process",
+                          "description": {
+                            "en": "in_process",
+                            "pt": "TODO",
+                            "es": "TODO"
+                          }
+                        },
+                        {
+                          "title": "rejected",
+                          "description": {
+                            "en": "rejected",
+                            "pt": "TODO",
+                            "es": "TODO"
+                          }
+                        }
+                      ]
+                    },
+                    "reason": {
+                      "type": "string",
+                      "nullable": true
+                    },
+                    "label": {
+                      "type": "string",
+                      "nullable": true
+                    },
+                    "partition_details": {
+                      "type": "array",
+                      "items": {
+                        "type": "object"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "errorKey": {
+                      "type": "string",
+                      "enum": [
+                        {
+                          "title": "TODO_error_code",
+                          "description": {
+                            "en": "TODO: describe this error",
+                            "pt": "TODO",
+                            "es": "TODO"
+                          }
+                        }
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "errorKey": {
+                      "type": "string",
+                      "enum": [
+                        {
+                          "title": "TODO_error_code",
+                          "description": {
+                            "en": "TODO: describe this error",
+                            "pt": "TODO",
+                            "es": "TODO"
+                          }
+                        }
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "errorKey": {
+                      "type": "string",
+                      "enum": [
+                        {
+                          "title": "TODO_error_code",
+                          "description": {
+                            "en": "TODO: describe this error",
+                            "pt": "TODO",
+                            "es": "TODO"
+                          }
+                        }
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "title": {
+          "en": "Create a refund",
+          "pt": "TODO",
+          "es": "TODO"
+        }
+      },
+      "get": {
+        "tags": [
+          "Cancellations & Refunds"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": {
+              "en": "Refund list",
+              "pt": "TODO",
+              "es": "TODO"
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "integer"
+                    },
+                    "payment_id": {
+                      "type": "integer"
+                    },
+                    "amount": {
+                      "type": "number",
+                      "format": "float"
+                    },
+                    "metadata": {
+                      "type": "object",
+                      "additionalProperties": true
+                    },
+                    "source": {
+                      "type": "object",
+                      "properties": {
+                        "id": {
+                          "type": "string"
+                        },
+                        "name": {
+                          "type": "string"
+                        },
+                        "type": {
+                          "type": "string"
+                        }
+                      }
+                    },
+                    "date_created": {
+                      "type": "string",
+                      "format": "date-time"
+                    },
+                    "unique_sequence_number": {
+                      "type": "string"
+                    },
+                    "refund_mode": {
+                      "type": "string",
+                      "enum": [
+                        {
+                          "title": "standard",
+                          "description": {
+                            "en": "standard",
+                            "pt": "TODO",
+                            "es": "TODO"
+                          }
+                        },
+                        {
+                          "title": "instant",
+                          "description": {
+                            "en": "instant",
+                            "pt": "TODO",
+                            "es": "TODO"
+                          }
+                        }
+                      ]
+                    },
+                    "adjustment_amount": {
+                      "type": "number",
+                      "format": "float",
+                      "nullable": true
+                    },
+                    "status": {
+                      "type": "string",
+                      "enum": [
+                        {
+                          "title": "approved",
+                          "description": {
+                            "en": "approved",
+                            "pt": "TODO",
+                            "es": "TODO"
+                          }
+                        },
+                        {
+                          "title": "in_process",
+                          "description": {
+                            "en": "in_process",
+                            "pt": "TODO",
+                            "es": "TODO"
+                          }
+                        },
+                        {
+                          "title": "rejected",
+                          "description": {
+                            "en": "rejected",
+                            "pt": "TODO",
+                            "es": "TODO"
+                          }
+                        }
+                      ]
+                    },
+                    "reason": {
+                      "type": "string",
+                      "nullable": true
+                    },
+                    "label": {
+                      "type": "string",
+                      "nullable": true
+                    },
+                    "partition_details": {
+                      "type": "array",
+                      "items": {
+                        "type": "object"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "errorKey": {
+                      "type": "string",
+                      "enum": [
+                        {
+                          "title": "TODO_error_code",
+                          "description": {
+                            "en": "TODO: describe this error",
+                            "pt": "TODO",
+                            "es": "TODO"
+                          }
+                        }
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "errorKey": {
+                      "type": "string",
+                      "enum": [
+                        {
+                          "title": "TODO_error_code",
+                          "description": {
+                            "en": "TODO: describe this error",
+                            "pt": "TODO",
+                            "es": "TODO"
+                          }
+                        }
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "errorKey": {
+                      "type": "string",
+                      "enum": [
+                        {
+                          "title": "TODO_error_code",
+                          "description": {
+                            "en": "TODO: describe this error",
+                            "pt": "TODO",
+                            "es": "TODO"
+                          }
+                        }
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "title": {
+          "en": "List refunds for a payment",
+          "pt": "TODO",
+          "es": "TODO"
+        },
+        "description": {
+          "en": "List refunds for a payment",
+          "pt": "TODO",
+          "es": "TODO"
+        }
+      }
+    },
+    "/v1/payments/{id}/refunds/{refund_id}": {
+      "get": {
+        "tags": [
+          "Cancellations & Refunds"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
+            "name": "refund_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": {
+              "en": "Refund found",
+              "pt": "TODO",
+              "es": "TODO"
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "integer"
+                    },
+                    "payment_id": {
+                      "type": "integer"
+                    },
+                    "amount": {
+                      "type": "number",
+                      "format": "float"
+                    },
+                    "metadata": {
+                      "type": "object",
+                      "additionalProperties": true
+                    },
+                    "source": {
+                      "type": "object",
+                      "properties": {
+                        "id": {
+                          "type": "string"
+                        },
+                        "name": {
+                          "type": "string"
+                        },
+                        "type": {
+                          "type": "string"
+                        }
+                      }
+                    },
+                    "date_created": {
+                      "type": "string",
+                      "format": "date-time"
+                    },
+                    "unique_sequence_number": {
+                      "type": "string"
+                    },
+                    "refund_mode": {
+                      "type": "string",
+                      "enum": [
+                        {
+                          "title": "standard",
+                          "description": {
+                            "en": "standard",
+                            "pt": "TODO",
+                            "es": "TODO"
+                          }
+                        },
+                        {
+                          "title": "instant",
+                          "description": {
+                            "en": "instant",
+                            "pt": "TODO",
+                            "es": "TODO"
+                          }
+                        }
+                      ]
+                    },
+                    "adjustment_amount": {
+                      "type": "number",
+                      "format": "float",
+                      "nullable": true
+                    },
+                    "status": {
+                      "type": "string",
+                      "enum": [
+                        {
+                          "title": "approved",
+                          "description": {
+                            "en": "approved",
+                            "pt": "TODO",
+                            "es": "TODO"
+                          }
+                        },
+                        {
+                          "title": "in_process",
+                          "description": {
+                            "en": "in_process",
+                            "pt": "TODO",
+                            "es": "TODO"
+                          }
+                        },
+                        {
+                          "title": "rejected",
+                          "description": {
+                            "en": "rejected",
+                            "pt": "TODO",
+                            "es": "TODO"
+                          }
+                        }
+                      ]
+                    },
+                    "reason": {
+                      "type": "string",
+                      "nullable": true
+                    },
+                    "label": {
+                      "type": "string",
+                      "nullable": true
+                    },
+                    "partition_details": {
+                      "type": "array",
+                      "items": {
+                        "type": "object"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "errorKey": {
+                      "type": "string",
+                      "enum": [
+                        {
+                          "title": "TODO_error_code",
+                          "description": {
+                            "en": "TODO: describe this error",
+                            "pt": "TODO",
+                            "es": "TODO"
+                          }
+                        }
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "errorKey": {
+                      "type": "string",
+                      "enum": [
+                        {
+                          "title": "TODO_error_code",
+                          "description": {
+                            "en": "TODO: describe this error",
+                            "pt": "TODO",
+                            "es": "TODO"
+                          }
+                        }
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "title": {
+          "en": "Get a specific refund",
+          "pt": "TODO",
+          "es": "TODO"
+        },
+        "description": {
+          "en": "Get a specific refund",
+          "pt": "TODO",
+          "es": "TODO"
+        }
+      }
+    },
+    "/v1/payments/{id}/cancellations": {
+      "put": {
+        "description": {
+          "en": "Cancels a payment that is in `pending` or `authorized` status. Only payments that have not yet been captured or processed can be cancelled. For approved payments use the refunds endpoint instead.",
+          "pt": "TODO",
+          "es": "TODO"
+        },
+        "tags": [
+          "Cancellations & Refunds"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            },
+            "description": {
+              "en": "Payment ID to cancel",
+              "pt": "TODO",
+              "es": "TODO"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "status": {
+                    "type": "string",
+                    "enum": [
+                      {
+                        "title": "cancelled",
+                        "description": {
+                          "en": "cancelled",
+                          "pt": "TODO",
+                          "es": "TODO"
+                        }
+                      }
+                    ],
+                    "description": {
+                      "en": "Must be \"cancelled\"",
+                      "pt": "TODO",
+                      "es": "TODO"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": {
+              "en": "Payment cancelled",
+              "pt": "TODO",
+              "es": "TODO"
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Payment"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "errorKey": {
+                      "type": "string",
+                      "enum": [
+                        {
+                          "title": "TODO_error_code",
+                          "description": {
+                            "en": "TODO: describe this error",
+                            "pt": "TODO",
+                            "es": "TODO"
+                          }
+                        }
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "errorKey": {
+                      "type": "string",
+                      "enum": [
+                        {
+                          "title": "TODO_error_code",
+                          "description": {
+                            "en": "TODO: describe this error",
+                            "pt": "TODO",
+                            "es": "TODO"
+                          }
+                        }
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "errorKey": {
+                      "type": "string",
+                      "enum": [
+                        {
+                          "title": "TODO_error_code",
+                          "description": {
+                            "en": "TODO: describe this error",
+                            "pt": "TODO",
+                            "es": "TODO"
+                          }
+                        }
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "422": {
+            "$ref": "#/components/responses/UnprocessableEntity",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "errorKey": {
+                      "type": "string",
+                      "enum": [
+                        {
+                          "title": "TODO_error_code",
+                          "description": {
+                            "en": "TODO: describe this error",
+                            "pt": "TODO",
+                            "es": "TODO"
+                          }
+                        }
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "429": {
+            "$ref": "#/components/responses/TooManyRequests",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "errorKey": {
+                      "type": "string",
+                      "enum": [
+                        {
+                          "title": "TODO_error_code",
+                          "description": {
+                            "en": "TODO: describe this error",
+                            "pt": "TODO",
+                            "es": "TODO"
+                          }
+                        }
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "title": {
+          "en": "Cancel a payment",
+          "pt": "TODO",
+          "es": "TODO"
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "CurrencyId": {
+        "type": "string",
+        "description": {
+          "en": "ISO 4217 currency code for the applicable site",
+          "pt": "TODO",
+          "es": "TODO"
+        },
+        "enum": [
+          {
+            "title": "ARS",
+            "description": {
+              "en": "ARS",
+              "pt": "TODO",
+              "es": "TODO"
+            }
+          },
+          {
+            "title": "BRL",
+            "description": {
+              "en": "BRL",
+              "pt": "TODO",
+              "es": "TODO"
+            }
+          },
+          {
+            "title": "MXN",
+            "description": {
+              "en": "MXN",
+              "pt": "TODO",
+              "es": "TODO"
+            }
+          },
+          {
+            "title": "CLP",
+            "description": {
+              "en": "CLP",
+              "pt": "TODO",
+              "es": "TODO"
+            }
+          },
+          {
+            "title": "COP",
+            "description": {
+              "en": "COP",
+              "pt": "TODO",
+              "es": "TODO"
+            }
+          },
+          {
+            "title": "PEN",
+            "description": {
+              "en": "PEN",
+              "pt": "TODO",
+              "es": "TODO"
+            }
+          },
+          {
+            "title": "UYU",
+            "description": {
+              "en": "UYU",
+              "pt": "TODO",
+              "es": "TODO"
+            }
+          },
+          {
+            "title": "BOB",
+            "description": {
+              "en": "BOB",
+              "pt": "TODO",
+              "es": "TODO"
+            }
+          },
+          {
+            "title": "PYG",
+            "description": {
+              "en": "PYG",
+              "pt": "TODO",
+              "es": "TODO"
+            }
+          },
+          {
+            "title": "USD",
+            "description": {
+              "en": "USD",
+              "pt": "TODO",
+              "es": "TODO"
+            }
+          },
+          {
+            "title": "CRC",
+            "description": {
+              "en": "CRC",
+              "pt": "TODO",
+              "es": "TODO"
+            }
+          },
+          {
+            "title": "DOP",
+            "description": {
+              "en": "DOP",
+              "pt": "TODO",
+              "es": "TODO"
+            }
+          },
+          {
+            "title": "HNL",
+            "description": {
+              "en": "HNL",
+              "pt": "TODO",
+              "es": "TODO"
+            }
+          },
+          {
+            "title": "NIO",
+            "description": {
+              "en": "NIO",
+              "pt": "TODO",
+              "es": "TODO"
+            }
+          },
+          {
+            "title": "GTQ",
+            "description": {
+              "en": "GTQ",
+              "pt": "TODO",
+              "es": "TODO"
+            }
+          },
+          {
+            "title": "VES",
+            "description": {
+              "en": "VES",
+              "pt": "TODO",
+              "es": "TODO"
+            }
+          }
+        ],
+        "example": "BRL"
+      },
+      "Identification": {
+        "type": "object",
+        "description": {
+          "en": "Payer identification document. Valid types vary by country.",
+          "pt": "TODO",
+          "es": "TODO"
+        },
+        "properties": {
+          "type": {
+            "type": "string",
+            "description": {
+              "en": "Identification type (e.g., CPF, CNPJ for Brazil; DNI for Argentina; RFC for Mexico)",
+              "pt": "TODO",
+              "es": "TODO"
+            },
+            "example": "CPF"
+          },
+          "number": {
+            "type": "string",
+            "description": {
+              "en": "Identification number (no formatting — digits only)",
+              "pt": "TODO",
+              "es": "TODO"
+            },
+            "example": "12345678909"
+          }
+        }
+      },
+      "Phone": {
+        "type": "object",
+        "properties": {
+          "area_code": {
+            "type": "string",
+            "example": "11"
+          },
+          "number": {
+            "type": "string",
+            "example": "987654321"
+          }
+        }
+      },
+      "Address": {
+        "type": "object",
+        "properties": {
+          "zip_code": {
+            "type": "string",
+            "example": "01310-100"
+          },
+          "street_name": {
+            "type": "string",
+            "example": "Av. Paulista"
+          },
+          "street_number": {
+            "type": "string",
+            "example": "1000"
+          },
+          "city": {
+            "type": "string"
+          },
+          "state": {
+            "type": "string"
+          },
+          "country": {
+            "type": "string"
+          }
+        }
+      },
+      "Pagination": {
+        "type": "object",
+        "description": {
+          "en": "Pagination metadata returned in list/search responses",
+          "pt": "TODO",
+          "es": "TODO"
+        },
+        "properties": {
+          "total": {
+            "type": "integer",
+            "description": {
+              "en": "Total number of results",
+              "pt": "TODO",
+              "es": "TODO"
+            },
+            "example": 42
+          },
+          "limit": {
+            "type": "integer",
+            "description": {
+              "en": "Results per page",
+              "pt": "TODO",
+              "es": "TODO"
+            },
+            "example": 30
+          },
+          "offset": {
+            "type": "integer",
+            "description": {
+              "en": "Offset of the current page",
+              "pt": "TODO",
+              "es": "TODO"
+            },
+            "example": 0
+          }
+        }
+      },
+      "PaymentRequest": {
+        "type": "object",
+        "description": {
+          "en": "Request body to create a payment. For card payments, `token` and `payment_method_id` are required. For cash/offline methods, only `payment_method_id` is required.",
+          "pt": "TODO",
+          "es": "TODO"
+        },
+        "properties": {
+          "transaction_amount": {
+            "type": "number",
+            "format": "float",
+            "description": {
+              "en": "Payment amount as a decimal number. MercadoPago does NOT use integer cents — send 100.50 for R$100,50 (not 10050). CLP uses 0 decimal places.",
+              "pt": "TODO",
+              "es": "TODO"
+            },
+            "example": 100.5,
+            "minimum": 0.01
+          },
+          "token": {
+            "type": "string",
+            "description": {
+              "en": "Card token created client-side via MercadoPago.js / MP Secure Fields. Required for credit/debit card payments. Single-use; expires in 7 days.",
+              "pt": "TODO",
+              "es": "TODO"
+            },
+            "example": "YOUR_ACCESS_TOKEN"
+          },
+          "description": {
+            "type": "string",
+            "description": {
+              "en": "Description of the purchased product or service",
+              "pt": "TODO",
+              "es": "TODO"
+            },
+            "example": "Premium subscription — 1 month"
+          },
+          "installments": {
+            "type": "integer",
+            "description": {
+              "en": "Number of installments (1 = no installments)",
+              "pt": "TODO",
+              "es": "TODO"
+            },
+            "example": 1,
+            "minimum": 1
+          },
+          "payment_method_id": {
+            "type": "string",
+            "description": {
+              "en": "Payment method identifier. Examples: visa, master, bolbradesco (Boleto), pix, oxxo, rapipago, pse. Use GET /v1/payment_methods to list available methods for a given site_id.",
+              "pt": "TODO",
+              "es": "TODO"
+            },
+            "example": "visa"
+          },
+          "issuer_id": {
+            "type": "string",
+            "description": {
+              "en": "Card issuer ID (required for some credit cards)",
+              "pt": "TODO",
+              "es": "TODO"
+            },
+            "example": "310"
+          },
+          "payer": {
+            "$ref": "#/components/schemas/PaymentPayer"
+          },
+          "capture": {
+            "type": "boolean",
+            "description": {
+              "en": "Two-step payment flow: set false to only authorize (reserve funds), then PUT /v1/payments/{id} with capture=true to capture. Debit cards do not support two-step capture.",
+              "pt": "TODO",
+              "es": "TODO"
+            },
+            "default": true
+          },
+          "binary_mode": {
+            "type": "boolean",
+            "description": {
+              "en": "When true, payments can only be in_process → approved or rejected — no pending state. Useful for in-store flows.",
+              "pt": "TODO",
+              "es": "TODO"
+            },
+            "default": false
+          },
+          "external_reference": {
+            "type": "string",
+            "description": {
+              "en": "Your internal order or reference ID. Max 256 chars.",
+              "pt": "TODO",
+              "es": "TODO"
+            },
+            "example": "ORDER-2024-001234"
+          },
+          "notification_url": {
+            "type": "string",
+            "format": "uri",
+            "description": {
+              "en": "URL to receive IPN notifications when payment status changes. DEPRECATED — use Webhooks instead.",
+              "pt": "TODO",
+              "es": "TODO"
+            },
+            "deprecated": true
+          },
+          "statement_descriptor": {
+            "type": "string",
+            "description": {
+              "en": "Text that appears on the payer's card statement. Max 22 chars.",
+              "pt": "TODO",
+              "es": "TODO"
+            },
+            "example": "MYSTORE.COM",
+            "maxLength": 22
+          },
+          "callback_url": {
+            "type": "string",
+            "format": "uri",
+            "description": {
+              "en": "Redirect URL after bank transfer (redirect-based methods only)",
+              "pt": "TODO",
+              "es": "TODO"
+            }
+          },
+          "date_of_expiration": {
+            "type": "string",
+            "format": "date-time",
+            "description": {
+              "en": "Expiration date for cash/offline payment methods (boleto, OXXO, etc.). ISO 8601 format. Default varies by method.",
+              "pt": "TODO",
+              "es": "TODO"
+            },
+            "example": "2024-12-31T23:59:59.000-03:00"
+          },
+          "metadata": {
+            "type": "object",
+            "description": {
+              "en": "Free key-value object for your own internal data (not used by MP)",
+              "pt": "TODO",
+              "es": "TODO"
+            },
+            "additionalProperties": true
+          },
+          "additional_info": {
+            "$ref": "#/components/schemas/PaymentAdditionalInfo"
+          },
+          "application_fee": {
+            "type": "number",
+            "format": "float",
+            "description": {
+              "en": "Marketplace fee charged to the seller (marketplace integrations only)",
+              "pt": "TODO",
+              "es": "TODO"
+            },
+            "example": 1.5
+          },
+          "coupon_code": {
+            "type": "string",
+            "description": {
+              "en": "Discount coupon code",
+              "pt": "TODO",
+              "es": "TODO"
+            }
+          },
+          "coupon_amount": {
+            "type": "number",
+            "format": "float",
+            "description": {
+              "en": "Coupon discount value",
+              "pt": "TODO",
+              "es": "TODO"
+            }
+          }
+        }
+      },
+      "PaymentPayer": {
+        "type": "object",
+        "properties": {
+          "email": {
+            "type": "string",
+            "format": "email",
+            "example": "customer@example.com"
+          },
+          "id": {
+            "type": "string",
+            "description": {
+              "en": "MercadoPago user ID (for registered users)",
+              "pt": "TODO",
+              "es": "TODO"
+            }
+          },
+          "identification": {
+            "$ref": "#/components/schemas/Identification"
+          },
+          "type": {
+            "type": "string",
+            "enum": [
+              {
+                "title": "customer",
+                "description": {
+                  "en": "customer",
+                  "pt": "TODO",
+                  "es": "TODO"
+                }
+              },
+              {
+                "title": "registered",
+                "description": {
+                  "en": "registered",
+                  "pt": "TODO",
+                  "es": "TODO"
+                }
+              },
+              {
+                "title": "guest",
+                "description": {
+                  "en": "guest",
+                  "pt": "TODO",
+                  "es": "TODO"
+                }
+              }
+            ]
+          }
+        }
+      },
+      "PaymentAdditionalInfo": {
+        "type": "object",
+        "description": {
+          "en": "Additional context for fraud scoring and installment calculation",
+          "pt": "TODO",
+          "es": "TODO"
+        },
+        "properties": {
+          "items": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/PaymentItem"
+            }
+          },
+          "payer": {
+            "type": "object",
+            "properties": {
+              "first_name": {
+                "type": "string"
+              },
+              "last_name": {
+                "type": "string"
+              },
+              "phone": {
+                "$ref": "#/components/schemas/Phone"
+              },
+              "address": {
+                "$ref": "#/components/schemas/Address"
+              },
+              "registration_date": {
+                "type": "string",
+                "format": "date-time"
+              }
+            }
+          },
+          "shipments": {
+            "type": "object",
+            "properties": {
+              "receiver_address": {
+                "$ref": "#/components/schemas/Address"
+              }
+            }
+          }
+        }
+      },
+      "PaymentItem": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "title": {
+            "type": "string"
+          },
+          "description": {
+            "type": "string"
+          },
+          "category_id": {
+            "type": "string"
+          },
+          "quantity": {
+            "type": "integer"
+          },
+          "unit_price": {
+            "type": "number",
+            "format": "float"
+          }
+        }
+      },
+      "Payment": {
+        "type": "object",
+        "description": {
+          "en": "A MercadoPago payment object",
+          "pt": "TODO",
+          "es": "TODO"
+        },
+        "properties": {
+          "id": {
+            "type": "integer",
+            "description": {
+              "en": "Payment unique identifier",
+              "pt": "TODO",
+              "es": "TODO"
+            },
+            "example": 1234567890
+          },
+          "date_created": {
+            "type": "string",
+            "format": "date-time",
+            "example": "2024-01-15T10:30:00.000-03:00"
+          },
+          "date_approved": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          },
+          "date_last_updated": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "date_of_expiration": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          },
+          "money_release_date": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          },
+          "operation_type": {
+            "type": "string",
+            "enum": [
+              {
+                "title": "regular_payment",
+                "description": {
+                  "en": "regular_payment",
+                  "pt": "TODO",
+                  "es": "TODO"
+                }
+              },
+              {
+                "title": "money_transfer",
+                "description": {
+                  "en": "money_transfer",
+                  "pt": "TODO",
+                  "es": "TODO"
+                }
+              },
+              {
+                "title": "recurring_payment",
+                "description": {
+                  "en": "recurring_payment",
+                  "pt": "TODO",
+                  "es": "TODO"
+                }
+              },
+              {
+                "title": "account_fund",
+                "description": {
+                  "en": "account_fund",
+                  "pt": "TODO",
+                  "es": "TODO"
+                }
+              },
+              {
+                "title": "payment_addition",
+                "description": {
+                  "en": "payment_addition",
+                  "pt": "TODO",
+                  "es": "TODO"
+                }
+              },
+              {
+                "title": "cellphone_recharge",
+                "description": {
+                  "en": "cellphone_recharge",
+                  "pt": "TODO",
+                  "es": "TODO"
+                }
+              },
+              {
+                "title": "pos_payment",
+                "description": {
+                  "en": "pos_payment",
+                  "pt": "TODO",
+                  "es": "TODO"
+                }
+              },
+              {
+                "title": "money_exchange",
+                "description": {
+                  "en": "money_exchange",
+                  "pt": "TODO",
+                  "es": "TODO"
+                }
+              }
+            ]
+          },
+          "issuer_id": {
+            "type": "string",
+            "nullable": true
+          },
+          "payment_method_id": {
+            "type": "string",
+            "example": "visa"
+          },
+          "payment_type_id": {
+            "type": "string",
+            "enum": [
+              {
+                "title": "account_money",
+                "description": {
+                  "en": "account_money",
+                  "pt": "TODO",
+                  "es": "TODO"
+                }
+              },
+              {
+                "title": "ticket",
+                "description": {
+                  "en": "ticket",
+                  "pt": "TODO",
+                  "es": "TODO"
+                }
+              },
+              {
+                "title": "bank_transfer",
+                "description": {
+                  "en": "bank_transfer",
+                  "pt": "TODO",
+                  "es": "TODO"
+                }
+              },
+              {
+                "title": "atm",
+                "description": {
+                  "en": "atm",
+                  "pt": "TODO",
+                  "es": "TODO"
+                }
+              },
+              {
+                "title": "credit_card",
+                "description": {
+                  "en": "credit_card",
+                  "pt": "TODO",
+                  "es": "TODO"
+                }
+              },
+              {
+                "title": "debit_card",
+                "description": {
+                  "en": "debit_card",
+                  "pt": "TODO",
+                  "es": "TODO"
+                }
+              },
+              {
+                "title": "prepaid_card",
+                "description": {
+                  "en": "prepaid_card",
+                  "pt": "TODO",
+                  "es": "TODO"
+                }
+              },
+              {
+                "title": "digital_currency",
+                "description": {
+                  "en": "digital_currency",
+                  "pt": "TODO",
+                  "es": "TODO"
+                }
+              },
+              {
+                "title": "digital_wallet",
+                "description": {
+                  "en": "digital_wallet",
+                  "pt": "TODO",
+                  "es": "TODO"
+                }
+              },
+              {
+                "title": "voucher_card",
+                "description": {
+                  "en": "voucher_card",
+                  "pt": "TODO",
+                  "es": "TODO"
+                }
+              },
+              {
+                "title": "crypto",
+                "description": {
+                  "en": "crypto",
+                  "pt": "TODO",
+                  "es": "TODO"
+                }
+              },
+              {
+                "title": "pix",
+                "description": {
+                  "en": "pix",
+                  "pt": "TODO",
+                  "es": "TODO"
+                }
+              }
+            ]
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              {
+                "title": "pending",
+                "description": {
+                  "en": "pending",
+                  "pt": "TODO",
+                  "es": "TODO"
+                }
+              },
+              {
+                "title": "approved",
+                "description": {
+                  "en": "approved",
+                  "pt": "TODO",
+                  "es": "TODO"
+                }
+              },
+              {
+                "title": "authorized",
+                "description": {
+                  "en": "authorized",
+                  "pt": "TODO",
+                  "es": "TODO"
+                }
+              },
+              {
+                "title": "in_process",
+                "description": {
+                  "en": "in_process",
+                  "pt": "TODO",
+                  "es": "TODO"
+                }
+              },
+              {
+                "title": "in_mediation",
+                "description": {
+                  "en": "in_mediation",
+                  "pt": "TODO",
+                  "es": "TODO"
+                }
+              },
+              {
+                "title": "rejected",
+                "description": {
+                  "en": "rejected",
+                  "pt": "TODO",
+                  "es": "TODO"
+                }
+              },
+              {
+                "title": "cancelled",
+                "description": {
+                  "en": "cancelled",
+                  "pt": "TODO",
+                  "es": "TODO"
+                }
+              },
+              {
+                "title": "refunded",
+                "description": {
+                  "en": "refunded",
+                  "pt": "TODO",
+                  "es": "TODO"
+                }
+              },
+              {
+                "title": "charged_back",
+                "description": {
+                  "en": "charged_back",
+                  "pt": "TODO",
+                  "es": "TODO"
+                }
+              }
+            ],
+            "description": {
+              "en": "Current payment status. Key values: approved — payment completed successfully; pending — awaiting payer action (e.g., Boleto payment); in_process — under review; rejected — payment declined.",
+              "pt": "TODO",
+              "es": "TODO"
+            },
+            "example": "approved"
+          },
+          "status_detail": {
+            "type": "string",
+            "description": {
+              "en": "Detailed reason for the current status",
+              "pt": "TODO",
+              "es": "TODO"
+            },
+            "example": "accredited"
+          },
+          "currency_id": {
+            "$ref": "#/components/schemas/CurrencyId"
+          },
+          "description": {
+            "type": "string"
+          },
+          "payer": {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "string"
+              },
+              "email": {
+                "type": "string",
+                "format": "email"
+              },
+              "identification": {
+                "$ref": "#/components/schemas/Identification"
+              },
+              "type": {
+                "type": "string"
+              }
+            }
+          },
+          "metadata": {
+            "type": "object",
+            "additionalProperties": true
+          },
+          "additional_info": {
+            "type": "object"
+          },
+          "external_reference": {
+            "type": "string"
+          },
+          "transaction_amount": {
+            "type": "number",
+            "format": "float",
+            "description": {
+              "en": "Original payment amount (decimal, not cents)",
+              "pt": "TODO",
+              "es": "TODO"
+            }
+          },
+          "transaction_amount_refunded": {
+            "type": "number",
+            "format": "float",
+            "description": {
+              "en": "Total amount refunded so far",
+              "pt": "TODO",
+              "es": "TODO"
+            }
+          },
+          "coupon_amount": {
+            "type": "number",
+            "format": "float"
+          },
+          "transaction_details": {
+            "type": "object",
+            "properties": {
+              "net_received_amount": {
+                "type": "number",
+                "format": "float"
+              },
+              "total_paid_amount": {
+                "type": "number",
+                "format": "float"
+              },
+              "overpaid_amount": {
+                "type": "number",
+                "format": "float"
+              },
+              "external_resource_url": {
+                "type": "string",
+                "format": "uri",
+                "description": {
+                  "en": "Boleto/OXXO/cash payment URL or barcode",
+                  "pt": "TODO",
+                  "es": "TODO"
+                }
+              },
+              "installment_amount": {
+                "type": "number",
+                "format": "float"
+              }
+            }
+          },
+          "captured": {
+            "type": "boolean"
+          },
+          "binary_mode": {
+            "type": "boolean"
+          },
+          "statement_descriptor": {
+            "type": "string"
+          },
+          "installments": {
+            "type": "integer"
+          },
+          "card": {
+            "type": "object",
+            "description": {
+              "en": "Card data (last 4 digits only — never full PAN)",
+              "pt": "TODO",
+              "es": "TODO"
+            },
+            "properties": {
+              "last_four_digits": {
+                "type": "string",
+                "example": "4321"
+              },
+              "first_six_digits": {
+                "type": "string",
+                "example": "411111"
+              },
+              "expiration_year": {
+                "type": "integer"
+              },
+              "expiration_month": {
+                "type": "integer"
+              },
+              "date_created": {
+                "type": "string",
+                "format": "date-time"
+              },
+              "date_last_updated": {
+                "type": "string",
+                "format": "date-time"
+              },
+              "cardholder": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string"
+                  },
+                  "identification": {
+                    "$ref": "#/components/schemas/Identification"
+                  }
+                }
+              }
+            }
+          },
+          "notification_url": {
+            "type": "string",
+            "format": "uri",
+            "deprecated": true
+          },
+          "processing_mode": {
+            "type": "string",
+            "enum": [
+              {
+                "title": "aggregator",
+                "description": {
+                  "en": "aggregator",
+                  "pt": "TODO",
+                  "es": "TODO"
+                }
+              },
+              {
+                "title": "gateway",
+                "description": {
+                  "en": "gateway",
+                  "pt": "TODO",
+                  "es": "TODO"
+                }
+              }
+            ]
+          }
+        }
+      },
+      "RefundRequest": {
+        "type": "object",
+        "description": {
+          "en": "Request body for creating a refund. Omit amount for a full refund.",
+          "pt": "TODO",
+          "es": "TODO"
+        },
+        "properties": {
+          "amount": {
+            "type": "number",
+            "format": "float",
+            "description": {
+              "en": "Amount to refund. Omit for a full refund.",
+              "pt": "TODO",
+              "es": "TODO"
+            },
+            "example": 50.0
+          }
+        }
+      },
+      "PaymentSearchResult": {
+        "type": "object",
+        "properties": {
+          "results": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Payment"
+            }
+          },
+          "paging": {
+            "$ref": "#/components/schemas/Pagination"
+          }
+        }
+      },
+      "PaymentUpdateRequest": {
+        "type": "object",
+        "description": {
+          "en": "Request body to update a payment (capture, cancel, or extend expiration).",
+          "pt": "TODO",
+          "es": "TODO"
+        },
+        "properties": {
+          "capture": {
+            "type": "boolean",
+            "description": {
+              "en": "Set true to capture an authorized payment.",
+              "pt": "TODO",
+              "es": "TODO"
+            }
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              {
+                "title": "cancelled",
+                "description": {
+                  "en": "cancelled",
+                  "pt": "TODO",
+                  "es": "TODO"
+                }
+              }
+            ],
+            "description": {
+              "en": "Set to cancelled to cancel an authorized payment.",
+              "pt": "TODO",
+              "es": "TODO"
+            }
+          },
+          "transaction_amount": {
+            "type": "number",
+            "format": "float",
+            "description": {
+              "en": "Partial capture amount (must be ≤ original authorized amount).",
+              "pt": "TODO",
+              "es": "TODO"
+            }
+          },
+          "date_of_expiration": {
+            "type": "string",
+            "format": "date-time",
+            "description": {
+              "en": "New expiration date for cash payment methods.",
+              "pt": "TODO",
+              "es": "TODO"
+            }
+          }
+        }
+      }
+    }
+  }
+}

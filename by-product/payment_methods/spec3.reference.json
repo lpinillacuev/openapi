@@ -1,0 +1,386 @@
+{
+  "url": "https://api.mercadopago.com",
+  "paths": {
+    "/v1/payment_methods": {
+      "get": {
+        "description": {
+          "en": "Returns all payment methods available for the credential's site_id. Use this to build payment method selectors and validate method availability before attempting a payment.",
+          "pt": "TODO",
+          "es": "TODO"
+        },
+        "tags": [
+          "Payment Methods"
+        ],
+        "responses": {
+          "200": {
+            "description": {
+              "en": "Payment methods list",
+              "pt": "TODO",
+              "es": "TODO"
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "id": {
+                        "type": "string"
+                      },
+                      "name": {
+                        "type": "string"
+                      },
+                      "payment_type_id": {
+                        "type": "string"
+                      },
+                      "status": {
+                        "type": "string",
+                        "enum": [
+                          {
+                            "title": "active",
+                            "description": {
+                              "en": "active",
+                              "pt": "TODO",
+                              "es": "TODO"
+                            }
+                          },
+                          {
+                            "title": "deactivated",
+                            "description": {
+                              "en": "deactivated",
+                              "pt": "TODO",
+                              "es": "TODO"
+                            }
+                          }
+                        ]
+                      },
+                      "secure_thumbnail": {
+                        "type": "string",
+                        "format": "uri"
+                      },
+                      "thumbnail": {
+                        "type": "string",
+                        "format": "uri"
+                      },
+                      "deferred_capture": {
+                        "type": "string",
+                        "enum": [
+                          {
+                            "title": "supported",
+                            "description": {
+                              "en": "supported",
+                              "pt": "TODO",
+                              "es": "TODO"
+                            }
+                          },
+                          {
+                            "title": "unsupported",
+                            "description": {
+                              "en": "unsupported",
+                              "pt": "TODO",
+                              "es": "TODO"
+                            }
+                          },
+                          {
+                            "title": "does_not_apply",
+                            "description": {
+                              "en": "does_not_apply",
+                              "pt": "TODO",
+                              "es": "TODO"
+                            }
+                          }
+                        ]
+                      },
+                      "settings": {
+                        "type": "object",
+                        "description": {
+                          "en": "Card settings (bin ranges, security codes, card length).",
+                          "pt": "TODO",
+                          "es": "TODO"
+                        }
+                      },
+                      "additional_info_needed": {
+                        "type": "array",
+                        "items": {
+                          "type": "string"
+                        },
+                        "description": {
+                          "en": "Additional fields required at checkout.",
+                          "pt": "TODO",
+                          "es": "TODO"
+                        }
+                      },
+                      "min_allowed_amount": {
+                        "type": "number",
+                        "format": "float"
+                      },
+                      "max_allowed_amount": {
+                        "type": "number",
+                        "format": "float"
+                      },
+                      "accreditation_time": {
+                        "type": "integer"
+                      },
+                      "financial_institutions": {
+                        "type": "array",
+                        "items": {
+                          "type": "object",
+                          "properties": {
+                            "id": {
+                              "type": "string"
+                            },
+                            "description": {
+                              "type": "string"
+                            }
+                          }
+                        }
+                      },
+                      "processing_modes": {
+                        "type": "array",
+                        "items": {
+                          "type": "string",
+                          "enum": [
+                            {
+                              "title": "aggregator",
+                              "description": {
+                                "en": "aggregator",
+                                "pt": "TODO",
+                                "es": "TODO"
+                              }
+                            },
+                            {
+                              "title": "gateway",
+                              "description": {
+                                "en": "gateway",
+                                "pt": "TODO",
+                                "es": "TODO"
+                              }
+                            }
+                          ]
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "errorKey": {
+                      "type": "string",
+                      "enum": [
+                        {
+                          "title": "TODO_error_code",
+                          "description": {
+                            "en": "TODO: describe this error",
+                            "pt": "TODO",
+                            "es": "TODO"
+                          }
+                        }
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "errorKey": {
+                      "type": "string",
+                      "enum": [
+                        {
+                          "title": "TODO_error_code",
+                          "description": {
+                            "en": "TODO: describe this error",
+                            "pt": "TODO",
+                            "es": "TODO"
+                          }
+                        }
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "errorKey": {
+                      "type": "string",
+                      "enum": [
+                        {
+                          "title": "TODO_error_code",
+                          "description": {
+                            "en": "TODO: describe this error",
+                            "pt": "TODO",
+                            "es": "TODO"
+                          }
+                        }
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "title": {
+          "en": "List available payment methods",
+          "pt": "TODO",
+          "es": "TODO"
+        }
+      }
+    },
+    "/v1/payment_methods/installments": {
+      "get": {
+        "description": {
+          "en": "Returns available installment plans for a given card BIN, amount, and site. Use this to populate installment selectors in your checkout.",
+          "pt": "TODO",
+          "es": "TODO"
+        },
+        "tags": [
+          "Payment Methods"
+        ],
+        "parameters": [
+          {
+            "name": "payment_method_id",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "example": "visa"
+          },
+          {
+            "name": "amount",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "number",
+              "format": "float"
+            },
+            "example": 1000.0
+          },
+          {
+            "name": "issuer_id",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "bin",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            },
+            "description": {
+              "en": "First 6 digits of the card (BIN) for more accurate installment pricing",
+              "pt": "TODO",
+              "es": "TODO"
+            },
+            "example": "411111"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": {
+              "en": "Installment options",
+              "pt": "TODO",
+              "es": "TODO"
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "payment_method_id": {
+                        "type": "string"
+                      },
+                      "payment_type_id": {
+                        "type": "string"
+                      },
+                      "issuer": {
+                        "type": "object",
+                        "properties": {
+                          "id": {
+                            "type": "integer"
+                          },
+                          "name": {
+                            "type": "string"
+                          }
+                        }
+                      },
+                      "payer_costs": {
+                        "type": "array",
+                        "items": {
+                          "type": "object",
+                          "properties": {
+                            "installments": {
+                              "type": "integer"
+                            },
+                            "installment_rate": {
+                              "type": "number",
+                              "format": "float"
+                            },
+                            "discount_rate": {
+                              "type": "number",
+                              "format": "float"
+                            },
+                            "reimbursement_rate": {
+                              "type": "number",
+                              "format": "float"
+                            },
+                            "labels": {
+                              "type": "array",
+                              "items": {
+                                "type": "string"
+                              }
+                            },
+                            "total_amount": {
+                              "type": "number",
+                              "format": "float"
+                            },
+                            "installment_amount": {
+                              "type": "number",
+                              "format": "float"
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "title": {
+          "en": "Get installment options",
+          "pt": "TODO",
+          "es": "TODO"
+        }
+      }
+    }
+  }
+}

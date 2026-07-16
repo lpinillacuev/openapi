@@ -1,0 +1,28 @@
+product: stores
+fury_app: stores-api
+generated_at: '2026-07-14T21:52:00Z'
+total_changes: 2
+paths:
+  added: []
+  removed: []
+  modified: []
+  detail:
+    added: []
+    removed: []
+    modified: []
+schemas:
+  added: []
+  removed: []
+  modified:
+  - Error
+  - Pagination
+  detail:
+    added: []
+    removed: []
+    modified:
+    - name: Error
+      properties_added: []
+      properties_removed: []
+    - name: Pagination
+      properties_added: []
+      properties_removed: []

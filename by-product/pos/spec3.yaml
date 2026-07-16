@@ -858,7 +858,7 @@ components:
       type: object
       properties:
         paging:
-          $ref: common.yaml#/components/schemas/Pagination
+          $ref: '#/components/schemas/Pagination'
         results:
           type: array
           items:

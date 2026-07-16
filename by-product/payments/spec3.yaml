@@ -689,14 +689,6 @@ components:
       - NIO
       - GTQ
       - VES
-      x-mp-sites:
-      - MLA
-      - MLB
-      - MLM
-      - MLC
-      - MCO
-      - MPE
-      - MLU
       example: BRL
     Identification:
       type: object
@@ -755,56 +747,53 @@ components:
           example: 0
     PaymentRequest:
       type: object
-      description: 'Request body to create a payment. For card payments, `token` and `payment_method_id` are required. For
+      required:
+      - transaction_amount
+      - payer
+      description: Request body to create a payment. For card payments, `token` and `payment_method_id` are required. For
         cash/offline methods, only `payment_method_id` is required.
-
-        '
       properties:
         transaction_amount:
           type: number
           format: float
-          description: 'Payment amount as a decimal number. MercadoPago does NOT use integer cents — send 100.50 for R$100,50
+          description: Payment amount as a decimal number. MercadoPago does NOT use integer cents — send 100.50 for R$100,50
             (not 10050). CLP uses 0 decimal places.
-
-            '
           example: 100.5
           minimum: 0.01
         token:
           type: string
-          description: Card token created client-side via MercadoPago.js. Required for credit/debit card payments.
-          example: ff8080814c11e237014c1ff593b57b4d
+          description: Card token created client-side via MercadoPago.js / MP Secure Fields. Required for credit/debit card
+            payments. Single-use; expires in 7 days.
+          example: YOUR_ACCESS_TOKEN
         description:
           type: string
-          description: Description of the purchased product or service.
+          description: Description of the purchased product or service
           example: Premium subscription — 1 month
         installments:
           type: integer
-          description: Number of installments (1 = no installments).
+          description: Number of installments (1 = no installments)
           example: 1
           minimum: 1
         payment_method_id:
           type: string
           description: 'Payment method identifier. Examples: visa, master, bolbradesco (Boleto), pix, oxxo, rapipago, pse.
-            Use GET /v1/payment_methods to list available methods.
-
-            '
+            Use GET /v1/payment_methods to list available methods for a given site_id.'
           example: visa
         issuer_id:
           type: string
-          description: Card issuer ID (required for some credit cards).
+          description: Card issuer ID (required for some credit cards)
           example: '310'
         payer:
           $ref: '#/components/schemas/PaymentPayer'
         capture:
           type: boolean
-          description: 'Set false to only authorize (reserve funds). Use PUT /v1/payments/{id} with capture=true to capture
-            later. Debit cards do not support two-step capture.
-
-            '
+          description: 'Two-step payment flow: set false to only authorize (reserve funds), then PUT /v1/payments/{id} with
+            capture=true to capture. Debit cards do not support two-step capture.'
           default: true
         binary_mode:
           type: boolean
-          description: When true, payments can only be approved or rejected — no pending state.
+          description: When true, payments can only be in_process → approved or rejected — no pending state. Useful for in-store
+            flows.
           default: false
         external_reference:
           type: string
@@ -813,53 +802,41 @@ components:
         notification_url:
           type: string
           format: uri
-          description: URL to receive IPN notifications. Deprecated — use Webhooks instead.
+          description: URL to receive IPN notifications when payment status changes. DEPRECATED — use Webhooks instead.
           deprecated: true
         statement_descriptor:
           type: string
-          description: Text on the payer's card statement. Max 22 chars.
+          description: Text that appears on the payer's card statement. Max 22 chars.
           example: MYSTORE.COM
           maxLength: 22
         callback_url:
           type: string
           format: uri
-          description: Redirect URL after bank transfer (redirect-based methods only).
+          description: Redirect URL after bank transfer (redirect-based methods only)
         date_of_expiration:
           type: string
           format: date-time
-          description: Expiration date for cash/offline payment methods (ISO 8601).
+          description: Expiration date for cash/offline payment methods (boleto, OXXO, etc.). ISO 8601 format. Default varies
+            by method.
           example: '2024-12-31T23:59:59.000-03:00'
-        campaign_id:
-          type: number
-          description: 'Identifier of the discount campaign entity. All coupons come from a campaign.
-
-            '
-          example: 123456
-        differential_pricing_id:
-          type: number
-          description: 'Marketplace pricing agreement ID. Contains the agreement on fees charged to the seller. Used in marketplace
-            integrations.
-
-            '
-          example: 1
-        application_fee:
-          type: number
-          format: float
-          description: Marketplace fee charged to the seller. Fixed amount.
-          example: 1.5
-        coupon_code:
-          type: string
-          description: Discount coupon code.
-        coupon_amount:
-          type: number
-          format: float
-          description: Coupon discount value.
         metadata:
           type: object
-          description: Optional key-value object for additional attributes (not used by MP).
+          description: Free key-value object for your own internal data (not used by MP)
           additionalProperties: true
         additional_info:
           $ref: '#/components/schemas/PaymentAdditionalInfo'
+        application_fee:
+          type: number
+          format: float
+          description: Marketplace fee charged to the seller (marketplace integrations only)
+          example: 1.5
+        coupon_code:
+          type: string
+          description: Discount coupon code
+        coupon_amount:
+          type: number
+          format: float
+          description: Coupon discount value
     PaymentPayer:
       type: object
       required:
@@ -871,7 +848,7 @@ components:
           example: customer@example.com
         id:
           type: string
-          description: MercadoPago user ID (for registered users).
+          description: MercadoPago user ID (for registered users)
         identification:
           $ref: '#/components/schemas/Identification'
         type:
@@ -882,7 +859,7 @@ components:
           - guest
     PaymentAdditionalInfo:
       type: object
-      description: Additional context for fraud scoring and installment calculation.
+      description: Additional context for fraud scoring and installment calculation
       properties:
         items:
           type: array
@@ -925,15 +902,16 @@ components:
           format: float
     Payment:
       type: object
-      description: A MercadoPago payment object.
+      description: A MercadoPago payment object
       properties:
         id:
           type: integer
-          description: Payment unique identifier.
+          description: Payment unique identifier
           example: 1234567890
         date_created:
           type: string
           format: date-time
+          example: '2024-01-15T10:30:00.000-03:00'
         date_approved:
           type: string
           format: date-time
@@ -966,18 +944,6 @@ components:
         payment_method_id:
           type: string
           example: visa
-        payment_method:
-          type: object
-          description: Full payment method object.
-          properties:
-            id:
-              type: string
-            type:
-              type: string
-            issuer_id:
-              type: string
-            data:
-              type: object
         payment_type_id:
           type: string
           enum:
@@ -1005,74 +971,17 @@ components:
           - cancelled
           - refunded
           - charged_back
-          description: 'approved — payment completed successfully; pending — awaiting payer action (e.g., Boleto payment);
-            in_process — under review; rejected — payment declined.
-
-            '
+          description: 'Current payment status. Key values: approved — payment completed successfully; pending — awaiting
+            payer action (e.g., Boleto payment); in_process — under review; rejected — payment declined.'
           example: approved
         status_detail:
           type: string
-          description: Detailed reason for the current status.
-          enum:
-          - accredited
-          - partially_refunded
-          - pending_capture
-          - pending_review_manual
-          - pending_contingency
-          - pending_challenge
-          - pending_waiting_payment
-          - pending_waiting_transfer
-          - pending_waiting_for_remedy
-          - pending_provider_response
-          - in_process
-          - expired
-          - settled
-          - refunded
-          - offline_process
-          - rejected_by_bank
-          - rejected_by_regulations
-          - rejected_high_risk
-          - cc_rejected_bad_filled_card_number
-          - cc_rejected_bad_filled_date
-          - cc_rejected_bad_filled_other
-          - cc_rejected_bad_filled_security_code
-          - cc_rejected_blacklist
-          - cc_rejected_call_for_authorize
-          - cc_rejected_card_disabled
-          - cc_rejected_card_error
-          - cc_rejected_card_type_not_allowed
-          - cc_rejected_duplicated_payment
-          - cc_rejected_high_risk
-          - cc_rejected_insufficient_amount
-          - cc_rejected_invalid_installments
-          - cc_rejected_max_attempts
-          - cc_rejected_other_reason
-          - cc_rejected_time_out
+          description: Detailed reason for the current status
           example: accredited
         currency_id:
           $ref: '#/components/schemas/CurrencyId'
         description:
           type: string
-        live_mode:
-          type: boolean
-          description: true = production environment.
-        sponsor_id:
-          type: string
-          nullable: true
-        authorization_code:
-          type: string
-          description: Transaction authorization code from the acquirer.
-          nullable: true
-        money_release_schema:
-          type: string
-          nullable: true
-        counter_currency:
-          type: string
-          nullable: true
-          description: Cross-border conversion object.
-        collector_id:
-          type: string
-          description: ID of the user receiving the money (seller).
         payer:
           type: object
           properties:
@@ -1095,21 +1004,14 @@ components:
         transaction_amount:
           type: number
           format: float
-          description: Original payment amount (decimal, not cents).
+          description: Original payment amount (decimal, not cents)
         transaction_amount_refunded:
           type: number
           format: float
-          description: Total amount refunded so far.
+          description: Total amount refunded so far
         coupon_amount:
           type: number
           format: float
-        differential_pricing_id:
-          type: string
-          nullable: true
-        deduction_schema:
-          type: string
-          nullable: true
-          description: MP pricing scheme applied to this payment.
         transaction_details:
           type: object
           properties:
@@ -1125,7 +1027,7 @@ components:
             external_resource_url:
               type: string
               format: uri
-              description: Boleto/OXXO/cash payment URL or barcode.
+              description: Boleto/OXXO/cash payment URL or barcode
             installment_amount:
               type: number
               format: float
@@ -1133,17 +1035,13 @@ components:
           type: boolean
         binary_mode:
           type: boolean
-        call_for_authorize_id:
-          type: string
-          nullable: true
-          description: Issuer-provided authorization ID.
         statement_descriptor:
           type: string
         installments:
           type: integer
         card:
           type: object
-          description: Card data (last 4 digits only — never full PAN).
+          description: Card data (last 4 digits only — never full PAN)
           properties:
             last_four_digits:
               type: string
@@ -1177,18 +1075,6 @@ components:
           enum:
           - aggregator
           - gateway
-        merchant_account_id:
-          type: string
-          nullable: true
-          description: Gateway model store code.
-        acquirer:
-          type: string
-          nullable: true
-          description: Acquirer name (gateway processing mode).
-        merchant_number:
-          type: string
-          nullable: true
-          description: Merchant number for gateway model.
     RefundRequest:
       type: object
       description: Request body for creating a refund. Omit amount for a full refund.

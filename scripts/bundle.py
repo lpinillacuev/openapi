@@ -229,23 +229,14 @@ def bundle_schemas(spec: dict[str, Any], dry_run: bool = False) -> tuple[dict[st
 
 def bundle_site(site: str, base_spec: dict[str, Any], dry_run: bool = False) -> bool:
     """
-    Apply overlay for *site* to *base_spec* and write by-site/{site}/spec3.yaml.
+    Write by-site/{site}/spec3.yaml directly from base_spec (spec3.yaml is the source of truth).
     Returns True if the output changed.
     """
-    overlay_path = OVERLAYS / f"{site}.yaml"
-    out_path     = BY_SITE / site / "spec3.yaml"
+    out_path = BY_SITE / site / "spec3.yaml"
 
-    if not overlay_path.exists():
-        print(f"  [{site}] No overlay found at {overlay_path} — skipping")
-        return False
-
-    overlay = load_yaml(overlay_path)
-    result  = apply_overlay(base_spec, overlay)
-
-    # Check if output changed
     existing_yaml = out_path.read_text() if out_path.exists() else ""
     new_yaml = yaml.dump(
-        result, allow_unicode=True, sort_keys=False,
+        base_spec, allow_unicode=True, sort_keys=False,
         default_flow_style=False, width=120,
     )
 
@@ -257,7 +248,7 @@ def bundle_site(site: str, base_spec: dict[str, Any], dry_run: bool = False) -> 
         print(f"  [{site}] Would update {out_path}")
         return True
 
-    save_yaml(out_path, result)
+    save_yaml(out_path, base_spec)
     print(f"  [{site}] Written → {out_path}")
     return True
 
@@ -268,20 +259,14 @@ def check_mode(sites: list[str]) -> int:
     """
     base_spec = load_yaml(SPEC3_PATH)
     stale: list[str] = []
+    base_yaml = yaml.dump(base_spec, allow_unicode=True, sort_keys=False,
+                          default_flow_style=False, width=120)
 
     for site in sites:
-        overlay_path = OVERLAYS / f"{site}.yaml"
-        out_path     = BY_SITE / site / "spec3.yaml"
-        if not overlay_path.exists():
-            continue
-
-        overlay  = load_yaml(overlay_path)
-        result   = apply_overlay(base_spec, overlay)
-        new_yaml = yaml.dump(result, allow_unicode=True, sort_keys=False,
-                             default_flow_style=False, width=120)
+        out_path = BY_SITE / site / "spec3.yaml"
         existing = out_path.read_text() if out_path.exists() else ""
 
-        if new_yaml != existing:
+        if base_yaml != existing:
             stale.append(site)
             print(f"  STALE: {site}")
         else:
@@ -383,7 +368,7 @@ def bundle_product(app_config: dict[str, Any], spec: dict[str, Any], dry_run: bo
 # ---------------------------------------------------------------------------
 
 def main() -> None:
-    all_sites = sorted(s.stem for s in OVERLAYS.glob("*.yaml"))
+    all_sites = sorted(p.parent.name for p in BY_SITE.glob("*/spec3.yaml"))
 
     parser = argparse.ArgumentParser(
         description=(

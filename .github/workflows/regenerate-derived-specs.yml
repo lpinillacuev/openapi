@@ -6,8 +6,6 @@ name: Regenerate derived specs after merge
 #   2. spec3.sdk.yaml/json  — SDK variant with x-mp-sdk-coverage
 #   3. by-site/*/spec3.yaml — country-scoped specs (via bundle.py)
 #   4. by-product/*/spec3.yaml — product-scoped specs (via bundle.py)
-#   5. spec3.reference.json — DevSite api-json per product (via build_reference.py)
-#   6. push_to_api.py       — sends updated specs to external product API
 
 on:
   push:
@@ -46,27 +44,19 @@ jobs:
 
       # ── Step 1: spec3.json + spec3.sdk.yaml/json ──────────────────────────
       - name: Generate spec3.json and SDK variants
-        run: python scripts/generate_spec_json.py spec3.yaml spec3.json
+        run: |
+          python scripts/generate_spec_json.py spec3.yaml spec3.json
+          python scripts/generate_sdk_variant.py spec3.yaml spec3.sdk.yaml spec3.sdk.json
         working-directory: ${{ github.workspace }}
 
       # ── Step 2: by-site + by-product specs ───────────────────────────────
-      # Runs phases 1-3 individually to skip Phase 4 (build_reference.py / DevSite)
-      # which is disabled until the DevSite flow is ready.
       - name: Regenerate by-site and by-product specs
         run: |
           python scripts/bundle.py --sites-only
           python scripts/bundle.py --products-only
         working-directory: ${{ github.workspace }}
 
-      # ── Step 3: spec3.reference.json per product ─────────────────────────
-      # TODO: habilitar cuando el flujo DevSite esté listo
-      - name: Build reference specs
-        if: false
-        continue-on-error: true
-        run: python scripts/build_reference.py --all
-        working-directory: ${{ github.workspace }}
-
-      # ── Step 4: Commit all generated files ───────────────────────────────
+      # ── Step 3: Commit all generated files ───────────────────────────────
       - name: Commit regenerated specs
         run: |
           git add spec3.json by-site/ by-product/ schemas/ || true
@@ -79,7 +69,7 @@ jobs:
             echo "Derived specs pushed to main."
           fi
 
-      # ── Step 5: Finalize KVS decisions post-merge ────────────────────────
+      # ── Step 4: Finalize KVS decisions post-merge ────────────────────────
       # Compares KVS pending paths with final spec3.yaml to determine:
       # - Paths in spec3.yaml → KVS whitelist (were approved)
       # - Paths NOT in spec3.yaml → KVS blacklist (were rejected)
@@ -95,19 +85,3 @@ jobs:
           COMMIT_SHA: ${{ github.sha }}
         run: |
           python3 scripts/sync_kvs_decisions.py
-
-      # ── Step 6: Push specs to external product API ────────────────────────
-      # TODO: habilitar cuando el flujo DevSite esté listo
-      - name: Push to external product API
-        if: false
-        continue-on-error: true
-        env:
-          PRODUCT_SPEC_API_ENDPOINT: ${{ secrets.PRODUCT_SPEC_API_ENDPOINT }}
-          PRODUCT_SPEC_API_TOKEN: ${{ secrets.PRODUCT_SPEC_API_TOKEN }}
-        run: |
-          if [ -n "$PRODUCT_SPEC_API_ENDPOINT" ]; then
-            python scripts/push_to_api.py --all
-          else
-            echo "PRODUCT_SPEC_API_ENDPOINT not set — skipping external API push"
-          fi
-        working-directory: ${{ github.workspace }}

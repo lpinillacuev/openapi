@@ -137,29 +137,36 @@ jobs:
           echo "rejected_count=${#REJECTED[@]}" >> $GITHUB_OUTPUT
 
       - name: Comment result on PR
-        uses: actions/github-script@d746ffe35508b1917358783b479e04febd2b8f71
-        with:
-          github-token: ${{ secrets.GH_PAT || github.token }}
-          script: |
-            const reviewer     = '${{ steps.ctx.outputs.reviewer }}';
-            const prNumber     = parseInt('${{ steps.ctx.outputs.pr_number }}', 10);
-            const approved     = parseInt('${{ steps.decide.outputs.approved_count }}', 10);
-            const rejected     = parseInt('${{ steps.decide.outputs.rejected_count }}', 10);
-            const total        = approved + rejected;
+        env:
+          GH_TOKEN: ${{ secrets.GH_PAT || github.token }}
+          REVIEWER: ${{ steps.ctx.outputs.reviewer }}
+          PR_NUMBER: ${{ steps.ctx.outputs.pr_number }}
+          APPROVED: ${{ steps.decide.outputs.approved_count }}
+          REJECTED: ${{ steps.decide.outputs.rejected_count }}
+        run: |
+          APPROVED="${APPROVED:-0}"
+          REJECTED="${REJECTED:-0}"
+          TOTAL=$((APPROVED + REJECTED))
 
-            if (total === 0) {
-              return;
-            }
+          if [ "$TOTAL" -eq 0 ]; then
+            echo "No decisions to comment."
+            exit 0
+          fi
 
-            let body = `**@${reviewer}** revisó los paths pendientes:\n\n`;
-            if (approved > 0) body += `✅ **${approved}** path(s) aprobados (whitelist)\n`;
-            if (rejected > 0) body += `❌ **${rejected}** path(s) rechazados (blacklist)\n`;
-            body += `\n🎉 PR desbloqueado y listo para mergear.`;
+          BODY_FILE="/tmp/pr-command-result.md"
+          {
+            echo "**@${REVIEWER}** reviewed the pending paths:"
+            echo ""
+            if [ "$APPROVED" -gt 0 ]; then
+              echo "✅ **${APPROVED}** path(s) approved (whitelist)"
+            fi
+            if [ "$REJECTED" -gt 0 ]; then
+              echo "❌ **${REJECTED}** path(s) rejected (blacklist)"
+            fi
+            echo ""
+            echo "🎉 PR unblocked and ready to merge."
+          } > "$BODY_FILE"
 
-            await github.rest.issues.createComment({
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              issue_number: prNumber,
-              body,
-            });
-
+          gh issue comment "$PR_NUMBER" \
+            --repo "${{ github.repository }}" \
+            --body-file "$BODY_FILE"

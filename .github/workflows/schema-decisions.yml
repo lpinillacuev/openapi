@@ -1,15 +1,15 @@
 name: Schema Decisions
 
-# Cuando el reviewer hace Review → Approve, lee los checkboxes de PENDING_SCHEMAS
-# y revierte en spec3.yaml los schemas desmarcados (rechazados).
+# When the reviewer submits Review → Approve, this workflow reads the
+# PENDING_SCHEMAS checkboxes and reverts unchecked schemas in spec3.yaml.
 #
-# Flujo:
-#   1. Reviewer desmarca schemas no deseados en el PR body
-#   2. Hace Review → Approve
-#   3. Este workflow detecta los desmarcados y los revierte en spec3.yaml
-#   4. Hace commit al branch del PR con el revert
+# Flow:
+#   1. The reviewer unchecks unwanted schemas in the PR body
+#   2. The reviewer submits Review → Approve
+#   3. This workflow detects unchecked schemas and reverts them in spec3.yaml
+#   4. The workflow commits the revert to the PR branch
 #
-# Si el reviewer marcó todo → no se hace nada, el PR queda como está.
+# If every schema remains checked, nothing is changed and the PR stays as-is.
 
 on:
   pull_request_review:
@@ -17,7 +17,7 @@ on:
 
 jobs:
   revert-rejected-schemas:
-    name: Revertir schemas rechazados
+    name: Revert rejected schemas
     runs-on: ubuntu-latest
     if: github.event.review.state == 'approved'
     permissions:
@@ -25,7 +25,7 @@ jobs:
       pull-requests: read
 
     steps:
-      - name: Verificar que es un PR de sync automático
+      - name: Verify this is an automatic sync PR
         id: ctx
         env:
           GH_TOKEN: ${{ secrets.GH_PAT || github.token }}
@@ -34,7 +34,7 @@ jobs:
           APP=$(echo "$BRANCH" | sed -n 's|enhancement/automatic-spec-\([^/]*\)/.*|\1|p')
 
           if [ -z "$APP" ]; then
-            echo "No es un PR de sync automático — omitiendo."
+            echo "Not an automatic sync PR — skipping."
             echo "skip=true" >> $GITHUB_OUTPUT
           else
             echo "skip=false" >> $GITHUB_OUTPUT
@@ -44,7 +44,7 @@ jobs:
             echo "pr_number=${{ github.event.pull_request.number }}" >> $GITHUB_OUTPUT
           fi
 
-      - name: Leer PR body y extraer schemas desmarcados
+      - name: Read PR body and extract unchecked schemas
         id: schemas
         if: steps.ctx.outputs.skip != 'true'
         env:
@@ -55,17 +55,17 @@ jobs:
             --repo "${{ github.repository }}" \
             --json body --jq '.body' 2>/dev/null || echo "")
 
-          # Extraer la sección entre los markers
+          # Extract the section between markers
           SECTION=$(echo "$PR_BODY" | \
             awk '/PENDING_SCHEMAS_START/{found=1} found{print} /PENDING_SCHEMAS_END/{exit}')
 
           if [ -z "$SECTION" ]; then
-            echo "Sin sección PENDING_SCHEMAS en el PR body."
+            echo "No PENDING_SCHEMAS section found in the PR body."
             echo "rejected=" >> $GITHUB_OUTPUT
             exit 0
           fi
 
-          # Parsear líneas desmarcadas: - [ ] `SchemaName` — ...
+          # Parse unchecked lines: - [ ] `SchemaName` — ...
           REJECTED=()
           while IFS= read -r line; do
             if echo "$line" | grep -qE '^\- \[ \]'; then
@@ -74,13 +74,13 @@ jobs:
             fi
           done <<< "$SECTION"
 
-          echo "Schemas rechazados: ${REJECTED[*]:-ninguno}"
-          # Pasar como JSON array para el step de Python
+          echo "Rejected schemas: ${REJECTED[*]:-none}"
+          # Pass as a JSON array for the Python step
           REJECTED_JSON=$(printf '%s\n' "${REJECTED[@]}" | python3 -c \
             "import sys,json; print(json.dumps([l.strip() for l in sys.stdin if l.strip()]))")
           echo "rejected=$REJECTED_JSON" >> $GITHUB_OUTPUT
 
-      - name: Checkout del branch del PR
+      - name: Checkout PR branch
         if: |
           steps.ctx.outputs.skip != 'true' &&
           steps.schemas.outputs.rejected != '' &&
@@ -91,14 +91,14 @@ jobs:
           fetch-depth: 0
           token: ${{ secrets.GH_PAT || github.token }}
 
-      - name: Instalar PyYAML
+      - name: Install PyYAML
         if: |
           steps.ctx.outputs.skip != 'true' &&
           steps.schemas.outputs.rejected != '' &&
           steps.schemas.outputs.rejected != '[]'
         run: pip install pyyaml --quiet
 
-      - name: Revertir schemas rechazados en spec3.yaml
+      - name: Revert rejected schemas in spec3.yaml
         if: |
           steps.ctx.outputs.skip != 'true' &&
           steps.schemas.outputs.rejected != '' &&
@@ -118,19 +118,19 @@ jobs:
           rejected  = json.loads(os.environ['REJECTED_JSON'])
 
           if not rejected:
-              print("Sin schemas rechazados.")
+              print("No rejected schemas.")
               sys.exit(0)
 
           import subprocess
 
-          # Leer spec3.yaml de la rama base (versión original)
+          # Read spec3.yaml from the base branch (original version)
           old_raw = subprocess.check_output(
               ['git', 'show', f'origin/{base}:spec3.yaml']
           ).decode()
           old_spec = yaml.safe_load(old_raw) or {}
           old_schemas = (old_spec.get('components') or {}).get('schemas') or {}
 
-          # Leer spec3.yaml actual del branch
+          # Read the current spec3.yaml from the PR branch
           with open('spec3.yaml') as f:
               new_spec = yaml.safe_load(f) or {}
 
@@ -141,17 +141,17 @@ jobs:
           for name in rejected:
               old_schema = old_schemas.get(name)
               if old_schema is None:
-                  # Era nuevo → eliminarlo
+                  # New schema → remove it
                   if name in current_schemas:
                       del current_schemas[name]
-                      reverted.append(f'eliminado (era nuevo): {name}')
+                      reverted.append(f'removed (new schema): {name}')
               else:
-                  # Estaba modificado → restaurar versión anterior
+                  # Modified schema → restore previous version
                   current_schemas[name] = old_schema
-                  reverted.append(f'restaurado: {name}')
+                  reverted.append(f'restored: {name}')
 
           if not reverted:
-              print("Ningún schema necesitó revert.")
+              print("No schema needed to be reverted.")
               sys.exit(0)
 
           with open('spec3.yaml', 'w') as f:
@@ -164,12 +164,12 @@ jobs:
           for msg in reverted:
               print(f'  ✅ {msg}')
 
-          # Señal para el siguiente step
+          # Signal for the next step
           with open('/tmp/reverted.txt', 'w') as f:
               f.write('\n'.join(reverted))
           PYEOF
 
-      - name: Commit y push del revert
+      - name: Commit and push revert
         if: |
           steps.ctx.outputs.skip != 'true' &&
           steps.schemas.outputs.rejected != '' &&
@@ -185,9 +185,9 @@ jobs:
               sed 's/.*: //' | paste -sd', ' -)
 
             git add spec3.yaml
-            git commit -m "revert(schemas): reject [$SCHEMAS] — decidido por @$REVIEWER"
+            git commit -m "revert(schemas): reject [$SCHEMAS] — decided by @$REVIEWER"
             git push
-            echo "✅ Revert commiteado al branch del PR."
+            echo "✅ Revert committed to the PR branch."
           else
-            echo "Sin cambios en spec3.yaml — todos los schemas fueron aceptados."
+            echo "No changes in spec3.yaml — all schemas were accepted."
           fi

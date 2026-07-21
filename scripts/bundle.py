@@ -385,7 +385,6 @@ def main() -> None:
             "Phase 1: merge schemas/*.yaml → spec3.yaml  |  "
             "Phase 2: apply overlays → by-site/{SITE}/spec3.yaml  |  "
             "Phase 3: filter per product → by-product/{product}/spec3.yaml  |  "
-            "Phase 4: transform to DevSite format → by-product/{product}/spec3.reference.json"
         )
     )
     parser.add_argument(
@@ -398,8 +397,6 @@ def main() -> None:
                         help="Run only phase 2 (by-site generation)")
     parser.add_argument("--products-only", action="store_true",
                         help="Run only phase 3 (by-product generation)")
-    parser.add_argument("--reference-only", action="store_true",
-                        help="Run only phase 4 (reference/DevSite json generation + R1-R11 validation)")
     parser.add_argument("--check", action="store_true",
                         help="CI mode: exit 1 if spec3.yaml or any by-site is stale")
     parser.add_argument("--dry-run", action="store_true",
@@ -422,7 +419,7 @@ def main() -> None:
         print("=== Phase 2: by-site check ===")
         sys.exit(check_mode(sites))
 
-    only_one = args.schemas_only or args.sites_only or args.products_only or args.reference_only
+    only_one = args.schemas_only or args.sites_only or args.products_only
 
     # ── Phase 1: schema bundle ────────────────────────────────────────────────
     # Phase 1 modifies spec3.yaml — only runs when explicitly requested via --schemas-only.
@@ -441,7 +438,7 @@ def main() -> None:
             print(f"\nDry run — {len(schema_changes)} schema change(s) would be applied.")
 
     # ── Phase 2: by-site generation ───────────────────────────────────────────
-    if not args.schemas_only and not args.products_only and not args.reference_only:
+    if not args.schemas_only and not args.products_only:
         print(f"\n=== Phase 2: generating by-site for {', '.join(sites)} ===\n")
         base_spec = load_yaml(SPEC3_PATH)
         changed = 0
@@ -456,7 +453,7 @@ def main() -> None:
         print(f"\nDone. {changed}/{len(sites)} site(s) updated.")
 
     # ── Phase 3: by-product generation ───────────────────────────────────────
-    if not args.schemas_only and not args.sites_only and not args.reference_only:
+    if not args.schemas_only and not args.sites_only:
         if not APPS_CONFIG.exists():
             print("\n=== Phase 3: skipped — apps.yaml not found ===")
         else:
@@ -471,22 +468,6 @@ def main() -> None:
                     changed += 1
 
             print(f"\nDone. {changed}/{len(apps)} product(s) updated.")
-
-    # ── Phase 4: reference generation (DevSite api-json + R1-R11 validation) ──
-    if not args.schemas_only and not args.sites_only and not args.products_only:
-        if not APPS_CONFIG.exists():
-            print("\n=== Phase 4: skipped — apps.yaml not found ===")
-        else:
-            import subprocess  # noqa: PLC0415
-            print(f"\n=== Phase 4: generating spec3.reference.json (DevSite api-json) ===\n")
-            cmd = [sys.executable, str(Path(__file__).parent / "build_reference.py"), "--all"]
-            # --all builds: spec3.reference.json (global) + by-product/{p}/spec3.reference.json
-            if args.dry_run:
-                cmd.append("--dry-run")
-            result = subprocess.run(cmd, cwd=str(ROOT))
-            if result.returncode != 0:
-                print("\n❌ Phase 4 failed R1–R11 validation — fix errors above before pushing.")
-                sys.exit(1)
 
 
 if __name__ == "__main__":

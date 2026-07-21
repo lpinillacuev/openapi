@@ -173,7 +173,11 @@ if __name__ == "__main__":
     import argparse
 
     parser = argparse.ArgumentParser(description="Build SDK request body from product diffs")
-    parser.add_argument("--flow", default="sdk_generation_test", help="Flow name sent to spec-agent")
+    parser.add_argument(
+        "--flow",
+        default="sdk_generation_test",
+        help="Flow name or JSON array of flow names sent to spec-agent",
+    )
     parser.add_argument("--output", metavar="FILE", help="Write full request body JSON to FILE")
     args = parser.parse_args()
 
@@ -188,8 +192,20 @@ if __name__ == "__main__":
     # We serialize the structured payload as a compact JSON string.
     changes_str = json.dumps(changes, ensure_ascii=False, separators=(",", ":"))
 
+    flow: str | list[str]
+    try:
+        parsed_flow = json.loads(args.flow)
+        if isinstance(parsed_flow, list) and all(isinstance(item, str) for item in parsed_flow):
+            flow = parsed_flow
+        elif isinstance(parsed_flow, str):
+            flow = parsed_flow
+        else:
+            raise ValueError
+    except (json.JSONDecodeError, ValueError):
+        flow = args.flow
+
     if args.output:
-        body = {"flow": args.flow, "changes": changes_str}
+        body = {"flow": flow, "changes": changes_str}
         with open(args.output, "w", encoding="utf-8") as f:
             json.dump(body, f, ensure_ascii=False)
         print(json.dumps(changes, ensure_ascii=False, indent=2))

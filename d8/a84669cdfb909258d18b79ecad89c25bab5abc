@@ -1,0 +1,12 @@
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.5.6",
+  "base_commit_sha": "d8a84669cdfb909258d18b79ecad89c25bab5abc",
+  "prompts": {},
+  "humans": {
+    "h_2fdb5dbaf86600": {
+      "author": "lpinillacuev <lina.pinillacuevas@mercadolibre.com.co>"
+    }
+  }
+}

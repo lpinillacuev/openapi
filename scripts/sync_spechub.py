@@ -265,6 +265,39 @@ def extract_inline_schemas_from_paths(
 # Spec3 merge logic
 # ---------------------------------------------------------------------------
 
+def preserve_existing_descriptions(existing: Any, incoming: Any) -> Any:
+    """
+    Return incoming with existing description values restored wherever both
+    structures have the same shape.
+
+    Spec Hub is the source for structural changes, but curated descriptions in
+    spec3.yaml should not be overwritten for existing paths, operations, schemas,
+    parameters, request bodies, or responses. New objects keep the incoming
+    description because there is nothing curated to preserve yet.
+    """
+    if isinstance(existing, dict) and isinstance(incoming, dict):
+        merged = copy.deepcopy(incoming)
+        if "description" in existing and "description" in merged:
+            merged["description"] = existing["description"]
+
+        for key, value in incoming.items():
+            if key == "description":
+                continue
+            if key in existing:
+                merged[key] = preserve_existing_descriptions(existing[key], value)
+
+        return merged
+
+    if isinstance(existing, list) and isinstance(incoming, list):
+        merged = copy.deepcopy(incoming)
+        for idx, value in enumerate(incoming):
+            if idx < len(existing):
+                merged[idx] = preserve_existing_descriptions(existing[idx], value)
+        return merged
+
+    return copy.deepcopy(incoming)
+
+
 def merge_schemas(
     current: dict[str, Any],
     new_schemas: dict[str, Any],
@@ -278,8 +311,12 @@ def merge_schemas(
             target[name] = schema
             changes.append(f"+ schema: {name}")
             print(f"  + schema: {name}")
-        elif target[name] != schema:
-            target[name] = schema
+        else:
+            merged_schema = preserve_existing_descriptions(target[name], schema)
+            if target[name] == merged_schema:
+                continue
+
+            target[name] = merged_schema
             changes.append(f"~ schema: {name}")
             print(f"  ~ schema: {name}")
 
@@ -333,8 +370,15 @@ def merge_paths(
                     target[path][method] = operation
                     changes.append(f"+ {method.upper()} {path}")
                     print(f"  + {method.upper()} {path}")
-                elif target[path][method] != operation:
-                    target[path][method] = operation
+                else:
+                    merged_operation = preserve_existing_descriptions(
+                        target[path][method],
+                        operation,
+                    )
+                    if target[path][method] == merged_operation:
+                        continue
+
+                    target[path][method] = merged_operation
                     changes.append(f"~ {method.upper()} {path}")
                     print(f"  ~ {method.upper()} {path}")
 

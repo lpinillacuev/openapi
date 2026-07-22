@@ -1,11 +1,11 @@
 name: Spec Diff Comment
 
-# Genera automáticamente un comentario en el PR con un resumen estructurado
-# de los cambios en spec3.yaml (paths, parameters, schemas).
+# Automatically creates a PR comment with a structured summary of changes in
+# spec3.yaml (paths, parameters, schemas).
 #
-# El reviewer ve en GitHub qué cambió exactamente en cada endpoint
-# sin necesidad de leer el diff crudo del YAML.
-# El comentario se actualiza en cada push a la rama del PR.
+# The reviewer can see exactly what changed in each endpoint from GitHub,
+# without reading the raw YAML diff.
+# The comment is refreshed on every push to the PR branch.
 
 on:
   pull_request:
@@ -20,121 +20,103 @@ on:
 
 jobs:
   spec-diff-comment:
-    name: Generar resumen de cambios en el spec
+    name: Generate spec change summary
     runs-on: ubuntu-latest
     permissions:
       pull-requests: write
       contents: read
+      issues: write
 
     steps:
-      - name: Checkout (con historial completo)
+      - name: Checkout full history
         uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
         with:
           fetch-depth: 0
 
-      - name: Instalar dependencias
+      - name: Install dependencies
         run: pip install pyyaml --quiet
 
-      - name: Fetch rama base
+      - name: Fetch base branch
         run: git fetch origin ${{ github.base_ref }}
 
-      - name: Generar resumen Markdown y checkboxes de schemas
+      - name: Generate Markdown summary and schema checkboxes
         run: |
           python3 .github/scripts/spec_diff_md.py \
             --base "${{ github.base_ref }}" \
             --output /tmp/spec-diff.md \
             --schema-checkboxes /tmp/schema-checkboxes.md
 
-      - name: Agregar checkboxes de schemas al PR body
-        uses: actions/github-script@60a0d83039c74a4aee543508d2ffcb1c3799cdea
-        with:
-          script: |
-            const fs = require('fs');
-            const SCHEMA_MARKER_START = '<!-- PENDING_SCHEMAS_START -->';
-            const SCHEMA_MARKER_END   = '<!-- PENDING_SCHEMAS_END -->';
+      - name: Add schema checkboxes to PR body
+        env:
+          GH_TOKEN: ${{ secrets.GH_PAT || github.token }}
+          PR_NUMBER: ${{ github.event.pull_request.number }}
+        run: |
+          if [ ! -s /tmp/schema-checkboxes.md ]; then
+            echo "No schema changes found; skipping PR body update."
+            exit 0
+          fi
 
-            let schemaBlock = '';
-            try {
-              schemaBlock = fs.readFileSync('/tmp/schema-checkboxes.md', 'utf8').trim();
-            } catch (e) {}
+          gh pr view "$PR_NUMBER" \
+            --repo "${{ github.repository }}" \
+            --json body \
+            --jq '.body // ""' > /tmp/current-pr-body.md
 
-            if (!schemaBlock) {
-              console.log('Sin cambios en schemas, omitiendo actualización del PR body.');
-              return;
-            }
+          python3 - <<'PYEOF'
+          from pathlib import Path
 
-            // Leer PR body actual
-            const { data: pr } = await github.rest.pulls.get({
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              pull_number: context.issue.number,
-            });
+          start = '<!-- PENDING_SCHEMAS_START -->'
+          end = '<!-- PENDING_SCHEMAS_END -->'
 
-            let currentBody = pr.body || '';
+          current = Path('/tmp/current-pr-body.md').read_text()
+          schema_block = Path('/tmp/schema-checkboxes.md').read_text().strip()
 
-            // Reemplazar bloque existente o agregar al final
-            if (currentBody.includes(SCHEMA_MARKER_START)) {
-              const re = new RegExp(
-                /.*<!-- PENDING_SCHEMAS_START -->[\s\S]*<!-- PENDING_SCHEMAS_END -->.*\n?/
-              );
-              currentBody = currentBody.replace(re, schemaBlock + '\n');
-            } else {
-              currentBody = currentBody + '\n' + schemaBlock;
-            }
+          if start in current and end in current:
+              before = current.split(start, 1)[0].rstrip()
+              after = current.split(end, 1)[1].lstrip()
+              updated = f'{before}\n{schema_block}\n{after}'.strip() + '\n'
+          else:
+              updated = f'{current.rstrip()}\n\n{schema_block}\n'
 
-            await github.rest.pulls.update({
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              pull_number: context.issue.number,
-              body: currentBody,
-            });
-            console.log('PR body actualizado con checkboxes de schemas.');
+          Path('/tmp/updated-pr-body.md').write_text(updated)
+          PYEOF
 
-      - name: Publicar o actualizar comentario en el PR
-        uses: actions/github-script@60a0d83039c74a4aee543508d2ffcb1c3799cdea
-        with:
-          script: |
-            const fs = require('fs');
-            const MARKER = '<!-- spec-diff-summary-bot -->';
+          gh pr edit "$PR_NUMBER" \
+            --repo "${{ github.repository }}" \
+            --body-file /tmp/updated-pr-body.md
 
-            let body = '';
-            try {
-              body = fs.readFileSync('/tmp/spec-diff.md', 'utf8').trim();
-            } catch (e) {
-              console.log('No se generó archivo de diff, omitiendo comentario.');
-              return;
-            }
+          echo "PR body updated with schema checkboxes."
 
-            if (!body) {
-              console.log('Sin cambios en spec3.yaml detectados, omitiendo comentario.');
-              return;
-            }
+      - name: Create or update PR comment
+        env:
+          GH_TOKEN: ${{ secrets.GH_PAT || github.token }}
+          PR_NUMBER: ${{ github.event.pull_request.number }}
+        run: |
+          if [ ! -s /tmp/spec-diff.md ]; then
+            echo "No spec3.yaml changes detected; skipping comment."
+            exit 0
+          fi
 
-            const fullBody = `${MARKER}\n${body}`;
+          MARKER='<!-- spec-diff-summary-bot -->'
+          BODY_FILE="/tmp/spec-diff-comment.md"
+          {
+            echo "$MARKER"
+            cat /tmp/spec-diff.md
+          } > "$BODY_FILE"
 
-            // Buscar comentario previo del bot para actualizarlo
-            const { data: comments } = await github.rest.issues.listComments({
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              issue_number: context.issue.number,
-            });
+          EXISTING_COMMENT_ID=$(gh api \
+            "repos/${{ github.repository }}/issues/${PR_NUMBER}/comments" \
+            --jq ".[] | select(.body | startswith(\"${MARKER}\")) | .id" \
+            | head -n 1)
 
-            const existing = comments.find(c => c.body.startsWith(MARKER));
-
-            if (existing) {
-              await github.rest.issues.updateComment({
-                owner: context.repo.owner,
-                repo: context.repo.repo,
-                comment_id: existing.id,
-                body: fullBody,
-              });
-              console.log(`Comentario actualizado: #${existing.id}`);
-            } else {
-              await github.rest.issues.createComment({
-                owner: context.repo.owner,
-                repo: context.repo.repo,
-                issue_number: context.issue.number,
-                body: fullBody,
-              });
-              console.log('Comentario creado en el PR.');
-            }
+          if [ -n "$EXISTING_COMMENT_ID" ]; then
+            gh api \
+              --method PATCH \
+              "repos/${{ github.repository }}/issues/comments/${EXISTING_COMMENT_ID}" \
+              --raw-field body="$(cat "$BODY_FILE")" > /dev/null
+            echo "Comment updated: #${EXISTING_COMMENT_ID}"
+          else
+            gh issue comment "$PR_NUMBER" \
+              --repo "${{ github.repository }}" \
+              --body-file "$BODY_FILE"
+            echo "Comment created on the PR."
+          fi

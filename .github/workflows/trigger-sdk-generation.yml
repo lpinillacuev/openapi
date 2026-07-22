@@ -42,6 +42,10 @@ jobs:
         run: python openapi/scripts/generate_product_diff.py
         working-directory: ${{ github.workspace }}
 
+      - name: Regenerate by-product specs for payload
+        run: python scripts/bundle.py --products-only
+        working-directory: ${{ github.workspace }}/openapi
+
       - name: Read changed products
         id: changed
         run: |
@@ -74,6 +78,19 @@ jobs:
           echo "Flow: ${SDK_AGENT_FLOW}"
           echo "Request body size: $(wc -c < /tmp/sdk_body.json) bytes"
 
+      - name: Print SDK request body
+        if: steps.changed.outputs.has_changes == 'true'
+        run: |
+          python3 - <<'PY'
+          import json
+
+          with open("/tmp/sdk_body.json", encoding="utf-8") as body_file:
+              body = json.load(body_file)
+
+          print("SDK request body sent to spec-agent:")
+          print(json.dumps(body, ensure_ascii=False, indent=2))
+          PY
+
       # ── Step 2b: Trigger spec-agent via public API ─────────────────────────────
       # Sends the full structured spec payload so the SDK agent knows exactly
       # what schemas/paths changed and can generate accurate SDK code.
@@ -83,7 +100,6 @@ jobs:
       - name: Trigger SDK generation — spec-agent public API
         id: sdk_direct
         if: steps.changed.outputs.has_changes == 'true'
-        continue-on-error: true
         env:
           SDK_AGENT_API_KEY: ${{ secrets.SDK_AGENT_API_KEY }}
           SDK_AGENT_COOKIE: ${{ secrets.SDK_AGENT_COOKIE }}

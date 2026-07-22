@@ -109,18 +109,10 @@ jobs:
             | head -n 1)
 
           if [ -n "$EXISTING_COMMENT_ID" ]; then
-            python3 - <<'PYEOF'
-            import json
-            from pathlib import Path
-
-            body = Path('/tmp/spec-diff-comment.md').read_text()
-            Path('/tmp/spec-diff-comment.json').write_text(json.dumps({'body': body}))
-            PYEOF
-
             gh api \
               --method PATCH \
               "repos/${{ github.repository }}/issues/comments/${EXISTING_COMMENT_ID}" \
-              --input /tmp/spec-diff-comment.json > /dev/null
+              --raw-field body="$(cat "$BODY_FILE")" > /dev/null
             echo "Comment updated: #${EXISTING_COMMENT_ID}"
           else
             gh issue comment "$PR_NUMBER" \

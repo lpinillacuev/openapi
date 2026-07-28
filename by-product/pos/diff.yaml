@@ -1,0 +1,61 @@
+product: pos
+fury_app: instore-api-pos
+generated_at: '2026-07-14T21:52:00Z'
+total_changes: 4
+paths:
+  added: []
+  removed: []
+  modified:
+  - /pos
+  - /pos/{id}
+  detail:
+    added: []
+    removed: []
+    modified:
+    - path: /pos
+      methods_added:
+      - post:
+          summary: Create a point of sale
+          description: Creates a point of sale in a store to receive payments for products or services. Each POS will have
+            a unique QR code lin...
+          requestBody: POSRequest
+          responses:
+          - '201'
+          - '400'
+          - '401'
+      methods_removed: []
+      methods_modified: []
+    - path: /pos/{id}
+      methods_added:
+      - delete:
+          summary: Delete a point of sale
+          parameters:
+          - id
+          responses:
+          - '200'
+          - '404'
+      - get:
+          summary: Get a point of sale
+          parameters:
+          - id
+          responses:
+          - '200'
+          - '404'
+      methods_removed: []
+      methods_modified: []
+schemas:
+  added: []
+  removed: []
+  modified:
+  - Error
+  - Pagination
+  detail:
+    added: []
+    removed: []
+    modified:
+    - name: Error
+      properties_added: []
+      properties_removed: []
+    - name: Pagination
+      properties_added: []
+      properties_removed: []

@@ -1,0 +1,1990 @@
+{
+  "url": "https://api.mercadopago.com",
+  "paths": {
+    "/v1/customers": {
+      "post": {
+        "description": {
+          "en": "Creates a customer profile for storing payment methods. The customer email is unique per account.",
+          "pt": "TODO",
+          "es": "TODO"
+        },
+        "tags": [
+          "Customers"
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CustomerRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": {
+              "en": "Customer created",
+              "pt": "TODO",
+              "es": "TODO"
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Customer"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "errorKey": {
+                      "type": "string",
+                      "enum": [
+                        {
+                          "title": "TODO_error_code",
+                          "description": {
+                            "en": "TODO: describe this error",
+                            "pt": "TODO",
+                            "es": "TODO"
+                          }
+                        }
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "errorKey": {
+                      "type": "string",
+                      "enum": [
+                        {
+                          "title": "TODO_error_code",
+                          "description": {
+                            "en": "TODO: describe this error",
+                            "pt": "TODO",
+                            "es": "TODO"
+                          }
+                        }
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "title": {
+          "en": "Create a customer",
+          "pt": "TODO",
+          "es": "TODO"
+        }
+      }
+    },
+    "/v1/customers/search": {
+      "get": {
+        "tags": [
+          "Customers"
+        ],
+        "parameters": [
+          {
+            "name": "email",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "format": "email"
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "default": 30
+            }
+          },
+          {
+            "name": "offset",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "default": 0
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": {
+              "en": "Search results",
+              "pt": "TODO",
+              "es": "TODO"
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CustomerSearchResult"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "errorKey": {
+                      "type": "string",
+                      "enum": [
+                        {
+                          "title": "TODO_error_code",
+                          "description": {
+                            "en": "TODO: describe this error",
+                            "pt": "TODO",
+                            "es": "TODO"
+                          }
+                        }
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "errorKey": {
+                      "type": "string",
+                      "enum": [
+                        {
+                          "title": "TODO_error_code",
+                          "description": {
+                            "en": "TODO: describe this error",
+                            "pt": "TODO",
+                            "es": "TODO"
+                          }
+                        }
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "title": {
+          "en": "Search customers",
+          "pt": "TODO",
+          "es": "TODO"
+        },
+        "description": {
+          "en": "Search customers",
+          "pt": "TODO",
+          "es": "TODO"
+        }
+      }
+    },
+    "/v1/customers/{id}": {
+      "get": {
+        "tags": [
+          "Customers"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": {
+              "en": "Customer found",
+              "pt": "TODO",
+              "es": "TODO"
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Customer"
+                }
+              }
+            }
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "errorKey": {
+                      "type": "string",
+                      "enum": [
+                        {
+                          "title": "TODO_error_code",
+                          "description": {
+                            "en": "TODO: describe this error",
+                            "pt": "TODO",
+                            "es": "TODO"
+                          }
+                        }
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "errorKey": {
+                      "type": "string",
+                      "enum": [
+                        {
+                          "title": "TODO_error_code",
+                          "description": {
+                            "en": "TODO: describe this error",
+                            "pt": "TODO",
+                            "es": "TODO"
+                          }
+                        }
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "errorKey": {
+                      "type": "string",
+                      "enum": [
+                        {
+                          "title": "TODO_error_code",
+                          "description": {
+                            "en": "TODO: describe this error",
+                            "pt": "TODO",
+                            "es": "TODO"
+                          }
+                        }
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "title": {
+          "en": "Get customer by ID",
+          "pt": "TODO",
+          "es": "TODO"
+        },
+        "description": {
+          "en": "Get customer by ID",
+          "pt": "TODO",
+          "es": "TODO"
+        }
+      },
+      "put": {
+        "tags": [
+          "Customers"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CustomerRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": {
+              "en": "Customer updated",
+              "pt": "TODO",
+              "es": "TODO"
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Customer"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "errorKey": {
+                      "type": "string",
+                      "enum": [
+                        {
+                          "title": "TODO_error_code",
+                          "description": {
+                            "en": "TODO: describe this error",
+                            "pt": "TODO",
+                            "es": "TODO"
+                          }
+                        }
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "errorKey": {
+                      "type": "string",
+                      "enum": [
+                        {
+                          "title": "TODO_error_code",
+                          "description": {
+                            "en": "TODO: describe this error",
+                            "pt": "TODO",
+                            "es": "TODO"
+                          }
+                        }
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "errorKey": {
+                      "type": "string",
+                      "enum": [
+                        {
+                          "title": "TODO_error_code",
+                          "description": {
+                            "en": "TODO: describe this error",
+                            "pt": "TODO",
+                            "es": "TODO"
+                          }
+                        }
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "title": {
+          "en": "Update a customer",
+          "pt": "TODO",
+          "es": "TODO"
+        },
+        "description": {
+          "en": "Update a customer",
+          "pt": "TODO",
+          "es": "TODO"
+        }
+      }
+    },
+    "/v1/customers/{customer_id}/cards": {
+      "post": {
+        "description": {
+          "en": "Saves a tokenized card to a customer profile for future payments. The token must be created client-side via MercadoPago.js. Raw card data must never pass through your server.\n**PCI scope:** Handling this endpoint brings your integration into PCI DSS scope.",
+          "pt": "TODO",
+          "es": "TODO"
+        },
+        "tags": [
+          "Cards"
+        ],
+        "parameters": [
+          {
+            "name": "customer_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SaveCardRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": {
+              "en": "Card saved",
+              "pt": "TODO",
+              "es": "TODO"
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Card"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "errorKey": {
+                      "type": "string",
+                      "enum": [
+                        {
+                          "title": "TODO_error_code",
+                          "description": {
+                            "en": "TODO: describe this error",
+                            "pt": "TODO",
+                            "es": "TODO"
+                          }
+                        }
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "errorKey": {
+                      "type": "string",
+                      "enum": [
+                        {
+                          "title": "TODO_error_code",
+                          "description": {
+                            "en": "TODO: describe this error",
+                            "pt": "TODO",
+                            "es": "TODO"
+                          }
+                        }
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "title": {
+          "en": "Save a card to a customer",
+          "pt": "TODO",
+          "es": "TODO"
+        }
+      },
+      "get": {
+        "tags": [
+          "Cards"
+        ],
+        "parameters": [
+          {
+            "name": "customer_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": {
+              "en": "Card list",
+              "pt": "TODO",
+              "es": "TODO"
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Card"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "errorKey": {
+                      "type": "string",
+                      "enum": [
+                        {
+                          "title": "TODO_error_code",
+                          "description": {
+                            "en": "TODO: describe this error",
+                            "pt": "TODO",
+                            "es": "TODO"
+                          }
+                        }
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "errorKey": {
+                      "type": "string",
+                      "enum": [
+                        {
+                          "title": "TODO_error_code",
+                          "description": {
+                            "en": "TODO: describe this error",
+                            "pt": "TODO",
+                            "es": "TODO"
+                          }
+                        }
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "title": {
+          "en": "List customer cards",
+          "pt": "TODO",
+          "es": "TODO"
+        },
+        "description": {
+          "en": "List customer cards",
+          "pt": "TODO",
+          "es": "TODO"
+        }
+      }
+    },
+    "/v1/customers/{customer_id}/cards/{id}": {
+      "get": {
+        "tags": [
+          "Cards"
+        ],
+        "parameters": [
+          {
+            "name": "customer_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": {
+              "en": "Card found",
+              "pt": "TODO",
+              "es": "TODO"
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Card"
+                }
+              }
+            }
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "errorKey": {
+                      "type": "string",
+                      "enum": [
+                        {
+                          "title": "TODO_error_code",
+                          "description": {
+                            "en": "TODO: describe this error",
+                            "pt": "TODO",
+                            "es": "TODO"
+                          }
+                        }
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "errorKey": {
+                      "type": "string",
+                      "enum": [
+                        {
+                          "title": "TODO_error_code",
+                          "description": {
+                            "en": "TODO: describe this error",
+                            "pt": "TODO",
+                            "es": "TODO"
+                          }
+                        }
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "errorKey": {
+                      "type": "string",
+                      "enum": [
+                        {
+                          "title": "TODO_error_code",
+                          "description": {
+                            "en": "TODO: describe this error",
+                            "pt": "TODO",
+                            "es": "TODO"
+                          }
+                        }
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "title": {
+          "en": "Get a saved card",
+          "pt": "TODO",
+          "es": "TODO"
+        },
+        "description": {
+          "en": "Get a saved card",
+          "pt": "TODO",
+          "es": "TODO"
+        }
+      },
+      "put": {
+        "tags": [
+          "Cards"
+        ],
+        "parameters": [
+          {
+            "name": "customer_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateCardRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": {
+              "en": "Card updated",
+              "pt": "TODO",
+              "es": "TODO"
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Card"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "errorKey": {
+                      "type": "string",
+                      "enum": [
+                        {
+                          "title": "TODO_error_code",
+                          "description": {
+                            "en": "TODO: describe this error",
+                            "pt": "TODO",
+                            "es": "TODO"
+                          }
+                        }
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "errorKey": {
+                      "type": "string",
+                      "enum": [
+                        {
+                          "title": "TODO_error_code",
+                          "description": {
+                            "en": "TODO: describe this error",
+                            "pt": "TODO",
+                            "es": "TODO"
+                          }
+                        }
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "errorKey": {
+                      "type": "string",
+                      "enum": [
+                        {
+                          "title": "TODO_error_code",
+                          "description": {
+                            "en": "TODO: describe this error",
+                            "pt": "TODO",
+                            "es": "TODO"
+                          }
+                        }
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "title": {
+          "en": "Update a saved card",
+          "pt": "TODO",
+          "es": "TODO"
+        },
+        "description": {
+          "en": "Update a saved card",
+          "pt": "TODO",
+          "es": "TODO"
+        }
+      },
+      "delete": {
+        "tags": [
+          "Cards"
+        ],
+        "parameters": [
+          {
+            "name": "customer_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": {
+              "en": "Card deleted",
+              "pt": "TODO",
+              "es": "TODO"
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Card"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "errorKey": {
+                      "type": "string",
+                      "enum": [
+                        {
+                          "title": "TODO_error_code",
+                          "description": {
+                            "en": "TODO: describe this error",
+                            "pt": "TODO",
+                            "es": "TODO"
+                          }
+                        }
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "errorKey": {
+                      "type": "string",
+                      "enum": [
+                        {
+                          "title": "TODO_error_code",
+                          "description": {
+                            "en": "TODO: describe this error",
+                            "pt": "TODO",
+                            "es": "TODO"
+                          }
+                        }
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "errorKey": {
+                      "type": "string",
+                      "enum": [
+                        {
+                          "title": "TODO_error_code",
+                          "description": {
+                            "en": "TODO: describe this error",
+                            "pt": "TODO",
+                            "es": "TODO"
+                          }
+                        }
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "title": {
+          "en": "Delete a saved card",
+          "pt": "TODO",
+          "es": "TODO"
+        },
+        "description": {
+          "en": "Delete a saved card",
+          "pt": "TODO",
+          "es": "TODO"
+        }
+      }
+    },
+    "/v1/customers/{id}/delete": {
+      "delete": {
+        "description": {
+          "en": "Permanently deletes a customer profile. This action cannot be undone. Saved cards associated with the customer will also be removed.",
+          "pt": "TODO",
+          "es": "TODO"
+        },
+        "tags": [
+          "Customers"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": {
+              "en": "Customer ID to delete",
+              "pt": "TODO",
+              "es": "TODO"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": {
+              "en": "Customer deleted",
+              "pt": "TODO",
+              "es": "TODO"
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Customer"
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "errorKey": {
+                      "type": "string",
+                      "enum": [
+                        {
+                          "title": "TODO_error_code",
+                          "description": {
+                            "en": "TODO: describe this error",
+                            "pt": "TODO",
+                            "es": "TODO"
+                          }
+                        }
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "errorKey": {
+                      "type": "string",
+                      "enum": [
+                        {
+                          "title": "TODO_error_code",
+                          "description": {
+                            "en": "TODO: describe this error",
+                            "pt": "TODO",
+                            "es": "TODO"
+                          }
+                        }
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "title": {
+          "en": "Delete a customer",
+          "pt": "TODO",
+          "es": "TODO"
+        }
+      }
+    },
+    "/v1/customers/{customer_id}/addresses": {
+      "post": {
+        "description": {
+          "en": "Adds a shipping or billing address to a customer profile.",
+          "pt": "TODO",
+          "es": "TODO"
+        },
+        "tags": [
+          "Addresses"
+        ],
+        "parameters": [
+          {
+            "name": "customer_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Address"
+              },
+              "example": {
+                "zip_code": "01310-100",
+                "street_name": "Av. Paulista",
+                "street_number": "1000",
+                "city": "São Paulo",
+                "state": "SP"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": {
+              "en": "Address created",
+              "pt": "TODO",
+              "es": "TODO"
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Address"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "errorKey": {
+                      "type": "string",
+                      "enum": [
+                        {
+                          "title": "TODO_error_code",
+                          "description": {
+                            "en": "TODO: describe this error",
+                            "pt": "TODO",
+                            "es": "TODO"
+                          }
+                        }
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "errorKey": {
+                      "type": "string",
+                      "enum": [
+                        {
+                          "title": "TODO_error_code",
+                          "description": {
+                            "en": "TODO: describe this error",
+                            "pt": "TODO",
+                            "es": "TODO"
+                          }
+                        }
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "429": {
+            "$ref": "#/components/responses/TooManyRequests",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "errorKey": {
+                      "type": "string",
+                      "enum": [
+                        {
+                          "title": "TODO_error_code",
+                          "description": {
+                            "en": "TODO: describe this error",
+                            "pt": "TODO",
+                            "es": "TODO"
+                          }
+                        }
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "title": {
+          "en": "Create a customer address",
+          "pt": "TODO",
+          "es": "TODO"
+        }
+      },
+      "get": {
+        "tags": [
+          "Addresses"
+        ],
+        "parameters": [
+          {
+            "name": "customer_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": {
+              "en": "Address list",
+              "pt": "TODO",
+              "es": "TODO"
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Address"
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "errorKey": {
+                      "type": "string",
+                      "enum": [
+                        {
+                          "title": "TODO_error_code",
+                          "description": {
+                            "en": "TODO: describe this error",
+                            "pt": "TODO",
+                            "es": "TODO"
+                          }
+                        }
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "title": {
+          "en": "List customer addresses",
+          "pt": "TODO",
+          "es": "TODO"
+        },
+        "description": {
+          "en": "List customer addresses",
+          "pt": "TODO",
+          "es": "TODO"
+        }
+      }
+    },
+    "/v1/customers/{customer_id}/addresses/{address_id}": {
+      "get": {
+        "tags": [
+          "Addresses"
+        ],
+        "parameters": [
+          {
+            "name": "customer_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "address_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": {
+              "en": "Address found",
+              "pt": "TODO",
+              "es": "TODO"
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Address"
+                }
+              }
+            }
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "errorKey": {
+                      "type": "string",
+                      "enum": [
+                        {
+                          "title": "TODO_error_code",
+                          "description": {
+                            "en": "TODO: describe this error",
+                            "pt": "TODO",
+                            "es": "TODO"
+                          }
+                        }
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "title": {
+          "en": "Get a customer address",
+          "pt": "TODO",
+          "es": "TODO"
+        },
+        "description": {
+          "en": "Get a customer address",
+          "pt": "TODO",
+          "es": "TODO"
+        }
+      },
+      "put": {
+        "tags": [
+          "Addresses"
+        ],
+        "parameters": [
+          {
+            "name": "customer_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "address_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Address"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": {
+              "en": "Address updated",
+              "pt": "TODO",
+              "es": "TODO"
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Address"
+                }
+              }
+            }
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "errorKey": {
+                      "type": "string",
+                      "enum": [
+                        {
+                          "title": "TODO_error_code",
+                          "description": {
+                            "en": "TODO: describe this error",
+                            "pt": "TODO",
+                            "es": "TODO"
+                          }
+                        }
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "title": {
+          "en": "Update a customer address",
+          "pt": "TODO",
+          "es": "TODO"
+        },
+        "description": {
+          "en": "Update a customer address",
+          "pt": "TODO",
+          "es": "TODO"
+        }
+      },
+      "delete": {
+        "tags": [
+          "Addresses"
+        ],
+        "parameters": [
+          {
+            "name": "customer_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "address_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": {
+              "en": "Address deleted",
+              "pt": "TODO",
+              "es": "TODO"
+            }
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "errorKey": {
+                      "type": "string",
+                      "enum": [
+                        {
+                          "title": "TODO_error_code",
+                          "description": {
+                            "en": "TODO: describe this error",
+                            "pt": "TODO",
+                            "es": "TODO"
+                          }
+                        }
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "title": {
+          "en": "Delete a customer address",
+          "pt": "TODO",
+          "es": "TODO"
+        },
+        "description": {
+          "en": "Delete a customer address",
+          "pt": "TODO",
+          "es": "TODO"
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "Identification": {
+        "type": "object",
+        "description": {
+          "en": "Payer identification document. Valid types vary by country.",
+          "pt": "TODO",
+          "es": "TODO"
+        },
+        "properties": {
+          "type": {
+            "type": "string",
+            "description": {
+              "en": "Identification type (e.g., CPF, CNPJ for Brazil; DNI for Argentina; RFC for Mexico)",
+              "pt": "TODO",
+              "es": "TODO"
+            },
+            "example": "CPF"
+          },
+          "number": {
+            "type": "string",
+            "description": {
+              "en": "Identification number (no formatting — digits only)",
+              "pt": "TODO",
+              "es": "TODO"
+            },
+            "example": "12345678909"
+          }
+        }
+      },
+      "Phone": {
+        "type": "object",
+        "properties": {
+          "area_code": {
+            "type": "string",
+            "example": "11"
+          },
+          "number": {
+            "type": "string",
+            "example": "987654321"
+          }
+        }
+      },
+      "Address": {
+        "type": "object",
+        "properties": {
+          "zip_code": {
+            "type": "string",
+            "example": "01310-100"
+          },
+          "street_name": {
+            "type": "string",
+            "example": "Av. Paulista"
+          },
+          "street_number": {
+            "type": "string",
+            "example": "1000"
+          },
+          "city": {
+            "type": "string"
+          },
+          "state": {
+            "type": "string"
+          },
+          "country": {
+            "type": "string"
+          }
+        }
+      },
+      "Pagination": {
+        "type": "object",
+        "description": {
+          "en": "Pagination metadata returned in list/search responses",
+          "pt": "TODO",
+          "es": "TODO"
+        },
+        "properties": {
+          "total": {
+            "type": "integer",
+            "description": {
+              "en": "Total number of results",
+              "pt": "TODO",
+              "es": "TODO"
+            },
+            "example": 42
+          },
+          "limit": {
+            "type": "integer",
+            "description": {
+              "en": "Results per page",
+              "pt": "TODO",
+              "es": "TODO"
+            },
+            "example": 30
+          },
+          "offset": {
+            "type": "integer",
+            "description": {
+              "en": "Offset of the current page",
+              "pt": "TODO",
+              "es": "TODO"
+            },
+            "example": 0
+          }
+        }
+      },
+      "CustomerRequest": {
+        "type": "object",
+        "description": {
+          "en": "Request body to create or update a customer",
+          "pt": "TODO",
+          "es": "TODO"
+        },
+        "properties": {
+          "email": {
+            "type": "string",
+            "format": "email",
+            "description": {
+              "en": "Customer email address (unique identifier)",
+              "pt": "TODO",
+              "es": "TODO"
+            },
+            "example": "customer@example.com"
+          },
+          "first_name": {
+            "type": "string"
+          },
+          "last_name": {
+            "type": "string"
+          },
+          "phone": {
+            "$ref": "#/components/schemas/Phone"
+          },
+          "identification": {
+            "$ref": "#/components/schemas/Identification"
+          },
+          "address": {
+            "$ref": "#/components/schemas/Address"
+          },
+          "description": {
+            "type": "string"
+          },
+          "metadata": {
+            "type": "object",
+            "additionalProperties": true
+          }
+        }
+      },
+      "Customer": {
+        "type": "object",
+        "description": {
+          "en": "A stored MercadoPago customer",
+          "pt": "TODO",
+          "es": "TODO"
+        },
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": {
+              "en": "Customer unique identifier",
+              "pt": "TODO",
+              "es": "TODO"
+            },
+            "example": "123456789-abcd"
+          },
+          "email": {
+            "type": "string",
+            "format": "email"
+          },
+          "first_name": {
+            "type": "string"
+          },
+          "last_name": {
+            "type": "string"
+          },
+          "phone": {
+            "$ref": "#/components/schemas/Phone"
+          },
+          "identification": {
+            "$ref": "#/components/schemas/Identification"
+          },
+          "address": {
+            "$ref": "#/components/schemas/Address"
+          },
+          "date_registered": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "date_created": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "date_last_updated": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "description": {
+            "type": "string"
+          },
+          "metadata": {
+            "type": "object",
+            "additionalProperties": true
+          },
+          "cards": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Card"
+            },
+            "description": {
+              "en": "Saved cards for this customer",
+              "pt": "TODO",
+              "es": "TODO"
+            }
+          },
+          "default_card": {
+            "type": "string",
+            "description": {
+              "en": "ID of the customer's default card",
+              "pt": "TODO",
+              "es": "TODO"
+            }
+          }
+        }
+      },
+      "CustomerSearchResult": {
+        "type": "object",
+        "properties": {
+          "paging": {
+            "$ref": "#/components/schemas/Pagination"
+          },
+          "results": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Customer"
+            }
+          }
+        }
+      },
+      "SaveCardRequest": {
+        "type": "object",
+        "description": {
+          "en": "Request body to save a card to a customer. The card token must be created client-side via MercadoPago.js / MP Secure Fields before calling this endpoint. Raw card data (PAN, CVV) must never be sent to your server.",
+          "pt": "TODO",
+          "es": "TODO"
+        },
+        "properties": {
+          "token": {
+            "type": "string",
+            "description": {
+              "en": "Single-use card token from MercadoPago.js",
+              "pt": "TODO",
+              "es": "TODO"
+            },
+            "example": "YOUR_ACCESS_TOKEN"
+          }
+        }
+      },
+      "Card": {
+        "type": "object",
+        "description": {
+          "en": "A tokenized card saved to a customer (never contains full PAN or CVV)",
+          "pt": "TODO",
+          "es": "TODO"
+        },
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": {
+              "en": "Card unique identifier",
+              "pt": "TODO",
+              "es": "TODO"
+            },
+            "example": "1234567890"
+          },
+          "customer_id": {
+            "type": "string"
+          },
+          "first_six_digits": {
+            "type": "string",
+            "description": {
+              "en": "First 6 digits of card (BIN — identifies issuer and type)",
+              "pt": "TODO",
+              "es": "TODO"
+            },
+            "example": "411111"
+          },
+          "last_four_digits": {
+            "type": "string",
+            "description": {
+              "en": "Last 4 digits of card",
+              "pt": "TODO",
+              "es": "TODO"
+            },
+            "example": "4321"
+          },
+          "expiration_month": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 12,
+            "example": 12
+          },
+          "expiration_year": {
+            "type": "integer",
+            "example": 2028
+          },
+          "date_created": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "date_last_updated": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "cardholder": {
+            "type": "object",
+            "properties": {
+              "name": {
+                "type": "string",
+                "description": {
+                  "en": "Name on card",
+                  "pt": "TODO",
+                  "es": "TODO"
+                }
+              },
+              "identification": {
+                "$ref": "#/components/schemas/Identification"
+              }
+            }
+          },
+          "payment_method": {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "string",
+                "example": "visa"
+              },
+              "name": {
+                "type": "string",
+                "example": "Visa"
+              },
+              "payment_type_id": {
+                "type": "string",
+                "example": "credit_card"
+              },
+              "thumbnail": {
+                "type": "string",
+                "format": "uri"
+              }
+            }
+          },
+          "issuer": {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "integer"
+              },
+              "name": {
+                "type": "string"
+              }
+            }
+          },
+          "security_code": {
+            "type": "object",
+            "properties": {
+              "mode": {
+                "type": "string",
+                "enum": [
+                  {
+                    "title": "mandatory",
+                    "description": {
+                      "en": "mandatory",
+                      "pt": "TODO",
+                      "es": "TODO"
+                    }
+                  },
+                  {
+                    "title": "optional",
+                    "description": {
+                      "en": "optional",
+                      "pt": "TODO",
+                      "es": "TODO"
+                    }
+                  }
+                ]
+              },
+              "length": {
+                "type": "integer",
+                "example": 3
+              }
+            }
+          }
+        }
+      },
+      "UpdateCardRequest": {
+        "type": "object",
+        "description": {
+          "en": "Request body to update a saved card's expiry or cardholder data.",
+          "pt": "TODO",
+          "es": "TODO"
+        },
+        "properties": {
+          "expiration_month": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 12
+          },
+          "expiration_year": {
+            "type": "integer"
+          },
+          "cardholder": {
+            "type": "object",
+            "properties": {
+              "name": {
+                "type": "string",
+                "description": {
+                  "en": "Name as it appears on the card.",
+                  "pt": "TODO",
+                  "es": "TODO"
+                }
+              },
+              "identification": {
+                "$ref": "#/components/schemas/Identification"
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

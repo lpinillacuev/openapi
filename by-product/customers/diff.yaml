@@ -1,0 +1,32 @@
+product: customers
+fury_app: openplatform-customer-go
+generated_at: '2026-07-14T21:52:00Z'
+total_changes: 3
+paths:
+  added: []
+  removed: []
+  modified: []
+  detail:
+    added: []
+    removed: []
+    modified: []
+schemas:
+  added: []
+  removed: []
+  modified:
+  - Address
+  - Error
+  - Pagination
+  detail:
+    added: []
+    removed: []
+    modified:
+    - name: Address
+      properties_added: []
+      properties_removed: []
+    - name: Error
+      properties_added: []
+      properties_removed: []
+    - name: Pagination
+      properties_added: []
+      properties_removed: []

@@ -1,0 +1,1589 @@
+{
+  "url": "https://api.mercadopago.com",
+  "paths": {
+    "/merchant_orders": {
+      "post": {
+        "tags": [
+          "Merchant Orders"
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "external_reference": {
+                    "type": "string"
+                  },
+                  "preference_id": {
+                    "type": "string"
+                  },
+                  "marketplace": {
+                    "type": "string"
+                  },
+                  "notification_url": {
+                    "type": "string",
+                    "format": "uri",
+                    "deprecated": true
+                  },
+                  "sponsor_id": {
+                    "type": "integer"
+                  },
+                  "payer": {
+                    "type": "object",
+                    "properties": {
+                      "id": {
+                        "type": "integer"
+                      },
+                      "email": {
+                        "type": "string",
+                        "format": "email"
+                      }
+                    }
+                  },
+                  "site_id": {
+                    "type": "string",
+                    "enum": [
+                      {
+                        "title": "MLA",
+                        "description": {
+                          "en": "MLA",
+                          "pt": "TODO",
+                          "es": "TODO"
+                        }
+                      },
+                      {
+                        "title": "MLB",
+                        "description": {
+                          "en": "MLB",
+                          "pt": "TODO",
+                          "es": "TODO"
+                        }
+                      },
+                      {
+                        "title": "MLM",
+                        "description": {
+                          "en": "MLM",
+                          "pt": "TODO",
+                          "es": "TODO"
+                        }
+                      },
+                      {
+                        "title": "MLC",
+                        "description": {
+                          "en": "MLC",
+                          "pt": "TODO",
+                          "es": "TODO"
+                        }
+                      },
+                      {
+                        "title": "MCO",
+                        "description": {
+                          "en": "MCO",
+                          "pt": "TODO",
+                          "es": "TODO"
+                        }
+                      },
+                      {
+                        "title": "MPE",
+                        "description": {
+                          "en": "MPE",
+                          "pt": "TODO",
+                          "es": "TODO"
+                        }
+                      },
+                      {
+                        "title": "MLU",
+                        "description": {
+                          "en": "MLU",
+                          "pt": "TODO",
+                          "es": "TODO"
+                        }
+                      }
+                    ]
+                  },
+                  "items": {
+                    "type": "array",
+                    "items": {
+                      "type": "object"
+                    }
+                  },
+                  "additional_info": {
+                    "type": "string"
+                  },
+                  "application_id": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": {
+              "en": "Merchant order created",
+              "pt": "TODO",
+              "es": "TODO"
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "integer"
+                    },
+                    "status": {
+                      "type": "string",
+                      "enum": [
+                        {
+                          "title": "opened",
+                          "description": {
+                            "en": "opened",
+                            "pt": "TODO",
+                            "es": "TODO"
+                          }
+                        },
+                        {
+                          "title": "closed",
+                          "description": {
+                            "en": "closed",
+                            "pt": "TODO",
+                            "es": "TODO"
+                          }
+                        },
+                        {
+                          "title": "expired",
+                          "description": {
+                            "en": "expired",
+                            "pt": "TODO",
+                            "es": "TODO"
+                          }
+                        }
+                      ]
+                    },
+                    "order_status": {
+                      "type": "string",
+                      "enum": [
+                        {
+                          "title": "payment_required",
+                          "description": {
+                            "en": "payment_required",
+                            "pt": "TODO",
+                            "es": "TODO"
+                          }
+                        },
+                        {
+                          "title": "payment_in_process",
+                          "description": {
+                            "en": "payment_in_process",
+                            "pt": "TODO",
+                            "es": "TODO"
+                          }
+                        },
+                        {
+                          "title": "paid",
+                          "description": {
+                            "en": "paid",
+                            "pt": "TODO",
+                            "es": "TODO"
+                          }
+                        },
+                        {
+                          "title": "partially_paid",
+                          "description": {
+                            "en": "partially_paid",
+                            "pt": "TODO",
+                            "es": "TODO"
+                          }
+                        },
+                        {
+                          "title": "partially_refunded",
+                          "description": {
+                            "en": "partially_refunded",
+                            "pt": "TODO",
+                            "es": "TODO"
+                          }
+                        },
+                        {
+                          "title": "pending_cancel",
+                          "description": {
+                            "en": "pending_cancel",
+                            "pt": "TODO",
+                            "es": "TODO"
+                          }
+                        },
+                        {
+                          "title": "cancelled",
+                          "description": {
+                            "en": "cancelled",
+                            "pt": "TODO",
+                            "es": "TODO"
+                          }
+                        },
+                        {
+                          "title": "refunded",
+                          "description": {
+                            "en": "refunded",
+                            "pt": "TODO",
+                            "es": "TODO"
+                          }
+                        }
+                      ]
+                    },
+                    "external_reference": {
+                      "type": "string"
+                    },
+                    "preference_id": {
+                      "type": "string"
+                    },
+                    "marketplace": {
+                      "type": "string"
+                    },
+                    "application_id": {
+                      "type": "string"
+                    },
+                    "site_id": {
+                      "type": "string",
+                      "enum": [
+                        {
+                          "title": "MLA",
+                          "description": {
+                            "en": "MLA",
+                            "pt": "TODO",
+                            "es": "TODO"
+                          }
+                        },
+                        {
+                          "title": "MLB",
+                          "description": {
+                            "en": "MLB",
+                            "pt": "TODO",
+                            "es": "TODO"
+                          }
+                        },
+                        {
+                          "title": "MLM",
+                          "description": {
+                            "en": "MLM",
+                            "pt": "TODO",
+                            "es": "TODO"
+                          }
+                        },
+                        {
+                          "title": "MLC",
+                          "description": {
+                            "en": "MLC",
+                            "pt": "TODO",
+                            "es": "TODO"
+                          }
+                        },
+                        {
+                          "title": "MCO",
+                          "description": {
+                            "en": "MCO",
+                            "pt": "TODO",
+                            "es": "TODO"
+                          }
+                        },
+                        {
+                          "title": "MPE",
+                          "description": {
+                            "en": "MPE",
+                            "pt": "TODO",
+                            "es": "TODO"
+                          }
+                        },
+                        {
+                          "title": "MLU",
+                          "description": {
+                            "en": "MLU",
+                            "pt": "TODO",
+                            "es": "TODO"
+                          }
+                        }
+                      ]
+                    },
+                    "notification_url": {
+                      "type": "string",
+                      "format": "uri",
+                      "deprecated": true
+                    },
+                    "sponsor_id": {
+                      "type": "integer"
+                    },
+                    "collector": {
+                      "type": "object",
+                      "properties": {
+                        "id": {
+                          "type": "integer"
+                        },
+                        "email": {
+                          "type": "string"
+                        },
+                        "nickname": {
+                          "type": "string"
+                        }
+                      }
+                    },
+                    "payer": {
+                      "type": "object",
+                      "properties": {
+                        "id": {
+                          "type": "integer"
+                        },
+                        "email": {
+                          "type": "string"
+                        },
+                        "nickname": {
+                          "type": "string"
+                        }
+                      }
+                    },
+                    "payments": {
+                      "type": "array",
+                      "items": {
+                        "type": "object"
+                      }
+                    },
+                    "shipments": {
+                      "type": "array",
+                      "items": {
+                        "type": "object"
+                      }
+                    },
+                    "payouts": {
+                      "type": "array",
+                      "items": {
+                        "type": "object"
+                      }
+                    },
+                    "items": {
+                      "type": "array",
+                      "items": {
+                        "type": "object"
+                      }
+                    },
+                    "additional_info": {
+                      "type": "string"
+                    },
+                    "shipping_cost": {
+                      "type": "number",
+                      "format": "float"
+                    },
+                    "total_amount": {
+                      "type": "number",
+                      "format": "float"
+                    },
+                    "paid_amount": {
+                      "type": "number",
+                      "format": "float"
+                    },
+                    "refunded_amount": {
+                      "type": "number",
+                      "format": "float"
+                    },
+                    "date_created": {
+                      "type": "string",
+                      "format": "date-time"
+                    },
+                    "last_updated": {
+                      "type": "string",
+                      "format": "date-time"
+                    },
+                    "canceled": {
+                      "type": "boolean"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "errorKey": {
+                      "type": "string",
+                      "enum": [
+                        {
+                          "title": "TODO_error_code",
+                          "description": {
+                            "en": "TODO: describe this error",
+                            "pt": "TODO",
+                            "es": "TODO"
+                          }
+                        }
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "errorKey": {
+                      "type": "string",
+                      "enum": [
+                        {
+                          "title": "TODO_error_code",
+                          "description": {
+                            "en": "TODO: describe this error",
+                            "pt": "TODO",
+                            "es": "TODO"
+                          }
+                        }
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "description": {
+          "en": "**Webhook events triggered:** merchant_order",
+          "pt": "TODO",
+          "es": "TODO"
+        },
+        "title": {
+          "en": "Create a merchant order",
+          "pt": "TODO",
+          "es": "TODO"
+        }
+      }
+    },
+    "/merchant_orders/{id}": {
+      "get": {
+        "tags": [
+          "Merchant Orders"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": {
+              "en": "Merchant order found",
+              "pt": "TODO",
+              "es": "TODO"
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "integer"
+                    },
+                    "status": {
+                      "type": "string",
+                      "enum": [
+                        {
+                          "title": "opened",
+                          "description": {
+                            "en": "opened",
+                            "pt": "TODO",
+                            "es": "TODO"
+                          }
+                        },
+                        {
+                          "title": "closed",
+                          "description": {
+                            "en": "closed",
+                            "pt": "TODO",
+                            "es": "TODO"
+                          }
+                        },
+                        {
+                          "title": "expired",
+                          "description": {
+                            "en": "expired",
+                            "pt": "TODO",
+                            "es": "TODO"
+                          }
+                        }
+                      ]
+                    },
+                    "order_status": {
+                      "type": "string",
+                      "enum": [
+                        {
+                          "title": "payment_required",
+                          "description": {
+                            "en": "payment_required",
+                            "pt": "TODO",
+                            "es": "TODO"
+                          }
+                        },
+                        {
+                          "title": "payment_in_process",
+                          "description": {
+                            "en": "payment_in_process",
+                            "pt": "TODO",
+                            "es": "TODO"
+                          }
+                        },
+                        {
+                          "title": "paid",
+                          "description": {
+                            "en": "paid",
+                            "pt": "TODO",
+                            "es": "TODO"
+                          }
+                        },
+                        {
+                          "title": "partially_paid",
+                          "description": {
+                            "en": "partially_paid",
+                            "pt": "TODO",
+                            "es": "TODO"
+                          }
+                        },
+                        {
+                          "title": "partially_refunded",
+                          "description": {
+                            "en": "partially_refunded",
+                            "pt": "TODO",
+                            "es": "TODO"
+                          }
+                        },
+                        {
+                          "title": "pending_cancel",
+                          "description": {
+                            "en": "pending_cancel",
+                            "pt": "TODO",
+                            "es": "TODO"
+                          }
+                        },
+                        {
+                          "title": "cancelled",
+                          "description": {
+                            "en": "cancelled",
+                            "pt": "TODO",
+                            "es": "TODO"
+                          }
+                        },
+                        {
+                          "title": "refunded",
+                          "description": {
+                            "en": "refunded",
+                            "pt": "TODO",
+                            "es": "TODO"
+                          }
+                        }
+                      ]
+                    },
+                    "external_reference": {
+                      "type": "string"
+                    },
+                    "preference_id": {
+                      "type": "string"
+                    },
+                    "marketplace": {
+                      "type": "string"
+                    },
+                    "application_id": {
+                      "type": "string"
+                    },
+                    "site_id": {
+                      "type": "string",
+                      "enum": [
+                        {
+                          "title": "MLA",
+                          "description": {
+                            "en": "MLA",
+                            "pt": "TODO",
+                            "es": "TODO"
+                          }
+                        },
+                        {
+                          "title": "MLB",
+                          "description": {
+                            "en": "MLB",
+                            "pt": "TODO",
+                            "es": "TODO"
+                          }
+                        },
+                        {
+                          "title": "MLM",
+                          "description": {
+                            "en": "MLM",
+                            "pt": "TODO",
+                            "es": "TODO"
+                          }
+                        },
+                        {
+                          "title": "MLC",
+                          "description": {
+                            "en": "MLC",
+                            "pt": "TODO",
+                            "es": "TODO"
+                          }
+                        },
+                        {
+                          "title": "MCO",
+                          "description": {
+                            "en": "MCO",
+                            "pt": "TODO",
+                            "es": "TODO"
+                          }
+                        },
+                        {
+                          "title": "MPE",
+                          "description": {
+                            "en": "MPE",
+                            "pt": "TODO",
+                            "es": "TODO"
+                          }
+                        },
+                        {
+                          "title": "MLU",
+                          "description": {
+                            "en": "MLU",
+                            "pt": "TODO",
+                            "es": "TODO"
+                          }
+                        }
+                      ]
+                    },
+                    "notification_url": {
+                      "type": "string",
+                      "format": "uri",
+                      "deprecated": true
+                    },
+                    "sponsor_id": {
+                      "type": "integer"
+                    },
+                    "collector": {
+                      "type": "object",
+                      "properties": {
+                        "id": {
+                          "type": "integer"
+                        },
+                        "email": {
+                          "type": "string"
+                        },
+                        "nickname": {
+                          "type": "string"
+                        }
+                      }
+                    },
+                    "payer": {
+                      "type": "object",
+                      "properties": {
+                        "id": {
+                          "type": "integer"
+                        },
+                        "email": {
+                          "type": "string"
+                        },
+                        "nickname": {
+                          "type": "string"
+                        }
+                      }
+                    },
+                    "payments": {
+                      "type": "array",
+                      "items": {
+                        "type": "object"
+                      }
+                    },
+                    "shipments": {
+                      "type": "array",
+                      "items": {
+                        "type": "object"
+                      }
+                    },
+                    "payouts": {
+                      "type": "array",
+                      "items": {
+                        "type": "object"
+                      }
+                    },
+                    "items": {
+                      "type": "array",
+                      "items": {
+                        "type": "object"
+                      }
+                    },
+                    "additional_info": {
+                      "type": "string"
+                    },
+                    "shipping_cost": {
+                      "type": "number",
+                      "format": "float"
+                    },
+                    "total_amount": {
+                      "type": "number",
+                      "format": "float"
+                    },
+                    "paid_amount": {
+                      "type": "number",
+                      "format": "float"
+                    },
+                    "refunded_amount": {
+                      "type": "number",
+                      "format": "float"
+                    },
+                    "date_created": {
+                      "type": "string",
+                      "format": "date-time"
+                    },
+                    "last_updated": {
+                      "type": "string",
+                      "format": "date-time"
+                    },
+                    "canceled": {
+                      "type": "boolean"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "errorKey": {
+                      "type": "string",
+                      "enum": [
+                        {
+                          "title": "TODO_error_code",
+                          "description": {
+                            "en": "TODO: describe this error",
+                            "pt": "TODO",
+                            "es": "TODO"
+                          }
+                        }
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "errorKey": {
+                      "type": "string",
+                      "enum": [
+                        {
+                          "title": "TODO_error_code",
+                          "description": {
+                            "en": "TODO: describe this error",
+                            "pt": "TODO",
+                            "es": "TODO"
+                          }
+                        }
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "errorKey": {
+                      "type": "string",
+                      "enum": [
+                        {
+                          "title": "TODO_error_code",
+                          "description": {
+                            "en": "TODO: describe this error",
+                            "pt": "TODO",
+                            "es": "TODO"
+                          }
+                        }
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "title": {
+          "en": "Get merchant order",
+          "pt": "TODO",
+          "es": "TODO"
+        },
+        "description": {
+          "en": "Get merchant order",
+          "pt": "TODO",
+          "es": "TODO"
+        }
+      },
+      "put": {
+        "tags": [
+          "Merchant Orders"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "external_reference": {
+                    "type": "string"
+                  },
+                  "preference_id": {
+                    "type": "string"
+                  },
+                  "marketplace": {
+                    "type": "string"
+                  },
+                  "notification_url": {
+                    "type": "string",
+                    "format": "uri",
+                    "deprecated": true
+                  },
+                  "sponsor_id": {
+                    "type": "integer"
+                  },
+                  "payer": {
+                    "type": "object",
+                    "properties": {
+                      "id": {
+                        "type": "integer"
+                      },
+                      "email": {
+                        "type": "string",
+                        "format": "email"
+                      }
+                    }
+                  },
+                  "site_id": {
+                    "type": "string",
+                    "enum": [
+                      {
+                        "title": "MLA",
+                        "description": {
+                          "en": "MLA",
+                          "pt": "TODO",
+                          "es": "TODO"
+                        }
+                      },
+                      {
+                        "title": "MLB",
+                        "description": {
+                          "en": "MLB",
+                          "pt": "TODO",
+                          "es": "TODO"
+                        }
+                      },
+                      {
+                        "title": "MLM",
+                        "description": {
+                          "en": "MLM",
+                          "pt": "TODO",
+                          "es": "TODO"
+                        }
+                      },
+                      {
+                        "title": "MLC",
+                        "description": {
+                          "en": "MLC",
+                          "pt": "TODO",
+                          "es": "TODO"
+                        }
+                      },
+                      {
+                        "title": "MCO",
+                        "description": {
+                          "en": "MCO",
+                          "pt": "TODO",
+                          "es": "TODO"
+                        }
+                      },
+                      {
+                        "title": "MPE",
+                        "description": {
+                          "en": "MPE",
+                          "pt": "TODO",
+                          "es": "TODO"
+                        }
+                      },
+                      {
+                        "title": "MLU",
+                        "description": {
+                          "en": "MLU",
+                          "pt": "TODO",
+                          "es": "TODO"
+                        }
+                      }
+                    ]
+                  },
+                  "items": {
+                    "type": "array",
+                    "items": {
+                      "type": "object"
+                    }
+                  },
+                  "additional_info": {
+                    "type": "string"
+                  },
+                  "application_id": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": {
+              "en": "Merchant order updated",
+              "pt": "TODO",
+              "es": "TODO"
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "errorKey": {
+                      "type": "string",
+                      "enum": [
+                        {
+                          "title": "TODO_error_code",
+                          "description": {
+                            "en": "TODO: describe this error",
+                            "pt": "TODO",
+                            "es": "TODO"
+                          }
+                        }
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "errorKey": {
+                      "type": "string",
+                      "enum": [
+                        {
+                          "title": "TODO_error_code",
+                          "description": {
+                            "en": "TODO: describe this error",
+                            "pt": "TODO",
+                            "es": "TODO"
+                          }
+                        }
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "title": {
+          "en": "Update merchant order",
+          "pt": "TODO",
+          "es": "TODO"
+        },
+        "description": {
+          "en": "Update merchant order",
+          "pt": "TODO",
+          "es": "TODO"
+        }
+      }
+    },
+    "/merchant_orders/search": {
+      "get": {
+        "tags": [
+          "Merchant Orders"
+        ],
+        "parameters": [
+          {
+            "name": "status",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "enum": [
+                {
+                  "title": "opened",
+                  "description": {
+                    "en": "opened",
+                    "pt": "TODO",
+                    "es": "TODO"
+                  }
+                },
+                {
+                  "title": "closed",
+                  "description": {
+                    "en": "closed",
+                    "pt": "TODO",
+                    "es": "TODO"
+                  }
+                },
+                {
+                  "title": "expired",
+                  "description": {
+                    "en": "expired",
+                    "pt": "TODO",
+                    "es": "TODO"
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "name": "preference_id",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "application_id",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "payer_id",
+            "in": "query",
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
+            "name": "sponsor_id",
+            "in": "query",
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
+            "name": "external_reference",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "site_id",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "enum": [
+                {
+                  "title": "MLA",
+                  "description": {
+                    "en": "MLA",
+                    "pt": "TODO",
+                    "es": "TODO"
+                  }
+                },
+                {
+                  "title": "MLB",
+                  "description": {
+                    "en": "MLB",
+                    "pt": "TODO",
+                    "es": "TODO"
+                  }
+                },
+                {
+                  "title": "MLM",
+                  "description": {
+                    "en": "MLM",
+                    "pt": "TODO",
+                    "es": "TODO"
+                  }
+                },
+                {
+                  "title": "MLC",
+                  "description": {
+                    "en": "MLC",
+                    "pt": "TODO",
+                    "es": "TODO"
+                  }
+                },
+                {
+                  "title": "MCO",
+                  "description": {
+                    "en": "MCO",
+                    "pt": "TODO",
+                    "es": "TODO"
+                  }
+                },
+                {
+                  "title": "MPE",
+                  "description": {
+                    "en": "MPE",
+                    "pt": "TODO",
+                    "es": "TODO"
+                  }
+                },
+                {
+                  "title": "MLU",
+                  "description": {
+                    "en": "MLU",
+                    "pt": "TODO",
+                    "es": "TODO"
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "name": "marketplace",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "date_created_from",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "format": "date-time"
+            }
+          },
+          {
+            "name": "date_created_to",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "format": "date-time"
+            }
+          },
+          {
+            "name": "last_updated_from",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "format": "date-time"
+            }
+          },
+          {
+            "name": "last_updated_to",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "format": "date-time"
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "default": 30
+            }
+          },
+          {
+            "name": "offset",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "default": 0
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": {
+              "en": "Search results",
+              "pt": "TODO",
+              "es": "TODO"
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "integer"
+                    },
+                    "status": {
+                      "type": "string",
+                      "enum": [
+                        {
+                          "title": "opened",
+                          "description": {
+                            "en": "opened",
+                            "pt": "TODO",
+                            "es": "TODO"
+                          }
+                        },
+                        {
+                          "title": "closed",
+                          "description": {
+                            "en": "closed",
+                            "pt": "TODO",
+                            "es": "TODO"
+                          }
+                        },
+                        {
+                          "title": "expired",
+                          "description": {
+                            "en": "expired",
+                            "pt": "TODO",
+                            "es": "TODO"
+                          }
+                        }
+                      ]
+                    },
+                    "order_status": {
+                      "type": "string",
+                      "enum": [
+                        {
+                          "title": "payment_required",
+                          "description": {
+                            "en": "payment_required",
+                            "pt": "TODO",
+                            "es": "TODO"
+                          }
+                        },
+                        {
+                          "title": "payment_in_process",
+                          "description": {
+                            "en": "payment_in_process",
+                            "pt": "TODO",
+                            "es": "TODO"
+                          }
+                        },
+                        {
+                          "title": "paid",
+                          "description": {
+                            "en": "paid",
+                            "pt": "TODO",
+                            "es": "TODO"
+                          }
+                        },
+                        {
+                          "title": "partially_paid",
+                          "description": {
+                            "en": "partially_paid",
+                            "pt": "TODO",
+                            "es": "TODO"
+                          }
+                        },
+                        {
+                          "title": "partially_refunded",
+                          "description": {
+                            "en": "partially_refunded",
+                            "pt": "TODO",
+                            "es": "TODO"
+                          }
+                        },
+                        {
+                          "title": "pending_cancel",
+                          "description": {
+                            "en": "pending_cancel",
+                            "pt": "TODO",
+                            "es": "TODO"
+                          }
+                        },
+                        {
+                          "title": "cancelled",
+                          "description": {
+                            "en": "cancelled",
+                            "pt": "TODO",
+                            "es": "TODO"
+                          }
+                        },
+                        {
+                          "title": "refunded",
+                          "description": {
+                            "en": "refunded",
+                            "pt": "TODO",
+                            "es": "TODO"
+                          }
+                        }
+                      ]
+                    },
+                    "external_reference": {
+                      "type": "string"
+                    },
+                    "preference_id": {
+                      "type": "string"
+                    },
+                    "marketplace": {
+                      "type": "string"
+                    },
+                    "application_id": {
+                      "type": "string"
+                    },
+                    "site_id": {
+                      "type": "string",
+                      "enum": [
+                        {
+                          "title": "MLA",
+                          "description": {
+                            "en": "MLA",
+                            "pt": "TODO",
+                            "es": "TODO"
+                          }
+                        },
+                        {
+                          "title": "MLB",
+                          "description": {
+                            "en": "MLB",
+                            "pt": "TODO",
+                            "es": "TODO"
+                          }
+                        },
+                        {
+                          "title": "MLM",
+                          "description": {
+                            "en": "MLM",
+                            "pt": "TODO",
+                            "es": "TODO"
+                          }
+                        },
+                        {
+                          "title": "MLC",
+                          "description": {
+                            "en": "MLC",
+                            "pt": "TODO",
+                            "es": "TODO"
+                          }
+                        },
+                        {
+                          "title": "MCO",
+                          "description": {
+                            "en": "MCO",
+                            "pt": "TODO",
+                            "es": "TODO"
+                          }
+                        },
+                        {
+                          "title": "MPE",
+                          "description": {
+                            "en": "MPE",
+                            "pt": "TODO",
+                            "es": "TODO"
+                          }
+                        },
+                        {
+                          "title": "MLU",
+                          "description": {
+                            "en": "MLU",
+                            "pt": "TODO",
+                            "es": "TODO"
+                          }
+                        }
+                      ]
+                    },
+                    "notification_url": {
+                      "type": "string",
+                      "format": "uri",
+                      "deprecated": true
+                    },
+                    "sponsor_id": {
+                      "type": "integer"
+                    },
+                    "collector": {
+                      "type": "object",
+                      "properties": {
+                        "id": {
+                          "type": "integer"
+                        },
+                        "email": {
+                          "type": "string"
+                        },
+                        "nickname": {
+                          "type": "string"
+                        }
+                      }
+                    },
+                    "payer": {
+                      "type": "object",
+                      "properties": {
+                        "id": {
+                          "type": "integer"
+                        },
+                        "email": {
+                          "type": "string"
+                        },
+                        "nickname": {
+                          "type": "string"
+                        }
+                      }
+                    },
+                    "payments": {
+                      "type": "array",
+                      "items": {
+                        "type": "object"
+                      }
+                    },
+                    "shipments": {
+                      "type": "array",
+                      "items": {
+                        "type": "object"
+                      }
+                    },
+                    "payouts": {
+                      "type": "array",
+                      "items": {
+                        "type": "object"
+                      }
+                    },
+                    "items": {
+                      "type": "array",
+                      "items": {
+                        "type": "object"
+                      }
+                    },
+                    "additional_info": {
+                      "type": "string"
+                    },
+                    "shipping_cost": {
+                      "type": "number",
+                      "format": "float"
+                    },
+                    "total_amount": {
+                      "type": "number",
+                      "format": "float"
+                    },
+                    "paid_amount": {
+                      "type": "number",
+                      "format": "float"
+                    },
+                    "refunded_amount": {
+                      "type": "number",
+                      "format": "float"
+                    },
+                    "date_created": {
+                      "type": "string",
+                      "format": "date-time"
+                    },
+                    "last_updated": {
+                      "type": "string",
+                      "format": "date-time"
+                    },
+                    "canceled": {
+                      "type": "boolean"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "errorKey": {
+                      "type": "string",
+                      "enum": [
+                        {
+                          "title": "TODO_error_code",
+                          "description": {
+                            "en": "TODO: describe this error",
+                            "pt": "TODO",
+                            "es": "TODO"
+                          }
+                        }
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "errorKey": {
+                      "type": "string",
+                      "enum": [
+                        {
+                          "title": "TODO_error_code",
+                          "description": {
+                            "en": "TODO: describe this error",
+                            "pt": "TODO",
+                            "es": "TODO"
+                          }
+                        }
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "title": {
+          "en": "Search merchant orders",
+          "pt": "TODO",
+          "es": "TODO"
+        },
+        "description": {
+          "en": "Search merchant orders",
+          "pt": "TODO",
+          "es": "TODO"
+        }
+      }
+    }
+  }
+}

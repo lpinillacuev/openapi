@@ -238,3 +238,7 @@ MercadoPago Developer Experience · Apache 2.0
 | 2026-07-14 | 306 | 3 | 456 | 148 |
 
 <!-- TRAFFIC_END -->
+
+---
+
+[Traffic →](TRAFFIC.md)

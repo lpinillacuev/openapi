@@ -14,6 +14,7 @@
 
 | Date | Views | Unique visitors | Clones | Unique cloners |
 |------|------:|----------------:|-------:|---------------:|
+| 2026-07-28 | 14 | 2 | 14 | 8 |
 | 2026-07-27 | 0 | 0 | 0 | 0 |
 | 2026-07-26 | 0 | 0 | 1 | 1 |
 | 2026-07-25 | 1 | 1 | 1 | 1 |
@@ -27,7 +28,6 @@
 | 2026-07-17 | 0 | 0 | 1 | 1 |
 | 2026-07-16 | 69 | 3 | 114 | 42 |
 | 2026-07-15 | 99 | 2 | 214 | 75 |
-| 2026-07-14 | 306 | 3 | 456 | 148 |
 
 ## Referring Sites
 
@@ -35,7 +35,7 @@
 
 | Source | Views | Unique |
 |--------|------:|-------:|
-| github.com | 32 | 1 |
+| github.com | 15 | 1 |
 
 ## Popular Content
 
@@ -43,13 +43,13 @@
 
 | Path | Views | Unique |
 |------|------:|-------:|
-| `/lpinillacuev/openapi/pulls` | 153 | 3 |
-| `/lpinillacuev/openapi` | 87 | 2 |
-| `/lpinillacuev/openapi/actions` | 61 | 3 |
-| `/lpinillacuev/openapi/compare/main...lpinillacuev:openapi:feat/bot-workflows` | 27 | 1 |
-| `/mercadopago/openapi/compare/main...lpinillacuev:openapi:main` | 23 | 1 |
-| `/lpinillacuev/openapi/compare/main...lpinillacuev:openapi:main` | 21 | 1 |
-| `/lpinillacuev/openapi/pull/33` | 9 | 2 |
-| `/lpinillacuev/openapi/pull/45` | 6 | 3 |
-| `/lpinillacuev/openapi/pull/27` | 6 | 1 |
+| `/lpinillacuev/openapi/pulls` | 100 | 3 |
+| `/lpinillacuev/openapi` | 65 | 2 |
+| `/lpinillacuev/openapi/actions` | 35 | 3 |
+| `/lpinillacuev/openapi/compare/main...lpinillacuev:openapi:feat/bot-workflows` | 14 | 1 |
+| `/mercadopago/openapi/compare/main...lpinillacuev:openapi:main` | 13 | 1 |
+| `/lpinillacuev/openapi/compare/main...lpinillacuev:openapi:main` | 11 | 1 |
 | `/lpinillacuev/openapi/pull/59` | 6 | 1 |
+| `/lpinillacuev/openapi/pull/57` | 5 | 2 |
+| `/lpinillacuev/openapi/actions/runs/29889946902` | 5 | 1 |
+| `/lpinillacuev/openapi/pull/45` | 4 | 2 |

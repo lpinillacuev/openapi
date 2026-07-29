@@ -15,14 +15,15 @@ REPO = os.environ.get("GITHUB_REPOSITORY", "mercadopago/openapi")
 TOKEN = os.environ["TRAFFIC_TOKEN"]
 GRAPHS_DIR = Path("graphs/traffic")
 
-GH_BLUE = "#0969da"
-GH_GREEN = "#1a7f37"
-GH_PURPLE = "#8250df"
-GH_ORANGE = "#bc4c00"
-GH_GRID = "#eaeef2"
-GH_TEXT = "#24292f"
-GH_SUBTEXT = "#57606a"
-GH_BG = "#ffffff"
+# GitHub dark theme colors
+GH_BG = "#0d1117"
+GH_CARD = "#161b22"
+GH_BORDER = "#30363d"
+GH_GREEN = "#2ea043"
+GH_GREEN_FILL = "#2ea04320"
+GH_GRID = "#21262d"
+GH_TEXT = "#e6edf3"
+GH_SUBTEXT = "#7d8590"
 
 
 def gh_api(path):
@@ -53,80 +54,87 @@ def merge_time_series(existing, items, date_key, count_key, uniques_key):
     return existing
 
 
-def setup_ax(ax, title):
-    ax.set_facecolor(GH_BG)
-    ax.set_title(title, color=GH_TEXT, fontsize=12, fontweight="semibold", pad=10, loc="left")
-    ax.tick_params(colors=GH_SUBTEXT, labelsize=9)
-    ax.yaxis.grid(True, color=GH_GRID, linewidth=0.8, zorder=0)
-    ax.set_axisbelow(True)
-    for spine in ["top", "right"]:
-        ax.spines[spine].set_visible(False)
-    for spine in ["bottom", "left"]:
-        ax.spines[spine].set_edgecolor(GH_GRID)
-    ax.yaxis.set_major_locator(MaxNLocator(integer=True, nbins=5))
-
-
-def generate_line_chart(data, title, filename, color_total, color_unique):
-    dates = sorted(data.keys())[-30:]
+def generate_line_svg(data, title, subtitle, value_key, filename):
+    """Generate a single-metric line chart matching GitHub's dark style."""
+    dates = sorted(data.keys())[-14:]
     if not dates:
         return
 
     x = [dt.strptime(d, "%Y-%m-%d") for d in dates]
-    totals = [data[d]["count"] for d in dates]
-    uniques = [data[d]["uniques"] for d in dates]
+    values = [data[d][value_key] for d in dates]
+    total = sum(values)
 
-    fig, ax = plt.subplots(figsize=(9, 3))
-    fig.patch.set_facecolor(GH_BG)
-    setup_ax(ax, title)
+    fig, ax = plt.subplots(figsize=(5.5, 2.8))
+    fig.patch.set_facecolor(GH_CARD)
+    ax.set_facecolor(GH_CARD)
 
-    ax.fill_between(x, totals, alpha=0.1, color=color_total, zorder=1)
-    ax.plot(x, totals, color=color_total, linewidth=2, label="Total", zorder=2)
-    ax.fill_between(x, uniques, alpha=0.15, color=color_unique, zorder=1)
-    ax.plot(x, uniques, color=color_unique, linewidth=2, linestyle="--", label="Unique", zorder=2)
+    ax.fill_between(x, values, alpha=0.15, color=GH_GREEN, zorder=1)
+    ax.plot(x, values, color=GH_GREEN, linewidth=1.8, zorder=2)
 
-    ax.xaxis.set_major_formatter(mdates.DateFormatter("%b %d"))
+    ax.yaxis.grid(True, color=GH_GRID, linewidth=0.7, zorder=0)
+    ax.set_axisbelow(True)
+    for spine in ["top", "right"]:
+        ax.spines[spine].set_visible(False)
+    for spine in ["bottom", "left"]:
+        ax.spines[spine].set_edgecolor(GH_BORDER)
+
+    ax.tick_params(colors=GH_SUBTEXT, labelsize=8)
+    ax.xaxis.set_major_formatter(mdates.DateFormatter("%m/%d"))
     ax.xaxis.set_major_locator(mdates.AutoDateLocator())
-    plt.xticks(rotation=20, ha="right", color=GH_SUBTEXT, fontsize=9)
+    plt.xticks(rotation=0, ha="center", color=GH_SUBTEXT, fontsize=8)
+    ax.yaxis.set_major_locator(MaxNLocator(integer=True, nbins=4))
 
-    legend = ax.legend(
-        facecolor=GH_BG, edgecolor=GH_GRID,
-        labelcolor=GH_TEXT, fontsize=9, framealpha=1,
-    )
+    fig.text(0.04, 0.97, title, color=GH_TEXT, fontsize=10,
+             fontweight="bold", va="top", ha="left")
+    fig.text(0.04, 0.83, f"{total:,} {subtitle}", color=GH_SUBTEXT,
+             fontsize=8.5, va="top", ha="left")
 
-    plt.tight_layout(pad=1.2)
+    plt.tight_layout(rect=[0, 0, 1, 0.78])
     GRAPHS_DIR.mkdir(parents=True, exist_ok=True)
-    fig.savefig(GRAPHS_DIR / filename, format="svg", bbox_inches="tight", facecolor=GH_BG)
+    fig.savefig(GRAPHS_DIR / filename, format="svg", bbox_inches="tight", facecolor=GH_CARD)
     plt.close(fig)
 
 
-def generate_bar_chart(items, title, filename, color):
+def generate_bar_svg(items, title, label_key, filename):
     if not items:
         return
 
-    labels = [item.get("referrer") or item.get("path", "")[:40] for item in items[:10]]
-    totals = [item["count"] for item in items[:10]]
-    uniques = [item["uniques"] for item in items[:10]]
+    labels = [item.get(label_key, "")[:35] for item in items[:8]]
+    totals = [item["count"] for item in items[:8]]
+    uniques = [item["uniques"] for item in items[:8]]
 
-    fig, ax = plt.subplots(figsize=(9, 3.5))
-    fig.patch.set_facecolor(GH_BG)
-    setup_ax(ax, title)
+    fig, ax = plt.subplots(figsize=(5.5, 3.2))
+    fig.patch.set_facecolor(GH_CARD)
+    ax.set_facecolor(GH_CARD)
 
     y = range(len(labels))
     bar_h = 0.35
-    ax.barh([i + bar_h / 2 for i in y], totals, bar_h, label="Total", color=color, alpha=0.85, zorder=2)
-    ax.barh([i - bar_h / 2 for i in y], uniques, bar_h, label="Unique", color=color, alpha=0.4, zorder=2)
+    ax.barh([i + bar_h / 2 for i in y], totals, bar_h, label="Total",
+            color=GH_GREEN, alpha=0.9, zorder=2)
+    ax.barh([i - bar_h / 2 for i in y], uniques, bar_h, label="Unique",
+            color=GH_GREEN, alpha=0.4, zorder=2)
 
     ax.set_yticks(list(y))
-    ax.set_yticklabels(labels, fontsize=8, color=GH_TEXT)
+    ax.set_yticklabels(labels, fontsize=7.5, color=GH_TEXT)
     ax.invert_yaxis()
-    ax.xaxis.grid(True, color=GH_GRID, linewidth=0.8, zorder=0)
+    ax.xaxis.grid(True, color=GH_GRID, linewidth=0.7, zorder=0)
     ax.yaxis.grid(False)
 
-    ax.legend(facecolor=GH_BG, edgecolor=GH_GRID, labelcolor=GH_TEXT, fontsize=9, framealpha=1)
+    for spine in ["top", "right"]:
+        ax.spines[spine].set_visible(False)
+    for spine in ["bottom", "left"]:
+        ax.spines[spine].set_edgecolor(GH_BORDER)
 
-    plt.tight_layout(pad=1.2)
+    ax.tick_params(colors=GH_SUBTEXT, labelsize=8)
+    legend = ax.legend(facecolor=GH_CARD, edgecolor=GH_BORDER,
+                       labelcolor=GH_TEXT, fontsize=8, framealpha=1)
+
+    fig.text(0.04, 0.97, title, color=GH_TEXT, fontsize=10,
+             fontweight="bold", va="top", ha="left")
+
+    plt.tight_layout(rect=[0, 0, 1, 0.92])
     GRAPHS_DIR.mkdir(parents=True, exist_ok=True)
-    fig.savefig(GRAPHS_DIR / filename, format="svg", bbox_inches="tight", facecolor=GH_BG)
+    fig.savefig(GRAPHS_DIR / filename, format="svg", bbox_inches="tight", facecolor=GH_CARD)
     plt.close(fig)
 
 
@@ -137,95 +145,201 @@ def generate_html_dashboard(views, clones, referrers, popular_paths):
     paths_json = json.dumps(popular_paths)
     today = datetime.now(timezone.utc).strftime("%Y-%m-%d")
 
+    total_views = sum(v["count"] for v in views.values())
+    total_unique_views = sum(v["uniques"] for v in views.values())
+    total_clones = sum(v["count"] for v in clones.values())
+    total_unique_clones = sum(v["uniques"] for v in clones.values())
+
     html = f"""<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Traffic Dashboard — {REPO}</title>
+  <title>Traffic — {REPO}</title>
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4/dist/chart.umd.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-date-fns@3/dist/chartjs-adapter-date-fns.bundle.min.js"></script>
   <style>
     *, *::before, *::after {{ box-sizing: border-box; margin: 0; padding: 0; }}
-    body {{ font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; background: #f6f8fa; color: #24292f; padding: 24px; }}
-    h1 {{ font-size: 20px; font-weight: 600; margin-bottom: 4px; }}
-    .subtitle {{ font-size: 13px; color: #57606a; margin-bottom: 24px; }}
-    .grid {{ display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }}
-    .card {{ background: #fff; border: 1px solid #d0d7de; border-radius: 6px; padding: 20px; }}
-    .card h2 {{ font-size: 14px; font-weight: 600; margin-bottom: 16px; color: #24292f; }}
-    canvas {{ max-height: 220px; }}
-    @media (max-width: 700px) {{ .grid {{ grid-template-columns: 1fr; }} }}
+    body {{ font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+           background: #0d1117; color: #e6edf3; padding: 24px 32px; }}
+    h1 {{ font-size: 18px; font-weight: 600; margin-bottom: 2px; }}
+    .updated {{ font-size: 12px; color: #7d8590; margin-bottom: 28px; }}
+    h2 {{ font-size: 15px; font-weight: 600; margin-bottom: 20px; color: #e6edf3; }}
+    .grid-2 {{ display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 16px; }}
+    .card {{ background: #161b22; border: 1px solid #30363d; border-radius: 6px; padding: 16px 20px; }}
+    .card-title {{ font-size: 13px; font-weight: 600; color: #e6edf3; margin-bottom: 2px; }}
+    .card-stat {{ font-size: 12px; color: #7d8590; margin-bottom: 14px; }}
+    canvas {{ max-height: 200px; }}
+    section {{ margin-bottom: 32px; }}
+    @media (max-width: 640px) {{ .grid-2 {{ grid-template-columns: 1fr; }} }}
   </style>
 </head>
 <body>
-  <h1>{REPO} — Traffic Dashboard</h1>
-  <p class="subtitle">Last updated: {today} · Data persisted daily via GitHub Actions</p>
-  <div class="grid">
-    <div class="card"><h2>Page Views</h2><canvas id="views"></canvas></div>
-    <div class="card"><h2>Git Clones</h2><canvas id="clones"></canvas></div>
-    <div class="card"><h2>Referring Sites</h2><canvas id="referrers"></canvas></div>
-    <div class="card"><h2>Popular Content</h2><canvas id="paths"></canvas></div>
-  </div>
-  <script>
-    const views = {views_json};
-    const clones = {clones_json};
-    const referrers = {referrers_json};
-    const popularPaths = {paths_json};
+  <h1>{REPO}</h1>
+  <p class="updated">Last updated: {today} · Persisted daily via GitHub Actions</p>
 
-    const lineDefaults = {{
-      tension: 0.3, pointRadius: 2, pointHoverRadius: 5, fill: true,
-    }};
+  <section>
+    <h2>Git clones</h2>
+    <div class="grid-2">
+      <div class="card">
+        <div class="card-title">Clones in last 14 days</div>
+        <div class="card-stat" id="stat-clones-total"></div>
+        <canvas id="chart-clones-total"></canvas>
+      </div>
+      <div class="card">
+        <div class="card-title">Unique cloners in last 14 days</div>
+        <div class="card-stat" id="stat-clones-unique"></div>
+        <canvas id="chart-clones-unique"></canvas>
+      </div>
+    </div>
+  </section>
 
-    function makeTimeSeries(data, colorTotal, colorUnique) {{
-      const labels = Object.keys(data);
-      return {{
-        labels,
-        datasets: [
-          {{ ...lineDefaults, label: "Total", data: labels.map(d => data[d].count),
-             borderColor: colorTotal, backgroundColor: colorTotal + "18" }},
-          {{ ...lineDefaults, label: "Unique", data: labels.map(d => data[d].uniques),
-             borderColor: colorUnique, backgroundColor: colorUnique + "18", borderDash: [4,3] }},
-        ],
-      }};
-    }}
+  <section>
+    <h2>Visitors</h2>
+    <div class="grid-2">
+      <div class="card">
+        <div class="card-title">Total views in last 14 days</div>
+        <div class="card-stat" id="stat-views-total"></div>
+        <canvas id="chart-views-total"></canvas>
+      </div>
+      <div class="card">
+        <div class="card-title">Unique visitors in last 14 days</div>
+        <div class="card-stat" id="stat-views-unique"></div>
+        <canvas id="chart-views-unique"></canvas>
+      </div>
+    </div>
+  </section>
 
-    const timeOpts = {{
-      responsive: true, interaction: {{ mode: "index", intersect: false }},
-      plugins: {{ legend: {{ labels: {{ font: {{ size: 12 }} }} }} }},
-      scales: {{
-        x: {{ type: "time", time: {{ unit: "day", displayFormats: {{ day: "MMM d" }} }},
-              grid: {{ color: "#eaeef2" }}, ticks: {{ font: {{ size: 11 }} }} }},
-        y: {{ grid: {{ color: "#eaeef2" }}, ticks: {{ font: {{ size: 11 }}, precision: 0 }} }},
+  <section>
+    <h2>Referring sites &amp; popular content</h2>
+    <div class="grid-2">
+      <div class="card">
+        <div class="card-title">Referring sites</div>
+        <canvas id="chart-referrers"></canvas>
+      </div>
+      <div class="card">
+        <div class="card-title">Popular content</div>
+        <canvas id="chart-paths"></canvas>
+      </div>
+    </div>
+  </section>
+
+<script>
+const views = {views_json};
+const clones = {clones_json};
+const referrers = {referrers_json};
+const popularPaths = {paths_json};
+
+const GREEN = "#2ea043";
+const GREEN_FILL = "rgba(46,160,67,0.15)";
+const GRID = "#21262d";
+const TICK = "#7d8590";
+const TOOLTIP_BG = "#1c2128";
+
+const last14 = (data) => {{
+  const keys = Object.keys(data).sort().slice(-14);
+  return {{ keys, counts: keys.map(k => data[k].count), uniques: keys.map(k => data[k].uniques) }};
+}};
+
+const lineOpts = (label, unit) => ({{
+  responsive: true,
+  interaction: {{ mode: "index", intersect: false }},
+  plugins: {{
+    legend: {{ display: false }},
+    tooltip: {{
+      backgroundColor: TOOLTIP_BG,
+      borderColor: "#30363d",
+      borderWidth: 1,
+      titleColor: "#e6edf3",
+      bodyColor: "#e6edf3",
+      callbacks: {{
+        title: items => items[0].label.split("T")[0],
+        label: ctx => ` ${{label}}: ${{ctx.parsed.y.toLocaleString()}}`,
       }},
-    }};
+    }},
+  }},
+  scales: {{
+    x: {{ type: "time", time: {{ unit, displayFormats: {{ day: "MM/dd", week: "MM/dd" }} }},
+          grid: {{ color: GRID }}, ticks: {{ color: TICK, font: {{ size: 11 }} }} }},
+    y: {{ grid: {{ color: GRID }}, ticks: {{ color: TICK, font: {{ size: 11 }}, precision: 0 }},
+          beginAtZero: true }},
+  }},
+}});
 
-    new Chart(document.getElementById("views"), {{ type: "line", data: makeTimeSeries(views, "#0969da", "#1a7f37"), options: timeOpts }});
-    new Chart(document.getElementById("clones"), {{ type: "line", data: makeTimeSeries(clones, "#8250df", "#bc4c00"), options: timeOpts }});
+function makeLine(canvasId, statId, labels, values, statLabel) {{
+  const total = values.reduce((a, b) => a + b, 0);
+  if (statId) document.getElementById(statId).textContent =
+    `${{total.toLocaleString()}} ${{statLabel}}`;
 
-    function makeBar(items, labelKey, color) {{
-      const top = items.slice(0, 8);
-      return {{
-        labels: top.map(i => i[labelKey]),
-        datasets: [
-          {{ label: "Total", data: top.map(i => i.count), backgroundColor: color + "cc" }},
-          {{ label: "Unique", data: top.map(i => i.uniques), backgroundColor: color + "55" }},
-        ],
-      }};
-    }}
+  new Chart(document.getElementById(canvasId), {{
+    type: "line",
+    data: {{
+      labels,
+      datasets: [{{
+        data: values,
+        borderColor: GREEN,
+        backgroundColor: GREEN_FILL,
+        borderWidth: 1.8,
+        fill: true,
+        tension: 0.1,
+        pointRadius: 3,
+        pointHoverRadius: 5,
+        pointBackgroundColor: GREEN,
+      }}],
+    }},
+    options: lineOpts(statLabel, "day"),
+  }});
+}}
 
-    const barOpts = {{
-      indexAxis: "y", responsive: true,
-      interaction: {{ mode: "index", intersect: false }},
-      plugins: {{ legend: {{ labels: {{ font: {{ size: 12 }} }} }} }},
-      scales: {{
-        x: {{ grid: {{ color: "#eaeef2" }}, ticks: {{ font: {{ size: 11 }}, precision: 0 }} }},
-        y: {{ grid: {{ display: false }}, ticks: {{ font: {{ size: 11 }} }} }},
-      }},
-    }};
+const cv = last14(clones);
+const vv = last14(views);
 
-    new Chart(document.getElementById("referrers"), {{ type: "bar", data: makeBar(referrers, "referrer", "#0969da"), options: barOpts }});
-    new Chart(document.getElementById("paths"), {{ type: "bar", data: makeBar(popularPaths, "path", "#8250df"), options: barOpts }});
-  </script>
+makeLine("chart-clones-total", "stat-clones-total", cv.keys, cv.counts, "Clones");
+makeLine("chart-clones-unique", "stat-clones-unique", cv.keys, cv.uniques, "Unique cloners");
+makeLine("chart-views-total", "stat-views-total", vv.keys, vv.counts, "Views");
+makeLine("chart-views-unique", "stat-views-unique", vv.keys, vv.uniques, "Unique visitors");
+
+const barOpts = {{
+  indexAxis: "y",
+  responsive: true,
+  interaction: {{ mode: "index", intersect: false }},
+  plugins: {{
+    legend: {{ display: false }},
+    tooltip: {{
+      backgroundColor: TOOLTIP_BG, borderColor: "#30363d", borderWidth: 1,
+      titleColor: "#e6edf3", bodyColor: "#e6edf3",
+    }},
+  }},
+  scales: {{
+    x: {{ grid: {{ color: GRID }}, ticks: {{ color: TICK, font: {{ size: 11 }}, precision: 0 }}, beginAtZero: true }},
+    y: {{ grid: {{ display: false }}, ticks: {{ color: "#e6edf3", font: {{ size: 11 }} }} }},
+  }},
+}};
+
+new Chart(document.getElementById("chart-referrers"), {{
+  type: "bar",
+  data: {{
+    labels: referrers.slice(0, 8).map(r => r.referrer),
+    datasets: [
+      {{ label: "Total", data: referrers.slice(0, 8).map(r => r.count), backgroundColor: GREEN, borderRadius: 2 }},
+      {{ label: "Unique", data: referrers.slice(0, 8).map(r => r.uniques), backgroundColor: "rgba(46,160,67,0.35)", borderRadius: 2 }},
+    ],
+  }},
+  options: barOpts,
+}});
+
+new Chart(document.getElementById("chart-paths"), {{
+  type: "bar",
+  data: {{
+    labels: popularPaths.slice(0, 8).map(p => p.path),
+    datasets: [
+      {{ label: "Total", data: popularPaths.slice(0, 8).map(p => p.count), backgroundColor: GREEN, borderRadius: 2 }},
+      {{ label: "Unique", data: popularPaths.slice(0, 8).map(p => p.uniques), backgroundColor: "rgba(46,160,67,0.35)", borderRadius: 2 }},
+    ],
+  }},
+  options: barOpts,
+}});
+</script>
 </body>
 </html>"""
 
@@ -258,11 +372,13 @@ def write_traffic_md(views, clones, referrers, popular_paths):
     content = (
         f"# Traffic\n\n"
         f"> Last updated: {today} · Persisted daily via GitHub Actions · "
-        f"[Interactive dashboard](graphs/traffic/index.html)\n\n"
+        f"[Interactive dashboard →](graphs/traffic/index.html)\n\n"
         f"## Page Views\n\n"
-        f"![Views](graphs/traffic/views.svg)\n\n"
+        f"![Views total](graphs/traffic/views_total.svg) "
+        f"![Views unique](graphs/traffic/views_unique.svg)\n\n"
         f"## Git Clones\n\n"
-        f"![Clones](graphs/traffic/clones.svg)\n\n"
+        f"![Clones total](graphs/traffic/clones_total.svg) "
+        f"![Clones unique](graphs/traffic/clones_unique.svg)\n\n"
         f"## Views & Clones — last 14 days\n\n"
         f"| Date | Views | Unique visitors | Clones | Unique cloners |\n"
         f"|------|------:|----------------:|-------:|---------------:|\n"
@@ -285,10 +401,8 @@ def write_traffic_md(views, clones, referrers, popular_paths):
 def add_readme_link():
     readme = Path("README.md")
     content = readme.read_text()
-    link = "[Traffic →](TRAFFIC.md)"
-
     if "TRAFFIC.md" not in content:
-        content = content.rstrip() + f"\n\n---\n\n{link}\n"
+        content = content.rstrip() + "\n\n---\n\n[Traffic →](TRAFFIC.md)\n"
         readme.write_text(content)
 
 
@@ -309,13 +423,15 @@ def main():
     save_json(GRAPHS_DIR / "referrers.json", referrers)
     save_json(GRAPHS_DIR / "popular_paths.json", popular_paths)
 
-    generate_line_chart(views, "Page Views", "views.svg", GH_BLUE, GH_GREEN)
-    generate_line_chart(clones, "Git Clones", "clones.svg", GH_PURPLE, GH_ORANGE)
-    generate_bar_chart(referrers, "Referring Sites", "referrers.svg", GH_BLUE)
-    generate_bar_chart(popular_paths, "Popular Content", "popular_paths.svg", GH_PURPLE)
+    # 4 separate SVGs matching GitHub's layout
+    generate_line_svg(views, "Total views in last 14 days", "Views", "count", "views_total.svg")
+    generate_line_svg(views, "Unique visitors in last 14 days", "Unique visitors", "uniques", "views_unique.svg")
+    generate_line_svg(clones, "Clones in last 14 days", "Clones", "count", "clones_total.svg")
+    generate_line_svg(clones, "Unique cloners in last 14 days", "Unique cloners", "uniques", "clones_unique.svg")
+    generate_bar_svg(referrers, "Referring sites", "referrer", "referrers.svg")
+    generate_bar_svg(popular_paths, "Popular content", "path", "popular_paths.svg")
 
     generate_html_dashboard(views, clones, referrers, popular_paths)
-
     write_traffic_md(views, clones, referrers, popular_paths)
     add_readme_link()
 

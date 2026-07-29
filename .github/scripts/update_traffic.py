@@ -232,7 +232,7 @@ def generate_html_dashboard(views, clones, referrers, popular_paths):
     (GRAPHS_DIR / "index.html").write_text(html)
 
 
-def build_readme_section(views, clones, referrers, popular_paths):
+def write_traffic_md(views, clones, referrers, popular_paths):
     today = datetime.now(timezone.utc).strftime("%Y-%m-%d")
     dates = sorted(set(views) | set(clones), reverse=True)[:14]
 
@@ -247,56 +247,49 @@ def build_readme_section(views, clones, referrers, popular_paths):
 
     ref_rows = "\n".join(
         f"| {r['referrer']} | {r['count']:,} | {r['uniques']:,} |"
-        for r in referrers[:5]
+        for r in referrers[:10]
     )
 
     path_rows = "\n".join(
         f"| `{p['path']}` | {p['count']:,} | {p['uniques']:,} |"
-        for p in popular_paths[:5]
+        for p in popular_paths[:10]
     )
 
-    return (
-        f"<!-- TRAFFIC_START -->\n"
-        f"## Traffic\n\n"
+    content = (
+        f"# Traffic\n\n"
         f"> Last updated: {today} · Persisted daily via GitHub Actions · "
         f"[Interactive dashboard](graphs/traffic/index.html)\n\n"
-        f"![Views](graphs/traffic/views.svg)\n"
+        f"## Page Views\n\n"
+        f"![Views](graphs/traffic/views.svg)\n\n"
+        f"## Git Clones\n\n"
         f"![Clones](graphs/traffic/clones.svg)\n\n"
-        f"<details>\n<summary>Full table (last 14 days)</summary>\n\n"
+        f"## Views & Clones — last 14 days\n\n"
         f"| Date | Views | Unique visitors | Clones | Unique cloners |\n"
         f"|------|------:|----------------:|-------:|---------------:|\n"
         f"{chr(10).join(rows)}\n\n"
-        f"</details>\n\n"
-        f"### Referring sites\n\n"
+        f"## Referring Sites\n\n"
         f"![Referrers](graphs/traffic/referrers.svg)\n\n"
         f"| Source | Views | Unique |\n"
         f"|--------|------:|-------:|\n"
         f"{ref_rows}\n\n"
-        f"### Popular content\n\n"
+        f"## Popular Content\n\n"
         f"![Popular paths](graphs/traffic/popular_paths.svg)\n\n"
         f"| Path | Views | Unique |\n"
         f"|------|------:|-------:|\n"
-        f"{path_rows}\n\n"
-        f"<!-- TRAFFIC_END -->"
+        f"{path_rows}\n"
     )
 
+    Path("TRAFFIC.md").write_text(content)
 
-def update_readme(views, clones, referrers, popular_paths):
+
+def add_readme_link():
     readme = Path("README.md")
     content = readme.read_text()
-    section = build_readme_section(views, clones, referrers, popular_paths)
+    link = "[Traffic →](TRAFFIC.md)"
 
-    if "<!-- TRAFFIC_START -->" in content:
-        content = re.sub(
-            r"<!-- TRAFFIC_START -->.*?<!-- TRAFFIC_END -->",
-            section,
-            content,
-            flags=re.DOTALL,
-        )
-    else:
-        content = content.rstrip() + "\n\n" + section + "\n"
-
-    readme.write_text(content)
+    if "TRAFFIC.md" not in content:
+        content = content.rstrip() + f"\n\n---\n\n{link}\n"
+        readme.write_text(content)
 
 
 def main():
@@ -323,7 +316,8 @@ def main():
 
     generate_html_dashboard(views, clones, referrers, popular_paths)
 
-    update_readme(views, clones, referrers, popular_paths)
+    write_traffic_md(views, clones, referrers, popular_paths)
+    add_readme_link()
 
     print(f"Updated: {len(views)} view records, {len(clones)} clone records")
 

@@ -1,6 +1,6 @@
 # Traffic
 
-> Last updated: 2026-07-30 · Persisted daily via GitHub Actions · [Interactive dashboard](graphs/traffic/index.html)
+> Last updated: 2026-07-31 · Persisted daily via GitHub Actions · [Interactive dashboard](graphs/traffic/index.html)
 
 ## Page Views
 
@@ -14,6 +14,7 @@
 
 | Date | Views | Unique visitors | Clones | Unique cloners |
 |------|------:|----------------:|-------:|---------------:|
+| 2026-07-30 | 0 | 0 | 3 | 3 |
 | 2026-07-29 | 57 | 2 | 43 | 21 |
 | 2026-07-28 | 14 | 2 | 14 | 8 |
 | 2026-07-27 | 0 | 0 | 0 | 0 |
@@ -27,7 +28,6 @@
 | 2026-07-19 | 0 | 0 | 0 | 0 |
 | 2026-07-18 | 0 | 0 | 1 | 1 |
 | 2026-07-17 | 0 | 0 | 1 | 1 |
-| 2026-07-16 | 69 | 3 | 114 | 42 |
 
 ## Referring Sites
 
@@ -35,7 +35,7 @@
 
 | Source | Views | Unique |
 |--------|------:|-------:|
-| github.com | 11 | 1 |
+| github.com | 9 | 1 |
 
 ## Popular Content
 
@@ -43,12 +43,12 @@
 
 | Path | Views | Unique |
 |------|------:|-------:|
-| `/lpinillacuev/openapi/pulls` | 78 | 3 |
-| `/lpinillacuev/openapi` | 58 | 2 |
-| `/lpinillacuev/openapi/actions` | 36 | 2 |
-| `/mercadopago/openapi/compare/main...lpinillacuev:openapi:main` | 11 | 1 |
-| `/lpinillacuev/openapi/compare/main...lpinillacuev:openapi:feat/bot-workflows` | 10 | 1 |
-| `/lpinillacuev/openapi/compare/main...lpinillacuev:openapi:main` | 10 | 1 |
+| `/lpinillacuev/openapi/pulls` | 69 | 2 |
+| `/lpinillacuev/openapi` | 48 | 2 |
+| `/lpinillacuev/openapi/actions` | 30 | 2 |
+| `/mercadopago/openapi/compare/main...lpinillacuev:openapi:main` | 7 | 1 |
+| `/lpinillacuev/openapi/compare/main...lpinillacuev:openapi:feat/bot-workflows` | 6 | 1 |
+| `/lpinillacuev/openapi/compare/main...lpinillacuev:openapi:main` | 6 | 1 |
 | `/lpinillacuev/openapi/pull/59` | 6 | 1 |
 | `/lpinillacuev/openapi/pull/57` | 5 | 2 |
 | `/lpinillacuev/openapi/actions/runs/29889946902` | 5 | 1 |

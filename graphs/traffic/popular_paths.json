@@ -1,36 +1,36 @@
 [
   {
-    "count": 78,
+    "count": 69,
     "path": "/lpinillacuev/openapi/pulls",
     "title": "/pulls",
-    "uniques": 3
+    "uniques": 2
   },
   {
-    "count": 58,
+    "count": 48,
     "path": "/lpinillacuev/openapi",
     "title": "Overview",
     "uniques": 2
   },
   {
-    "count": 36,
+    "count": 30,
     "path": "/lpinillacuev/openapi/actions",
     "title": "/actions",
     "uniques": 2
   },
   {
-    "count": 11,
+    "count": 7,
     "path": "/mercadopago/openapi/compare/main...lpinillacuev:openapi:main",
     "title": "compare/main...lpinillacuev:openapi:main",
     "uniques": 1
   },
   {
-    "count": 10,
+    "count": 6,
     "path": "/lpinillacuev/openapi/compare/main...lpinillacuev:openapi:feat/bot-workflows",
     "title": "/compare/main...lpinillacuev:openapi:feat/bot-workflows",
     "uniques": 1
   },
   {
-    "count": 10,
+    "count": 6,
     "path": "/lpinillacuev/openapi/compare/main...lpinillacuev:openapi:main",
     "title": "/compare/main...lpinillacuev:openapi:main",
     "uniques": 1

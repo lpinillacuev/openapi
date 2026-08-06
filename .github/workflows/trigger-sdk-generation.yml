@@ -1,7 +1,6 @@
 name: Trigger SDK generation
 
 # Triggered when spec3.yaml merges to main.
-#
 # Flow:
 #   1. generate_product_diff.py → detects what changed per product
 #   2. spec-agent public API → async-generate (reachable from GitHub Actions)

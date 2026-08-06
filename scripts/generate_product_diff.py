@@ -230,7 +230,7 @@ def compute_product_diff(
     Compute what changed for one product between spec_before and spec_after.
     Returns None if nothing changed for this product.
     """
-    product = app_config.get("product") or app_config["fury_app"]
+    product = app_config.get("product") or app_config.get("fury_app")
     allowed_prefixes = app_config.get("paths", [])
 
     old_paths = spec_before.get("paths", {})
@@ -311,9 +311,8 @@ def compute_product_diff(
         + len(schemas_diff["modified"])
     )
 
-    return {
+    diff = {
         "product": product,
-        "fury_app": app_config["fury_app"],
         "generated_at": datetime.datetime.utcnow().strftime("%Y-%m-%dT%H:%M:%SZ"),
         "total_changes": total,
         "paths": {
@@ -329,6 +328,11 @@ def compute_product_diff(
             "detail":   schemas_diff,
         },
     }
+
+    if app_config.get("fury_app"):
+        diff["fury_app"] = app_config["fury_app"]
+
+    return diff
 
 
 # ---------------------------------------------------------------------------
@@ -381,7 +385,7 @@ def main() -> None:
         filter_products = {p.strip() for p in args.products.split(",") if p.strip()}
         apps_config = [
             a for a in apps_config
-            if a.get("product", a["fury_app"]) in filter_products
+            if (a.get("product") or a.get("fury_app")) in filter_products
         ]
 
     print(f"\n{'='*60}")
@@ -393,7 +397,7 @@ def main() -> None:
     skipped_products: list[str] = []
 
     for app_config in apps_config:
-        product = app_config.get("product") or app_config["fury_app"]
+        product = app_config.get("product") or app_config.get("fury_app")
         diff = compute_product_diff(app_config, spec_before, spec_after)
 
         if diff is None:

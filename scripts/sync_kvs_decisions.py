@@ -42,7 +42,9 @@ def main() -> None:
     apps = yaml.safe_load(apps_path.read_text(encoding="utf-8")).get("apps", [])
 
     for app in apps:
-        fury_app = app["fury_app"]
+        fury_app = app.get("fury_app")
+        if not fury_app:
+            continue
         print(f"Syncing KVS for {fury_app}...")
         try:
             result = subprocess.run(

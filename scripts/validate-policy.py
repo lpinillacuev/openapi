@@ -18,17 +18,20 @@ import sys
 import argparse
 import yaml
 
-REQUIRED_FIELDS = ('fury_app', 'product', 'tag', 'paths')
+REQUIRED_FIELDS = ('product', 'tag', 'paths')
+INTERNAL_REQUIRED_FIELDS = ('fury_app', *REQUIRED_FIELDS)
 VALID_SDK_LANGUAGES = ('python', 'java', 'node', 'php', 'ruby', 'go')
 VALID_SITE_IDS = ('MLB', 'MLA', 'MLM', 'MLC', 'MCO', 'MPE', 'MLU')
 
 
-def validate_app(app):
+def validate_app(app, require_fury_app=False):
     """Validate a single app entry. Returns list of error strings."""
     errors = []
     fury_app = app.get('fury_app', '<unknown>')
 
-    for field in REQUIRED_FIELDS:
+    required_fields = INTERNAL_REQUIRED_FIELDS if require_fury_app else REQUIRED_FIELDS
+
+    for field in required_fields:
         if not app.get(field):
             errors.append(f"[{fury_app}] missing required field '{field}'")
 
@@ -70,6 +73,11 @@ def validate_app(app):
 def main():
     parser = argparse.ArgumentParser(description='Validate apps.yaml structure')
     parser.add_argument('--apps-file', default='apps.yaml', help='Path to apps.yaml')
+    parser.add_argument(
+        '--internal',
+        action='store_true',
+        help='Validate internal catalog, where fury_app is required',
+    )
     args = parser.parse_args()
 
     try:
@@ -89,7 +97,7 @@ def main():
 
     all_errors = []
     for app in apps:
-        all_errors.extend(validate_app(app))
+        all_errors.extend(validate_app(app, require_fury_app=args.internal))
 
     if all_errors:
         print(f'❌ {len(all_errors)} validation error(s) in {args.apps_file}:\n')

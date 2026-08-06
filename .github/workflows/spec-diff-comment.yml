@@ -39,52 +39,11 @@ jobs:
       - name: Fetch base branch
         run: git fetch origin ${{ github.base_ref }}
 
-      - name: Generate Markdown summary and schema checkboxes
+      - name: Generate Markdown summary
         run: |
           python3 .github/scripts/spec_diff_md.py \
             --base "${{ github.base_ref }}" \
-            --output /tmp/spec-diff.md \
-            --schema-checkboxes /tmp/schema-checkboxes.md
-
-      - name: Add schema checkboxes to PR body
-        env:
-          GH_TOKEN: ${{ secrets.GH_PAT || github.token }}
-          PR_NUMBER: ${{ github.event.pull_request.number }}
-        run: |
-          if [ ! -s /tmp/schema-checkboxes.md ]; then
-            echo "No schema changes found; skipping PR body update."
-            exit 0
-          fi
-
-          gh pr view "$PR_NUMBER" \
-            --repo "${{ github.repository }}" \
-            --json body \
-            --jq '.body // ""' > /tmp/current-pr-body.md
-
-          python3 - <<'PYEOF'
-          from pathlib import Path
-
-          start = '<!-- PENDING_SCHEMAS_START -->'
-          end = '<!-- PENDING_SCHEMAS_END -->'
-
-          current = Path('/tmp/current-pr-body.md').read_text()
-          schema_block = Path('/tmp/schema-checkboxes.md').read_text().strip()
-
-          if start in current and end in current:
-              before = current.split(start, 1)[0].rstrip()
-              after = current.split(end, 1)[1].lstrip()
-              updated = f'{before}\n{schema_block}\n{after}'.strip() + '\n'
-          else:
-              updated = f'{current.rstrip()}\n\n{schema_block}\n'
-
-          Path('/tmp/updated-pr-body.md').write_text(updated)
-          PYEOF
-
-          gh pr edit "$PR_NUMBER" \
-            --repo "${{ github.repository }}" \
-            --body-file /tmp/updated-pr-body.md
-
-          echo "PR body updated with schema checkboxes."
+            --output /tmp/spec-diff.md
 
       - name: Create or update PR comment
         env:

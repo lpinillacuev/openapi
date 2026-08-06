@@ -488,7 +488,7 @@ def main() -> None:
     apps_config = load_apps_config()
 
     if args.app:
-        matched = [a for a in apps_config if a["fury_app"] == args.app]
+        matched = [a for a in apps_config if a.get("fury_app") == args.app]
         if not matched:
             # Allow syncing an app not in apps.yaml (with no path filtering)
             matched = [{"fury_app": args.app, "paths": []}]

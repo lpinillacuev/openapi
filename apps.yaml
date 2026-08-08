@@ -36,3 +36,67 @@ apps:
     product: orders
     paths:
       - /v1/orders
+  - tag: Addresses
+    product: addresses
+    paths:
+      - /v1/customers
+    reference:
+      enabled: true
+      devsite_file: addresses
+  - tag: Advanced Payments
+    product: advanced_payments
+    paths:
+      - /v1/advanced_payments
+    reference:
+      enabled: true
+      devsite_file: advanced_payments
+  - tag: Wallet Connect
+    product: wallet_connect
+    paths:
+      - /v1/advanced_payments
+    reference:
+      enabled: true
+      devsite_file: agreements-payments-wallet-connect
+  - tag: Autonomous Payments
+    product: autonomous_payments
+    paths:
+      - /v1/customers
+    reference:
+      enabled: true
+      devsite_file: ap-payment-profiles
+  - tag: Chargebacks
+    product: chargebacks
+    paths:
+      - /v1/payments
+    reference:
+      enabled: true
+      devsite_file: chargebacks-payments
+  - tag: Orders Point Kiosko
+    product: orders_point_kiosko
+    paths:
+      - /v1/orders
+    reference:
+      enabled: true
+      devsite_file: orders-point-kiosko
+  - tag: Orders Point
+    product: orders_point
+    paths:
+      - /v1/orders
+    reference:
+      enabled: true
+      devsite_file: orders-point
+  - tag: Payouts
+    product: payouts
+    paths:
+      - /v1/payouts
+    reference:
+      enabled: true
+      devsite_file: payouts
+  - tag: Reports
+    product: reports
+    paths:
+      - /v1/account/release_report
+      - /v1/account/settlement_report
+    reference:
+      enabled: true
+      devsite_file: releases_report_create

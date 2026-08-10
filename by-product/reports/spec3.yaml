@@ -302,13 +302,13 @@ tags:
       - MLM
       - MLC
 paths:
-  /v1/customers:
+  /v1/account/release_report/config:
     post:
-      operationId: createCustomer
-      summary: Create a customer
-      description: Creates a customer profile for storing payment methods. The customer email is unique per account.
+      operationId: createReleaseReportConfig
+      summary: Create releases report configuration
+      description: Creates the configuration for automatic releases report generation. Defines columns, schedule frequency, file format, and optional SFTP delivery.
       tags:
-        - Customers
+        - Releases Report
       security:
         - bearerAuth: []
       requestBody:
@@ -316,333 +316,76 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/CustomerRequest'
-      responses:
-        '201':
-          description: Customer created
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Customer'
-        '400':
-          $ref: '#/components/responses/BadRequest'
-        '401':
-          $ref: '#/components/responses/Unauthorized'
-  /v1/customers/search:
-    get:
-      operationId: searchCustomers
-      summary: Search customers
-      tags:
-        - Customers
-      security:
-        - bearerAuth: []
-      parameters:
-        - name: email
-          in: query
-          schema:
-            type: string
-            format: email
-        - name: limit
-          in: query
-          schema:
-            type: integer
-            default: 30
-        - name: offset
-          in: query
-          schema:
-            type: integer
-            default: 0
+              $ref: '#/components/schemas/ReportConfig'
       responses:
         '200':
-          description: Search results
+          description: Configuration created
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/CustomerSearchResult'
+                $ref: '#/components/schemas/ReportConfig'
         '400':
           $ref: '#/components/responses/BadRequest'
         '401':
           $ref: '#/components/responses/Unauthorized'
-  /v1/customers/{id}:
-    get:
-      operationId: getCustomer
-      summary: Get customer by ID
-      tags:
-        - Customers
-      security:
-        - bearerAuth: []
-      parameters:
-        - name: id
-          in: path
-          required: true
-          schema:
-            type: string
-      responses:
-        '200':
-          description: Customer found
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Customer'
-        '400':
-          $ref: '#/components/responses/BadRequest'
-        '401':
-          $ref: '#/components/responses/Unauthorized'
-        '404':
-          $ref: '#/components/responses/NotFound'
+        '429':
+          $ref: '#/components/responses/TooManyRequests'
     put:
-      operationId: updateCustomer
-      summary: Update a customer
+      operationId: updateReleaseReportConfig
+      summary: Update releases report configuration
       tags:
-        - Customers
+        - Releases Report
       security:
         - bearerAuth: []
-      parameters:
-        - name: id
-          in: path
-          required: true
-          schema:
-            type: string
       requestBody:
         required: true
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/CustomerRequest'
+              $ref: '#/components/schemas/ReportConfig'
       responses:
         '200':
-          description: Customer updated
+          description: Configuration updated
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Customer'
-        '400':
-          $ref: '#/components/responses/BadRequest'
-        '401':
-          $ref: '#/components/responses/Unauthorized'
-        '404':
-          $ref: '#/components/responses/NotFound'
-  /v1/customers/{customer_id}/cards:
-    post:
-      operationId: saveCard
-      summary: Save a card to a customer
-      description: |-
-        Saves a tokenized card to a customer profile for future payments. The token must be created client-side via MercadoPago.js. Raw card data must never pass through your server.
-        **PCI scope:** Handling this endpoint brings your integration into PCI DSS scope.
-      tags:
-        - Cards
-      security:
-        - bearerAuth: []
-      parameters:
-        - name: customer_id
-          in: path
-          required: true
-          schema:
-            type: string
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/SaveCardRequest'
-      responses:
-        '201':
-          description: Card saved
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Card'
-        '400':
-          $ref: '#/components/responses/BadRequest'
-        '401':
-          $ref: '#/components/responses/Unauthorized'
+                $ref: '#/components/schemas/ReportConfig'
     get:
-      operationId: listCards
-      summary: List customer cards
+      operationId: getReleaseReportConfig
+      summary: Get releases report configuration
       tags:
-        - Cards
+        - Releases Report
       security:
         - bearerAuth: []
-      parameters:
-        - name: customer_id
-          in: path
-          required: true
-          schema:
-            type: string
       responses:
         '200':
-          description: Card list
+          description: Current configuration
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/Card'
-        '400':
-          $ref: '#/components/responses/BadRequest'
-        '401':
-          $ref: '#/components/responses/Unauthorized'
-  /v1/customers/{customer_id}/cards/{id}:
-    get:
-      operationId: getCard
-      summary: Get a saved card
-      tags:
-        - Cards
-      security:
-        - bearerAuth: []
-      parameters:
-        - name: customer_id
-          in: path
-          required: true
-          schema:
-            type: string
-        - name: id
-          in: path
-          required: true
-          schema:
-            type: string
-      responses:
-        '200':
-          description: Card found
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Card'
-        '400':
-          $ref: '#/components/responses/BadRequest'
-        '401':
-          $ref: '#/components/responses/Unauthorized'
-        '404':
-          $ref: '#/components/responses/NotFound'
-    put:
-      operationId: updateCard
-      summary: Update a saved card
-      tags:
-        - Cards
-      security:
-        - bearerAuth: []
-      parameters:
-        - name: customer_id
-          in: path
-          required: true
-          schema:
-            type: string
-        - name: id
-          in: path
-          required: true
-          schema:
-            type: string
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/UpdateCardRequest'
-      responses:
-        '200':
-          description: Card updated
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Card'
-        '400':
-          $ref: '#/components/responses/BadRequest'
-        '401':
-          $ref: '#/components/responses/Unauthorized'
-        '404':
-          $ref: '#/components/responses/NotFound'
-    delete:
-      operationId: deleteCard
-      summary: Delete a saved card
-      tags:
-        - Cards
-      security:
-        - bearerAuth: []
-      parameters:
-        - name: customer_id
-          in: path
-          required: true
-          schema:
-            type: string
-        - name: id
-          in: path
-          required: true
-          schema:
-            type: string
-      responses:
-        '200':
-          description: Card deleted
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Card'
-        '400':
-          $ref: '#/components/responses/BadRequest'
-        '401':
-          $ref: '#/components/responses/Unauthorized'
-        '404':
-          $ref: '#/components/responses/NotFound'
-  /v1/customers/{id}/delete:
-    delete:
-      operationId: deleteCustomer
-      summary: Delete a customer
-      description: Permanently deletes a customer profile. This action cannot be undone. Saved cards associated with the customer will also be removed.
-      tags:
-        - Customers
-      security:
-        - bearerAuth: []
-      parameters:
-        - name: id
-          in: path
-          required: true
-          schema:
-            type: string
-          description: Customer ID to delete
-      responses:
-        '200':
-          description: Customer deleted
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Customer'
-        '401':
-          $ref: '#/components/responses/Unauthorized'
-        '404':
-          $ref: '#/components/responses/NotFound'
-  /v1/customers/{customer_id}/addresses:
+                $ref: '#/components/schemas/ReportConfig'
+  /v1/account/release_report:
     post:
-      operationId: createCustomerAddress
-      summary: Create a customer address
-      description: Adds a shipping or billing address to a customer profile.
+      operationId: createReleaseReport
+      summary: Create a releases report
+      description: Generates a one-time releases report for the specified date range. Returns a task ID to poll for completion via the task endpoint.
       tags:
-        - Addresses
+        - Releases Report
       security:
         - bearerAuth: []
-      parameters:
-        - name: customer_id
-          in: path
-          required: true
-          schema:
-            type: string
       requestBody:
         required: true
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/Address'
-            example:
-              zip_code: 01310-100
-              street_name: Av. Paulista
-              street_number: '1000'
-              city: São Paulo
-              state: SP
+              $ref: '#/components/schemas/ReportRequest'
       responses:
-        '201':
-          description: Address created
+        '202':
+          description: Report generation started
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Address'
+                $ref: '#/components/schemas/ReportTask'
         '400':
           $ref: '#/components/responses/BadRequest'
         '401':
@@ -650,111 +393,345 @@ paths:
         '429':
           $ref: '#/components/responses/TooManyRequests'
     get:
-      operationId: listCustomerAddresses
-      summary: List customer addresses
+      operationId: getReleaseReport
+      summary: Get releases report list
       tags:
-        - Addresses
+        - Releases Report
       security:
         - bearerAuth: []
-      parameters:
-        - name: customer_id
-          in: path
-          required: true
-          schema:
-            type: string
       responses:
         '200':
-          description: Address list
+          description: Report list
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/Address'
-        '401':
-          $ref: '#/components/responses/Unauthorized'
-  /v1/customers/{customer_id}/addresses/{address_id}:
+                $ref: '#/components/schemas/ReportListResult'
+  /v1/account/release_report/search:
     get:
-      operationId: getCustomerAddress
-      summary: Get a customer address
+      operationId: searchReleaseReports
+      summary: Search releases reports
       tags:
-        - Addresses
+        - Releases Report
       security:
         - bearerAuth: []
       parameters:
-        - name: customer_id
-          in: path
-          required: true
+        - name: begin_date
+          in: query
           schema:
             type: string
-        - name: address_id
+            format: date-time
+        - name: end_date
+          in: query
+          schema:
+            type: string
+            format: date-time
+      responses:
+        '200':
+          description: Matching reports
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ReportListResult'
+  /v1/account/release_report/task/{task_id}:
+    get:
+      operationId: getReleaseReportTask
+      summary: Get releases report task status
+      description: Polls the status of a report generation task. Check until `status=done`.
+      tags:
+        - Releases Report
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: task_id
           in: path
           required: true
           schema:
             type: string
       responses:
         '200':
-          description: Address found
+          description: Task status
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Address'
+                $ref: '#/components/schemas/ReportTask'
         '404':
           $ref: '#/components/responses/NotFound'
-    put:
-      operationId: updateCustomerAddress
-      summary: Update a customer address
+  /v1/account/release_report/schedule:
+    post:
+      operationId: enableReleaseReportSchedule
+      summary: Enable automatic releases report generation
+      description: Enables scheduled report generation based on the configured frequency.
       tags:
-        - Addresses
+        - Releases Report
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: Schedule enabled
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+    delete:
+      operationId: disableReleaseReportSchedule
+      summary: Disable automatic releases report generation
+      tags:
+        - Releases Report
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: Schedule disabled
+  /v1/account/release_report/list:
+    get:
+      operationId: listScheduledReleaseReports
+      summary: List scheduled releases reports
+      tags:
+        - Releases Report
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: Scheduled report list
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ReportListResult'
+  /v1/account/release_report/{file_name}:
+    get:
+      operationId: downloadReleaseReport
+      summary: Download a releases report file
+      description: Downloads the generated report CSV file by filename.
+      tags:
+        - Releases Report
       security:
         - bearerAuth: []
       parameters:
-        - name: customer_id
+        - name: file_name
           in: path
           required: true
           schema:
             type: string
-        - name: address_id
-          in: path
-          required: true
-          schema:
-            type: string
+          example: releases_report_2024-01-01_2024-01-31.csv
+      responses:
+        '200':
+          description: Report file
+          content:
+            text/csv:
+              schema:
+                type: string
+                format: binary
+        '404':
+          $ref: '#/components/responses/NotFound'
+  /v1/account/settlement_report/config:
+    post:
+      operationId: createSettlementReportConfig
+      summary: Create settlements report configuration
+      description: Creates the configuration for automatic all-transactions (settlements) report generation. Defines columns, schedule frequency, file format, and optional SFTP delivery.
+      tags:
+        - Settlements Report
+      security:
+        - bearerAuth: []
       requestBody:
         required: true
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/Address'
+              $ref: '#/components/schemas/ReportConfig'
       responses:
         '200':
-          description: Address updated
+          description: Configuration created
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Address'
-        '404':
-          $ref: '#/components/responses/NotFound'
-    delete:
-      operationId: deleteCustomerAddress
-      summary: Delete a customer address
+                $ref: '#/components/schemas/ReportConfig'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '429':
+          $ref: '#/components/responses/TooManyRequests'
+    put:
+      operationId: updateSettlementReportConfig
+      summary: Update settlements report configuration
       tags:
-        - Addresses
+        - Settlements Report
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ReportConfig'
+      responses:
+        '200':
+          description: Configuration updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ReportConfig'
+    get:
+      operationId: getSettlementReportConfig
+      summary: Get settlements report configuration
+      tags:
+        - Settlements Report
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: Current configuration
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ReportConfig'
+  /v1/account/settlement_report:
+    post:
+      operationId: createSettlementReport
+      summary: Create a settlements report
+      description: Generates a one-time all-transactions report for the specified date range. Returns a task ID to poll for completion.
+      tags:
+        - Settlements Report
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ReportRequest'
+      responses:
+        '202':
+          description: Report generation started
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ReportTask'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '429':
+          $ref: '#/components/responses/TooManyRequests'
+    get:
+      operationId: getSettlementReport
+      summary: Get settlements report list
+      tags:
+        - Settlements Report
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: Report list
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ReportListResult'
+  /v1/account/settlement_report/search:
+    get:
+      operationId: searchSettlementReports
+      summary: Search settlements reports
+      tags:
+        - Settlements Report
       security:
         - bearerAuth: []
       parameters:
-        - name: customer_id
-          in: path
-          required: true
+        - name: begin_date
+          in: query
           schema:
             type: string
-        - name: address_id
+            format: date-time
+        - name: end_date
+          in: query
+          schema:
+            type: string
+            format: date-time
+      responses:
+        '200':
+          description: Matching reports
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ReportListResult'
+  /v1/account/settlement_report/task/{task_id}:
+    get:
+      operationId: getSettlementReportTask
+      summary: Get settlements report task status
+      tags:
+        - Settlements Report
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: task_id
           in: path
           required: true
           schema:
             type: string
       responses:
         '200':
-          description: Address deleted
+          description: Task status
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ReportTask'
+        '404':
+          $ref: '#/components/responses/NotFound'
+  /v1/account/settlement_report/schedule:
+    post:
+      operationId: enableSettlementReportSchedule
+      summary: Enable automatic settlements report generation
+      tags:
+        - Settlements Report
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: Schedule enabled
+    delete:
+      operationId: disableSettlementReportSchedule
+      summary: Disable automatic settlements report generation
+      tags:
+        - Settlements Report
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: Schedule disabled
+  /v1/account/settlement_report/list:
+    get:
+      operationId: listScheduledSettlementReports
+      summary: List scheduled settlements reports
+      tags:
+        - Settlements Report
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: Scheduled report list
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ReportListResult'
+  /v1/account/settlement_report/{file_name}:
+    get:
+      operationId: downloadSettlementReport
+      summary: Download a settlements report file
+      tags:
+        - Settlements Report
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: file_name
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Report file
+          content:
+            text/csv:
+              schema:
+                type: string
+                format: binary
         '404':
           $ref: '#/components/responses/NotFound'
 components:
@@ -826,45 +803,6 @@ components:
             error: too_many_requests
             message: Rate limit exceeded. Retry after the indicated number of seconds.
   schemas:
-    Identification:
-      type: object
-      description: Payer identification document. Valid types vary by country.
-      properties:
-        type:
-          type: string
-          description: Identification type (e.g., CPF, CNPJ for Brazil; DNI for Argentina; RFC for Mexico)
-          example: CPF
-        number:
-          type: string
-          description: Identification number (no formatting — digits only)
-          example: '12345678909'
-    Phone:
-      type: object
-      properties:
-        area_code:
-          type: string
-          example: '11'
-        number:
-          type: string
-          example: '987654321'
-    Address:
-      type: object
-      properties:
-        zip_code:
-          type: string
-          example: 01310-100
-        street_name:
-          type: string
-          example: Av. Paulista
-        street_number:
-          type: string
-          example: '1000'
-        city:
-          type: string
-        state:
-          type: string
-        country:
-          type: string
     Pagination:
       type: object
       description: Pagination metadata returned in list/search responses
@@ -881,74 +819,147 @@ components:
           type: integer
           description: Offset of the current page
           example: 0
-    CustomerRequest:
+    ReportConfig:
       type: object
-      description: Request body to create or update a customer
+      description: Configuration for scheduled report generation
       properties:
-        email:
+        columns:
+          type: array
+          description: Columns to include in the report
+          items:
+            type: object
+            properties:
+              key:
+                type: string
+                example: DATE
+              alias:
+                type: string
+                example: transaction_date
+        file_name_prefix:
           type: string
-          format: email
-          description: Customer email address (unique identifier)
-          example: customer@example.com
-        first_name:
-          type: string
-        last_name:
-          type: string
-        phone:
-          $ref: '#/components/schemas/Phone'
-        identification:
-          $ref: '#/components/schemas/Identification'
-        address:
-          $ref: '#/components/schemas/Address'
-        description:
-          type: string
-        metadata:
+          description: Prefix for generated report filenames
+          example: releases_report
+        frequency:
           type: object
-          additionalProperties: true
-    Customer:
+          description: Schedule frequency for automatic generation
+          properties:
+            hour:
+              type: integer
+              minimum: 0
+              maximum: 23
+            type:
+              type: string
+              enum:
+                - daily
+                - weekly
+                - monthly
+        sftp_info:
+          type: object
+          description: SFTP destination for automatic delivery (optional)
+          properties:
+            server:
+              type: string
+            port:
+              type: integer
+            username:
+              type: string
+            remote_dir:
+              type: string
+        separator:
+          type: string
+          description: CSV column separator character
+          enum:
+            - ','
+            - ;
+            - ''
+          default: ','
+        display_timezone:
+          type: string
+          description: Timezone for date columns (IANA format)
+          example: America/Sao_Paulo
+        notification_email_list:
+          type: array
+          description: Email addresses to notify when report is ready
+          items:
+            type: string
+            format: email
+    ReportRequest:
       type: object
-      description: A stored MercadoPago customer
+      required:
+        - begin_date
+        - end_date
+      description: Request body to generate a one-time report
+      properties:
+        begin_date:
+          type: string
+          format: date-time
+          description: Start of the reporting period (ISO 8601)
+          example: '2024-01-01T00:00:00Z'
+        end_date:
+          type: string
+          format: date-time
+          description: End of the reporting period (ISO 8601)
+          example: '2024-01-31T23:59:59Z'
+    ReportTask:
+      type: object
+      description: Status of a report generation task
       properties:
         id:
           type: string
-          description: Customer unique identifier
-          example: 123456789-abcd
-        email:
+          description: Task unique identifier
+          example: task_abc123
+        status:
           type: string
-          format: email
-        first_name:
-          type: string
-        last_name:
-          type: string
-        phone:
-          $ref: '#/components/schemas/Phone'
-        identification:
-          $ref: '#/components/schemas/Identification'
-        address:
-          $ref: '#/components/schemas/Address'
-        date_registered:
+          enum:
+            - pending
+            - in_progress
+            - done
+            - failed
+          description: pending — queued; in_progress — generating; done — ready to download; failed — generation error
+        begin_date:
           type: string
           format: date-time
+        end_date:
+          type: string
+          format: date-time
+        created_at:
+          type: string
+          format: date-time
+        updated_at:
+          type: string
+          format: date-time
+        download_url:
+          type: string
+          format: uri
+          description: Download URL (present when status=done)
+          nullable: true
+    ReportEntry:
+      type: object
+      description: A generated report file entry
+      properties:
+        id:
+          type: string
+        status:
+          type: string
+          enum:
+            - available
+            - expired
         date_created:
           type: string
           format: date-time
         date_last_updated:
           type: string
           format: date-time
-        description:
+        begin_date:
           type: string
-        metadata:
-          type: object
-          additionalProperties: true
-        cards:
-          type: array
-          items:
-            $ref: '#/components/schemas/Card'
-          description: Saved cards for this customer
-        default_card:
+          format: date-time
+        end_date:
           type: string
-          description: ID of the customer's default card
-    CustomerSearchResult:
+          format: date-time
+        file_name:
+          type: string
+          example: releases_report_2024-01-01_2024-01-31.csv
+    ReportListResult:
       type: object
       properties:
         paging:
@@ -956,105 +967,4 @@ components:
         results:
           type: array
           items:
-            $ref: '#/components/schemas/Customer'
-    SaveCardRequest:
-      type: object
-      required:
-        - token
-      description: Request body to save a card to a customer. The card token must be created client-side via MercadoPago.js / MP Secure Fields before calling this endpoint. Raw card data (PAN, CVV) must never be sent to your server.
-      properties:
-        token:
-          type: string
-          description: Single-use card token from MercadoPago.js
-          example: YOUR_ACCESS_TOKEN
-    Card:
-      type: object
-      description: A tokenized card saved to a customer (never contains full PAN or CVV)
-      properties:
-        id:
-          type: string
-          description: Card unique identifier
-          example: '1234567890'
-        customer_id:
-          type: string
-        first_six_digits:
-          type: string
-          description: First 6 digits of card (BIN — identifies issuer and type)
-          example: '411111'
-        last_four_digits:
-          type: string
-          description: Last 4 digits of card
-          example: '4321'
-        expiration_month:
-          type: integer
-          minimum: 1
-          maximum: 12
-          example: 12
-        expiration_year:
-          type: integer
-          example: 2028
-        date_created:
-          type: string
-          format: date-time
-        date_last_updated:
-          type: string
-          format: date-time
-        cardholder:
-          type: object
-          properties:
-            name:
-              type: string
-              description: Name on card
-            identification:
-              $ref: '#/components/schemas/Identification'
-        payment_method:
-          type: object
-          properties:
-            id:
-              type: string
-              example: visa
-            name:
-              type: string
-              example: Visa
-            payment_type_id:
-              type: string
-              example: credit_card
-            thumbnail:
-              type: string
-              format: uri
-        issuer:
-          type: object
-          properties:
-            id:
-              type: integer
-            name:
-              type: string
-        security_code:
-          type: object
-          properties:
-            mode:
-              type: string
-              enum:
-                - mandatory
-                - optional
-            length:
-              type: integer
-              example: 3
-    UpdateCardRequest:
-      type: object
-      description: Request body to update a saved card's expiry or cardholder data.
-      properties:
-        expiration_month:
-          type: integer
-          minimum: 1
-          maximum: 12
-        expiration_year:
-          type: integer
-        cardholder:
-          type: object
-          properties:
-            name:
-              type: string
-              description: Name as it appears on the card.
-            identification:
-              $ref: '#/components/schemas/Identification'
+            $ref: '#/components/schemas/ReportEntry'

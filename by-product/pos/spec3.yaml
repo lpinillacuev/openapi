@@ -11,154 +11,322 @@ info:
     url: https://www.apache.org/licenses/LICENSE-2.0
   version: 1.0.0
 servers:
-- url: https://api.mercadopago.com
-  description: Production
+  - url: https://api.mercadopago.com
+    description: Production
 security:
-- bearerAuth: []
+  - bearerAuth: []
 tags:
-- name: OAuth
-  description: Authorization flows for marketplace on-behalf-of and Wallet Connect
-  x-mp-sites: &id001
-  - MLA
-  - MLB
-  - MLM
-  - MLC
-  - MCO
-  - MPE
-  - MLU
-- name: Preferences
-  description: Checkout Pro — redirect-based hosted checkout via Preferences
-  x-mp-sites: *id001
-- name: Payments
-  description: Create and manage payment transactions
-  x-mp-sites: *id001
-- name: Orders
-  description: Checkout API via Orders — recommended for new custom checkout integrations
-  x-mp-sites: *id001
-- name: Merchant Orders
-  description: Order containers that group payments for a single purchase
-  x-mp-sites: *id001
-- name: Customers
-  description: Customer profiles and stored payment methods
-  x-mp-sites: *id001
-- name: Cards
-  description: Saved cards and card tokenization
-  x-mp-sites: *id001
-- name: Addresses
-  description: Customer shipping and billing addresses
-  x-mp-sites: *id001
-- name: Payment Methods
-  description: Available payment methods and installment plans per country
-  x-mp-sites: *id001
-- name: Identification Types
-  description: Country-specific identity document type catalog
-  x-mp-sites: *id001
-- name: Cancellations & Refunds
-  description: Cancel payments and create full or partial refunds
-  x-mp-sites: *id001
-- name: Chargebacks
-  description: Chargeback dispute management
-  x-mp-sites: *id001
-- name: Subscriptions
-  description: Recurring payment subscriptions
-  x-mp-sites: *id001
-- name: Plans
-  description: Subscription billing plans
-  x-mp-sites: *id001
-- name: Invoices
-  description: Subscription billing invoices
-  x-mp-sites: *id001
-- name: Wallet Connect
-  description: OAuth-based wallet agreement flows for Wallet Connect
-  x-mp-sites:
-  - MLA
-  - MLB
-  - MLM
-- name: Stores
-  description: Physical store locations
-  x-mp-sites: *id001
-- name: POS
-  description: Point of sale device management
-  x-mp-sites: *id001
-- name: Terminals
-  description: Point hardware terminal management and print actions
-  x-mp-sites:
-  - MLA
-  - MLB
-  - MLC
-  - MLM
-- name: Point Deprecated
-  description: Deprecated Point integration APIs — use Terminals and Point Orders instead
-  x-mp-sites:
-  - MLA
-  - MLB
-  - MLM
-- name: QR Orders
-  description: In-store payment orders associated with QR codes
-  x-mp-sites:
-  - MLA
-  - MLB
-  - MLC
-  - MCO
-  - MPE
-  - MLU
-- name: QR Integrator
-  description: Integrator configuration for QR in-store
-  x-mp-sites: *id001
-- name: QR Deprecated
-  description: Deprecated in-store QR order endpoints (V1, V2, Dynamic QR)
-  x-mp-sites: *id001
-- name: Claims
-  description: Post-sale claim details and search
-  x-mp-sites: *id001
-- name: Claim Messages
-  description: Messages and file attachments within a claim
-  x-mp-sites: *id001
-- name: Claim Resolutions
-  description: Mediation requests and expected resolutions
-  x-mp-sites: *id001
-- name: Claim Shipping
-  description: Upload shipping evidence to support a claim
-  x-mp-sites: *id001
-- name: Releases Report
-  description: Generate and schedule releases (settlement) reports
-  x-mp-sites: *id001
-- name: Settlements Report
-  description: Generate and schedule all-transactions reports
-  x-mp-sites: *id001
-- name: Payouts
-  description: Bank transfer and Pix payouts
-  x-mp-sites:
-  - MLA
-  - MLB
-  - MLM
-  - MLC
+  - name: OAuth
+    description: Authorization flows for marketplace on-behalf-of and Wallet Connect
+    x-mp-sites:
+      - MLA
+      - MLB
+      - MLM
+      - MLC
+      - MCO
+      - MPE
+      - MLU
+  - name: Preferences
+    description: Checkout Pro — redirect-based hosted checkout via Preferences
+    x-mp-sites:
+      - MLA
+      - MLB
+      - MLM
+      - MLC
+      - MCO
+      - MPE
+      - MLU
+  - name: Payments
+    description: Create and manage payment transactions
+    x-mp-sites:
+      - MLA
+      - MLB
+      - MLM
+      - MLC
+      - MCO
+      - MPE
+      - MLU
+  - name: Orders
+    description: Checkout API via Orders — recommended for new custom checkout integrations
+    x-mp-sites:
+      - MLA
+      - MLB
+      - MLM
+      - MLC
+      - MCO
+      - MPE
+      - MLU
+  - name: Merchant Orders
+    description: Order containers that group payments for a single purchase
+    x-mp-sites:
+      - MLA
+      - MLB
+      - MLM
+      - MLC
+      - MCO
+      - MPE
+      - MLU
+  - name: Customers
+    description: Customer profiles and stored payment methods
+    x-mp-sites:
+      - MLA
+      - MLB
+      - MLM
+      - MLC
+      - MCO
+      - MPE
+      - MLU
+  - name: Cards
+    description: Saved cards and card tokenization
+    x-mp-sites:
+      - MLA
+      - MLB
+      - MLM
+      - MLC
+      - MCO
+      - MPE
+      - MLU
+  - name: Addresses
+    description: Customer shipping and billing addresses
+    x-mp-sites:
+      - MLA
+      - MLB
+      - MLM
+      - MLC
+      - MCO
+      - MPE
+      - MLU
+  - name: Payment Methods
+    description: Available payment methods and installment plans per country
+    x-mp-sites:
+      - MLA
+      - MLB
+      - MLM
+      - MLC
+      - MCO
+      - MPE
+      - MLU
+  - name: Identification Types
+    description: Country-specific identity document type catalog
+    x-mp-sites:
+      - MLA
+      - MLB
+      - MLM
+      - MLC
+      - MCO
+      - MPE
+      - MLU
+  - name: Cancellations & Refunds
+    description: Cancel payments and create full or partial refunds
+    x-mp-sites:
+      - MLA
+      - MLB
+      - MLM
+      - MLC
+      - MCO
+      - MPE
+      - MLU
+  - name: Chargebacks
+    description: Chargeback dispute management
+    x-mp-sites:
+      - MLA
+      - MLB
+      - MLM
+      - MLC
+      - MCO
+      - MPE
+      - MLU
+  - name: Subscriptions
+    description: Recurring payment subscriptions
+    x-mp-sites:
+      - MLA
+      - MLB
+      - MLM
+      - MLC
+      - MCO
+      - MPE
+      - MLU
+  - name: Plans
+    description: Subscription billing plans
+    x-mp-sites:
+      - MLA
+      - MLB
+      - MLM
+      - MLC
+      - MCO
+      - MPE
+      - MLU
+  - name: Invoices
+    description: Subscription billing invoices
+    x-mp-sites:
+      - MLA
+      - MLB
+      - MLM
+      - MLC
+      - MCO
+      - MPE
+      - MLU
+  - name: Wallet Connect
+    description: OAuth-based wallet agreement flows for Wallet Connect
+    x-mp-sites:
+      - MLA
+      - MLB
+      - MLM
+  - name: Stores
+    description: Physical store locations
+    x-mp-sites:
+      - MLA
+      - MLB
+      - MLM
+      - MLC
+      - MCO
+      - MPE
+      - MLU
+  - name: POS
+    description: Point of sale device management
+    x-mp-sites:
+      - MLA
+      - MLB
+      - MLM
+      - MLC
+      - MCO
+      - MPE
+      - MLU
+  - name: Terminals
+    description: Point hardware terminal management and print actions
+    x-mp-sites:
+      - MLA
+      - MLB
+      - MLC
+      - MLM
+  - name: Point Deprecated
+    description: Deprecated Point integration APIs — use Terminals and Point Orders instead
+    x-mp-sites:
+      - MLA
+      - MLB
+      - MLM
+  - name: QR Orders
+    description: In-store payment orders associated with QR codes
+    x-mp-sites:
+      - MLA
+      - MLB
+      - MLC
+      - MCO
+      - MPE
+      - MLU
+  - name: QR Integrator
+    description: Integrator configuration for QR in-store
+    x-mp-sites:
+      - MLA
+      - MLB
+      - MLM
+      - MLC
+      - MCO
+      - MPE
+      - MLU
+  - name: QR Deprecated
+    description: Deprecated in-store QR order endpoints (V1, V2, Dynamic QR)
+    x-mp-sites:
+      - MLA
+      - MLB
+      - MLM
+      - MLC
+      - MCO
+      - MPE
+      - MLU
+  - name: Claims
+    description: Post-sale claim details and search
+    x-mp-sites:
+      - MLA
+      - MLB
+      - MLM
+      - MLC
+      - MCO
+      - MPE
+      - MLU
+  - name: Claim Messages
+    description: Messages and file attachments within a claim
+    x-mp-sites:
+      - MLA
+      - MLB
+      - MLM
+      - MLC
+      - MCO
+      - MPE
+      - MLU
+  - name: Claim Resolutions
+    description: Mediation requests and expected resolutions
+    x-mp-sites:
+      - MLA
+      - MLB
+      - MLM
+      - MLC
+      - MCO
+      - MPE
+      - MLU
+  - name: Claim Shipping
+    description: Upload shipping evidence to support a claim
+    x-mp-sites:
+      - MLA
+      - MLB
+      - MLM
+      - MLC
+      - MCO
+      - MPE
+      - MLU
+  - name: Releases Report
+    description: Generate and schedule releases (settlement) reports
+    x-mp-sites:
+      - MLA
+      - MLB
+      - MLM
+      - MLC
+      - MCO
+      - MPE
+      - MLU
+  - name: Settlements Report
+    description: Generate and schedule all-transactions reports
+    x-mp-sites:
+      - MLA
+      - MLB
+      - MLM
+      - MLC
+      - MCO
+      - MPE
+      - MLU
+  - name: Payouts
+    description: Bank transfer and Pix payouts
+    x-mp-sites:
+      - MLA
+      - MLB
+      - MLM
+      - MLC
 paths:
   /pos:
     get:
       operationId: searchPOS
       summary: Search points of sale
       tags:
-      - POS
+        - POS
       security:
-      - bearerAuth: []
+        - bearerAuth: []
       parameters:
-      - name: external_id
-        in: query
-        schema:
-          type: string
-      - name: external_store_id
-        in: query
-        schema:
-          type: string
-      - name: store_id
-        in: query
-        schema:
-          type: string
-      - name: category
-        in: query
-        schema:
-          type: integer
+        - name: external_id
+          in: query
+          schema:
+            type: string
+        - name: external_store_id
+          in: query
+          schema:
+            type: string
+        - name: store_id
+          in: query
+          schema:
+            type: string
+        - name: category
+          in: query
+          schema:
+            type: integer
       responses:
         '200':
           description: POS search results
@@ -176,12 +344,11 @@ paths:
     post:
       operationId: createPOS
       summary: Create a point of sale
-      description: Creates a point of sale in a store to receive payments for products or services. Each POS will have a unique
-        QR code linked to it.
+      description: Creates a point of sale in a store to receive payments for products or services. Each POS will have a unique QR code linked to it.
       tags:
-      - POS
+        - POS
       security:
-      - bearerAuth: []
+        - bearerAuth: []
       requestBody:
         required: true
         content:
@@ -210,16 +377,16 @@ paths:
       operationId: getPOS
       summary: Get a point of sale
       tags:
-      - POS
+        - POS
       security:
-      - bearerAuth: []
+        - bearerAuth: []
       parameters:
-      - name: id
-        in: path
-        required: true
-        schema:
-          type: string
-        description: POS identifier
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+          description: POS identifier
       responses:
         '200':
           description: POS found
@@ -233,15 +400,15 @@ paths:
       operationId: updatePOS
       summary: Update a point of sale
       tags:
-      - POS
+        - POS
       security:
-      - bearerAuth: []
+        - bearerAuth: []
       parameters:
-      - name: id
-        in: path
-        required: true
-        schema:
-          type: string
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
       requestBody:
         required: true
         content:
@@ -261,16 +428,16 @@ paths:
       operationId: deletePOS
       summary: Delete a point of sale
       tags:
-      - POS
+        - POS
       security:
-      - bearerAuth: []
+        - bearerAuth: []
       parameters:
-      - name: id
-        in: path
-        required: true
-        schema:
-          type: string
-        description: POS identifier to delete
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+          description: POS identifier to delete
       responses:
         '200':
           description: POS deleted
@@ -282,15 +449,15 @@ paths:
       summary: Get claim details
       description: Returns full details of a post-sale claim including status, stage, and players.
       tags:
-      - Claims
+        - Claims
       security:
-      - bearerAuth: []
+        - bearerAuth: []
       parameters:
-      - name: claim_id
-        in: path
-        required: true
-        schema:
-          type: integer
+        - name: claim_id
+          in: path
+          required: true
+          schema:
+            type: integer
       responses:
         '200':
           description: Claim found
@@ -307,47 +474,47 @@ paths:
       operationId: searchClaims
       summary: Search claims
       tags:
-      - Claims
+        - Claims
       security:
-      - bearerAuth: []
+        - bearerAuth: []
       parameters:
-      - name: id
-        in: query
-        schema:
-          type: integer
-      - name: type
-        in: query
-        schema:
-          type: string
-          enum:
-          - mediations
-          - claims
-      - name: stage
-        in: query
-        schema:
-          type: string
-          enum:
-          - claim
-          - dispute
-          - resolution
-      - name: status
-        in: query
-        schema:
-          type: string
-          enum:
-          - opened
-          - closed
-          - cancelled
-      - name: limit
-        in: query
-        schema:
-          type: integer
-          default: 30
-      - name: offset
-        in: query
-        schema:
-          type: integer
-          default: 0
+        - name: id
+          in: query
+          schema:
+            type: integer
+        - name: type
+          in: query
+          schema:
+            type: string
+            enum:
+              - mediations
+              - claims
+        - name: stage
+          in: query
+          schema:
+            type: string
+            enum:
+              - claim
+              - dispute
+              - resolution
+        - name: status
+          in: query
+          schema:
+            type: string
+            enum:
+              - opened
+              - closed
+              - cancelled
+        - name: limit
+          in: query
+          schema:
+            type: integer
+            default: 30
+        - name: offset
+          in: query
+          schema:
+            type: integer
+            default: 0
       responses:
         '200':
           description: Claims search results
@@ -363,15 +530,15 @@ paths:
       summary: Get claim reason
       description: Returns the description and metadata for a specific claim reason code.
       tags:
-      - Claims
+        - Claims
       security:
-      - bearerAuth: []
+        - bearerAuth: []
       parameters:
-      - name: reason_id
-        in: path
-        required: true
-        schema:
-          type: string
+        - name: reason_id
+          in: path
+          required: true
+          schema:
+            type: string
       responses:
         '200':
           description: Reason found
@@ -386,15 +553,15 @@ paths:
       operationId: getClaimHistory
       summary: Get claim status history
       tags:
-      - Claims
+        - Claims
       security:
-      - bearerAuth: []
+        - bearerAuth: []
       parameters:
-      - name: claim_id
-        in: path
-        required: true
-        schema:
-          type: integer
+        - name: claim_id
+          in: path
+          required: true
+          schema:
+            type: integer
       responses:
         '200':
           description: History entries
@@ -409,15 +576,15 @@ paths:
       operationId: getClaimEvidence
       summary: Get claim evidence
       tags:
-      - Claims
+        - Claims
       security:
-      - bearerAuth: []
+        - bearerAuth: []
       parameters:
-      - name: claim_id
-        in: path
-        required: true
-        schema:
-          type: integer
+        - name: claim_id
+          in: path
+          required: true
+          schema:
+            type: integer
       responses:
         '200':
           description: Evidence list
@@ -432,15 +599,15 @@ paths:
       operationId: getClaimMessages
       summary: Get claim messages
       tags:
-      - Claim Messages
+        - Claim Messages
       security:
-      - bearerAuth: []
+        - bearerAuth: []
       parameters:
-      - name: claim_id
-        in: path
-        required: true
-        schema:
-          type: integer
+        - name: claim_id
+          in: path
+          required: true
+          schema:
+            type: integer
       responses:
         '200':
           description: Message thread
@@ -456,20 +623,20 @@ paths:
       summary: Send a message in a claim
       description: Sends a text message (with optional attachments) in the claim thread.
       tags:
-      - Claim Messages
+        - Claim Messages
       security:
-      - bearerAuth: []
+        - bearerAuth: []
       parameters:
-      - name: claim_id
-        in: path
-        required: true
-        schema:
-          type: integer
-      - name: application_id
-        in: query
-        required: false
-        schema:
-          type: string
+        - name: claim_id
+          in: path
+          required: true
+          schema:
+            type: integer
+        - name: application_id
+          in: query
+          required: false
+          schema:
+            type: string
       requestBody:
         required: true
         content:
@@ -491,15 +658,15 @@ paths:
       summary: Attach a file to a claim message
       description: 'Uploads and attaches a file (image, PDF) to a claim. Supported formats: JPEG, PNG, PDF. Max size: 10 MB.'
       tags:
-      - Claim Messages
+        - Claim Messages
       security:
-      - bearerAuth: []
+        - bearerAuth: []
       parameters:
-      - name: claim_id
-        in: path
-        required: true
-        schema:
-          type: integer
+        - name: claim_id
+          in: path
+          required: true
+          schema:
+            type: integer
       requestBody:
         required: true
         content:
@@ -507,7 +674,7 @@ paths:
             schema:
               type: object
               required:
-              - file
+                - file
               properties:
                 file:
                   type: string
@@ -534,20 +701,20 @@ paths:
       operationId: getClaimFile
       summary: Get attached file metadata
       tags:
-      - Claim Messages
+        - Claim Messages
       security:
-      - bearerAuth: []
+        - bearerAuth: []
       parameters:
-      - name: claim_id
-        in: path
-        required: true
-        schema:
-          type: integer
-      - name: fileName
-        in: path
-        required: true
-        schema:
-          type: string
+        - name: claim_id
+          in: path
+          required: true
+          schema:
+            type: integer
+        - name: fileName
+          in: path
+          required: true
+          schema:
+            type: string
       responses:
         '200':
           description: File metadata
@@ -569,20 +736,20 @@ paths:
       operationId: downloadClaimFile
       summary: Download an attached file
       tags:
-      - Claim Messages
+        - Claim Messages
       security:
-      - bearerAuth: []
+        - bearerAuth: []
       parameters:
-      - name: claim_id
-        in: path
-        required: true
-        schema:
-          type: integer
-      - name: fileName
-        in: path
-        required: true
-        schema:
-          type: string
+        - name: claim_id
+          in: path
+          required: true
+          schema:
+            type: integer
+        - name: fileName
+          in: path
+          required: true
+          schema:
+            type: string
       responses:
         '200':
           description: File content
@@ -599,15 +766,15 @@ paths:
       summary: Request claim mediation
       description: Escalates a claim to mediation, requesting MP to intervene in the dispute.
       tags:
-      - Claim Resolutions
+        - Claim Resolutions
       security:
-      - bearerAuth: []
+        - bearerAuth: []
       parameters:
-      - name: claim_id
-        in: path
-        required: true
-        schema:
-          type: integer
+        - name: claim_id
+          in: path
+          required: true
+          schema:
+            type: integer
       responses:
         '200':
           description: Mediation requested
@@ -621,15 +788,15 @@ paths:
       summary: Get expected mediation resolutions
       description: Returns the possible resolution options for a claim at the mediation stage.
       tags:
-      - Claim Resolutions
+        - Claim Resolutions
       security:
-      - bearerAuth: []
+        - bearerAuth: []
       parameters:
-      - name: claim_id
-        in: path
-        required: true
-        schema:
-          type: integer
+        - name: claim_id
+          in: path
+          required: true
+          schema:
+            type: integer
       responses:
         '200':
           description: Expected resolutions
@@ -643,18 +810,17 @@ paths:
     post:
       operationId: uploadShippingEvidence
       summary: Upload shipping evidence
-      description: Uploads shipping evidence (tracking code, proof of delivery) to support the seller's case in a claim. Accepted
-        as part of the claims resolution process.
+      description: Uploads shipping evidence (tracking code, proof of delivery) to support the seller's case in a claim. Accepted as part of the claims resolution process.
       tags:
-      - Claim Shipping
+        - Claim Shipping
       security:
-      - bearerAuth: []
+        - bearerAuth: []
       parameters:
-      - name: claim_id
-        in: path
-        required: true
-        schema:
-          type: integer
+        - name: claim_id
+          in: path
+          required: true
+          schema:
+            type: integer
       requestBody:
         required: true
         content:
@@ -665,8 +831,8 @@ paths:
                 type:
                   type: string
                   enum:
-                  - tracking_code
-                  - proof_of_delivery
+                    - tracking_code
+                    - proof_of_delivery
                 value:
                   type: string
                   description: Tracking code or delivery confirmation reference
@@ -690,8 +856,7 @@ components:
       description: Public key for client-side card tokenization via MercadoPago.js only. Never use for server-side calls.
     mercadopagoOAuth:
       type: oauth2
-      description: OAuth 2.0 authorization_code flow for marketplace on-behalf-of and Wallet Connect integrations. For client_credentials
-        and refresh_token, use POST /oauth/token directly with the appropriate grant_type.
+      description: OAuth 2.0 authorization_code flow for marketplace on-behalf-of and Wallet Connect integrations. For client_credentials and refresh_token, use POST /oauth/token directly with the appropriate grant_type.
       flows:
         authorizationCode:
           authorizationUrl: https://auth.mercadopago.com/authorization
@@ -758,22 +923,22 @@ components:
         type:
           type: string
           enum:
-          - mediations
-          - claims
+            - mediations
+            - claims
           description: mediations — buyer-initiated dispute requiring MP mediation; claims — seller-initiated claim
         stage:
           type: string
           enum:
-          - claim
-          - dispute
-          - resolution
+            - claim
+            - dispute
+            - resolution
           description: Current stage in the dispute lifecycle
         status:
           type: string
           enum:
-          - opened
-          - closed
-          - cancelled
+            - opened
+            - closed
+            - cancelled
         date_created:
           type: string
           format: date-time
@@ -783,9 +948,9 @@ components:
         resource:
           type: string
           enum:
-          - payment
-          - shipment
-          - order
+            - payment
+            - shipment
+            - order
           description: Resource type the claim is about
         reason_id:
           type: string
@@ -799,8 +964,8 @@ components:
               role:
                 type: string
                 enum:
-                - complainant
-                - respondent
+                  - complainant
+                  - respondent
               user_id:
                 type: integer
               available_actions:
@@ -824,9 +989,9 @@ components:
             role:
               type: string
               enum:
-              - complainant
-              - respondent
-              - mediator
+                - complainant
+                - respondent
+                - mediator
         message:
           type: string
           description: Text content of the message
@@ -852,8 +1017,8 @@ components:
         type:
           type: string
           enum:
-          - mediations
-          - claims
+            - mediations
+            - claims
     ClaimSearchResult:
       type: object
       properties:
@@ -876,10 +1041,10 @@ components:
         changed_by:
           type: string
           enum:
-          - buyer
-          - seller
-          - system
-          - mediator
+            - buyer
+            - seller
+            - system
+            - mediator
     ClaimEvidence:
       type: object
       properties:
@@ -888,10 +1053,10 @@ components:
         type:
           type: string
           enum:
-          - tracking_code
-          - photo
-          - invoice
-          - other
+            - tracking_code
+            - photo
+            - invoice
+            - other
         date_created:
           type: string
           format: date-time
@@ -904,9 +1069,9 @@ components:
         type:
           type: string
           enum:
-          - refund
-          - return
-          - partial_refund
+            - refund
+            - return
+            - partial_refund
         amount:
           type: number
           format: float
@@ -915,7 +1080,7 @@ components:
     SendMessageRequest:
       type: object
       required:
-      - message
+        - message
       properties:
         message:
           type: string
@@ -929,8 +1094,8 @@ components:
     POSRequest:
       type: object
       required:
-      - name
-      - store_id
+        - name
+        - store_id
       properties:
         name:
           type: string
@@ -957,24 +1122,24 @@ components:
           description: Webhook URL for this specific POS
     POS:
       allOf:
-      - $ref: '#/components/schemas/POSRequest'
-      - type: object
-        properties:
-          id:
-            type: string
-          qr_code:
-            type: string
-            description: QR code data string for this POS
-          qr_code_image:
-            type: string
-            format: uri
-            description: URL of QR code image
-          date_created:
-            type: string
-            format: date-time
-          date_last_updated:
-            type: string
-            format: date-time
+        - $ref: '#/components/schemas/POSRequest'
+        - type: object
+          properties:
+            id:
+              type: string
+            qr_code:
+              type: string
+              description: QR code data string for this POS
+            qr_code_image:
+              type: string
+              format: uri
+              description: URL of QR code image
+            date_created:
+              type: string
+              format: date-time
+            date_last_updated:
+              type: string
+              format: date-time
     Pagination:
       type: object
       description: Pagination metadata returned in list/search responses

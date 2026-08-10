@@ -302,109 +302,82 @@ tags:
       - MLM
       - MLC
 paths:
-  /oauth/token:
+  /v1/payouts:
     post:
-      operationId: createOAuthToken
-      summary: Create OAuth token
-      description: |-
-        Exchanges authorization codes for access tokens, refreshes expired tokens, or requests client credentials tokens for machine-to-machine flows.
-        **Security notes:** - The `state` parameter is mandatory for authorization_code flows to prevent CSRF. - Store refresh tokens in server-side encrypted storage — never in localStorage. - Rotate `client_secret` regularly and store in a secrets manager.
+      operationId: createPayout
+      summary: Create a batch of payout transactions
       tags:
-        - OAuth
-      security: []
+        - Payouts
+      security:
+        - bearerAuth: []
       requestBody:
         required: true
         content:
           application/json:
             schema:
               type: object
-              required:
-                - client_id
-                - client_secret
-                - grant_type
               properties:
-                client_id:
+                external_reference:
                   type: string
-                  description: Your application's client ID
-                client_secret:
-                  type: string
-                  description: Your application's client secret. Never expose in client-side code. Store in a secrets manager.
-                grant_type:
-                  type: string
-                  enum:
-                    - authorization_code
-                    - refresh_token
-                    - client_credentials
-                  description: OAuth 2.0 grant type
-                code:
-                  type: string
-                  description: Authorization code from the OAuth redirect (authorization_code flow)
-                redirect_uri:
-                  type: string
-                  format: uri
-                  description: Must match the registered redirect URI exactly
-                code_verifier:
-                  type: string
-                  description: PKCE code verifier (recommended for mobile/SPA)
-                refresh_token:
-                  type: string
-                  description: Refresh token for the refresh_token grant
-            examples:
-              authorization_code:
-                summary: Exchange authorization code for tokens
-                value:
-                  client_id: '1234567890'
-                  client_secret: YOUR_CLIENT_SECRET
-                  grant_type: authorization_code
-                  code: TG-abc123def456
-                  redirect_uri: https://myapp.com/oauth/callback
-              refresh_token:
-                summary: Refresh an expired access token
-                value:
-                  client_id: '1234567890'
-                  client_secret: YOUR_CLIENT_SECRET
-                  grant_type: refresh_token
-                  refresh_token: TG-refresh-token-here
+                transactions:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      amount:
+                        type: number
+                        format: float
+                      currency_id:
+                        $ref: '#/components/schemas/CurrencyId'
+                      payment_method_id:
+                        type: string
+                      beneficiary:
+                        type: object
+      responses:
+        '201':
+          description: Payout batch created
+      description: '**Available in:** Argentina, Mexico (MLA, MLM)'
+  /v1/payouts/{payout_id}/transactions:
+    get:
+      operationId: listPayoutTransactions
+      summary: List payout transactions
+      tags:
+        - Payouts
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: payout_id
+          in: path
+          required: true
+          schema:
+            type: string
       responses:
         '200':
-          description: Tokens issued
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  access_token:
-                    type: string
-                    description: Bearer access token for API calls
-                    example: APP_USR-1234-mmdd-abcd-xxxxxxxxxxxx
-                  token_type:
-                    type: string
-                    example: bearer
-                  expires_in:
-                    type: integer
-                    description: Access token TTL in seconds
-                    example: 15552000
-                  scope:
-                    type: string
-                    example: offline_access read write
-                  refresh_token:
-                    type: string
-                    description: Long-lived token to refresh access_token
-                  user_id:
-                    type: integer
-                    description: MP user ID of the authorized user
-                  public_key:
-                    type: string
-                    description: Public key for client-side card tokenization
-                  live_mode:
-                    type: boolean
-                    description: true = production token.
-        '400':
-          $ref: '#/components/responses/BadRequest'
-        '401':
-          $ref: '#/components/responses/Unauthorized'
-        '429':
-          $ref: '#/components/responses/TooManyRequests'
+          description: Transaction list
+      description: '**Available in:** Argentina, Mexico (MLA, MLM)'
+  /v1/payouts/{payout_id}/transactions/{transaction_id}/cancel:
+    put:
+      operationId: cancelPayoutTransaction
+      summary: Cancel a payout transaction
+      tags:
+        - Payouts
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: payout_id
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: transaction_id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Transaction cancelled
+      description: '**Available in:** Argentina, Mexico (MLA, MLM)'
 components:
   securitySchemes:
     bearerAuth:
@@ -473,4 +446,25 @@ components:
             status: 429
             error: too_many_requests
             message: Rate limit exceeded. Retry after the indicated number of seconds.
-  schemas: {}
+  schemas:
+    CurrencyId:
+      type: string
+      description: ISO 4217 currency code for the applicable site
+      enum:
+        - ARS
+        - BRL
+        - MXN
+        - CLP
+        - COP
+        - PEN
+        - UYU
+        - BOB
+        - PYG
+        - USD
+        - CRC
+        - DOP
+        - HNL
+        - NIO
+        - GTQ
+        - VES
+      example: BRL

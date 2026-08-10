@@ -11,139 +11,308 @@ info:
     url: https://www.apache.org/licenses/LICENSE-2.0
   version: 1.0.0
 servers:
-- url: https://api.mercadopago.com
-  description: Production
+  - url: https://api.mercadopago.com
+    description: Production
 security:
-- bearerAuth: []
+  - bearerAuth: []
 tags:
-- name: OAuth
-  description: Authorization flows for marketplace on-behalf-of and Wallet Connect
-  x-mp-sites: &id001
-  - MLA
-  - MLB
-  - MLM
-  - MLC
-  - MCO
-  - MPE
-  - MLU
-- name: Preferences
-  description: Checkout Pro — redirect-based hosted checkout via Preferences
-  x-mp-sites: *id001
-- name: Payments
-  description: Create and manage payment transactions
-  x-mp-sites: *id001
-- name: Orders
-  description: Checkout API via Orders — recommended for new custom checkout integrations
-  x-mp-sites: *id001
-- name: Merchant Orders
-  description: Order containers that group payments for a single purchase
-  x-mp-sites: *id001
-- name: Customers
-  description: Customer profiles and stored payment methods
-  x-mp-sites: *id001
-- name: Cards
-  description: Saved cards and card tokenization
-  x-mp-sites: *id001
-- name: Addresses
-  description: Customer shipping and billing addresses
-  x-mp-sites: *id001
-- name: Payment Methods
-  description: Available payment methods and installment plans per country
-  x-mp-sites: *id001
-- name: Identification Types
-  description: Country-specific identity document type catalog
-  x-mp-sites: *id001
-- name: Cancellations & Refunds
-  description: Cancel payments and create full or partial refunds
-  x-mp-sites: *id001
-- name: Chargebacks
-  description: Chargeback dispute management
-  x-mp-sites: *id001
-- name: Subscriptions
-  description: Recurring payment subscriptions
-  x-mp-sites: *id001
-- name: Plans
-  description: Subscription billing plans
-  x-mp-sites: *id001
-- name: Invoices
-  description: Subscription billing invoices
-  x-mp-sites: *id001
-- name: Wallet Connect
-  description: OAuth-based wallet agreement flows for Wallet Connect
-  x-mp-sites:
-  - MLA
-  - MLB
-  - MLM
-- name: Stores
-  description: Physical store locations
-  x-mp-sites: *id001
-- name: POS
-  description: Point of sale device management
-  x-mp-sites: *id001
-- name: Terminals
-  description: Point hardware terminal management and print actions
-  x-mp-sites:
-  - MLA
-  - MLB
-  - MLC
-  - MLM
-- name: Point Deprecated
-  description: Deprecated Point integration APIs — use Terminals and Point Orders instead
-  x-mp-sites:
-  - MLA
-  - MLB
-  - MLM
-- name: QR Orders
-  description: In-store payment orders associated with QR codes
-  x-mp-sites:
-  - MLA
-  - MLB
-  - MLC
-  - MCO
-  - MPE
-  - MLU
-- name: QR Integrator
-  description: Integrator configuration for QR in-store
-  x-mp-sites: *id001
-- name: QR Deprecated
-  description: Deprecated in-store QR order endpoints (V1, V2, Dynamic QR)
-  x-mp-sites: *id001
-- name: Claims
-  description: Post-sale claim details and search
-  x-mp-sites: *id001
-- name: Claim Messages
-  description: Messages and file attachments within a claim
-  x-mp-sites: *id001
-- name: Claim Resolutions
-  description: Mediation requests and expected resolutions
-  x-mp-sites: *id001
-- name: Claim Shipping
-  description: Upload shipping evidence to support a claim
-  x-mp-sites: *id001
-- name: Releases Report
-  description: Generate and schedule releases (settlement) reports
-  x-mp-sites: *id001
-- name: Settlements Report
-  description: Generate and schedule all-transactions reports
-  x-mp-sites: *id001
-- name: Payouts
-  description: Bank transfer and Pix payouts
-  x-mp-sites:
-  - MLA
-  - MLB
-  - MLM
-  - MLC
+  - name: OAuth
+    description: Authorization flows for marketplace on-behalf-of and Wallet Connect
+    x-mp-sites:
+      - MLA
+      - MLB
+      - MLM
+      - MLC
+      - MCO
+      - MPE
+      - MLU
+  - name: Preferences
+    description: Checkout Pro — redirect-based hosted checkout via Preferences
+    x-mp-sites:
+      - MLA
+      - MLB
+      - MLM
+      - MLC
+      - MCO
+      - MPE
+      - MLU
+  - name: Payments
+    description: Create and manage payment transactions
+    x-mp-sites:
+      - MLA
+      - MLB
+      - MLM
+      - MLC
+      - MCO
+      - MPE
+      - MLU
+  - name: Orders
+    description: Checkout API via Orders — recommended for new custom checkout integrations
+    x-mp-sites:
+      - MLA
+      - MLB
+      - MLM
+      - MLC
+      - MCO
+      - MPE
+      - MLU
+  - name: Merchant Orders
+    description: Order containers that group payments for a single purchase
+    x-mp-sites:
+      - MLA
+      - MLB
+      - MLM
+      - MLC
+      - MCO
+      - MPE
+      - MLU
+  - name: Customers
+    description: Customer profiles and stored payment methods
+    x-mp-sites:
+      - MLA
+      - MLB
+      - MLM
+      - MLC
+      - MCO
+      - MPE
+      - MLU
+  - name: Cards
+    description: Saved cards and card tokenization
+    x-mp-sites:
+      - MLA
+      - MLB
+      - MLM
+      - MLC
+      - MCO
+      - MPE
+      - MLU
+  - name: Addresses
+    description: Customer shipping and billing addresses
+    x-mp-sites:
+      - MLA
+      - MLB
+      - MLM
+      - MLC
+      - MCO
+      - MPE
+      - MLU
+  - name: Payment Methods
+    description: Available payment methods and installment plans per country
+    x-mp-sites:
+      - MLA
+      - MLB
+      - MLM
+      - MLC
+      - MCO
+      - MPE
+      - MLU
+  - name: Identification Types
+    description: Country-specific identity document type catalog
+    x-mp-sites:
+      - MLA
+      - MLB
+      - MLM
+      - MLC
+      - MCO
+      - MPE
+      - MLU
+  - name: Cancellations & Refunds
+    description: Cancel payments and create full or partial refunds
+    x-mp-sites:
+      - MLA
+      - MLB
+      - MLM
+      - MLC
+      - MCO
+      - MPE
+      - MLU
+  - name: Chargebacks
+    description: Chargeback dispute management
+    x-mp-sites:
+      - MLA
+      - MLB
+      - MLM
+      - MLC
+      - MCO
+      - MPE
+      - MLU
+  - name: Subscriptions
+    description: Recurring payment subscriptions
+    x-mp-sites:
+      - MLA
+      - MLB
+      - MLM
+      - MLC
+      - MCO
+      - MPE
+      - MLU
+  - name: Plans
+    description: Subscription billing plans
+    x-mp-sites:
+      - MLA
+      - MLB
+      - MLM
+      - MLC
+      - MCO
+      - MPE
+      - MLU
+  - name: Invoices
+    description: Subscription billing invoices
+    x-mp-sites:
+      - MLA
+      - MLB
+      - MLM
+      - MLC
+      - MCO
+      - MPE
+      - MLU
+  - name: Wallet Connect
+    description: OAuth-based wallet agreement flows for Wallet Connect
+    x-mp-sites:
+      - MLA
+      - MLB
+      - MLM
+  - name: Stores
+    description: Physical store locations
+    x-mp-sites:
+      - MLA
+      - MLB
+      - MLM
+      - MLC
+      - MCO
+      - MPE
+      - MLU
+  - name: POS
+    description: Point of sale device management
+    x-mp-sites:
+      - MLA
+      - MLB
+      - MLM
+      - MLC
+      - MCO
+      - MPE
+      - MLU
+  - name: Terminals
+    description: Point hardware terminal management and print actions
+    x-mp-sites:
+      - MLA
+      - MLB
+      - MLC
+      - MLM
+  - name: Point Deprecated
+    description: Deprecated Point integration APIs — use Terminals and Point Orders instead
+    x-mp-sites:
+      - MLA
+      - MLB
+      - MLM
+  - name: QR Orders
+    description: In-store payment orders associated with QR codes
+    x-mp-sites:
+      - MLA
+      - MLB
+      - MLC
+      - MCO
+      - MPE
+      - MLU
+  - name: QR Integrator
+    description: Integrator configuration for QR in-store
+    x-mp-sites:
+      - MLA
+      - MLB
+      - MLM
+      - MLC
+      - MCO
+      - MPE
+      - MLU
+  - name: QR Deprecated
+    description: Deprecated in-store QR order endpoints (V1, V2, Dynamic QR)
+    x-mp-sites:
+      - MLA
+      - MLB
+      - MLM
+      - MLC
+      - MCO
+      - MPE
+      - MLU
+  - name: Claims
+    description: Post-sale claim details and search
+    x-mp-sites:
+      - MLA
+      - MLB
+      - MLM
+      - MLC
+      - MCO
+      - MPE
+      - MLU
+  - name: Claim Messages
+    description: Messages and file attachments within a claim
+    x-mp-sites:
+      - MLA
+      - MLB
+      - MLM
+      - MLC
+      - MCO
+      - MPE
+      - MLU
+  - name: Claim Resolutions
+    description: Mediation requests and expected resolutions
+    x-mp-sites:
+      - MLA
+      - MLB
+      - MLM
+      - MLC
+      - MCO
+      - MPE
+      - MLU
+  - name: Claim Shipping
+    description: Upload shipping evidence to support a claim
+    x-mp-sites:
+      - MLA
+      - MLB
+      - MLM
+      - MLC
+      - MCO
+      - MPE
+      - MLU
+  - name: Releases Report
+    description: Generate and schedule releases (settlement) reports
+    x-mp-sites:
+      - MLA
+      - MLB
+      - MLM
+      - MLC
+      - MCO
+      - MPE
+      - MLU
+  - name: Settlements Report
+    description: Generate and schedule all-transactions reports
+    x-mp-sites:
+      - MLA
+      - MLB
+      - MLM
+      - MLC
+      - MCO
+      - MPE
+      - MLU
+  - name: Payouts
+    description: Bank transfer and Pix payouts
+    x-mp-sites:
+      - MLA
+      - MLB
+      - MLM
+      - MLC
 paths:
   /checkout/preferences:
     post:
       operationId: createPreference
       summary: Create a preference
-      description: "Creates a Checkout Pro preference. The response contains `init_point` (production) and \n**Webhook events\
-        \ triggered:** payment, merchant_order"
+      description: |-
+        Creates a Checkout Pro preference. The response contains `init_point` (production) and 
+        **Webhook events triggered:** payment, merchant_order
       tags:
-      - Preferences
+        - Preferences
       security:
-      - bearerAuth: []
+        - bearerAuth: []
       requestBody:
         required: true
         content:
@@ -155,9 +324,9 @@ paths:
                 summary: Simple one-item preference
                 value:
                   items:
-                  - title: Premium Plan
-                    quantity: 1
-                    unit_price: 99.9
+                    - title: Premium Plan
+                      quantity: 1
+                      unit_price: 99.9
                   payer:
                     email: customer@example.com
                   back_urls:
@@ -166,9 +335,15 @@ paths:
                     pending: https://mystore.com/pending
                   auto_return: approved
       responses:
+        '200':
+          description: Preference created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Preference'
         '201':
           description: Preference created
-          content: &id002
+          content:
             application/json:
               schema:
                 $ref: '#/components/schemas/Preference'
@@ -176,23 +351,20 @@ paths:
           $ref: '#/components/responses/BadRequest'
         '401':
           $ref: '#/components/responses/Unauthorized'
-        '200':
-          description: Preference created
-          content: *id002
   /checkout/preferences/{id}:
     get:
       operationId: getPreference
       summary: Get preference by ID
       tags:
-      - Preferences
+        - Preferences
       security:
-      - bearerAuth: []
+        - bearerAuth: []
       parameters:
-      - name: id
-        in: path
-        required: true
-        schema:
-          type: string
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
       responses:
         '200':
           description: Preference found
@@ -200,23 +372,23 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Preference'
-        '404':
-          $ref: '#/components/responses/NotFound'
         '400':
           $ref: '#/components/responses/BadRequest'
+        '404':
+          $ref: '#/components/responses/NotFound'
     put:
       operationId: updatePreference
       summary: Update a preference
       tags:
-      - Preferences
+        - Preferences
       security:
-      - bearerAuth: []
+        - bearerAuth: []
       parameters:
-      - name: id
-        in: path
-        required: true
-        schema:
-          type: string
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
       requestBody:
         required: true
         content:
@@ -237,36 +409,36 @@ paths:
       operationId: searchPreferences
       summary: Search preferences
       tags:
-      - Preferences
+        - Preferences
       security:
-      - bearerAuth: []
+        - bearerAuth: []
       parameters:
-      - name: external_reference
-        in: query
-        schema:
-          type: string
-      - name: marketplace
-        in: query
-        schema:
-          type: string
-      - name: site_id
-        in: query
-        schema:
-          type: string
-      - name: sponsor_id
-        in: query
-        schema:
-          type: integer
-      - name: limit
-        in: query
-        schema:
-          type: integer
-          default: 30
-      - name: offset
-        in: query
-        schema:
-          type: integer
-          default: 0
+        - name: external_reference
+          in: query
+          schema:
+            type: string
+        - name: marketplace
+          in: query
+          schema:
+            type: string
+        - name: site_id
+          in: query
+          schema:
+            type: string
+        - name: sponsor_id
+          in: query
+          schema:
+            type: integer
+        - name: limit
+          in: query
+          schema:
+            type: integer
+            default: 30
+        - name: offset
+          in: query
+          schema:
+            type: integer
+            default: 0
       responses:
         '200':
           description: Search results
@@ -345,8 +517,7 @@ components:
       description: Public key for client-side card tokenization via MercadoPago.js only. Never use for server-side calls.
     mercadopagoOAuth:
       type: oauth2
-      description: OAuth 2.0 authorization_code flow for marketplace on-behalf-of and Wallet Connect integrations. For client_credentials
-        and refresh_token, use POST /oauth/token directly with the appropriate grant_type.
+      description: OAuth 2.0 authorization_code flow for marketplace on-behalf-of and Wallet Connect integrations. For client_credentials and refresh_token, use POST /oauth/token directly with the appropriate grant_type.
       flows:
         authorizationCode:
           authorizationUrl: https://auth.mercadopago.com/authorization
@@ -405,10 +576,8 @@ components:
     PreferenceRequest:
       type: object
       required:
-      - items
-      description: Request body to create a Checkout Pro preference. The preference generates a hosted checkout URL (init_point)
-        where the payer is redirected to complete payment on MP's UI. Use this for simple integrations; use Orders API for
-        custom checkout experiences.
+        - items
+      description: Request body to create a Checkout Pro preference. The preference generates a hosted checkout URL (init_point) where the payer is redirected to complete payment on MP's UI. Use this for simple integrations; use Orders API for custom checkout experiences.
       properties:
         items:
           type: array
@@ -439,8 +608,8 @@ components:
         auto_return:
           type: string
           enum:
-          - approved
-          - all
+            - approved
+            - all
           description: approved — auto-redirect to success URL on approved payments; all — auto-redirect for any final status.
         external_reference:
           type: string
@@ -476,9 +645,9 @@ components:
     PreferenceItem:
       type: object
       required:
-      - title
-      - quantity
-      - unit_price
+        - title
+        - quantity
+        - unit_price
       properties:
         id:
           type: string
@@ -554,9 +723,9 @@ components:
         mode:
           type: string
           enum:
-          - custom
-          - me2
-          - not_specified
+            - custom
+            - me2
+            - not_specified
         free_shipping:
           type: boolean
           default: false
@@ -636,22 +805,22 @@ components:
       type: string
       description: ISO 4217 currency code for the applicable site
       enum:
-      - ARS
-      - BRL
-      - MXN
-      - CLP
-      - COP
-      - PEN
-      - UYU
-      - BOB
-      - PYG
-      - USD
-      - CRC
-      - DOP
-      - HNL
-      - NIO
-      - GTQ
-      - VES
+        - ARS
+        - BRL
+        - MXN
+        - CLP
+        - COP
+        - PEN
+        - UYU
+        - BOB
+        - PYG
+        - USD
+        - CRC
+        - DOP
+        - HNL
+        - NIO
+        - GTQ
+        - VES
       example: BRL
     Identification:
       type: object

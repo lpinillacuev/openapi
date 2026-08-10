@@ -302,109 +302,266 @@ tags:
       - MLM
       - MLC
 paths:
-  /oauth/token:
+  /v1/advanced_payments:
     post:
-      operationId: createOAuthToken
-      summary: Create OAuth token
+      operationId: createAdvancedPayment
+      summary: Create an advanced payment
       description: |-
-        Exchanges authorization codes for access tokens, refreshes expired tokens, or requests client credentials tokens for machine-to-machine flows.
-        **Security notes:** - The `state` parameter is mandatory for authorization_code flows to prevent CSRF. - Store refresh tokens in server-side encrypted storage — never in localStorage. - Rotate `client_secret` regularly and store in a secrets manager.
+        Creates a Wallet Connect advanced payment (marketplace split payment).
+
+        **Available in:** Argentina, Brazil, Mexico (MLA, MLB, MLM)
       tags:
-        - OAuth
-      security: []
+        - Wallet Connect
+      parameters:
+        - name: X-Idempotency-Key
+          in: header
+          required: true
+          schema:
+            type: string
+            format: uuid
+        - name: X-Meli-Session-Id
+          in: header
+          required: false
+          schema:
+            type: string
       requestBody:
         required: true
         content:
           application/json:
             schema:
               type: object
-              required:
-                - client_id
-                - client_secret
-                - grant_type
               properties:
-                client_id:
-                  type: string
-                  description: Your application's client ID
-                client_secret:
-                  type: string
-                  description: Your application's client secret. Never expose in client-side code. Store in a secrets manager.
-                grant_type:
-                  type: string
-                  enum:
-                    - authorization_code
-                    - refresh_token
-                    - client_credentials
-                  description: OAuth 2.0 grant type
-                code:
-                  type: string
-                  description: Authorization code from the OAuth redirect (authorization_code flow)
-                redirect_uri:
-                  type: string
-                  format: uri
-                  description: Must match the registered redirect URI exactly
-                code_verifier:
-                  type: string
-                  description: PKCE code verifier (recommended for mobile/SPA)
-                refresh_token:
-                  type: string
-                  description: Refresh token for the refresh_token grant
-            examples:
-              authorization_code:
-                summary: Exchange authorization code for tokens
-                value:
-                  client_id: '1234567890'
-                  client_secret: YOUR_CLIENT_SECRET
-                  grant_type: authorization_code
-                  code: TG-abc123def456
-                  redirect_uri: https://myapp.com/oauth/callback
-              refresh_token:
-                summary: Refresh an expired access token
-                value:
-                  client_id: '1234567890'
-                  client_secret: YOUR_CLIENT_SECRET
-                  grant_type: refresh_token
-                  refresh_token: TG-refresh-token-here
+                wallet_payment:
+                  type: object
+                  properties:
+                    transaction_amount:
+                      type: number
+                      format: float
+                    description:
+                      type: string
+                    external_reference:
+                      type: string
+                    statement_descriptor:
+                      type: string
+                payer:
+                  type: object
+                  properties:
+                    token:
+                      type: string
+                    type_token:
+                      type: string
+                binary_mode:
+                  type: boolean
+                capture:
+                  type: boolean
       responses:
-        '200':
-          description: Tokens issued
+        '201':
+          description: Advanced payment created
           content:
             application/json:
               schema:
                 type: object
                 properties:
-                  access_token:
-                    type: string
-                    description: Bearer access token for API calls
-                    example: APP_USR-1234-mmdd-abcd-xxxxxxxxxxxx
-                  token_type:
-                    type: string
-                    example: bearer
-                  expires_in:
+                  id:
                     type: integer
-                    description: Access token TTL in seconds
-                    example: 15552000
-                  scope:
+                  payments:
+                    type: array
+                    items:
+                      type: object
+                  wallet_payment:
+                    type: object
+                    properties:
+                      transaction_amount:
+                        type: number
+                        format: float
+                      description:
+                        type: string
+                      external_reference:
+                        type: string
+                  disbursements:
+                    type: array
+                    items:
+                      type: object
+                  payer:
+                    type: object
+                    properties:
+                      token:
+                        type: string
+                      type_token:
+                        type: string
+                  site_id:
                     type: string
-                    example: offline_access read write
-                  refresh_token:
-                    type: string
-                    description: Long-lived token to refresh access_token
-                  user_id:
-                    type: integer
-                    description: MP user ID of the authorized user
-                  public_key:
-                    type: string
-                    description: Public key for client-side card tokenization
-                  live_mode:
+                  binary_mode:
                     type: boolean
-                    description: true = production token.
+                  date_created:
+                    type: string
+                    format: date-time
+                  date_last_updated:
+                    type: string
+                    format: date-time
         '400':
           $ref: '#/components/responses/BadRequest'
         '401':
           $ref: '#/components/responses/Unauthorized'
-        '429':
-          $ref: '#/components/responses/TooManyRequests'
+        '500':
+          description: Internal server error
+  /v1/advanced_payments/{advanced_payment_id}:
+    get:
+      operationId: getAdvancedPayment
+      summary: Get an advanced payment
+      description: '**Available in:** Argentina, Brazil, Mexico (MLA, MLB, MLM)'
+      tags:
+        - Wallet Connect
+      parameters:
+        - name: advanced_payment_id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Advanced payment found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: integer
+                  payments:
+                    type: array
+                    items:
+                      type: object
+                  wallet_payment:
+                    type: object
+                    properties:
+                      transaction_amount:
+                        type: number
+                        format: float
+                      description:
+                        type: string
+                      external_reference:
+                        type: string
+                  disbursements:
+                    type: array
+                    items:
+                      type: object
+                  payer:
+                    type: object
+                    properties:
+                      token:
+                        type: string
+                      type_token:
+                        type: string
+                  site_id:
+                    type: string
+                  binary_mode:
+                    type: boolean
+                  date_created:
+                    type: string
+                    format: date-time
+                  date_last_updated:
+                    type: string
+                    format: date-time
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '500':
+          description: Internal server error
+    put:
+      operationId: updateAdvancedPayment
+      summary: Capture or cancel an advanced payment
+      description: |-
+        Capture (capture=true) or cancel (status=cancelled).
+
+        **Available in:** Argentina, Brazil, Mexico (MLA, MLB, MLM)
+      tags:
+        - Wallet Connect
+      parameters:
+        - name: advanced_payment_id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                capture:
+                  type: boolean
+                status:
+                  type: string
+                  enum:
+                    - cancelled
+                wallet_payment:
+                  type: object
+                  properties:
+                    transaction_amount:
+                      type: number
+                      format: float
+                    description:
+                      type: string
+                    external_reference:
+                      type: string
+      responses:
+        '200':
+          description: Advanced payment updated
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: integer
+                  payments:
+                    type: array
+                    items:
+                      type: object
+                  wallet_payment:
+                    type: object
+                    properties:
+                      transaction_amount:
+                        type: number
+                        format: float
+                      description:
+                        type: string
+                      external_reference:
+                        type: string
+                  disbursements:
+                    type: array
+                    items:
+                      type: object
+                  payer:
+                    type: object
+                    properties:
+                      token:
+                        type: string
+                      type_token:
+                        type: string
+                  site_id:
+                    type: string
+                  binary_mode:
+                    type: boolean
+                  date_created:
+                    type: string
+                    format: date-time
+                  date_last_updated:
+                    type: string
+                    format: date-time
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '500':
+          description: Internal server error
 components:
   securitySchemes:
     bearerAuth:

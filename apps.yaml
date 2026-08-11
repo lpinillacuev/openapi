@@ -85,6 +85,8 @@ apps:
     reference:
       enabled: true
       devsite_file: addresses
+      spec_tags:
+        - Addresses
   - tag: Advanced Payments
     product: advanced_payments
     paths:

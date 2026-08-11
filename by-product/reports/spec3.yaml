@@ -302,146 +302,217 @@ tags:
       - MLM
       - MLC
 paths:
-  /users/{user_id}/stores:
+  /v1/account/settlement_report/config:
     post:
-      operationId: createStore
-      summary: Create a store
+      operationId: createSettlementReportConfig
+      summary: Create settlements report configuration
+      description: Creates the configuration for automatic all-transactions (settlements) report generation. Defines columns, schedule frequency, file format, and optional SFTP delivery.
       tags:
-        - Stores
+        - Settlements Report
       security:
         - bearerAuth: []
-      parameters:
-        - name: user_id
-          in: path
-          required: true
-          schema:
-            type: integer
       requestBody:
         required: true
         content:
           application/json:
             schema:
-              type: object
-              required:
-                - name
-              properties:
-                name:
-                  type: string
-                business_hours:
-                  type: object
-                location:
-                  type: object
-                external_id:
-                  type: string
-      responses:
-        '201':
-          description: Store created
-  /users/{user_id}/pos:
-    get:
-      operationId: listPOS
-      summary: List POS devices for a user
-      tags:
-        - POS
-      security:
-        - bearerAuth: []
-      parameters:
-        - name: user_id
-          in: path
-          required: true
-          schema:
-            type: integer
+              $ref: '#/components/schemas/ReportConfig'
       responses:
         '200':
-          description: POS list
-  /users/{user_id}/stores/search:
-    get:
-      operationId: searchStores
-      summary: Search stores
-      tags:
-        - Stores
-      security:
-        - bearerAuth: []
-      parameters:
-        - name: user_id
-          in: path
-          required: true
-          schema:
-            type: integer
-        - name: external_id
-          in: query
-          required: false
-          schema:
-            type: string
-          description: Filter by your external store ID
-      responses:
-        '200':
-          description: Store search results
+          description: Configuration created
           content:
             application/json:
               schema:
-                type: object
-                properties:
-                  paging:
-                    $ref: '#/components/schemas/Pagination'
-                  results:
-                    type: array
-                    items:
-                      $ref: '#/components/schemas/Store'
-  /users/{user_id}/stores/{id}:
+                $ref: '#/components/schemas/ReportConfig'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '429':
+          $ref: '#/components/responses/TooManyRequests'
     put:
-      operationId: updateStore
-      summary: Update a store
+      operationId: updateSettlementReportConfig
+      summary: Update settlements report configuration
       tags:
-        - Stores
+        - Settlements Report
       security:
         - bearerAuth: []
-      parameters:
-        - name: user_id
-          in: path
-          required: true
-          schema:
-            type: integer
-        - name: id
-          in: path
-          required: true
-          schema:
-            type: string
       requestBody:
         required: true
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/StoreRequest'
+              $ref: '#/components/schemas/ReportConfig'
       responses:
         '200':
-          description: Store updated
+          description: Configuration updated
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Store'
+                $ref: '#/components/schemas/ReportConfig'
+    get:
+      operationId: getSettlementReportConfig
+      summary: Get settlements report configuration
+      tags:
+        - Settlements Report
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: Current configuration
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ReportConfig'
+  /v1/account/settlement_report:
+    post:
+      operationId: createSettlementReport
+      summary: Create a settlements report
+      description: Generates a one-time all-transactions report for the specified date range. Returns a task ID to poll for completion.
+      tags:
+        - Settlements Report
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ReportRequest'
+      responses:
+        '202':
+          description: Report generation started
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ReportTask'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '429':
+          $ref: '#/components/responses/TooManyRequests'
+    get:
+      operationId: getSettlementReport
+      summary: Get settlements report list
+      tags:
+        - Settlements Report
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: Report list
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ReportListResult'
+  /v1/account/settlement_report/search:
+    get:
+      operationId: searchSettlementReports
+      summary: Search settlements reports
+      tags:
+        - Settlements Report
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: begin_date
+          in: query
+          schema:
+            type: string
+            format: date-time
+        - name: end_date
+          in: query
+          schema:
+            type: string
+            format: date-time
+      responses:
+        '200':
+          description: Matching reports
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ReportListResult'
+  /v1/account/settlement_report/task/{task_id}:
+    get:
+      operationId: getSettlementReportTask
+      summary: Get settlements report task status
+      tags:
+        - Settlements Report
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: task_id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Task status
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ReportTask'
         '404':
           $ref: '#/components/responses/NotFound'
-    delete:
-      operationId: deleteStore
-      summary: Delete a store
+  /v1/account/settlement_report/schedule:
+    post:
+      operationId: enableSettlementReportSchedule
+      summary: Enable automatic settlements report generation
       tags:
-        - Stores
+        - Settlements Report
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: Schedule enabled
+    delete:
+      operationId: disableSettlementReportSchedule
+      summary: Disable automatic settlements report generation
+      tags:
+        - Settlements Report
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: Schedule disabled
+  /v1/account/settlement_report/list:
+    get:
+      operationId: listScheduledSettlementReports
+      summary: List scheduled settlements reports
+      tags:
+        - Settlements Report
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: Scheduled report list
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ReportListResult'
+  /v1/account/settlement_report/{file_name}:
+    get:
+      operationId: downloadSettlementReport
+      summary: Download a settlements report file
+      tags:
+        - Settlements Report
       security:
         - bearerAuth: []
       parameters:
-        - name: user_id
-          in: path
-          required: true
-          schema:
-            type: integer
-        - name: id
+        - name: file_name
           in: path
           required: true
           schema:
             type: string
       responses:
         '200':
-          description: Store deleted
+          description: Report file
+          content:
+            text/csv:
+              schema:
+                type: string
+                format: binary
         '404':
           $ref: '#/components/responses/NotFound'
 components:
@@ -513,65 +584,6 @@ components:
             error: too_many_requests
             message: Rate limit exceeded. Retry after the indicated number of seconds.
   schemas:
-    StoreRequest:
-      type: object
-      required:
-        - name
-      properties:
-        name:
-          type: string
-          description: Store display name
-          example: Main Branch — Paulista
-        external_id:
-          type: string
-          description: Your internal store identifier
-        business_hours:
-          type: object
-          properties:
-            monday:
-              type: array
-              items:
-                type: object
-                properties:
-                  open:
-                    type: string
-                    example: '09:00'
-                  close:
-                    type: string
-                    example: '18:00'
-        location:
-          type: object
-          properties:
-            street_number:
-              type: string
-            street_name:
-              type: string
-            city_name:
-              type: string
-            state_name:
-              type: string
-            zip_code:
-              type: string
-            latitude:
-              type: number
-              format: float
-            longitude:
-              type: number
-              format: float
-    Store:
-      allOf:
-        - $ref: '#/components/schemas/StoreRequest'
-        - type: object
-          properties:
-            id:
-              type: string
-              description: Store unique identifier
-            date_created:
-              type: string
-              format: date-time
-            date_last_updated:
-              type: string
-              format: date-time
     Pagination:
       type: object
       description: Pagination metadata returned in list/search responses
@@ -588,3 +600,152 @@ components:
           type: integer
           description: Offset of the current page
           example: 0
+    ReportConfig:
+      type: object
+      description: Configuration for scheduled report generation
+      properties:
+        columns:
+          type: array
+          description: Columns to include in the report
+          items:
+            type: object
+            properties:
+              key:
+                type: string
+                example: DATE
+              alias:
+                type: string
+                example: transaction_date
+        file_name_prefix:
+          type: string
+          description: Prefix for generated report filenames
+          example: releases_report
+        frequency:
+          type: object
+          description: Schedule frequency for automatic generation
+          properties:
+            hour:
+              type: integer
+              minimum: 0
+              maximum: 23
+            type:
+              type: string
+              enum:
+                - daily
+                - weekly
+                - monthly
+        sftp_info:
+          type: object
+          description: SFTP destination for automatic delivery (optional)
+          properties:
+            server:
+              type: string
+            port:
+              type: integer
+            username:
+              type: string
+            remote_dir:
+              type: string
+        separator:
+          type: string
+          description: CSV column separator character
+          enum:
+            - ','
+            - ;
+            - ''
+          default: ','
+        display_timezone:
+          type: string
+          description: Timezone for date columns (IANA format)
+          example: America/Sao_Paulo
+        notification_email_list:
+          type: array
+          description: Email addresses to notify when report is ready
+          items:
+            type: string
+            format: email
+    ReportRequest:
+      type: object
+      required:
+        - begin_date
+        - end_date
+      description: Request body to generate a one-time report
+      properties:
+        begin_date:
+          type: string
+          format: date-time
+          description: Start of the reporting period (ISO 8601)
+          example: '2024-01-01T00:00:00Z'
+        end_date:
+          type: string
+          format: date-time
+          description: End of the reporting period (ISO 8601)
+          example: '2024-01-31T23:59:59Z'
+    ReportTask:
+      type: object
+      description: Status of a report generation task
+      properties:
+        id:
+          type: string
+          description: Task unique identifier
+          example: task_abc123
+        status:
+          type: string
+          enum:
+            - pending
+            - in_progress
+            - done
+            - failed
+          description: pending — queued; in_progress — generating; done — ready to download; failed — generation error
+        begin_date:
+          type: string
+          format: date-time
+        end_date:
+          type: string
+          format: date-time
+        created_at:
+          type: string
+          format: date-time
+        updated_at:
+          type: string
+          format: date-time
+        download_url:
+          type: string
+          format: uri
+          description: Download URL (present when status=done)
+          nullable: true
+    ReportEntry:
+      type: object
+      description: A generated report file entry
+      properties:
+        id:
+          type: string
+        status:
+          type: string
+          enum:
+            - available
+            - expired
+        date_created:
+          type: string
+          format: date-time
+        date_last_updated:
+          type: string
+          format: date-time
+        begin_date:
+          type: string
+          format: date-time
+        end_date:
+          type: string
+          format: date-time
+        file_name:
+          type: string
+          example: releases_report_2024-01-01_2024-01-31.csv
+    ReportListResult:
+      type: object
+      properties:
+        paging:
+          $ref: '#/components/schemas/Pagination'
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/ReportEntry'

@@ -75,6 +75,9 @@ apps:
     reference:
       enabled: true
       devsite_file: orders-checkout-api
+      spec_tags:
+        - checkout-api-automatic
+        - checkout-api-manual
   - tag: Addresses
     product: addresses
     paths:
@@ -103,6 +106,9 @@ apps:
     reference:
       enabled: true
       devsite_file: orders-point-kiosko
+      spec_tags:
+        - mp-point
+        - Terminals
   - tag: Orders Point
     product: orders_point
     paths:
@@ -110,6 +116,9 @@ apps:
     reference:
       enabled: true
       devsite_file: orders-point
+      spec_tags:
+        - mp-point
+        - Terminals
   - tag: Payouts
     product: payouts
     paths:

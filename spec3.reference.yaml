@@ -38693,7 +38693,6 @@ paths:
           content:
             application/json:
               schema: {}
-components:
   schemas:
     PreferenceRequest:
       type: object

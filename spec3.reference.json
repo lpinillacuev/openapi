@@ -55619,7 +55619,9 @@
           }
         }
       }
-    },
+    }
+  },
+  "components": {
     "schemas": {
       "PreferenceRequest": {
         "type": "object",

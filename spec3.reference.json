@@ -55786,19 +55786,14 @@
     "schemas": {
       "PreferenceRequest": {
         "type": "object",
-        "description": {
-          "en": "Request body to create a Checkout Pro preference. The preference generates a hosted checkout URL (init_point) where the payer is redirected to complete payment on MP's UI. Use this for simple integrations; use Orders API for custom checkout experiences.",
-          "pt": "TODO",
-          "es": "TODO"
-        },
+        "required": [
+          "items"
+        ],
+        "description": "Request body to create a Checkout Pro preference. The preference generates a hosted checkout URL (init_point) where the payer is redirected to complete payment on MP's UI. Use this for simple integrations; use Orders API for custom checkout experiences.",
         "properties": {
           "items": {
             "type": "array",
-            "description": {
-              "en": "List of products/services being purchased",
-              "pt": "TODO",
-              "es": "TODO"
-            },
+            "description": "List of products/services being purchased",
             "items": {
               "$ref": "#/components/schemas/PreferenceItem"
             },
@@ -55819,108 +55814,54 @@
           "notification_url": {
             "type": "string",
             "format": "uri",
-            "description": {
-              "en": "URL for IPN notifications. DEPRECATED — use Webhooks instead.",
-              "pt": "TODO",
-              "es": "TODO"
-            },
+            "description": "URL for IPN notifications. DEPRECATED — use Webhooks instead.",
             "deprecated": true
           },
           "statement_descriptor": {
             "type": "string",
-            "description": {
-              "en": "Text on the payer's card statement. Max 22 chars.",
-              "pt": "TODO",
-              "es": "TODO"
-            },
+            "description": "Text on the payer's card statement. Max 22 chars.",
             "maxLength": 22
           },
           "additional_info": {
             "type": "string",
-            "description": {
-              "en": "Free-text additional info (returned in webhook notifications)",
-              "pt": "TODO",
-              "es": "TODO"
-            }
+            "description": "Free-text additional info (returned in webhook notifications)"
           },
           "auto_return": {
             "type": "string",
             "enum": [
-              {
-                "title": "approved",
-                "description": {
-                  "en": "approved",
-                  "pt": "TODO",
-                  "es": "TODO"
-                }
-              },
-              {
-                "title": "all",
-                "description": {
-                  "en": "all",
-                  "pt": "TODO",
-                  "es": "TODO"
-                }
-              }
+              "approved",
+              "all"
             ],
-            "description": {
-              "en": "approved — auto-redirect to success URL on approved payments; all — auto-redirect for any final status.",
-              "pt": "TODO",
-              "es": "TODO"
-            }
+            "description": "approved — auto-redirect to success URL on approved payments; all — auto-redirect for any final status."
           },
           "external_reference": {
             "type": "string",
-            "description": {
-              "en": "Your internal order reference. Returned in webhook payloads.",
-              "pt": "TODO",
-              "es": "TODO"
-            },
+            "description": "Your internal order reference. Returned in webhook payloads.",
             "example": "ORDER-2024-001234"
           },
           "expires": {
             "type": "boolean",
-            "description": {
-              "en": "Whether this preference has an expiry window",
-              "pt": "TODO",
-              "es": "TODO"
-            },
+            "description": "Whether this preference has an expiry window",
             "default": false
           },
           "expiration_date_from": {
             "type": "string",
             "format": "date-time",
-            "description": {
-              "en": "Preference activation start time (ISO 8601)",
-              "pt": "TODO",
-              "es": "TODO"
-            }
+            "description": "Preference activation start time (ISO 8601)"
           },
           "expiration_date_to": {
             "type": "string",
             "format": "date-time",
-            "description": {
-              "en": "Preference expiration time (ISO 8601)",
-              "pt": "TODO",
-              "es": "TODO"
-            }
+            "description": "Preference expiration time (ISO 8601)"
           },
           "marketplace": {
             "type": "string",
-            "description": {
-              "en": "Marketplace identifier",
-              "pt": "TODO",
-              "es": "TODO"
-            }
+            "description": "Marketplace identifier"
           },
           "marketplace_fee": {
             "type": "number",
             "format": "float",
-            "description": {
-              "en": "Marketplace fee charged to the seller",
-              "pt": "TODO",
-              "es": "TODO"
-            }
+            "description": "Marketplace fee charged to the seller"
           },
           "differential_pricing": {
             "type": "object",
@@ -55938,6 +55879,11 @@
       },
       "PreferenceItem": {
         "type": "object",
+        "required": [
+          "title",
+          "quantity",
+          "unit_price"
+        ],
         "properties": {
           "id": {
             "type": "string"
@@ -55967,11 +55913,7 @@
           "unit_price": {
             "type": "number",
             "format": "float",
-            "description": {
-              "en": "Unit price as a decimal (not integer cents)",
-              "pt": "TODO",
-              "es": "TODO"
-            },
+            "description": "Unit price as a decimal (not integer cents)",
             "example": 99.9
           }
         }
@@ -56009,11 +55951,7 @@
         "properties": {
           "excluded_payment_methods": {
             "type": "array",
-            "description": {
-              "en": "Payment methods to hide from checkout UI",
-              "pt": "TODO",
-              "es": "TODO"
-            },
+            "description": "Payment methods to hide from checkout UI",
             "items": {
               "type": "object",
               "properties": {
@@ -56025,11 +55963,7 @@
           },
           "excluded_payment_types": {
             "type": "array",
-            "description": {
-              "en": "Payment type groups to exclude",
-              "pt": "TODO",
-              "es": "TODO"
-            },
+            "description": "Payment type groups to exclude",
             "items": {
               "type": "object",
               "properties": {
@@ -56041,20 +55975,12 @@
           },
           "installments": {
             "type": "integer",
-            "description": {
-              "en": "Maximum number of installments to offer",
-              "pt": "TODO",
-              "es": "TODO"
-            },
+            "description": "Maximum number of installments to offer",
             "example": 12
           },
           "default_installments": {
             "type": "integer",
-            "description": {
-              "en": "Pre-selected installments in the UI",
-              "pt": "TODO",
-              "es": "TODO"
-            }
+            "description": "Pre-selected installments in the UI"
           }
         }
       },
@@ -56064,30 +55990,9 @@
           "mode": {
             "type": "string",
             "enum": [
-              {
-                "title": "custom",
-                "description": {
-                  "en": "custom",
-                  "pt": "TODO",
-                  "es": "TODO"
-                }
-              },
-              {
-                "title": "me2",
-                "description": {
-                  "en": "me2",
-                  "pt": "TODO",
-                  "es": "TODO"
-                }
-              },
-              {
-                "title": "not_specified",
-                "description": {
-                  "en": "not_specified",
-                  "pt": "TODO",
-                  "es": "TODO"
-                }
-              }
+              "custom",
+              "me2",
+              "not_specified"
             ]
           },
           "free_shipping": {
@@ -56105,66 +56010,38 @@
       },
       "PreferenceBackUrls": {
         "type": "object",
-        "description": {
-          "en": "Redirect URLs after checkout completion. Configure auto_return to control when automatic redirects happen.",
-          "pt": "TODO",
-          "es": "TODO"
-        },
+        "description": "Redirect URLs after checkout completion. Configure auto_return to control when automatic redirects happen.",
         "properties": {
           "success": {
             "type": "string",
             "format": "uri",
-            "description": {
-              "en": "Redirect after approved payment",
-              "pt": "TODO",
-              "es": "TODO"
-            }
+            "description": "Redirect after approved payment"
           },
           "pending": {
             "type": "string",
             "format": "uri",
-            "description": {
-              "en": "Redirect for pending payments (e.g., Boleto)",
-              "pt": "TODO",
-              "es": "TODO"
-            }
+            "description": "Redirect for pending payments (e.g., Boleto)"
           },
           "failure": {
             "type": "string",
             "format": "uri",
-            "description": {
-              "en": "Redirect after rejected payment",
-              "pt": "TODO",
-              "es": "TODO"
-            }
+            "description": "Redirect after rejected payment"
           }
         }
       },
       "Preference": {
         "type": "object",
-        "description": {
-          "en": "A created Checkout Pro preference",
-          "pt": "TODO",
-          "es": "TODO"
-        },
+        "description": "A created Checkout Pro preference",
         "properties": {
           "id": {
             "type": "string",
-            "description": {
-              "en": "Preference unique identifier",
-              "pt": "TODO",
-              "es": "TODO"
-            },
+            "description": "Preference unique identifier",
             "example": "123456789-abcd1234-ef56-7890-abcd-ef1234567890"
           },
           "init_point": {
             "type": "string",
             "format": "uri",
-            "description": {
-              "en": "Production checkout URL. Redirect your payer here to complete payment.",
-              "pt": "TODO",
-              "es": "TODO"
-            },
+            "description": "Production checkout URL. Redirect your payer here to complete payment.",
             "example": "https://www.mercadopago.com.br/checkout/v1/redirect?pref_id=..."
           },
           "items": {
@@ -56225,108 +56102,36 @@
       },
       "Claim": {
         "type": "object",
-        "description": {
-          "en": "A post-sale claim (dispute) between buyer and seller",
-          "pt": "TODO",
-          "es": "TODO"
-        },
+        "description": "A post-sale claim (dispute) between buyer and seller",
         "properties": {
           "id": {
             "type": "integer",
-            "description": {
-              "en": "Claim unique identifier",
-              "pt": "TODO",
-              "es": "TODO"
-            },
+            "description": "Claim unique identifier",
             "example": 4567890123
           },
           "type": {
             "type": "string",
             "enum": [
-              {
-                "title": "mediations",
-                "description": {
-                  "en": "mediations",
-                  "pt": "TODO",
-                  "es": "TODO"
-                }
-              },
-              {
-                "title": "claims",
-                "description": {
-                  "en": "claims",
-                  "pt": "TODO",
-                  "es": "TODO"
-                }
-              }
+              "mediations",
+              "claims"
             ],
-            "description": {
-              "en": "mediations — buyer-initiated dispute requiring MP mediation; claims — seller-initiated claim",
-              "pt": "TODO",
-              "es": "TODO"
-            }
+            "description": "mediations — buyer-initiated dispute requiring MP mediation; claims — seller-initiated claim"
           },
           "stage": {
             "type": "string",
             "enum": [
-              {
-                "title": "claim",
-                "description": {
-                  "en": "claim",
-                  "pt": "TODO",
-                  "es": "TODO"
-                }
-              },
-              {
-                "title": "dispute",
-                "description": {
-                  "en": "dispute",
-                  "pt": "TODO",
-                  "es": "TODO"
-                }
-              },
-              {
-                "title": "resolution",
-                "description": {
-                  "en": "resolution",
-                  "pt": "TODO",
-                  "es": "TODO"
-                }
-              }
+              "claim",
+              "dispute",
+              "resolution"
             ],
-            "description": {
-              "en": "Current stage in the dispute lifecycle",
-              "pt": "TODO",
-              "es": "TODO"
-            }
+            "description": "Current stage in the dispute lifecycle"
           },
           "status": {
             "type": "string",
             "enum": [
-              {
-                "title": "opened",
-                "description": {
-                  "en": "opened",
-                  "pt": "TODO",
-                  "es": "TODO"
-                }
-              },
-              {
-                "title": "closed",
-                "description": {
-                  "en": "closed",
-                  "pt": "TODO",
-                  "es": "TODO"
-                }
-              },
-              {
-                "title": "cancelled",
-                "description": {
-                  "en": "cancelled",
-                  "pt": "TODO",
-                  "es": "TODO"
-                }
-              }
+              "opened",
+              "closed",
+              "cancelled"
             ]
           },
           "date_created": {
@@ -56340,74 +56145,27 @@
           "resource": {
             "type": "string",
             "enum": [
-              {
-                "title": "payment",
-                "description": {
-                  "en": "payment",
-                  "pt": "TODO",
-                  "es": "TODO"
-                }
-              },
-              {
-                "title": "shipment",
-                "description": {
-                  "en": "shipment",
-                  "pt": "TODO",
-                  "es": "TODO"
-                }
-              },
-              {
-                "title": "order",
-                "description": {
-                  "en": "order",
-                  "pt": "TODO",
-                  "es": "TODO"
-                }
-              }
+              "payment",
+              "shipment",
+              "order"
             ],
-            "description": {
-              "en": "Resource type the claim is about",
-              "pt": "TODO",
-              "es": "TODO"
-            }
+            "description": "Resource type the claim is about"
           },
           "reason_id": {
             "type": "string",
-            "description": {
-              "en": "Reason code for the claim",
-              "pt": "TODO",
-              "es": "TODO"
-            }
+            "description": "Reason code for the claim"
           },
           "players": {
             "type": "array",
-            "description": {
-              "en": "Parties involved (buyer, seller)",
-              "pt": "TODO",
-              "es": "TODO"
-            },
+            "description": "Parties involved (buyer, seller)",
             "items": {
               "type": "object",
               "properties": {
                 "role": {
                   "type": "string",
                   "enum": [
-                    {
-                      "title": "complainant",
-                      "description": {
-                        "en": "complainant",
-                        "pt": "TODO",
-                        "es": "TODO"
-                      }
-                    },
-                    {
-                      "title": "respondent",
-                      "description": {
-                        "en": "respondent",
-                        "pt": "TODO",
-                        "es": "TODO"
-                      }
-                    }
+                    "complainant",
+                    "respondent"
                   ]
                 },
                 "user_id": {
@@ -56426,11 +56184,7 @@
       },
       "ClaimMessage": {
         "type": "object",
-        "description": {
-          "en": "A message within a claim thread",
-          "pt": "TODO",
-          "es": "TODO"
-        },
+        "description": "A message within a claim thread",
         "properties": {
           "id": {
             "type": "integer"
@@ -56448,41 +56202,16 @@
               "role": {
                 "type": "string",
                 "enum": [
-                  {
-                    "title": "complainant",
-                    "description": {
-                      "en": "complainant",
-                      "pt": "TODO",
-                      "es": "TODO"
-                    }
-                  },
-                  {
-                    "title": "respondent",
-                    "description": {
-                      "en": "respondent",
-                      "pt": "TODO",
-                      "es": "TODO"
-                    }
-                  },
-                  {
-                    "title": "mediator",
-                    "description": {
-                      "en": "mediator",
-                      "pt": "TODO",
-                      "es": "TODO"
-                    }
-                  }
+                  "complainant",
+                  "respondent",
+                  "mediator"
                 ]
               }
             }
           },
           "message": {
             "type": "string",
-            "description": {
-              "en": "Text content of the message",
-              "pt": "TODO",
-              "es": "TODO"
-            }
+            "description": "Text content of the message"
           },
           "attachments": {
             "type": "array",
@@ -56502,11 +56231,7 @@
       },
       "ClaimReason": {
         "type": "object",
-        "description": {
-          "en": "A reason code for opening a claim",
-          "pt": "TODO",
-          "es": "TODO"
-        },
+        "description": "A reason code for opening a claim",
         "properties": {
           "id": {
             "type": "string",
@@ -56519,22 +56244,8 @@
           "type": {
             "type": "string",
             "enum": [
-              {
-                "title": "mediations",
-                "description": {
-                  "en": "mediations",
-                  "pt": "TODO",
-                  "es": "TODO"
-                }
-              },
-              {
-                "title": "claims",
-                "description": {
-                  "en": "claims",
-                  "pt": "TODO",
-                  "es": "TODO"
-                }
-              }
+              "mediations",
+              "claims"
             ]
           }
         }
@@ -56569,38 +56280,10 @@
           "changed_by": {
             "type": "string",
             "enum": [
-              {
-                "title": "buyer",
-                "description": {
-                  "en": "buyer",
-                  "pt": "TODO",
-                  "es": "TODO"
-                }
-              },
-              {
-                "title": "seller",
-                "description": {
-                  "en": "seller",
-                  "pt": "TODO",
-                  "es": "TODO"
-                }
-              },
-              {
-                "title": "system",
-                "description": {
-                  "en": "system",
-                  "pt": "TODO",
-                  "es": "TODO"
-                }
-              },
-              {
-                "title": "mediator",
-                "description": {
-                  "en": "mediator",
-                  "pt": "TODO",
-                  "es": "TODO"
-                }
-              }
+              "buyer",
+              "seller",
+              "system",
+              "mediator"
             ]
           }
         }
@@ -56614,38 +56297,10 @@
           "type": {
             "type": "string",
             "enum": [
-              {
-                "title": "tracking_code",
-                "description": {
-                  "en": "tracking_code",
-                  "pt": "TODO",
-                  "es": "TODO"
-                }
-              },
-              {
-                "title": "photo",
-                "description": {
-                  "en": "photo",
-                  "pt": "TODO",
-                  "es": "TODO"
-                }
-              },
-              {
-                "title": "invoice",
-                "description": {
-                  "en": "invoice",
-                  "pt": "TODO",
-                  "es": "TODO"
-                }
-              },
-              {
-                "title": "other",
-                "description": {
-                  "en": "other",
-                  "pt": "TODO",
-                  "es": "TODO"
-                }
-              }
+              "tracking_code",
+              "photo",
+              "invoice",
+              "other"
             ]
           },
           "date_created": {
@@ -56659,39 +56314,14 @@
       },
       "MediationResolution": {
         "type": "object",
-        "description": {
-          "en": "Expected resolution options at mediation stage",
-          "pt": "TODO",
-          "es": "TODO"
-        },
+        "description": "Expected resolution options at mediation stage",
         "properties": {
           "type": {
             "type": "string",
             "enum": [
-              {
-                "title": "refund",
-                "description": {
-                  "en": "refund",
-                  "pt": "TODO",
-                  "es": "TODO"
-                }
-              },
-              {
-                "title": "return",
-                "description": {
-                  "en": "return",
-                  "pt": "TODO",
-                  "es": "TODO"
-                }
-              },
-              {
-                "title": "partial_refund",
-                "description": {
-                  "en": "partial_refund",
-                  "pt": "TODO",
-                  "es": "TODO"
-                }
-              }
+              "refund",
+              "return",
+              "partial_refund"
             ]
           },
           "amount": {
@@ -56705,23 +56335,18 @@
       },
       "SendMessageRequest": {
         "type": "object",
+        "required": [
+          "message"
+        ],
         "properties": {
           "message": {
             "type": "string",
-            "description": {
-              "en": "Text content of the message to send",
-              "pt": "TODO",
-              "es": "TODO"
-            },
+            "description": "Text content of the message to send",
             "example": "I can provide the tracking code for the shipment."
           },
           "attachments": {
             "type": "array",
-            "description": {
-              "en": "File IDs to attach (upload first via attachments endpoint)",
-              "pt": "TODO",
-              "es": "TODO"
-            },
+            "description": "File IDs to attach (upload first via attachments endpoint)",
             "items": {
               "type": "string"
             }
@@ -56803,167 +56428,39 @@
       },
       "CurrencyId": {
         "type": "string",
-        "description": {
-          "en": "ISO 4217 currency code for the applicable site",
-          "pt": "TODO",
-          "es": "TODO"
-        },
+        "description": "ISO 4217 currency code for the applicable site",
         "enum": [
-          {
-            "title": "ARS",
-            "description": {
-              "en": "ARS",
-              "pt": "TODO",
-              "es": "TODO"
-            }
-          },
-          {
-            "title": "BRL",
-            "description": {
-              "en": "BRL",
-              "pt": "TODO",
-              "es": "TODO"
-            }
-          },
-          {
-            "title": "MXN",
-            "description": {
-              "en": "MXN",
-              "pt": "TODO",
-              "es": "TODO"
-            }
-          },
-          {
-            "title": "CLP",
-            "description": {
-              "en": "CLP",
-              "pt": "TODO",
-              "es": "TODO"
-            }
-          },
-          {
-            "title": "COP",
-            "description": {
-              "en": "COP",
-              "pt": "TODO",
-              "es": "TODO"
-            }
-          },
-          {
-            "title": "PEN",
-            "description": {
-              "en": "PEN",
-              "pt": "TODO",
-              "es": "TODO"
-            }
-          },
-          {
-            "title": "UYU",
-            "description": {
-              "en": "UYU",
-              "pt": "TODO",
-              "es": "TODO"
-            }
-          },
-          {
-            "title": "BOB",
-            "description": {
-              "en": "BOB",
-              "pt": "TODO",
-              "es": "TODO"
-            }
-          },
-          {
-            "title": "PYG",
-            "description": {
-              "en": "PYG",
-              "pt": "TODO",
-              "es": "TODO"
-            }
-          },
-          {
-            "title": "USD",
-            "description": {
-              "en": "USD",
-              "pt": "TODO",
-              "es": "TODO"
-            }
-          },
-          {
-            "title": "CRC",
-            "description": {
-              "en": "CRC",
-              "pt": "TODO",
-              "es": "TODO"
-            }
-          },
-          {
-            "title": "DOP",
-            "description": {
-              "en": "DOP",
-              "pt": "TODO",
-              "es": "TODO"
-            }
-          },
-          {
-            "title": "HNL",
-            "description": {
-              "en": "HNL",
-              "pt": "TODO",
-              "es": "TODO"
-            }
-          },
-          {
-            "title": "NIO",
-            "description": {
-              "en": "NIO",
-              "pt": "TODO",
-              "es": "TODO"
-            }
-          },
-          {
-            "title": "GTQ",
-            "description": {
-              "en": "GTQ",
-              "pt": "TODO",
-              "es": "TODO"
-            }
-          },
-          {
-            "title": "VES",
-            "description": {
-              "en": "VES",
-              "pt": "TODO",
-              "es": "TODO"
-            }
-          }
+          "ARS",
+          "BRL",
+          "MXN",
+          "CLP",
+          "COP",
+          "PEN",
+          "UYU",
+          "BOB",
+          "PYG",
+          "USD",
+          "CRC",
+          "DOP",
+          "HNL",
+          "NIO",
+          "GTQ",
+          "VES"
         ],
         "example": "BRL"
       },
       "Identification": {
         "type": "object",
-        "description": {
-          "en": "Payer identification document. Valid types vary by country.",
-          "pt": "TODO",
-          "es": "TODO"
-        },
+        "description": "Payer identification document. Valid types vary by country.",
         "properties": {
           "type": {
             "type": "string",
-            "description": {
-              "en": "Identification type (e.g., CPF, CNPJ for Brazil; DNI for Argentina; RFC for Mexico)",
-              "pt": "TODO",
-              "es": "TODO"
-            },
+            "description": "Identification type (e.g., CPF, CNPJ for Brazil; DNI for Argentina; RFC for Mexico)",
             "example": "CPF"
           },
           "number": {
             "type": "string",
-            "description": {
-              "en": "Identification number (no formatting — digits only)",
-              "pt": "TODO",
-              "es": "TODO"
-            },
+            "description": "Identification number (no formatting — digits only)",
             "example": "12345678909"
           }
         }
@@ -57087,23 +56584,18 @@
       },
       "StoreRequest": {
         "type": "object",
+        "required": [
+          "name"
+        ],
         "properties": {
           "name": {
             "type": "string",
-            "description": {
-              "en": "Store display name",
-              "pt": "TODO",
-              "es": "TODO"
-            },
+            "description": "Store display name",
             "example": "Main Branch — Paulista"
           },
           "external_id": {
             "type": "string",
-            "description": {
-              "en": "Your internal store identifier",
-              "pt": "TODO",
-              "es": "TODO"
-            }
+            "description": "Your internal store identifier"
           },
           "business_hours": {
             "type": "object",
@@ -57166,11 +56658,7 @@
             "properties": {
               "id": {
                 "type": "string",
-                "description": {
-                  "en": "Store unique identifier",
-                  "pt": "TODO",
-                  "es": "TODO"
-                }
+                "description": "Store unique identifier"
               },
               "date_created": {
                 "type": "string",
@@ -57186,60 +56674,40 @@
       },
       "POSRequest": {
         "type": "object",
+        "required": [
+          "name",
+          "store_id"
+        ],
         "properties": {
           "name": {
             "type": "string",
-            "description": {
-              "en": "POS display name",
-              "pt": "TODO",
-              "es": "TODO"
-            },
+            "description": "POS display name",
             "example": "Caixa 1"
           },
           "store_id": {
             "type": "string",
-            "description": {
-              "en": "Parent store ID",
-              "pt": "TODO",
-              "es": "TODO"
-            }
+            "description": "Parent store ID"
           },
           "external_id": {
             "type": "string",
-            "description": {
-              "en": "Your internal POS identifier",
-              "pt": "TODO",
-              "es": "TODO"
-            }
+            "description": "Your internal POS identifier"
           },
           "external_store_id": {
             "type": "string"
           },
           "category": {
             "type": "integer",
-            "description": {
-              "en": "Business category code",
-              "pt": "TODO",
-              "es": "TODO"
-            }
+            "description": "Business category code"
           },
           "fixed_amount": {
             "type": "boolean",
-            "description": {
-              "en": "When true the POS amount is fixed and cannot be changed by payer",
-              "pt": "TODO",
-              "es": "TODO"
-            },
+            "description": "When true the POS amount is fixed and cannot be changed by payer",
             "default": false
           },
           "url": {
             "type": "string",
             "format": "uri",
-            "description": {
-              "en": "Webhook URL for this specific POS",
-              "pt": "TODO",
-              "es": "TODO"
-            }
+            "description": "Webhook URL for this specific POS"
           }
         }
       },
@@ -57256,20 +56724,12 @@
               },
               "qr_code": {
                 "type": "string",
-                "description": {
-                  "en": "QR code data string for this POS",
-                  "pt": "TODO",
-                  "es": "TODO"
-                }
+                "description": "QR code data string for this POS"
               },
               "qr_code_image": {
                 "type": "string",
                 "format": "uri",
-                "description": {
-                  "en": "URL of QR code image",
-                  "pt": "TODO",
-                  "es": "TODO"
-                }
+                "description": "URL of QR code image"
               },
               "date_created": {
                 "type": "string",
@@ -57285,57 +56745,33 @@
       },
       "Pagination": {
         "type": "object",
-        "description": {
-          "en": "Pagination metadata returned in list/search responses",
-          "pt": "TODO",
-          "es": "TODO"
-        },
+        "description": "Pagination metadata returned in list/search responses",
         "properties": {
           "total": {
             "type": "integer",
-            "description": {
-              "en": "Total number of results",
-              "pt": "TODO",
-              "es": "TODO"
-            },
+            "description": "Total number of results",
             "example": 42
           },
           "limit": {
             "type": "integer",
-            "description": {
-              "en": "Results per page",
-              "pt": "TODO",
-              "es": "TODO"
-            },
+            "description": "Results per page",
             "example": 30
           },
           "offset": {
             "type": "integer",
-            "description": {
-              "en": "Offset of the current page",
-              "pt": "TODO",
-              "es": "TODO"
-            },
+            "description": "Offset of the current page",
             "example": 0
           }
         }
       },
       "CustomerRequest": {
         "type": "object",
-        "description": {
-          "en": "Request body to create or update a customer",
-          "pt": "TODO",
-          "es": "TODO"
-        },
+        "description": "Request body to create or update a customer",
         "properties": {
           "email": {
             "type": "string",
             "format": "email",
-            "description": {
-              "en": "Customer email address (unique identifier)",
-              "pt": "TODO",
-              "es": "TODO"
-            },
+            "description": "Customer email address (unique identifier)",
             "example": "customer@example.com"
           },
           "first_name": {
@@ -57364,19 +56800,11 @@
       },
       "Customer": {
         "type": "object",
-        "description": {
-          "en": "A stored MercadoPago customer",
-          "pt": "TODO",
-          "es": "TODO"
-        },
+        "description": "A stored MercadoPago customer",
         "properties": {
           "id": {
             "type": "string",
-            "description": {
-              "en": "Customer unique identifier",
-              "pt": "TODO",
-              "es": "TODO"
-            },
+            "description": "Customer unique identifier",
             "example": "123456789-abcd"
           },
           "email": {
@@ -57422,19 +56850,11 @@
             "items": {
               "$ref": "#/components/schemas/Card"
             },
-            "description": {
-              "en": "Saved cards for this customer",
-              "pt": "TODO",
-              "es": "TODO"
-            }
+            "description": "Saved cards for this customer"
           },
           "default_card": {
             "type": "string",
-            "description": {
-              "en": "ID of the customer's default card",
-              "pt": "TODO",
-              "es": "TODO"
-            }
+            "description": "ID of the customer's default card"
           }
         }
       },
@@ -57454,38 +56874,25 @@
       },
       "SaveCardRequest": {
         "type": "object",
-        "description": {
-          "en": "Request body to save a card to a customer. The card token must be created client-side via MercadoPago.js / MP Secure Fields before calling this endpoint. Raw card data (PAN, CVV) must never be sent to your server.",
-          "pt": "TODO",
-          "es": "TODO"
-        },
+        "required": [
+          "token"
+        ],
+        "description": "Request body to save a card to a customer. The card token must be created client-side via MercadoPago.js / MP Secure Fields before calling this endpoint. Raw card data (PAN, CVV) must never be sent to your server.",
         "properties": {
           "token": {
             "type": "string",
-            "description": {
-              "en": "Single-use card token from MercadoPago.js",
-              "pt": "TODO",
-              "es": "TODO"
-            },
+            "description": "Single-use card token from MercadoPago.js",
             "example": "YOUR_ACCESS_TOKEN"
           }
         }
       },
       "Card": {
         "type": "object",
-        "description": {
-          "en": "A tokenized card saved to a customer (never contains full PAN or CVV)",
-          "pt": "TODO",
-          "es": "TODO"
-        },
+        "description": "A tokenized card saved to a customer (never contains full PAN or CVV)",
         "properties": {
           "id": {
             "type": "string",
-            "description": {
-              "en": "Card unique identifier",
-              "pt": "TODO",
-              "es": "TODO"
-            },
+            "description": "Card unique identifier",
             "example": "1234567890"
           },
           "customer_id": {
@@ -57493,20 +56900,12 @@
           },
           "first_six_digits": {
             "type": "string",
-            "description": {
-              "en": "First 6 digits of card (BIN — identifies issuer and type)",
-              "pt": "TODO",
-              "es": "TODO"
-            },
+            "description": "First 6 digits of card (BIN — identifies issuer and type)",
             "example": "411111"
           },
           "last_four_digits": {
             "type": "string",
-            "description": {
-              "en": "Last 4 digits of card",
-              "pt": "TODO",
-              "es": "TODO"
-            },
+            "description": "Last 4 digits of card",
             "example": "4321"
           },
           "expiration_month": {
@@ -57532,11 +56931,7 @@
             "properties": {
               "name": {
                 "type": "string",
-                "description": {
-                  "en": "Name on card",
-                  "pt": "TODO",
-                  "es": "TODO"
-                }
+                "description": "Name on card"
               },
               "identification": {
                 "$ref": "#/components/schemas/Identification"
@@ -57581,22 +56976,8 @@
               "mode": {
                 "type": "string",
                 "enum": [
-                  {
-                    "title": "mandatory",
-                    "description": {
-                      "en": "mandatory",
-                      "pt": "TODO",
-                      "es": "TODO"
-                    }
-                  },
-                  {
-                    "title": "optional",
-                    "description": {
-                      "en": "optional",
-                      "pt": "TODO",
-                      "es": "TODO"
-                    }
-                  }
+                  "mandatory",
+                  "optional"
                 ]
               },
               "length": {
@@ -57762,16 +57143,115 @@
       "PaymentRequest": {
         "type": "object",
         "required": [
-          "payment_method"
+          "transaction_amount",
+          "payer"
         ],
+        "description": "Request body to create a payment. For card payments, `token` and `payment_method_id` are required. For cash/offline methods, only `payment_method_id` is required.",
         "properties": {
-          "payment_method": {
-            "$ref": "#/components/schemas/PaymentMethodRequest"
+          "transaction_amount": {
+            "type": "number",
+            "format": "float",
+            "description": "Payment amount as a decimal number. MercadoPago does NOT use integer cents — send 100.50 for R$100,50 (not 10050). CLP uses 0 decimal places.",
+            "example": 100.5,
+            "minimum": 0.01
+          },
+          "token": {
+            "type": "string",
+            "description": "Card token created client-side via MercadoPago.js / MP Secure Fields. Required for credit/debit card payments. Single-use; expires in 7 days.",
+            "example": "YOUR_ACCESS_TOKEN"
+          },
+          "description": {
+            "type": "string",
+            "description": "Description of the purchased product or service",
+            "example": "Premium subscription — 1 month"
+          },
+          "installments": {
+            "type": "integer",
+            "description": "Number of installments (1 = no installments)",
+            "example": 1,
+            "minimum": 1
+          },
+          "payment_method_id": {
+            "type": "string",
+            "description": "Payment method identifier. Examples: visa, master, bolbradesco (Boleto), pix, oxxo, rapipago, pse. Use GET /v1/payment_methods to list available methods for a given site_id.",
+            "example": "visa"
+          },
+          "issuer_id": {
+            "type": "string",
+            "description": "Card issuer ID (required for some credit cards)",
+            "example": "310"
+          },
+          "payer": {
+            "$ref": "#/components/schemas/PaymentPayer"
+          },
+          "capture": {
+            "type": "boolean",
+            "description": "Two-step payment flow: set false to only authorize (reserve funds), then PUT /v1/payments/{id} with capture=true to capture. Debit cards do not support two-step capture.",
+            "default": true
+          },
+          "binary_mode": {
+            "type": "boolean",
+            "description": "When true, payments can only be in_process → approved or rejected — no pending state. Useful for in-store flows.",
+            "default": false
+          },
+          "external_reference": {
+            "type": "string",
+            "description": "Your internal order or reference ID. Max 256 chars.",
+            "example": "ORDER-2024-001234"
+          },
+          "notification_url": {
+            "type": "string",
+            "format": "uri",
+            "description": "URL to receive IPN notifications when payment status changes. DEPRECATED — use Webhooks instead.",
+            "deprecated": true
+          },
+          "statement_descriptor": {
+            "type": "string",
+            "description": "Text that appears on the payer's card statement. Max 22 chars.",
+            "example": "MYSTORE.COM",
+            "maxLength": 22
+          },
+          "callback_url": {
+            "type": "string",
+            "format": "uri",
+            "description": "Redirect URL after bank transfer (redirect-based methods only)"
+          },
+          "date_of_expiration": {
+            "type": "string",
+            "format": "date-time",
+            "description": "Expiration date for cash/offline payment methods (boleto, OXXO, etc.). ISO 8601 format. Default varies by method.",
+            "example": "2024-12-31T23:59:59.000-03:00"
+          },
+          "metadata": {
+            "type": "object",
+            "description": "Free key-value object for your own internal data (not used by MP)",
+            "additionalProperties": true
+          },
+          "additional_info": {
+            "$ref": "#/components/schemas/PaymentAdditionalInfo"
+          },
+          "application_fee": {
+            "type": "number",
+            "format": "float",
+            "description": "Marketplace fee charged to the seller (marketplace integrations only)",
+            "example": 1.5
+          },
+          "coupon_code": {
+            "type": "string",
+            "description": "Discount coupon code"
+          },
+          "coupon_amount": {
+            "type": "number",
+            "format": "float",
+            "description": "Coupon discount value"
           }
         }
       },
       "PaymentPayer": {
         "type": "object",
+        "required": [
+          "email"
+        ],
         "properties": {
           "email": {
             "type": "string",
@@ -57780,11 +57260,7 @@
           },
           "id": {
             "type": "string",
-            "description": {
-              "en": "MercadoPago user ID (for registered users)",
-              "pt": "TODO",
-              "es": "TODO"
-            }
+            "description": "MercadoPago user ID (for registered users)"
           },
           "identification": {
             "$ref": "#/components/schemas/Identification"
@@ -57792,41 +57268,16 @@
           "type": {
             "type": "string",
             "enum": [
-              {
-                "title": "customer",
-                "description": {
-                  "en": "customer",
-                  "pt": "TODO",
-                  "es": "TODO"
-                }
-              },
-              {
-                "title": "registered",
-                "description": {
-                  "en": "registered",
-                  "pt": "TODO",
-                  "es": "TODO"
-                }
-              },
-              {
-                "title": "guest",
-                "description": {
-                  "en": "guest",
-                  "pt": "TODO",
-                  "es": "TODO"
-                }
-              }
+              "customer",
+              "registered",
+              "guest"
             ]
           }
         }
       },
       "PaymentAdditionalInfo": {
         "type": "object",
-        "description": {
-          "en": "Additional context for fraud scoring and installment calculation",
-          "pt": "TODO",
-          "es": "TODO"
-        },
+        "description": "Additional context for fraud scoring and installment calculation",
         "properties": {
           "items": {
             "type": "array",
@@ -57891,19 +57342,11 @@
       },
       "Payment": {
         "type": "object",
-        "description": {
-          "en": "A MercadoPago payment object",
-          "pt": "TODO",
-          "es": "TODO"
-        },
+        "description": "A MercadoPago payment object",
         "properties": {
           "id": {
             "type": "integer",
-            "description": {
-              "en": "Payment unique identifier",
-              "pt": "TODO",
-              "es": "TODO"
-            },
+            "description": "Payment unique identifier",
             "example": 1234567890
           },
           "date_created": {
@@ -57933,70 +57376,14 @@
           "operation_type": {
             "type": "string",
             "enum": [
-              {
-                "title": "regular_payment",
-                "description": {
-                  "en": "regular_payment",
-                  "pt": "TODO",
-                  "es": "TODO"
-                }
-              },
-              {
-                "title": "money_transfer",
-                "description": {
-                  "en": "money_transfer",
-                  "pt": "TODO",
-                  "es": "TODO"
-                }
-              },
-              {
-                "title": "recurring_payment",
-                "description": {
-                  "en": "recurring_payment",
-                  "pt": "TODO",
-                  "es": "TODO"
-                }
-              },
-              {
-                "title": "account_fund",
-                "description": {
-                  "en": "account_fund",
-                  "pt": "TODO",
-                  "es": "TODO"
-                }
-              },
-              {
-                "title": "payment_addition",
-                "description": {
-                  "en": "payment_addition",
-                  "pt": "TODO",
-                  "es": "TODO"
-                }
-              },
-              {
-                "title": "cellphone_recharge",
-                "description": {
-                  "en": "cellphone_recharge",
-                  "pt": "TODO",
-                  "es": "TODO"
-                }
-              },
-              {
-                "title": "pos_payment",
-                "description": {
-                  "en": "pos_payment",
-                  "pt": "TODO",
-                  "es": "TODO"
-                }
-              },
-              {
-                "title": "money_exchange",
-                "description": {
-                  "en": "money_exchange",
-                  "pt": "TODO",
-                  "es": "TODO"
-                }
-              }
+              "regular_payment",
+              "money_transfer",
+              "recurring_payment",
+              "account_fund",
+              "payment_addition",
+              "cellphone_recharge",
+              "pos_payment",
+              "money_exchange"
             ]
           },
           "issuer_id": {
@@ -58010,194 +57397,39 @@
           "payment_type_id": {
             "type": "string",
             "enum": [
-              {
-                "title": "account_money",
-                "description": {
-                  "en": "account_money",
-                  "pt": "TODO",
-                  "es": "TODO"
-                }
-              },
-              {
-                "title": "ticket",
-                "description": {
-                  "en": "ticket",
-                  "pt": "TODO",
-                  "es": "TODO"
-                }
-              },
-              {
-                "title": "bank_transfer",
-                "description": {
-                  "en": "bank_transfer",
-                  "pt": "TODO",
-                  "es": "TODO"
-                }
-              },
-              {
-                "title": "atm",
-                "description": {
-                  "en": "atm",
-                  "pt": "TODO",
-                  "es": "TODO"
-                }
-              },
-              {
-                "title": "credit_card",
-                "description": {
-                  "en": "credit_card",
-                  "pt": "TODO",
-                  "es": "TODO"
-                }
-              },
-              {
-                "title": "debit_card",
-                "description": {
-                  "en": "debit_card",
-                  "pt": "TODO",
-                  "es": "TODO"
-                }
-              },
-              {
-                "title": "prepaid_card",
-                "description": {
-                  "en": "prepaid_card",
-                  "pt": "TODO",
-                  "es": "TODO"
-                }
-              },
-              {
-                "title": "digital_currency",
-                "description": {
-                  "en": "digital_currency",
-                  "pt": "TODO",
-                  "es": "TODO"
-                }
-              },
-              {
-                "title": "digital_wallet",
-                "description": {
-                  "en": "digital_wallet",
-                  "pt": "TODO",
-                  "es": "TODO"
-                }
-              },
-              {
-                "title": "voucher_card",
-                "description": {
-                  "en": "voucher_card",
-                  "pt": "TODO",
-                  "es": "TODO"
-                }
-              },
-              {
-                "title": "crypto",
-                "description": {
-                  "en": "crypto",
-                  "pt": "TODO",
-                  "es": "TODO"
-                }
-              },
-              {
-                "title": "pix",
-                "description": {
-                  "en": "pix",
-                  "pt": "TODO",
-                  "es": "TODO"
-                }
-              }
+              "account_money",
+              "ticket",
+              "bank_transfer",
+              "atm",
+              "credit_card",
+              "debit_card",
+              "prepaid_card",
+              "digital_currency",
+              "digital_wallet",
+              "voucher_card",
+              "crypto",
+              "pix"
             ]
           },
           "status": {
             "type": "string",
             "enum": [
-              {
-                "title": "pending",
-                "description": {
-                  "en": "pending",
-                  "pt": "TODO",
-                  "es": "TODO"
-                }
-              },
-              {
-                "title": "approved",
-                "description": {
-                  "en": "approved",
-                  "pt": "TODO",
-                  "es": "TODO"
-                }
-              },
-              {
-                "title": "authorized",
-                "description": {
-                  "en": "authorized",
-                  "pt": "TODO",
-                  "es": "TODO"
-                }
-              },
-              {
-                "title": "in_process",
-                "description": {
-                  "en": "in_process",
-                  "pt": "TODO",
-                  "es": "TODO"
-                }
-              },
-              {
-                "title": "in_mediation",
-                "description": {
-                  "en": "in_mediation",
-                  "pt": "TODO",
-                  "es": "TODO"
-                }
-              },
-              {
-                "title": "rejected",
-                "description": {
-                  "en": "rejected",
-                  "pt": "TODO",
-                  "es": "TODO"
-                }
-              },
-              {
-                "title": "cancelled",
-                "description": {
-                  "en": "cancelled",
-                  "pt": "TODO",
-                  "es": "TODO"
-                }
-              },
-              {
-                "title": "refunded",
-                "description": {
-                  "en": "refunded",
-                  "pt": "TODO",
-                  "es": "TODO"
-                }
-              },
-              {
-                "title": "charged_back",
-                "description": {
-                  "en": "charged_back",
-                  "pt": "TODO",
-                  "es": "TODO"
-                }
-              }
+              "pending",
+              "approved",
+              "authorized",
+              "in_process",
+              "in_mediation",
+              "rejected",
+              "cancelled",
+              "refunded",
+              "charged_back"
             ],
-            "description": {
-              "en": "Current payment status. Key values: approved — payment completed successfully; pending — awaiting payer action (e.g., Boleto payment); in_process — under review; rejected — payment declined.",
-              "pt": "TODO",
-              "es": "TODO"
-            },
+            "description": "Current payment status. Key values: approved — payment completed successfully; pending — awaiting payer action (e.g., Boleto payment); in_process — under review; rejected — payment declined.",
             "example": "approved"
           },
           "status_detail": {
             "type": "string",
-            "description": {
-              "en": "Detailed reason for the current status",
-              "pt": "TODO",
-              "es": "TODO"
-            },
+            "description": "Detailed reason for the current status",
             "example": "accredited"
           },
           "currency_id": {
@@ -58237,20 +57469,12 @@
           "transaction_amount": {
             "type": "number",
             "format": "float",
-            "description": {
-              "en": "Original payment amount (decimal, not cents)",
-              "pt": "TODO",
-              "es": "TODO"
-            }
+            "description": "Original payment amount (decimal, not cents)"
           },
           "transaction_amount_refunded": {
             "type": "number",
             "format": "float",
-            "description": {
-              "en": "Total amount refunded so far",
-              "pt": "TODO",
-              "es": "TODO"
-            }
+            "description": "Total amount refunded so far"
           },
           "coupon_amount": {
             "type": "number",
@@ -58274,11 +57498,7 @@
               "external_resource_url": {
                 "type": "string",
                 "format": "uri",
-                "description": {
-                  "en": "Boleto/OXXO/cash payment URL or barcode",
-                  "pt": "TODO",
-                  "es": "TODO"
-                }
+                "description": "Boleto/OXXO/cash payment URL or barcode"
               },
               "installment_amount": {
                 "type": "number",
@@ -58300,11 +57520,7 @@
           },
           "card": {
             "type": "object",
-            "description": {
-              "en": "Card data (last 4 digits only — never full PAN)",
-              "pt": "TODO",
-              "es": "TODO"
-            },
+            "description": "Card data (last 4 digits only — never full PAN)",
             "properties": {
               "last_four_digits": {
                 "type": "string",
@@ -58349,22 +57565,8 @@
           "processing_mode": {
             "type": "string",
             "enum": [
-              {
-                "title": "aggregator",
-                "description": {
-                  "en": "aggregator",
-                  "pt": "TODO",
-                  "es": "TODO"
-                }
-              },
-              {
-                "title": "gateway",
-                "description": {
-                  "en": "gateway",
-                  "pt": "TODO",
-                  "es": "TODO"
-                }
-              }
+              "aggregator",
+              "gateway"
             ]
           }
         }
@@ -58465,20 +57667,12 @@
       },
       "RefundRequest": {
         "type": "object",
-        "description": {
-          "en": "Request body for creating a refund. Omit amount for a full refund.",
-          "pt": "TODO",
-          "es": "TODO"
-        },
+        "description": "Request body for creating a refund. Omit amount for a full refund.",
         "properties": {
           "amount": {
             "type": "number",
             "format": "float",
-            "description": {
-              "en": "Amount to refund. Omit for a full refund.",
-              "pt": "TODO",
-              "es": "TODO"
-            },
+            "description": "Amount to refund. Omit for a full refund.",
             "example": 50
           }
         }
@@ -58499,19 +57693,11 @@
       },
       "ReportConfig": {
         "type": "object",
-        "description": {
-          "en": "Configuration for scheduled report generation",
-          "pt": "TODO",
-          "es": "TODO"
-        },
+        "description": "Configuration for scheduled report generation",
         "properties": {
           "columns": {
             "type": "array",
-            "description": {
-              "en": "Columns to include in the report",
-              "pt": "TODO",
-              "es": "TODO"
-            },
+            "description": "Columns to include in the report",
             "items": {
               "type": "object",
               "properties": {
@@ -58528,20 +57714,12 @@
           },
           "file_name_prefix": {
             "type": "string",
-            "description": {
-              "en": "Prefix for generated report filenames",
-              "pt": "TODO",
-              "es": "TODO"
-            },
+            "description": "Prefix for generated report filenames",
             "example": "releases_report"
           },
           "frequency": {
             "type": "object",
-            "description": {
-              "en": "Schedule frequency for automatic generation",
-              "pt": "TODO",
-              "es": "TODO"
-            },
+            "description": "Schedule frequency for automatic generation",
             "properties": {
               "hour": {
                 "type": "integer",
@@ -58551,41 +57729,16 @@
               "type": {
                 "type": "string",
                 "enum": [
-                  {
-                    "title": "daily",
-                    "description": {
-                      "en": "daily",
-                      "pt": "TODO",
-                      "es": "TODO"
-                    }
-                  },
-                  {
-                    "title": "weekly",
-                    "description": {
-                      "en": "weekly",
-                      "pt": "TODO",
-                      "es": "TODO"
-                    }
-                  },
-                  {
-                    "title": "monthly",
-                    "description": {
-                      "en": "monthly",
-                      "pt": "TODO",
-                      "es": "TODO"
-                    }
-                  }
+                  "daily",
+                  "weekly",
+                  "monthly"
                 ]
               }
             }
           },
           "sftp_info": {
             "type": "object",
-            "description": {
-              "en": "SFTP destination for automatic delivery (optional)",
-              "pt": "TODO",
-              "es": "TODO"
-            },
+            "description": "SFTP destination for automatic delivery (optional)",
             "properties": {
               "server": {
                 "type": "string"
@@ -58603,55 +57756,22 @@
           },
           "separator": {
             "type": "string",
-            "description": {
-              "en": "CSV column separator character",
-              "pt": "TODO",
-              "es": "TODO"
-            },
+            "description": "CSV column separator character",
             "enum": [
-              {
-                "title": ",",
-                "description": {
-                  "en": ",",
-                  "pt": "TODO",
-                  "es": "TODO"
-                }
-              },
-              {
-                "title": ";",
-                "description": {
-                  "en": ";",
-                  "pt": "TODO",
-                  "es": "TODO"
-                }
-              },
-              {
-                "title": "",
-                "description": {
-                  "en": "(empty)",
-                  "pt": "TODO",
-                  "es": "TODO"
-                }
-              }
+              ",",
+              ";",
+              ""
             ],
             "default": ","
           },
           "display_timezone": {
             "type": "string",
-            "description": {
-              "en": "Timezone for date columns (IANA format)",
-              "pt": "TODO",
-              "es": "TODO"
-            },
+            "description": "Timezone for date columns (IANA format)",
             "example": "America/Sao_Paulo"
           },
           "notification_email_list": {
             "type": "array",
-            "description": {
-              "en": "Email addresses to notify when report is ready",
-              "pt": "TODO",
-              "es": "TODO"
-            },
+            "description": "Email addresses to notify when report is ready",
             "items": {
               "type": "string",
               "format": "email"
@@ -58661,92 +57781,44 @@
       },
       "ReportRequest": {
         "type": "object",
-        "description": {
-          "en": "Request body to generate a one-time report",
-          "pt": "TODO",
-          "es": "TODO"
-        },
+        "required": [
+          "begin_date",
+          "end_date"
+        ],
+        "description": "Request body to generate a one-time report",
         "properties": {
           "begin_date": {
             "type": "string",
             "format": "date-time",
-            "description": {
-              "en": "Start of the reporting period (ISO 8601)",
-              "pt": "TODO",
-              "es": "TODO"
-            },
+            "description": "Start of the reporting period (ISO 8601)",
             "example": "2024-01-01T00:00:00Z"
           },
           "end_date": {
             "type": "string",
             "format": "date-time",
-            "description": {
-              "en": "End of the reporting period (ISO 8601)",
-              "pt": "TODO",
-              "es": "TODO"
-            },
+            "description": "End of the reporting period (ISO 8601)",
             "example": "2024-01-31T23:59:59Z"
           }
         }
       },
       "ReportTask": {
         "type": "object",
-        "description": {
-          "en": "Status of a report generation task",
-          "pt": "TODO",
-          "es": "TODO"
-        },
+        "description": "Status of a report generation task",
         "properties": {
           "id": {
             "type": "string",
-            "description": {
-              "en": "Task unique identifier",
-              "pt": "TODO",
-              "es": "TODO"
-            },
+            "description": "Task unique identifier",
             "example": "task_abc123"
           },
           "status": {
             "type": "string",
             "enum": [
-              {
-                "title": "pending",
-                "description": {
-                  "en": "pending",
-                  "pt": "TODO",
-                  "es": "TODO"
-                }
-              },
-              {
-                "title": "in_progress",
-                "description": {
-                  "en": "in_progress",
-                  "pt": "TODO",
-                  "es": "TODO"
-                }
-              },
-              {
-                "title": "done",
-                "description": {
-                  "en": "done",
-                  "pt": "TODO",
-                  "es": "TODO"
-                }
-              },
-              {
-                "title": "failed",
-                "description": {
-                  "en": "failed",
-                  "pt": "TODO",
-                  "es": "TODO"
-                }
-              }
+              "pending",
+              "in_progress",
+              "done",
+              "failed"
             ],
-            "description": {
-              "en": "pending — queued; in_progress — generating; done — ready to download; failed — generation error",
-              "pt": "TODO",
-              "es": "TODO"
-            }
+            "description": "pending — queued; in_progress — generating; done — ready to download; failed — generation error"
           },
           "begin_date": {
             "type": "string",
@@ -58767,22 +57839,14 @@
           "download_url": {
             "type": "string",
             "format": "uri",
-            "description": {
-              "en": "Download URL (present when status=done)",
-              "pt": "TODO",
-              "es": "TODO"
-            },
+            "description": "Download URL (present when status=done)",
             "nullable": true
           }
         }
       },
       "ReportEntry": {
         "type": "object",
-        "description": {
-          "en": "A generated report file entry",
-          "pt": "TODO",
-          "es": "TODO"
-        },
+        "description": "A generated report file entry",
         "properties": {
           "id": {
             "type": "string"
@@ -58790,22 +57854,8 @@
           "status": {
             "type": "string",
             "enum": [
-              {
-                "title": "available",
-                "description": {
-                  "en": "available",
-                  "pt": "TODO",
-                  "es": "TODO"
-                }
-              },
-              {
-                "title": "expired",
-                "description": {
-                  "en": "expired",
-                  "pt": "TODO",
-                  "es": "TODO"
-                }
-              }
+              "available",
+              "expired"
             ]
           },
           "date_created": {
@@ -58846,19 +57896,15 @@
       },
       "SubscriptionPlanRequest": {
         "type": "object",
-        "description": {
-          "en": "Request body to create a subscription plan (preapproval_plan). A plan defines the recurring billing terms. Individual subscriptions (preapproval) are then created referencing this plan.",
-          "pt": "TODO",
-          "es": "TODO"
-        },
+        "required": [
+          "reason",
+          "auto_recurring"
+        ],
+        "description": "Request body to create a subscription plan (preapproval_plan). A plan defines the recurring billing terms. Individual subscriptions (preapproval) are then created referencing this plan.",
         "properties": {
           "reason": {
             "type": "string",
-            "description": {
-              "en": "Plan description shown to the payer",
-              "pt": "TODO",
-              "es": "TODO"
-            },
+            "description": "Plan description shown to the payer",
             "example": "Monthly Premium Subscription"
           },
           "auto_recurring": {
@@ -58894,61 +57940,37 @@
           "back_url": {
             "type": "string",
             "format": "uri",
-            "description": {
-              "en": "Redirect URL after subscription setup",
-              "pt": "TODO",
-              "es": "TODO"
-            }
+            "description": "Redirect URL after subscription setup"
           }
         }
       },
       "AutoRecurring": {
         "type": "object",
+        "required": [
+          "frequency",
+          "frequency_type",
+          "transaction_amount",
+          "currency_id"
+        ],
         "properties": {
           "frequency": {
             "type": "integer",
-            "description": {
-              "en": "Billing interval (e.g., 1 for monthly, 7 for weekly)",
-              "pt": "TODO",
-              "es": "TODO"
-            },
+            "description": "Billing interval (e.g., 1 for monthly, 7 for weekly)",
             "example": 1
           },
           "frequency_type": {
             "type": "string",
             "enum": [
-              {
-                "title": "months",
-                "description": {
-                  "en": "months",
-                  "pt": "TODO",
-                  "es": "TODO"
-                }
-              },
-              {
-                "title": "days",
-                "description": {
-                  "en": "days",
-                  "pt": "TODO",
-                  "es": "TODO"
-                }
-              }
+              "months",
+              "days"
             ],
-            "description": {
-              "en": "Unit for the billing interval",
-              "pt": "TODO",
-              "es": "TODO"
-            },
+            "description": "Unit for the billing interval",
             "example": "months"
           },
           "transaction_amount": {
             "type": "number",
             "format": "float",
-            "description": {
-              "en": "Amount to charge each cycle (decimal, not cents)",
-              "pt": "TODO",
-              "es": "TODO"
-            },
+            "description": "Amount to charge each cycle (decimal, not cents)",
             "example": 29.9
           },
           "currency_id": {
@@ -58956,11 +57978,7 @@
           },
           "free_trial": {
             "type": "object",
-            "description": {
-              "en": "Optional free trial period before billing starts",
-              "pt": "TODO",
-              "es": "TODO"
-            },
+            "description": "Optional free trial period before billing starts",
             "properties": {
               "frequency": {
                 "type": "integer",
@@ -58969,22 +57987,8 @@
               "frequency_type": {
                 "type": "string",
                 "enum": [
-                  {
-                    "title": "months",
-                    "description": {
-                      "en": "months",
-                      "pt": "TODO",
-                      "es": "TODO"
-                    }
-                  },
-                  {
-                    "title": "days",
-                    "description": {
-                      "en": "days",
-                      "pt": "TODO",
-                      "es": "TODO"
-                    }
-                  }
+                  "months",
+                  "days"
                 ],
                 "example": "days"
               }
@@ -58992,22 +57996,14 @@
           },
           "repetitions": {
             "type": "integer",
-            "description": {
-              "en": "Total number of billing cycles (null = indefinite)",
-              "pt": "TODO",
-              "es": "TODO"
-            },
+            "description": "Total number of billing cycles (null = indefinite)",
             "nullable": true
           }
         }
       },
       "SubscriptionPlan": {
         "type": "object",
-        "description": {
-          "en": "A subscription plan (preapproval_plan)",
-          "pt": "TODO",
-          "es": "TODO"
-        },
+        "description": "A subscription plan (preapproval_plan)",
         "properties": {
           "id": {
             "type": "string",
@@ -59019,22 +58015,8 @@
           "status": {
             "type": "string",
             "enum": [
-              {
-                "title": "active",
-                "description": {
-                  "en": "active",
-                  "pt": "TODO",
-                  "es": "TODO"
-                }
-              },
-              {
-                "title": "inactive",
-                "description": {
-                  "en": "inactive",
-                  "pt": "TODO",
-                  "es": "TODO"
-                }
-              }
+              "active",
+              "inactive"
             ]
           },
           "auto_recurring": {
@@ -59051,55 +58033,36 @@
           "init_point": {
             "type": "string",
             "format": "uri",
-            "description": {
-              "en": "URL to subscribe users to this plan",
-              "pt": "TODO",
-              "es": "TODO"
-            }
+            "description": "URL to subscribe users to this plan"
           }
         }
       },
       "SubscriptionRequest": {
         "type": "object",
-        "description": {
-          "en": "Request body to create a subscription (preapproval). Either reference a preapproval_plan or define auto_recurring inline.",
-          "pt": "TODO",
-          "es": "TODO"
-        },
+        "required": [
+          "reason",
+          "payer_email",
+          "auto_recurring"
+        ],
+        "description": "Request body to create a subscription (preapproval). Either reference a preapproval_plan or define auto_recurring inline.",
         "properties": {
           "preapproval_plan_id": {
             "type": "string",
-            "description": {
-              "en": "Reference a previously created plan (recommended)",
-              "pt": "TODO",
-              "es": "TODO"
-            }
+            "description": "Reference a previously created plan (recommended)"
           },
           "reason": {
             "type": "string",
-            "description": {
-              "en": "Subscription description shown to payer",
-              "pt": "TODO",
-              "es": "TODO"
-            },
+            "description": "Subscription description shown to payer",
             "example": "Monthly Premium — Acme Inc."
           },
           "payer_email": {
             "type": "string",
             "format": "email",
-            "description": {
-              "en": "Payer's email address",
-              "pt": "TODO",
-              "es": "TODO"
-            }
+            "description": "Payer's email address"
           },
           "card_token_id": {
             "type": "string",
-            "description": {
-              "en": "Card token for credit card subscriptions",
-              "pt": "TODO",
-              "es": "TODO"
-            }
+            "description": "Card token for credit card subscriptions"
           },
           "auto_recurring": {
             "$ref": "#/components/schemas/AutoRecurring"
@@ -59115,54 +58078,18 @@
           "status": {
             "type": "string",
             "enum": [
-              {
-                "title": "pending",
-                "description": {
-                  "en": "pending",
-                  "pt": "TODO",
-                  "es": "TODO"
-                }
-              },
-              {
-                "title": "authorized",
-                "description": {
-                  "en": "authorized",
-                  "pt": "TODO",
-                  "es": "TODO"
-                }
-              },
-              {
-                "title": "paused",
-                "description": {
-                  "en": "paused",
-                  "pt": "TODO",
-                  "es": "TODO"
-                }
-              },
-              {
-                "title": "cancelled",
-                "description": {
-                  "en": "cancelled",
-                  "pt": "TODO",
-                  "es": "TODO"
-                }
-              }
+              "pending",
+              "authorized",
+              "paused",
+              "cancelled"
             ],
-            "description": {
-              "en": "Initial status (default is pending until payer authorizes)",
-              "pt": "TODO",
-              "es": "TODO"
-            }
+            "description": "Initial status (default is pending until payer authorizes)"
           }
         }
       },
       "Subscription": {
         "type": "object",
-        "description": {
-          "en": "A MercadoPago subscription (preapproval)",
-          "pt": "TODO",
-          "es": "TODO"
-        },
+        "description": "A MercadoPago subscription (preapproval)",
         "properties": {
           "id": {
             "type": "string",
@@ -59187,38 +58114,10 @@
           "status": {
             "type": "string",
             "enum": [
-              {
-                "title": "pending",
-                "description": {
-                  "en": "pending",
-                  "pt": "TODO",
-                  "es": "TODO"
-                }
-              },
-              {
-                "title": "authorized",
-                "description": {
-                  "en": "authorized",
-                  "pt": "TODO",
-                  "es": "TODO"
-                }
-              },
-              {
-                "title": "paused",
-                "description": {
-                  "en": "paused",
-                  "pt": "TODO",
-                  "es": "TODO"
-                }
-              },
-              {
-                "title": "cancelled",
-                "description": {
-                  "en": "cancelled",
-                  "pt": "TODO",
-                  "es": "TODO"
-                }
-              }
+              "pending",
+              "authorized",
+              "paused",
+              "cancelled"
             ]
           },
           "date_created": {
@@ -59234,11 +58133,7 @@
           },
           "summarized": {
             "type": "object",
-            "description": {
-              "en": "Subscription billing summary",
-              "pt": "TODO",
-              "es": "TODO"
-            },
+            "description": "Subscription billing summary",
             "properties": {
               "quotas": {
                 "type": "integer"
@@ -59272,11 +58167,7 @@
           "init_point": {
             "type": "string",
             "format": "uri",
-            "description": {
-              "en": "Authorization URL — send payer here to confirm subscription",
-              "pt": "TODO",
-              "es": "TODO"
-            }
+            "description": "Authorization URL — send payer here to confirm subscription"
           }
         }
       },
@@ -59723,118 +58614,54 @@
       },
       "OrderRequest": {
         "type": "object",
-        "description": {
-          "en": "Request body to create an Order. Supports automatic (single-stage) and manual (multi-stage) processing modes. Use processing_mode=automatic for most integrations.",
-          "pt": "TODO",
-          "es": "TODO"
-        },
+        "required": [
+          "type",
+          "total_amount",
+          "transactions",
+          "payer"
+        ],
+        "description": "Request body to create an Order. Supports automatic (single-stage) and manual (multi-stage) processing modes. Use processing_mode=automatic for most integrations.\n",
         "properties": {
           "type": {
             "type": "string",
             "enum": [
-              {
-                "title": "online",
-                "description": {
-                  "en": "online",
-                  "pt": "TODO",
-                  "es": "TODO"
-                }
-              }
+              "online"
             ],
-            "description": {
-              "en": "Order type. Only \"online\" is supported for online payments.",
-              "pt": "TODO",
-              "es": "TODO"
-            },
+            "description": "Order type. Only \"online\" is supported for online payments.",
             "example": "online"
           },
           "processing_mode": {
             "type": "string",
             "enum": [
-              {
-                "title": "automatic",
-                "description": {
-                  "en": "automatic",
-                  "pt": "TODO",
-                  "es": "TODO"
-                }
-              },
-              {
-                "title": "manual",
-                "description": {
-                  "en": "manual",
-                  "pt": "TODO",
-                  "es": "TODO"
-                }
-              }
+              "automatic",
+              "manual"
             ],
-            "description": {
-              "en": "automatic — MP processes all transactions immediately in a single stage. manual — transactions are processed in configurable stages; use the /process endpoint to trigger processing after creation.",
-              "pt": "TODO",
-              "es": "TODO"
-            },
+            "description": "automatic — MP processes all transactions immediately in a single stage. manual — transactions are processed in configurable stages; use the /process endpoint to trigger processing after creation.\n",
             "example": "automatic"
           },
           "capture_mode": {
             "type": "string",
             "enum": [
-              {
-                "title": "automatic",
-                "description": {
-                  "en": "automatic",
-                  "pt": "TODO",
-                  "es": "TODO"
-                }
-              },
-              {
-                "title": "manual",
-                "description": {
-                  "en": "manual",
-                  "pt": "TODO",
-                  "es": "TODO"
-                }
-              },
-              {
-                "title": "automatic_async",
-                "description": {
-                  "en": "automatic_async",
-                  "pt": "TODO",
-                  "es": "TODO"
-                }
-              }
+              "automatic",
+              "manual",
+              "automatic_async"
             ],
-            "description": {
-              "en": "automatic — authorize and capture funds at the same time. manual — authorize only (reserve funds); capture later with /capture endpoint. automatic_async — order may remain in status=processing while awaiting async update; final status delivered via webhook.",
-              "pt": "TODO",
-              "es": "TODO"
-            },
+            "description": "automatic — authorize and capture funds at the same time. manual — authorize only (reserve funds); capture later with /capture endpoint. automatic_async — order may remain in status=processing while awaiting async update; final status delivered via webhook.\n",
             "example": "automatic"
           },
           "total_amount": {
             "type": "string",
-            "description": {
-              "en": "Total amount to be paid as a decimal string. Must equal the sum of all payment transaction amounts. Example: \"100.00\".",
-              "pt": "TODO",
-              "es": "TODO"
-            },
+            "description": "Total amount to be paid as a decimal string. Must equal the sum of all payment transaction amounts. Example: \"100.00\".\n",
             "example": "100.00"
           },
           "external_reference": {
             "type": "string",
-            "description": {
-              "en": "Your internal order reference ID. Returned in all order responses.",
-              "pt": "TODO",
-              "es": "TODO"
-            },
+            "description": "Your internal order reference ID. Returned in all order responses.",
             "example": "ORDER-2024-001234"
           },
           "description": {
             "type": "string",
-            "description": {
-              "en": "Description of the purchased product or service.",
-              "pt": "TODO",
-              "es": "TODO"
-            },
+            "description": "Description of the purchased product or service.",
             "example": "Premium subscription"
           },
           "payer": {
@@ -59848,11 +58675,7 @@
           },
           "items": {
             "type": "array",
-            "description": {
-              "en": "Items included in the order.",
-              "pt": "TODO",
-              "es": "TODO"
-            },
+            "description": "Items included in the order.",
             "items": {
               "$ref": "#/components/schemas/OrderItem"
             }
@@ -59862,22 +58685,14 @@
           },
           "additional_info": {
             "type": "object",
-            "description": {
-              "en": "Additional information required for specific payment methods (e.g. PSE).",
-              "pt": "TODO",
-              "es": "TODO"
-            },
+            "description": "Additional information required for specific payment methods (e.g. PSE).",
             "properties": {
               "payer": {
                 "type": "object",
                 "properties": {
                   "ip_address": {
                     "type": "string",
-                    "description": {
-                      "en": "IP address of the payer. Required for PSE payments.",
-                      "pt": "TODO",
-                      "es": "TODO"
-                    },
+                    "description": "IP address of the payer. Required for PSE payments.",
                     "example": "200.100.50.25"
                   }
                 }
@@ -59886,11 +58701,7 @@
           },
           "integration_data": {
             "type": "object",
-            "description": {
-              "en": "Integration metadata used by MercadoPago internally.",
-              "pt": "TODO",
-              "es": "TODO"
-            },
+            "description": "Integration metadata used by MercadoPago internally.",
             "properties": {
               "platform_id": {
                 "type": "string"
@@ -59904,19 +58715,11 @@
       },
       "OrderTransactions": {
         "type": "object",
-        "description": {
-          "en": "Payment transactions for this order. Currently supports one transaction.",
-          "pt": "TODO",
-          "es": "TODO"
-        },
+        "description": "Payment transactions for this order. Currently supports one transaction.",
         "properties": {
           "payments": {
             "type": "array",
-            "description": {
-              "en": "Payment transaction(s). Required when processing_mode=automatic. Must not be present when processing_mode=manual (add via POST /orders/{id}/transactions).",
-              "pt": "TODO",
-              "es": "TODO"
-            },
+            "description": "Payment transaction(s). Required when processing_mode=automatic. Must not be present when processing_mode=manual (add via POST /orders/{id}/transactions).\n",
             "items": {
               "$ref": "#/components/schemas/OrderPayment"
             }
@@ -59925,14 +58728,14 @@
       },
       "OrderPayment": {
         "type": "object",
+        "required": [
+          "amount",
+          "payment_method"
+        ],
         "properties": {
           "amount": {
             "type": "string",
-            "description": {
-              "en": "Transaction amount as a decimal string.",
-              "pt": "TODO",
-              "es": "TODO"
-            },
+            "description": "Transaction amount as a decimal string.",
             "example": "100.00"
           },
           "payment_method": {
@@ -59940,136 +58743,69 @@
           },
           "expiration_time": {
             "type": "string",
-            "description": {
-              "en": "Transaction expiration in ISO 8601 duration format (e.g. \"P1D\" = 1 day, \"PT20M\" = 20 minutes). Applies to ticket and bank transfer payment methods.",
-              "pt": "TODO",
-              "es": "TODO"
-            },
+            "description": "Transaction expiration in ISO 8601 duration format (e.g. \"P1D\" = 1 day, \"PT20M\" = 20 minutes). Applies to ticket and bank transfer payment methods.\n",
             "example": "P1D"
           },
           "date_of_expiration": {
             "type": "string",
             "format": "date-time",
-            "description": {
-              "en": "Absolute expiration date-time. Takes precedence over expiration_time if both provided.",
-              "pt": "TODO",
-              "es": "TODO"
-            }
+            "description": "Absolute expiration date-time. Takes precedence over expiration_time if both provided."
           }
         }
       },
       "OrderPaymentMethod": {
         "type": "object",
-        "description": {
-          "en": "Payment method for the transaction. Use GET /v1/payment_methods to list available methods for your site.",
-          "pt": "TODO",
-          "es": "TODO"
-        },
+        "required": [
+          "id",
+          "type"
+        ],
+        "description": "Payment method for the transaction. Use GET /v1/payment_methods to list available methods for your site.\n",
         "properties": {
           "id": {
             "type": "string",
-            "description": {
-              "en": "Payment method identifier. Examples by type: Cards: visa, master, elo, hipercard, amex. Ticket/cash: bolbradesco (Boleto), oxxo, rapipago, pagofacil. Bank transfer: pix, clabe (SPEI), pse.",
-              "pt": "TODO",
-              "es": "TODO"
-            },
+            "description": "Payment method identifier. Examples by type: Cards: visa, master, elo, hipercard, amex. Ticket/cash: bolbradesco (Boleto), oxxo, rapipago, pagofacil. Bank transfer: pix, clabe (SPEI), pse.\n",
             "example": "visa"
           },
           "type": {
             "type": "string",
             "enum": [
-              {
-                "title": "credit_card",
-                "description": {
-                  "en": "credit_card",
-                  "pt": "TODO",
-                  "es": "TODO"
-                }
-              },
-              {
-                "title": "debit_card",
-                "description": {
-                  "en": "debit_card",
-                  "pt": "TODO",
-                  "es": "TODO"
-                }
-              },
-              {
-                "title": "bank_transfer",
-                "description": {
-                  "en": "bank_transfer",
-                  "pt": "TODO",
-                  "es": "TODO"
-                }
-              },
-              {
-                "title": "ticket",
-                "description": {
-                  "en": "ticket",
-                  "pt": "TODO",
-                  "es": "TODO"
-                }
-              },
-              {
-                "title": "digital_wallet",
-                "description": {
-                  "en": "digital_wallet",
-                  "pt": "TODO",
-                  "es": "TODO"
-                }
-              },
-              {
-                "title": "account_money",
-                "description": {
-                  "en": "account_money",
-                  "pt": "TODO",
-                  "es": "TODO"
-                }
-              }
+              "credit_card",
+              "debit_card",
+              "bank_transfer",
+              "ticket",
+              "digital_wallet",
+              "account_money"
             ],
             "example": "credit_card"
           },
           "token": {
             "type": "string",
-            "description": {
-              "en": "Card token. Required for credit_card and debit_card types.",
-              "pt": "TODO",
-              "es": "TODO"
-            },
+            "description": "Card token. Required for credit_card and debit_card types.",
             "example": "1c87b6b301010101ddcd92f9bbbb3be2"
           },
           "installments": {
             "type": "integer",
-            "description": {
-              "en": "Number of installments. Use 1 for no installments.",
-              "pt": "TODO",
-              "es": "TODO"
-            },
+            "description": "Number of installments. Use 1 for no installments.",
             "minimum": 1,
             "example": 1
           },
           "statement_descriptor": {
             "type": "string",
-            "description": {
-              "en": "Text shown on payer's card statement. Maximum 50 characters.",
-              "pt": "TODO",
-              "es": "TODO"
-            },
+            "description": "Text shown on payer's card statement. Maximum 50 characters.",
             "maxLength": 50
           },
           "financial_institution": {
             "type": "string",
-            "description": {
-              "en": "Bank code. Required for PSE (Colombia) bank transfer payments.",
-              "pt": "TODO",
-              "es": "TODO"
-            },
+            "description": "Bank code. Required for PSE (Colombia) bank transfer payments.",
             "example": "1051"
           }
         }
       },
       "OrderPayer": {
         "type": "object",
+        "required": [
+          "email"
+        ],
         "properties": {
           "email": {
             "type": "string",
@@ -60087,20 +58823,12 @@
             "properties": {
               "type": {
                 "type": "string",
-                "description": {
-                  "en": "Document type (e.g. CPF, CNPJ, DNI, NIT, RFC)",
-                  "pt": "TODO",
-                  "es": "TODO"
-                },
+                "description": "Document type (e.g. CPF, CNPJ, DNI, NIT, RFC)",
                 "example": "CPF"
               },
               "number": {
                 "type": "string",
-                "description": {
-                  "en": "Document number (digits only, no formatting)",
-                  "pt": "TODO",
-                  "es": "TODO"
-                },
+                "description": "Document number (digits only, no formatting)",
                 "example": "99999999999"
               }
             }
@@ -60147,125 +58875,48 @@
           "entity_type": {
             "type": "string",
             "enum": [
-              {
-                "title": "individual",
-                "description": {
-                  "en": "individual",
-                  "pt": "TODO",
-                  "es": "TODO"
-                }
-              },
-              {
-                "title": "association",
-                "description": {
-                  "en": "association",
-                  "pt": "TODO",
-                  "es": "TODO"
-                }
-              }
+              "individual",
+              "association"
             ],
-            "description": {
-              "en": "Payer entity type. Required for PSE (Colombia) payments.",
-              "pt": "TODO",
-              "es": "TODO"
-            }
+            "description": "Payer entity type. Required for PSE (Colombia) payments."
           }
         }
       },
       "OrderConfig": {
         "type": "object",
-        "description": {
-          "en": "Optional settings for the order.",
-          "pt": "TODO",
-          "es": "TODO"
-        },
+        "description": "Optional settings for the order.",
         "properties": {
           "online": {
             "type": "object",
-            "description": {
-              "en": "Settings for online card transactions.",
-              "pt": "TODO",
-              "es": "TODO"
-            },
+            "description": "Settings for online card transactions.",
             "properties": {
               "transaction_security": {
                 "type": "object",
-                "description": {
-                  "en": "3DS (3D Secure) configuration. After creating the order, the response indicates if a challenge is required via transactions.payments[].payment_method.transaction_security.",
-                  "pt": "TODO",
-                  "es": "TODO"
-                },
+                "description": "3DS (3D Secure) configuration. After creating the order, the response indicates if a challenge is required via transactions.payments[].payment_method.transaction_security.\n",
                 "properties": {
                   "validation": {
                     "type": "string",
                     "enum": [
-                      {
-                        "title": "supported",
-                        "description": {
-                          "en": "supported",
-                          "pt": "TODO",
-                          "es": "TODO"
-                        }
-                      },
-                      {
-                        "title": "required",
-                        "description": {
-                          "en": "required",
-                          "pt": "TODO",
-                          "es": "TODO"
-                        }
-                      },
-                      {
-                        "title": "never",
-                        "description": {
-                          "en": "never",
-                          "pt": "TODO",
-                          "es": "TODO"
-                        }
-                      }
+                      "supported",
+                      "required",
+                      "never"
                     ],
-                    "description": {
-                      "en": "supported — run 3DS when supported by issuer; required — always run 3DS, reject if not supported; never — skip 3DS entirely.",
-                      "pt": "TODO",
-                      "es": "TODO"
-                    }
+                    "description": "supported — run 3DS when supported by issuer; required — always run 3DS, reject if not supported; never — skip 3DS entirely.\n"
                   },
                   "liability_shift": {
                     "type": "string",
                     "enum": [
-                      {
-                        "title": "required",
-                        "description": {
-                          "en": "required",
-                          "pt": "TODO",
-                          "es": "TODO"
-                        }
-                      },
-                      {
-                        "title": "not_required",
-                        "description": {
-                          "en": "not_required",
-                          "pt": "TODO",
-                          "es": "TODO"
-                        }
-                      }
+                      "required",
+                      "not_required"
                     ],
-                    "description": {
-                      "en": "Required when validation is not \"never\". required — only approve if liability shifts to issuer; not_required — approve regardless of liability shift outcome.",
-                      "pt": "TODO",
-                      "es": "TODO"
-                    }
+                    "description": "Required when validation is not \"never\". required — only approve if liability shifts to issuer; not_required — approve regardless of liability shift outcome.\n"
                   }
                 }
               },
               "callback_url": {
                 "type": "string",
                 "format": "uri",
-                "description": {
-                  "en": "Redirect URL after PSE bank authentication completes.",
-                  "pt": "TODO",
-                  "es": "TODO"
-                },
+                "description": "Redirect URL after PSE bank authentication completes.",
                 "example": "https://merchant.com/pse/return"
               }
             }
@@ -60330,19 +58981,11 @@
       },
       "Order": {
         "type": "object",
-        "description": {
-          "en": "A MercadoPago Order.",
-          "pt": "TODO",
-          "es": "TODO"
-        },
+        "description": "A MercadoPago Order.",
         "properties": {
           "id": {
             "type": "string",
-            "description": {
-              "en": "Order unique identifier, automatically generated by MercadoPago.",
-              "pt": "TODO",
-              "es": "TODO"
-            },
+            "description": "Order unique identifier, automatically generated by MercadoPago.",
             "example": "01JG28GRB9NYTG6VVS3R5N58YT"
           },
           "type": {
@@ -60352,169 +58995,42 @@
           "processing_mode": {
             "type": "string",
             "enum": [
-              {
-                "title": "automatic",
-                "description": {
-                  "en": "automatic",
-                  "pt": "TODO",
-                  "es": "TODO"
-                }
-              },
-              {
-                "title": "manual",
-                "description": {
-                  "en": "manual",
-                  "pt": "TODO",
-                  "es": "TODO"
-                }
-              }
+              "automatic",
+              "manual"
             ]
           },
           "capture_mode": {
             "type": "string",
             "enum": [
-              {
-                "title": "automatic",
-                "description": {
-                  "en": "automatic",
-                  "pt": "TODO",
-                  "es": "TODO"
-                }
-              },
-              {
-                "title": "manual",
-                "description": {
-                  "en": "manual",
-                  "pt": "TODO",
-                  "es": "TODO"
-                }
-              },
-              {
-                "title": "automatic_async",
-                "description": {
-                  "en": "automatic_async",
-                  "pt": "TODO",
-                  "es": "TODO"
-                }
-              }
+              "automatic",
+              "manual",
+              "automatic_async"
             ]
           },
           "status": {
             "type": "string",
             "enum": [
-              {
-                "title": "created",
-                "description": {
-                  "en": "created",
-                  "pt": "TODO",
-                  "es": "TODO"
-                }
-              },
-              {
-                "title": "processed",
-                "description": {
-                  "en": "processed",
-                  "pt": "TODO",
-                  "es": "TODO"
-                }
-              },
-              {
-                "title": "action_required",
-                "description": {
-                  "en": "action_required",
-                  "pt": "TODO",
-                  "es": "TODO"
-                }
-              },
-              {
-                "title": "processing",
-                "description": {
-                  "en": "processing",
-                  "pt": "TODO",
-                  "es": "TODO"
-                }
-              },
-              {
-                "title": "canceled",
-                "description": {
-                  "en": "canceled",
-                  "pt": "TODO",
-                  "es": "TODO"
-                }
-              }
+              "created",
+              "processed",
+              "action_required",
+              "processing",
+              "canceled"
             ],
-            "description": {
-              "en": "created — order created, waiting for processing. processed — all transactions successfully processed. action_required — integrator action needed (e.g. capture an authorized payment). processing — being processed; no action needed from integrator. canceled — order canceled, will not be processed further.",
-              "pt": "TODO",
-              "es": "TODO"
-            },
+            "description": "created — order created, waiting for processing. processed — all transactions successfully processed. action_required — integrator action needed (e.g. capture an authorized payment). processing — being processed; no action needed from integrator. canceled — order canceled, will not be processed further.\n",
             "example": "processed"
           },
           "status_detail": {
             "type": "string",
             "enum": [
-              {
-                "title": "created",
-                "description": {
-                  "en": "created",
-                  "pt": "TODO",
-                  "es": "TODO"
-                }
-              },
-              {
-                "title": "accredited",
-                "description": {
-                  "en": "accredited",
-                  "pt": "TODO",
-                  "es": "TODO"
-                }
-              },
-              {
-                "title": "in_process",
-                "description": {
-                  "en": "in_process",
-                  "pt": "TODO",
-                  "es": "TODO"
-                }
-              },
-              {
-                "title": "in_review",
-                "description": {
-                  "en": "in_review",
-                  "pt": "TODO",
-                  "es": "TODO"
-                }
-              },
-              {
-                "title": "waiting_payment",
-                "description": {
-                  "en": "waiting_payment",
-                  "pt": "TODO",
-                  "es": "TODO"
-                }
-              },
-              {
-                "title": "waiting_capture",
-                "description": {
-                  "en": "waiting_capture",
-                  "pt": "TODO",
-                  "es": "TODO"
-                }
-              },
-              {
-                "title": "waiting_transfer",
-                "description": {
-                  "en": "waiting_transfer",
-                  "pt": "TODO",
-                  "es": "TODO"
-                }
-              }
+              "created",
+              "accredited",
+              "in_process",
+              "in_review",
+              "waiting_payment",
+              "waiting_capture",
+              "waiting_transfer"
             ],
-            "description": {
-              "en": "accredited — payment credited; waiting_payment — waiting for payer to complete offline payment; waiting_capture — authorized payment awaiting capture; waiting_transfer — waiting for bank transfer.",
-              "pt": "TODO",
-              "es": "TODO"
-            },
+            "description": "accredited — payment credited; waiting_payment — waiting for payer to complete offline payment; waiting_capture — authorized payment awaiting capture; waiting_transfer — waiting for bank transfer.\n",
             "example": "accredited"
           },
           "external_reference": {
@@ -60522,20 +59038,12 @@
           },
           "total_amount": {
             "type": "string",
-            "description": {
-              "en": "Total order amount as decimal string.",
-              "pt": "TODO",
-              "es": "TODO"
-            },
+            "description": "Total order amount as decimal string.",
             "example": "100.00"
           },
           "total_paid_amount": {
             "type": "string",
-            "description": {
-              "en": "Total amount effectively paid so far.",
-              "pt": "TODO",
-              "es": "TODO"
-            },
+            "description": "Total amount effectively paid so far.",
             "example": "100.00"
           },
           "description": {
@@ -60543,20 +59051,12 @@
           },
           "country_code": {
             "type": "string",
-            "description": {
-              "en": "site_id of the order (e.g. MLB, MLA).",
-              "pt": "TODO",
-              "es": "TODO"
-            },
+            "description": "site_id of the order (e.g. MLB, MLA).",
             "example": "MLB"
           },
           "user_id": {
             "type": "integer",
-            "description": {
-              "en": "Collector (seller) user ID.",
-              "pt": "TODO",
-              "es": "TODO"
-            }
+            "description": "Collector (seller) user ID."
           },
           "created_date": {
             "type": "string",
@@ -60568,11 +59068,7 @@
           },
           "client_token": {
             "type": "string",
-            "description": {
-              "en": "Token for client-side rendering of the payment UI (e.g. Bricks). Only returned when applicable.",
-              "pt": "TODO",
-              "es": "TODO"
-            }
+            "description": "Token for client-side rendering of the payment UI (e.g. Bricks). Only returned when applicable.\n"
           },
           "payer": {
             "$ref": "#/components/schemas/OrderPayer"
@@ -60610,122 +59106,39 @@
         "properties": {
           "id": {
             "type": "string",
-            "description": {
-              "en": "Transaction ID, automatically generated by MercadoPago.",
-              "pt": "TODO",
-              "es": "TODO"
-            }
+            "description": "Transaction ID, automatically generated by MercadoPago."
           },
           "amount": {
             "type": "string",
-            "description": {
-              "en": "Transaction amount.",
-              "pt": "TODO",
-              "es": "TODO"
-            },
+            "description": "Transaction amount.",
             "example": "100.00"
           },
           "paid_amount": {
             "type": "string",
-            "description": {
-              "en": "Amount effectively paid.",
-              "pt": "TODO",
-              "es": "TODO"
-            }
+            "description": "Amount effectively paid."
           },
           "reference_id": {
             "type": "string",
-            "description": {
-              "en": "External reference for this transaction.",
-              "pt": "TODO",
-              "es": "TODO"
-            }
+            "description": "External reference for this transaction."
           },
           "status": {
             "type": "string",
             "enum": [
-              {
-                "title": "created",
-                "description": {
-                  "en": "created",
-                  "pt": "TODO",
-                  "es": "TODO"
-                }
-              },
-              {
-                "title": "processed",
-                "description": {
-                  "en": "processed",
-                  "pt": "TODO",
-                  "es": "TODO"
-                }
-              },
-              {
-                "title": "action_required",
-                "description": {
-                  "en": "action_required",
-                  "pt": "TODO",
-                  "es": "TODO"
-                }
-              },
-              {
-                "title": "processing",
-                "description": {
-                  "en": "processing",
-                  "pt": "TODO",
-                  "es": "TODO"
-                }
-              }
+              "created",
+              "processed",
+              "action_required",
+              "processing"
             ],
-            "description": {
-              "en": "created — transaction created; processed — transaction successfully processed; action_required — integrator must act (e.g. capture); processing — awaiting asynchronous result.",
-              "pt": "TODO",
-              "es": "TODO"
-            }
+            "description": "created — transaction created; processed — transaction successfully processed; action_required — integrator must act (e.g. capture); processing — awaiting asynchronous result.\n"
           },
           "status_detail": {
             "type": "string",
             "enum": [
-              {
-                "title": "accredited",
-                "description": {
-                  "en": "accredited",
-                  "pt": "TODO",
-                  "es": "TODO"
-                }
-              },
-              {
-                "title": "waiting_capture",
-                "description": {
-                  "en": "waiting_capture",
-                  "pt": "TODO",
-                  "es": "TODO"
-                }
-              },
-              {
-                "title": "created",
-                "description": {
-                  "en": "created",
-                  "pt": "TODO",
-                  "es": "TODO"
-                }
-              },
-              {
-                "title": "pending_review_manual",
-                "description": {
-                  "en": "pending_review_manual",
-                  "pt": "TODO",
-                  "es": "TODO"
-                }
-              },
-              {
-                "title": "in_process",
-                "description": {
-                  "en": "in_process",
-                  "pt": "TODO",
-                  "es": "TODO"
-                }
-              }
+              "accredited",
+              "waiting_capture",
+              "created",
+              "pending_review_manual",
+              "in_process"
             ]
           },
           "date_of_expiration": {
@@ -60734,11 +59147,7 @@
           },
           "expiration_time": {
             "type": "string",
-            "description": {
-              "en": "Expiration duration in ISO 8601 format.",
-              "pt": "TODO",
-              "es": "TODO"
-            }
+            "description": "Expiration duration in ISO 8601 format."
           },
           "payment_method": {
             "type": "object",
@@ -60761,27 +59170,15 @@
               "ticket_url": {
                 "type": "string",
                 "format": "uri",
-                "description": {
-                  "en": "URL to view or print the ticket (Boleto, OXXO, etc.).",
-                  "pt": "TODO",
-                  "es": "TODO"
-                }
+                "description": "URL to view or print the ticket (Boleto, OXXO, etc.)."
               },
               "barcode_content": {
                 "type": "string",
-                "description": {
-                  "en": "Barcode string for offline payment methods.",
-                  "pt": "TODO",
-                  "es": "TODO"
-                }
+                "description": "Barcode string for offline payment methods."
               },
               "reference": {
                 "type": "string",
-                "description": {
-                  "en": "Reference number for offline payment methods.",
-                  "pt": "TODO",
-                  "es": "TODO"
-                }
+                "description": "Reference number for offline payment methods."
               },
               "verification_code": {
                 "type": "string"
@@ -60792,89 +59189,40 @@
               "redirect_url": {
                 "type": "string",
                 "format": "uri",
-                "description": {
-                  "en": "Redirect URL for PSE bank transfer (Colombia). In production, redirect the payer to this URL to complete authentication at their bank.",
-                  "pt": "TODO",
-                  "es": "TODO"
-                }
+                "description": "Redirect URL for PSE bank transfer (Colombia). In production, redirect the payer to this URL to complete authentication at their bank.\n"
               },
               "digitable_line": {
                 "type": "string",
-                "description": {
-                  "en": "Digitable line for Boleto payments.",
-                  "pt": "TODO",
-                  "es": "TODO"
-                }
+                "description": "Digitable line for Boleto payments."
               },
               "qr_code": {
                 "type": "string",
-                "description": {
-                  "en": "QR code string for Pix payments.",
-                  "pt": "TODO",
-                  "es": "TODO"
-                }
+                "description": "QR code string for Pix payments."
               },
               "qr_code_base64": {
                 "type": "string",
-                "description": {
-                  "en": "QR code image as Base64 for Pix payments.",
-                  "pt": "TODO",
-                  "es": "TODO"
-                }
+                "description": "QR code image as Base64 for Pix payments."
               },
               "e2e_id": {
                 "type": "string",
-                "description": {
-                  "en": "End-to-end identifier for Pix transactions (mandatory tracking code).",
-                  "pt": "TODO",
-                  "es": "TODO"
-                }
+                "description": "End-to-end identifier for Pix transactions (mandatory tracking code)."
               },
               "transaction_security": {
                 "type": "object",
-                "description": {
-                  "en": "3DS challenge result.",
-                  "pt": "TODO",
-                  "es": "TODO"
-                },
+                "description": "3DS challenge result.",
                 "properties": {
                   "status": {
                     "type": "string",
                     "enum": [
-                      {
-                        "title": "pending",
-                        "description": {
-                          "en": "pending",
-                          "pt": "TODO",
-                          "es": "TODO"
-                        }
-                      },
-                      {
-                        "title": "success",
-                        "description": {
-                          "en": "success",
-                          "pt": "TODO",
-                          "es": "TODO"
-                        }
-                      },
-                      {
-                        "title": "failed",
-                        "description": {
-                          "en": "failed",
-                          "pt": "TODO",
-                          "es": "TODO"
-                        }
-                      }
+                      "pending",
+                      "success",
+                      "failed"
                     ]
                   },
                   "redirect_url": {
                     "type": "string",
                     "format": "uri",
-                    "description": {
-                      "en": "URL to redirect payer to complete 3DS challenge (when status=pending).",
-                      "pt": "TODO",
-                      "es": "TODO"
-                    }
+                    "description": "URL to redirect payer to complete 3DS challenge (when status=pending)."
                   }
                 }
               }
@@ -60884,37 +59232,21 @@
       },
       "OrderRefundRequest": {
         "type": "object",
-        "description": {
-          "en": "Refund request for an order. Omit transactions for a full refund. Include specific transaction amounts for partial refunds.",
-          "pt": "TODO",
-          "es": "TODO"
-        },
+        "description": "Refund request for an order. Omit transactions for a full refund. Include specific transaction amounts for partial refunds.\n",
         "properties": {
           "transactions": {
             "type": "array",
-            "description": {
-              "en": "Transactions to refund. Omit for full order refund.",
-              "pt": "TODO",
-              "es": "TODO"
-            },
+            "description": "Transactions to refund. Omit for full order refund.",
             "items": {
               "type": "object",
               "properties": {
                 "id": {
                   "type": "string",
-                  "description": {
-                    "en": "Transaction ID to refund.",
-                    "pt": "TODO",
-                    "es": "TODO"
-                  }
+                  "description": "Transaction ID to refund."
                 },
                 "amount": {
                   "type": "string",
-                  "description": {
-                    "en": "Amount to refund. Omit for full transaction refund.",
-                    "pt": "TODO",
-                    "es": "TODO"
-                  }
+                  "description": "Amount to refund. Omit for full transaction refund."
                 }
               }
             }
@@ -60948,11 +59280,7 @@
       },
       "UpdateCardRequest": {
         "type": "object",
-        "description": {
-          "en": "Request body to update a saved card's expiry or cardholder data.",
-          "pt": "TODO",
-          "es": "TODO"
-        },
+        "description": "Request body to update a saved card's expiry or cardholder data.",
         "properties": {
           "expiration_month": {
             "type": "integer",
@@ -60967,11 +59295,7 @@
             "properties": {
               "name": {
                 "type": "string",
-                "description": {
-                  "en": "Name as it appears on the card.",
-                  "pt": "TODO",
-                  "es": "TODO"
-                }
+                "description": "Name as it appears on the card."
               },
               "identification": {
                 "$ref": "#/components/schemas/Identification"
@@ -60982,65 +59306,34 @@
       },
       "PaymentUpdateRequest": {
         "type": "object",
-        "description": {
-          "en": "Request body to update a payment (capture, cancel, or extend expiration).",
-          "pt": "TODO",
-          "es": "TODO"
-        },
+        "description": "Request body to update a payment (capture, cancel, or extend expiration).",
         "properties": {
           "capture": {
             "type": "boolean",
-            "description": {
-              "en": "Set true to capture an authorized payment.",
-              "pt": "TODO",
-              "es": "TODO"
-            }
+            "description": "Set true to capture an authorized payment."
           },
           "status": {
             "type": "string",
             "enum": [
-              {
-                "title": "cancelled",
-                "description": {
-                  "en": "cancelled",
-                  "pt": "TODO",
-                  "es": "TODO"
-                }
-              }
+              "cancelled"
             ],
-            "description": {
-              "en": "Set to cancelled to cancel an authorized payment.",
-              "pt": "TODO",
-              "es": "TODO"
-            }
+            "description": "Set to cancelled to cancel an authorized payment."
           },
           "transaction_amount": {
             "type": "number",
             "format": "float",
-            "description": {
-              "en": "Partial capture amount (must be ≤ original authorized amount).",
-              "pt": "TODO",
-              "es": "TODO"
-            }
+            "description": "Partial capture amount (must be ≤ original authorized amount)."
           },
           "date_of_expiration": {
             "type": "string",
             "format": "date-time",
-            "description": {
-              "en": "New expiration date for cash payment methods.",
-              "pt": "TODO",
-              "es": "TODO"
-            }
+            "description": "New expiration date for cash payment methods."
           }
         }
       },
       "SubscriptionUpdateRequest": {
         "type": "object",
-        "description": {
-          "en": "Request body to update a subscription.",
-          "pt": "TODO",
-          "es": "TODO"
-        },
+        "description": "Request body to update a subscription.",
         "properties": {
           "reason": {
             "type": "string"
@@ -61057,63 +59350,23 @@
           },
           "card_token_id": {
             "type": "string",
-            "description": {
-              "en": "New card token to update the payment method.",
-              "pt": "TODO",
-              "es": "TODO"
-            }
+            "description": "New card token to update the payment method."
           },
           "card_token_id_secondary": {
             "type": "string",
-            "description": {
-              "en": "Token for secondary/fallback payment method card.",
-              "pt": "TODO",
-              "es": "TODO"
-            }
+            "description": "Token for secondary/fallback payment method card."
           },
           "payment_method_id_secondary": {
             "type": "string",
-            "description": {
-              "en": "Secondary payment method identifier for fallback charges.",
-              "pt": "TODO",
-              "es": "TODO"
-            }
+            "description": "Secondary payment method identifier for fallback charges."
           },
           "status": {
             "type": "string",
             "enum": [
-              {
-                "title": "pending",
-                "description": {
-                  "en": "pending",
-                  "pt": "TODO",
-                  "es": "TODO"
-                }
-              },
-              {
-                "title": "authorized",
-                "description": {
-                  "en": "authorized",
-                  "pt": "TODO",
-                  "es": "TODO"
-                }
-              },
-              {
-                "title": "paused",
-                "description": {
-                  "en": "paused",
-                  "pt": "TODO",
-                  "es": "TODO"
-                }
-              },
-              {
-                "title": "cancelled",
-                "description": {
-                  "en": "cancelled",
-                  "pt": "TODO",
-                  "es": "TODO"
-                }
-              }
+              "pending",
+              "authorized",
+              "paused",
+              "cancelled"
             ]
           }
         }
